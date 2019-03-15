@@ -1,6 +1,7 @@
 <?php
 /* @var $this yii\web\View */
 /* @var $form yii\bootstrap\ActiveForm */
+
 /* @var $model \frontend\models\ContactForm */
 
 use yii\bootstrap\ActiveForm;
@@ -11,8 +12,8 @@ $this->title = 'Контакты';
 $header = 'Контакты';
 ?>
 
-        <!-- Header -->
-<?= $this->render('/partials/_header',compact('header')); ?>
+<!-- Header -->
+<?= $this->render('/partials/_header', compact('header')); ?>
 
 
 <!-- Content -->
@@ -23,6 +24,17 @@ $header = 'Контакты';
 </section>
 <div class="site-contact">
     <div class="row">
+        <div class="col-7 col-12-medium">
+            <p>
+                Мой кабинет находится в помещении Мед Центра Гемотест <br>
+                Адрес: ул.Лукинская, д.16.
+
+
+            </p>
+            <hr class="major"/>
+            <script type="text/javascript" charset="utf-8" async
+                    src="https://api-maps.yandex.ru/services/constructor/1.0/js/?um=constructor%3Ace4d3e9f5ed9d4fad35f1035617d5ce6b81c05ef092077f346afe2a87622216f&amp;width=100%25&amp;height=500&amp;lang=ru_RU&amp;scroll=true"></script>
+        </div>
         <div class="col-5 col-12-medium">
             <p>
                 Если у вас есть вопросы или предложения, пожалуйста, заполните следующую форму, чтобы связаться с нами.
@@ -49,15 +61,6 @@ $header = 'Контакты';
 
             <?php ActiveForm::end(); ?>
         </div>
-        <div class="col-7 col-12-medium">
-            <p>
-                Мой кабинет находится в помещении Мед Центра Гемотест <br>
-                Адрес: ул.Лукинская, д.16.
 
-
-            </p>
-            <hr class="major"/>
-            <script type="text/javascript" charset="utf-8" async src="https://api-maps.yandex.ru/services/constructor/1.0/js/?um=constructor%3Ace4d3e9f5ed9d4fad35f1035617d5ce6b81c05ef092077f346afe2a87622216f&amp;width=900&amp;height=500&amp;lang=ru_RU&amp;scroll=true"></script>
-        </div>
     </div>
 </div>

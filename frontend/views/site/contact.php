@@ -52,7 +52,7 @@ $header = 'Контакты';
         <div class="col-7 col-12-medium">
             <p>
                 Мой кабинет находится в помещении Мед Центра Гемотест <br>
-                Адрес: Лукинская, д.16.
+                Адрес: ул.Лукинская, д.16.
             </p>
             <hr class="major"/>
             <script type="text/javascript" charset="utf-8" async src="https://api-maps.yandex.ru/services/constructor/1.0/js/?um=constructor%3Ace4d3e9f5ed9d4fad35f1035617d5ce6b81c05ef092077f346afe2a87622216f&amp;width=900&amp;height=500&amp;lang=ru_RU&amp;scroll=true"></script>

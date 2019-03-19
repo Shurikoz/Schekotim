@@ -5,42 +5,14 @@ use yii\bootstrap\ActiveForm;
 use yii\captcha\Captcha;
 use yii\helpers\Html;
 use yii\widgets\LinkPager;
+use yii\widgets\MaskedInput;
 
 $this->title = 'Отзывы ' . '(' . $totalReviews . ')';
 $header = 'Отзывы';
 ?>
 <!-- Header -->
 <?= $this->render('/partials/_header', compact('header')); ?>
-<style>
-    .reviews i {
-        font-size: 27px;
-        float: right;
-        right: 15px;
-        position: relative;
-    }
 
-    .reviews .like {
-        color: green;
-    }
-
-    .reviews .neutral {
-        color: grey;
-    }
-
-    .reviews .dislike {
-        color: red
-    }
-    .alert button{
-        box-shadow: none;
-        font-size: 24px;
-        height: 30px;
-        width: 30px;
-    }
-    .alert button:hover{
-        background-color: transparent;
-    }
-
-</style>
 <!-- Content -->
 <section>
     <header class="main">
@@ -63,8 +35,12 @@ $header = 'Отзывы';
                     <?= $form->field($newReview, 'email')->textInput(['maxlength' => true]) ?>
                 </div>
                 <div class="col-4 col-12-xsmall">
-                    <?= $form->field($newReview, 'mobile')->textInput(['maxlength' => true]) ?>
+                    <?= $form->field($newReview, 'mobile')->widget(MaskedInput::className(), ['mask' => '+7 (999) 999 99 99'])->textInput(['maxlength' => true]) ?>
                 </div>
+            </div>
+            <div class="row">
+                <p>Для обратной связи и получения приятных бонусов от наших мастеров, пожалуйста, оставьте свои контактные данные.
+                Мы гарантируем конфиденциальность ваших персональных данных. Для безопасности наших клиентов мы не передаём никакую информацию третьим лицам.</p>
             </div>
             <div class="row">
                 <div class="col-12 col-12-xsmall">
@@ -92,7 +68,7 @@ $header = 'Отзывы';
         </div>
     </div>
 
-    <?php foreach ($reviews as $rev) :?>
+    <?php foreach ($reviews as $rev) : ?>
         <?php if ($rev->active == 1) : ?>
             <div class="col-12 col-12-medium">
                 <div class="box">
@@ -124,7 +100,7 @@ $header = 'Отзывы';
     <?php endforeach; ?>
     <?= LinkPager::widget([
         'pagination' => $pages,
-        'class'  => ''
+        'class' => ''
     ]); ?>
 </div>
 

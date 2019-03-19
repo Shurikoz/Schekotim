@@ -274,8 +274,11 @@ class SiteController extends Controller
 
         if ($newReview->load(Yii::$app->request->post())) {
             if ($newReview->validate() && $newReview->save(false)) {
+
+
                 Yii::$app->session->setFlash('success', 'Спасибо за отзыв! После модерации он будет размещен на сайте!');
 
+                $reviewName = $newReview->name;
                 $reviewEmail = $newReview->email;
                 $reviewRating = $newReview->rating;
                 $reviewBody = $newReview->text;
@@ -285,13 +288,9 @@ class SiteController extends Controller
                 $linkPublic = 'http://admin.schekotim.ru/review/show?id=' . $newReview->id;
                 $linkEdit = 'http://admin.schekotim.ru/review/update?id=' . $newReview->id;
 
-//                $linkPublic = 'http://admin.schekotim/review/show?id=' . $newReview->id;
-//                $linkEdit = 'http://admin.schekotim/review/update?id=' . $newReview->id;
-
-
-
                 $newReview->sendNotificationReview(
                     Yii::$app->params['notificationReviewMail'],
+                    $reviewName,
                     $reviewEmail,
                     $reviewRating,
                     $reviewBody,
@@ -299,6 +298,27 @@ class SiteController extends Controller
                     $linkPublic,
                     $linkEdit
                 );
+
+                if ($reviewRating == 1 || $reviewRating == 2){
+                    $newReview->sendReviewClientPositiveNeutral(
+                        $reviewName,
+                        $reviewEmail,
+                        $reviewRating,
+                        $reviewBody,
+                        $reviewMobile
+                    );
+                } else {
+                    $newReview->sendReviewClientNegative(
+                        $reviewName,
+                        $reviewEmail,
+                        $reviewRating,
+                        $reviewBody,
+                        $reviewMobile
+                    );
+                }
+
+                $newReview = new ReviewForm();
+
             } else {
                 Yii::$app->session->setFlash('error', 'Ошибка отправки отзыва! :(');
             }

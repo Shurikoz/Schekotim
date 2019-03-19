@@ -156,6 +156,21 @@ class ReviewController extends Controller
         $model = ReviewForm::findOne($id);
         if ($model->active == 0){
             $model->active = '1';
+
+            $reviewName = $model->name;
+            $reviewEmail = $model->email;
+            $reviewRating = $model->rating;
+            $reviewBody = $model->text;
+            $reviewMobile = $model->mobile;
+
+            $model->sendReviewClientPublic(
+                $reviewName,
+                $reviewEmail,
+                $reviewRating,
+                $reviewBody,
+                $reviewMobile
+            );
+
             Yii::$app->session->setFlash('success', 'Отзыв опубликован! (ID ' . $id . ')');
         } else {
             Yii::$app->session->setFlash('error', 'Отзыв уже опубликован!');

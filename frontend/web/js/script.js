@@ -1,10 +1,5 @@
 "use strict";
 
-//маска для ввода телефона в отзывах
-jQuery(document).ready(function () {
-    $("#reviewform-mobile").inputmask("+7(999)999-99-99");
-});
-
 //Проигрывание видео-превью к статьям на главной странице
 //Передаем в функцию id статьи
 function videoPlay(i){
@@ -24,7 +19,7 @@ window.setTimeout(function () {
     $(".alert-success,.alert-danger, .alert-error ").fadeTo(500, 0).slideUp(500, function () {
         $(this).remove();
     });
-}, 4000);
+}, 10000);
 
 //Кнопка развернуть форму для отзыва
 function showReviewForm(){

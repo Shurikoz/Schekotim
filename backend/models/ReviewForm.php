@@ -3,7 +3,7 @@
 namespace backend\models;
 
 use yii\db\ActiveRecord;
-
+use yii;
 
 class ReviewForm extends ActiveRecord
 {
@@ -40,6 +40,26 @@ class ReviewForm extends ActiveRecord
             'active' => 'Публикация',
             'text' => 'Отзыв',
         ];
+    }
+
+    /**
+     * {@inheritdoc}
+     * Оповещение о публикации отзыва на email клиента
+     */
+
+    public function sendReviewClientPublic($reviewName, $reviewEmail, $reviewRating, $reviewBody, $reviewMobile)
+    {
+        return Yii::$app->mailer->compose('mailReviewClientPublic', [
+            'reviewName' => $reviewName,
+            'reviewEmail' => $reviewEmail,
+            'reviewRating' => $reviewRating,
+            'reviewBody' => $reviewBody,
+            'reviewMobile' => $reviewMobile,
+        ])
+            ->setFrom(['marketing@schekotim.ru' => 'Спасибо за оставленнный отзыв!'])
+            ->setTo($reviewEmail)
+            ->setSubject('Ваш отзыв опубликован!')
+            ->send();
     }
 
 }

@@ -22,7 +22,7 @@ use yii\helpers\Html;
             <td style="display: block !important;clear: both !important;margin: 0 auto !important;max-width: 580px !important;">
                 <table style="width: 100% !important;border-collapse: collapse;">
                     <tr>
-                        <td align="center" style="padding: 80px 0;background: #71bc37;color: white;">
+                        <td align="center" style="padding: 80px 40px;background: #71bc37;color: white;">
                             <img style="max-width: 100%;margin: 0 auto;display: block;" src="http://schekotim.ru/images/logo_white.png" alt="">
                         </td>
                     </tr>

@@ -1,4 +1,5 @@
 <?php
+
 namespace frontend\controllers;
 
 use common\models\LoginForm;
@@ -12,7 +13,6 @@ use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
 use yii\web\BadRequestHttpException;
 use yii\web\Controller;
-use yii\helpers\Url;
 
 
 /**
@@ -75,6 +75,16 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
+        $this->view->registerMetaTag([
+            'name' => 'description',
+            'content' => '«Щекотливая тема» - Студия маникюра, педикюра и подологии. Более 3 лет я работаю в области 
+            подологии. Кроме того, выполняю качественный и безопасный для здоровья моих клиентов маникюр и педикюр.
+            Постоянно совершенствую свои знания и опыт: посещаю лекции, тренинги, семинары, практикумы ведущих
+            специалистов в области подологии, дерматологии-микологии и nail-индустрии.
+            Моя главная мотивация в работе – это улыбки и искренняя благодарность моих клиентов, которым я помогла
+            избавиться от проблем стоп и ногтей.'
+        ]);
+
         return $this->render('index');
     }
 
@@ -120,6 +130,11 @@ class SiteController extends Controller
      */
     public function actionContact()
     {
+        $this->view->registerMetaTag([
+            'name' => 'description',
+            'content' => '«Щекотливая тема» - Контакты'
+        ]);
+
         $model = new ContactForm();
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
             if ($model->sendEmail(Yii::$app->params['adminEmail'])) {
@@ -212,6 +227,11 @@ class SiteController extends Controller
      */
     public function actionManicur()
     {
+        $this->view->registerMetaTag([
+            'name' => 'description',
+            'content' => '«Щекотливая тема» - Маникюр'
+        ]);
+
         return $this->render('manicur');
     }
 
@@ -222,6 +242,10 @@ class SiteController extends Controller
      */
     public function actionPedicur()
     {
+        $this->view->registerMetaTag([
+            'name' => 'description',
+            'content' => '«Щекотливая тема» - Педикюр'
+        ]);
         return $this->render('pedicur');
     }
 
@@ -232,6 +256,11 @@ class SiteController extends Controller
      */
     public function actionPodolog()
     {
+        $this->view->registerMetaTag([
+            'name' => 'description',
+            'content' => '«Щекотливая тема» - Подология'
+        ]);
+
         return $this->render('podolog');
     }
 
@@ -242,6 +271,11 @@ class SiteController extends Controller
      */
     public function actionTehnolog()
     {
+        $this->view->registerMetaTag([
+            'name' => 'description',
+            'content' => '«Щекотливая тема» - Технологии и опыт'
+        ]);
+
         return $this->render('tehnolog');
     }
 
@@ -252,6 +286,10 @@ class SiteController extends Controller
      */
     public function actionRaboty()
     {
+        $this->view->registerMetaTag([
+            'name' => 'description',
+            'content' => '«Щекотливая тема» - Наши работы'
+        ]);
         return $this->render('raboty');
     }
 
@@ -262,15 +300,15 @@ class SiteController extends Controller
      */
     public function actionReview()
     {
+
+        $this->view->registerMetaTag([
+            'name' => 'description',
+            'content' => '«Щекотливая тема» - Отзывы'
+        ]);
+
         $newReview = new ReviewForm();
 
         $newReview->created_at = date("d-m-y");
-
-//        function debug($val){
-//            echo '<pre>';
-//            print_r($val);
-//            echo '</pre>';
-//        }
 
         if ($newReview->load(Yii::$app->request->post())) {
             if ($newReview->validate() && $newReview->save(false)) {
@@ -299,7 +337,7 @@ class SiteController extends Controller
                     $linkEdit
                 );
 
-                if ($reviewRating == 1 || $reviewRating == 2){
+                if ($reviewRating == 1 || $reviewRating == 2) {
                     $newReview->sendReviewClientPositiveNeutral(
                         $reviewName,
                         $reviewEmail,
@@ -341,6 +379,11 @@ class SiteController extends Controller
      */
     public function actionObuchenie()
     {
+        $this->view->registerMetaTag([
+            'name' => 'description',
+            'content' => '«Щекотливая тема» - Обучение'
+        ]);
+
         return $this->render('obuchenie');
     }
 
@@ -351,6 +394,11 @@ class SiteController extends Controller
      */
     public function actionVakansii()
     {
+        $this->view->registerMetaTag([
+            'name' => 'description',
+            'content' => '«Щекотливая тема» - Вакансии'
+        ]);
+
         return $this->render('vakansii');
     }
 

@@ -34,7 +34,6 @@ $header = 'Студия маникюра, педикюра и подологии
     <header class="major">
         <h2>Направления нашей работы</h2>
     </header>
-    </article>
     <div class="features">
         <article>
             <span class="icon fa-diamond"></span>

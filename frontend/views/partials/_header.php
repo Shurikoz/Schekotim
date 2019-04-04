@@ -1,5 +1,5 @@
 <header id="header">
-    <div class="logo"><img src="images/logo_small.png" alt="Студия маникюра, педикюра и подологии">
+    <div class="logo"><img src="images/logo_small.png" alt="Центр маникюра, педикюра и подологии">
         <span class="logo-text"><?= $header ?></span>
     </div>
     <ul class="icons">

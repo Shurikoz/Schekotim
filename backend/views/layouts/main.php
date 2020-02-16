@@ -39,6 +39,7 @@ AppAsset::register($this);
     if (Yii::$app->user->isGuest) {
         $menuItems[] = ['label' => 'Вход', 'url' => ['/login']];
     } else {
+        $menuItems[] = ['label' => 'Картотека', 'url' => ['/card']];
         $menuItems[] = ['label' => 'Отзывы', 'url' => ['/review/index']];
         $menuItems[] = ['label' => 'Галерея', 'url' => ['/gallery/index']];
         $menuItems[] = '<li>'
@@ -71,7 +72,7 @@ AppAsset::register($this);
     <div class="container">
         <p class="pull-left">&copy; <?= Html::encode(Yii::$app->name) ?> <?= date('Y') ?></p>
 
-        <p class="pull-right"><?= Yii::powered() ?></p>
+        <p class="pull-right">О проблемах в работе просим сообщить администратору</p>
     </div>
 </footer>
 

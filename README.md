@@ -2,7 +2,7 @@
     <a href="https://github.com/yiisoft" target="_blank">
         <img src="http://schekotim.ru/images/logo.png" alt="Студия маникюра, педикюра и подологии">
     </a>
-    <h1 align="center">Студия маникюра, педикюра и подологии</h1>
+    <h1 align="center">Центр маникюра, педикюра и подологии</h1>
     <br>
 </p>
 

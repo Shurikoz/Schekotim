@@ -8,7 +8,6 @@ $header = 'Вросший ноготь';
 <!-- Header -->
 <?= $this->render('/partials/_header', compact('header')); ?>
 
-
 <!-- Content -->
 <section>
     <header class="main">

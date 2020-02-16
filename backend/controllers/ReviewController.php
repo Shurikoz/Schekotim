@@ -3,12 +3,14 @@
 namespace backend\controllers;
 
 use Yii;
+use yii\helpers\FileHelper;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 use backend\models\ReviewForm;
 use backend\models\ReviewSearch;
+
 
 /**
  * ReviewController implements the CRUD actions for ReviewForm model.
@@ -51,7 +53,6 @@ class ReviewController extends Controller
      */
     public function actionIndex()
     {
-
         $searchModel = new ReviewSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
         $dataProvider->sort = ['defaultOrder' => ['id' => SORT_DESC]];
@@ -60,8 +61,6 @@ class ReviewController extends Controller
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
-
-
     }
 
     /**
@@ -125,8 +124,12 @@ class ReviewController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
-
+        $model = $this->findModel($id);
+        if ($model->image != '') {
+            FileHelper::unlink(Yii::getAlias('@frontend') . '/web/images/reviews/' . $model->image);
+            FileHelper::unlink(Yii::getAlias('@frontend') . '/web/images/reviews/thumbnail/' . $model->image);
+        }
+        $model->delete();
         return $this->redirect(['index']);
     }
 
@@ -157,18 +160,13 @@ class ReviewController extends Controller
         if ($model->active == 0){
             $model->active = '1';
 
-            $reviewName = $model->name;
-            $reviewEmail = $model->email;
-            $reviewRating = $model->rating;
-            $reviewBody = $model->text;
-            $reviewMobile = $model->mobile;
-
             $model->sendReviewClientPublic(
-                $reviewName,
-                $reviewEmail,
-                $reviewRating,
-                $reviewBody,
-                $reviewMobile
+                $model->name,
+                $model->email,
+                $model->rating,
+                $model->text,
+                $model->mobile,
+                $model->image
             );
 
             Yii::$app->session->setFlash('success', 'Отзыв опубликован! (ID ' . $id . ')');

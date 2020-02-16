@@ -14,7 +14,7 @@ class ContactForm extends Model
     public $email;
     public $subject;
     public $body;
-    public $verifyCode;
+    public $reCaptcha;
 
 
     /**
@@ -28,7 +28,8 @@ class ContactForm extends Model
             // email has to be a valid email address
             ['email', 'email'],
             // verifyCode needs to be entered correctly
-            ['verifyCode', 'captcha'],
+//            ['verifyCode', 'captcha'],
+            [['reCaptcha'], \himiklab\yii2\recaptcha\ReCaptchaValidator::className(), 'secret' => '6Lf4qbgUAAAAAFq4d7jUewzRc7Qp6z9QrRJK7lW2']
         ];
     }
 
@@ -41,7 +42,7 @@ class ContactForm extends Model
             'name' => 'Имя',
             'subject' => 'Тема',
             'body' => 'Сообщение',
-            'verifyCode' => 'Код подтверждения',
+            'reCaptcha' => 'Код подтверждения',
         ];
     }
 
@@ -54,8 +55,8 @@ class ContactForm extends Model
     public function sendEmail($email)
     {
         return Yii::$app->mailer->compose()
+            ->setFrom([Yii::$app->params['adminEmail'] => 'Письмо с сайта'])
             ->setTo($email)
-            ->setFrom([$this->email => $this->name])
             ->setSubject($this->subject)
             ->setTextBody($this->body)
             ->send();

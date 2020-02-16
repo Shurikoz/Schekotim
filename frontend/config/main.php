@@ -41,14 +41,12 @@ return [
         'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
-            'baseUrl' => '',
             'rules' => [
-                '<action:(index|contact|manicur|pedicur|podolog|tehnolog|raboty|obuchenie|review|vakansii|contact)>' => 'site/<action>',
+                    '<action:(index|contact|uslugi|sertificats|raboty|obuchenie|review|vakansii|contact|stock)>' => 'site/<action>',
+                    '<action:(treschini|onihomikoz|oniholizis|nogot|mozol|gematoma|borodavki)>' => 'pages/<action>'
 //                '<action:\w+>' => 'site/<action>',
             ],
         ],
-
-
     ],
     'params' => $params,
 ];

@@ -64,6 +64,11 @@ use yii\helpers\Html;
                             <p style="font-size: 16px;font-weight: normal;margin-bottom: 20px;">
                                 <em><?= $reviewBody ?></em>
                             </p>
+                            <?php if ($image) { ?>
+                                <p style="font-size: 16px;font-weight: normal;margin-bottom: 20px;">
+                                    <b>Прикрепленное к отзыву фото во вложении</b>
+                                </p>
+                            <?php } ?>
                             <hr>
                             <p style="font-size: 16px;font-weight: normal;margin-bottom: 20px;margin-top: 50px;"><em>– Студия «Щекотливая тема»</em></p>
                         </td>
@@ -77,7 +82,9 @@ use yii\helpers\Html;
                 <table style="width: 100% !important;border-collapse: collapse;">
                     <tr>
                         <td style="background: none;padding: 30px 35px;" align="center">
-                            <p style="margin-bottom: 0;color: #888;text-align: center;font-size: 12px !important;margin-top: 0;">Студия <a style="color: #888;text-decoration: none;font-weight: bold;" href="http://schekotim.ru/">«Щекотливая тема»</a>, 119634, Москва, Лукинская улица, 16</p>
+                            <p style="margin-bottom: 0;color: #888;text-align: center;font-size: 12px !important;margin-top: 0;">
+                                Центр <a style="color: #888;text-decoration: none;font-weight: bold;"
+                                         href="http://schekotim.ru/">«Щекотливая тема»</a>, г. Москва, ул. Самуила Маршака 20, (вход со двора)</p>
                             <p style="margin-bottom: 0;color: #888;text-align: center;font-size: 12px !important;margin-top: 0;"><a style="color: #888;text-decoration: none;font-weight: bold;" href="mailto:">info@schekotim.ru</a></p>
                             <p style="margin-bottom: 0;color: #888;text-align: center;font-size: 12px !important;margin-top: 0;"><a style="color: #888;text-decoration: none;font-weight: bold;" href="tel:+79100048558">+7(910)004-85-58</a></p>
                             <p style="margin-bottom: 0;color: #888;text-align: center;font-size: 12px !important;margin-top: 0;"><a style="color: #888;text-decoration: none;font-weight: bold;" href="https://www.instagram.com/schekotim/" target="_blank" class="icon fab fa-instagram">Instagram</a></p>

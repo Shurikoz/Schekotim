@@ -20,7 +20,7 @@ AppAsset::register($this);
     <meta charset="<?= Yii::$app->charset ?>">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
+    <meta name="yandex-verification" content="b1fb9a0c61bbf3af" />
     <?php $this->registerLinkTag(['rel' => 'apple-touch-icon', 'size' => '180x180', 'href' => '/apple-touch-icon.png']);?>
     <?php $this->registerLinkTag(['rel' => 'manifest', 'href' => '/manifest.json']);?>
     <?php $this->registerLinkTag(['rel' => 'mask-icon', 'color' => '#0b9341', 'href' => '/safari-pinned-tab.svg']);?>
@@ -39,58 +39,60 @@ $script = <<< JS
     ym(53045104, "init", {
         clickmap:true,
         trackLinks:true,
-        accurateTrackBounce:true
+        accurateTrackBounce:true,
+        webvisor:true
     });
 JS;
 $this->registerJs($script, yii\web\View::POS_READY);
 ?>
 <noscript><div><img src="https://mc.yandex.ru/watch/53045104" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
 <!-- /Yandex.Metrika counter -->
+
 <?php $this->beginBody() ?>
 
 <div id="wrapper">
-<?php
-//    NavBar::begin([
-//        'brandLabel' => Yii::$app->name,
-//        'brandUrl' => Yii::$app->homeUrl,
-//        'options' => [
-//            'class' => 'navbar-inverse navbar-fixed-top',
-//        ],
-//    ]);
-//    $menuItems = [
-//        ['label' => 'Home', 'url' => ['/site/index']],
-//        ['label' => 'About', 'url' => ['/site/about']],
-//        ['label' => 'Contact', 'url' => ['/site/contact']],
-//    ];
-//    if (Yii::$app->user->isGuest) {
-//        $menuItems[] = ['label' => 'Signup', 'url' => ['/site/signup']];
-//        $menuItems[] = ['label' => 'Login', 'url' => ['/site/login']];
-//    } else {
-//        $menuItems[] = '<li>'
-//            . Html::beginForm(['/site/logout'], 'post')
-//            . Html::submitButton(
-//                'Logout (' . Yii::$app->user->identity->username . ')',
-//                ['class' => 'btn btn-link logout']
-//            )
-//            . Html::endForm()
-//            . '</li>';
-//    }
-//    echo Nav::widget([
-//        'options' => ['class' => 'navbar-nav navbar-right'],
-//        'items' => $menuItems,
-//    ]);
-//    NavBar::end();
-//    ?>
+    <?php
+    //    NavBar::begin([
+    //        'brandLabel' => Yii::$app->name,
+    //        'brandUrl' => Yii::$app->homeUrl,
+    //        'options' => [
+    //            'class' => 'navbar-inverse navbar-fixed-top',
+    //        ],
+    //    ]);
+    //    $menuItems = [
+    //        ['label' => 'Home', 'url' => ['/site/index']],
+    //        ['label' => 'About', 'url' => ['/site/about']],
+    //        ['label' => 'Contact', 'url' => ['/site/contact']],
+    //    ];
+    //    if (Yii::$app->user->isGuest) {
+    //        $menuItems[] = ['label' => 'Signup', 'url' => ['/site/signup']];
+    //        $menuItems[] = ['label' => 'Login', 'url' => ['/site/login']];
+    //    } else {
+    //        $menuItems[] = '<li>'
+    //            . Html::beginForm(['/site/logout'], 'post')
+    //            . Html::submitButton(
+    //                'Logout (' . Yii::$app->user->identity->username . ')',
+    //                ['class' => 'btn btn-link logout']
+    //            )
+    //            . Html::endForm()
+    //            . '</li>';
+    //    }
+    //    echo Nav::widget([
+    //        'options' => ['class' => 'navbar-nav navbar-right'],
+    //        'items' => $menuItems,
+    //    ]);
+    //    NavBar::end();
+    //    ?>
 
     <div id="main">
         <div class="inner">
 
-        <?= Breadcrumbs::widget([
-            'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
-        ]) ?>
-        <?= Alert::widget() ?>
+            <?= Breadcrumbs::widget([
+                'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
+            ]) ?>
+            <?= Alert::widget() ?>
 
-        <?= $content ?>
+            <?= $content ?>
         </div>
     </div>
     <!-- Sidebar -->
@@ -99,7 +101,7 @@ $this->registerJs($script, yii\web\View::POS_READY);
 
             <!-- Logo -->
             <section id="logo">
-                    <img src="images/logo.svg"  style="width: 100%; height: auto;" alt="Центр маникюра, педикюра и подологии">
+                <img src="images/logo.svg"  style="width: 100%; height: auto;" alt="Центр маникюра, педикюра и подологии">
             </section>
 
             <!-- Menu -->
@@ -109,15 +111,9 @@ $this->registerJs($script, yii\web\View::POS_READY);
                 </header>
                 <ul>
                     <li><a href="/">Главная</a></li>
-                    <li>
-                        <span class="opener">Услуги</span>
-                        <ul>
-                            <li><a href="/podolog">Подология</a></li>
-                            <li><a href="/manicur">Маникюр</a></li>
-                            <li><a href="/pedicur">Педикюр</a></li>
-                        </ul>
-                    </li>
-                    <li><a href="/tehnolog">Технологии и опыт</a></li>
+                    <li><a href="/uslugi">Наши цены</a></li>
+                    <li><a href="/stock">Акции и скидки</a></li>
+                    <li><a href="/sertificats">Дипломы и сертификаты</a></li>
                     <li><a href="/raboty">Примеры работ</a></li>
                     <li><a href="/review">Отзывы</a></li>
                     <li><a href="/obuchenie">Обучение</a></li>
@@ -131,12 +127,12 @@ $this->registerJs($script, yii\web\View::POS_READY);
                 <header class="major">
                     <h2>Контакты</h2>
                 </header>
-                <p>Мой кабинет находится в помещении Мед Центра Гемотест по адресу: Лукинская, д.16.</p>
                 <ul class="contact">
                     <li class="fa-whatsapp"><a href="https://api.whatsapp.com/send?phone=+79100048558&text=Здравствуйте! Хочу записаться к вам на прием!">+7(910)004-85-58</a></li>
-                    <li class="fa-phone"><a href="tel:+79100048558">+7(910)004-85-58</a></li>
+                    <li class="fa-phone"><a href="tel:+74951818780">+7(495)181-87-70</a></li>
                     <li class="fa-envelope-o"><a href="mailto:info@schekotim.ru">info@schekotim.ru</a></li>
-                    <li class="fa-home">Лукинская, д.16 </li>
+                    <li class="fa-home">г. Москва, ул. Самуила Маршака 20, <br>(вход со двора)</li>
+                    <li class="fa-clock-o">Работаем ежедневно <br>с 10:00 до 21:00<br>по предварительной записи</li>
                 </ul>
             </section>
 

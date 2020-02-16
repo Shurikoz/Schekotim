@@ -2,17 +2,21 @@
 
 namespace frontend\controllers;
 
+use backend\models\Gallery;
 use common\models\LoginForm;
 use frontend\components\NumericCaptcha;
 use frontend\models\ContactForm;
 use frontend\models\ReviewForm;
+use Imagine\Image\Box;
 use Yii;
 use yii\base\InvalidArgumentException;
 use yii\data\Pagination;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
+use yii\imagine\Image;
 use yii\web\BadRequestHttpException;
 use yii\web\Controller;
+use yii\web\UploadedFile;
 
 
 /**
@@ -74,10 +78,10 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        $this->view->registerMetaTag([
-            'name' => 'description',
-            'content' => '«Щекотливая тема» - Студия маникюра, педикюра и подологии.'
-        ]);
+//        $this->view->registerMetaTag([
+//            'name' => 'description',
+//            'content' => '«Щекотливая тема» - Центр маникюра, педикюра и подологии.'
+//        ]);
 
         return $this->render('index');
     }
@@ -215,47 +219,17 @@ class SiteController extends Controller
     }
 
     /**
-     * Displays Manicur page.
-     *
-     * @return mixed
-     */
-    public function actionManicur()
-    {
-        $this->view->registerMetaTag([
-            'name' => 'description',
-            'content' => '«Щекотливая тема» - Маникюр'
-        ]);
-
-        return $this->render('manicur');
-    }
-
-    /**
-     * Displays Pedicur page.
-     *
-     * @return mixed
-     */
-    public function actionPedicur()
-    {
-        $this->view->registerMetaTag([
-            'name' => 'description',
-            'content' => '«Щекотливая тема» - Педикюр'
-        ]);
-        return $this->render('pedicur');
-    }
-
-    /**
      * Displays podolog page.
      *
      * @return mixed
      */
-    public function actionPodolog()
+    public function actionUslugi()
     {
         $this->view->registerMetaTag([
             'name' => 'description',
             'content' => '«Щекотливая тема» - Подология'
         ]);
-
-        return $this->render('podolog');
+        return $this->render('uslugi');
     }
 
     /**
@@ -263,14 +237,13 @@ class SiteController extends Controller
      *
      * @return mixed
      */
-    public function actionTehnolog()
+    public function actionSertificats()
     {
         $this->view->registerMetaTag([
             'name' => 'description',
-            'content' => '«Щекотливая тема» - Технологии и опыт'
+            'content' => '«Щекотливая тема» - Дипломы и сертификаты'
         ]);
-
-        return $this->render('tehnolog');
+        return $this->render('sertificats');
     }
 
     /**
@@ -284,7 +257,16 @@ class SiteController extends Controller
             'name' => 'description',
             'content' => '«Щекотливая тема» - Наши работы'
         ]);
-        return $this->render('raboty');
+
+        $podolog = Gallery::find()->where(['category' => 0])->all();
+        $manicure = Gallery::find()->where(['category' => 1])->all();
+        $pedicure = Gallery::find()->where(['category' => 2])->all();
+
+        return $this->render('raboty', [
+            'podolog' => $podolog,
+            'manicure' => $manicure,
+            'pedicure' => $pedicure,
+        ]);
     }
 
     /**
@@ -294,21 +276,33 @@ class SiteController extends Controller
      */
     public function actionReview()
     {
-
+        $this->view->registerJsFile('js/jquery-11.0.min.js');
         $this->view->registerMetaTag([
             'name' => 'description',
             'content' => '«Щекотливая тема» - Отзывы'
         ]);
 
+
         $newReview = new ReviewForm();
-
         $newReview->created_at = date("d-m-y");
-
         if ($newReview->load(Yii::$app->request->post())) {
+            $file = UploadedFile::getInstance($newReview, 'image');
+            if ($file) {
+                $filename = time() . '_' . uniqid() . '.' . $file->extension;
+                $path = Yii::getAlias('@frontend/web') . '/images/reviews/' . $filename;
+                $newReview->image = $filename;
+            }
             if ($newReview->validate() && $newReview->save(false)) {
 
-
                 Yii::$app->session->setFlash('success', 'Спасибо за отзыв! После модерации он будет размещен на сайте!');
+
+                if ($file && $file->saveAs($path)) {
+                    Image::resize($path, 800, 1000)->save(Yii::getAlias('@frontend/web') . '/images/reviews/' . $filename, ['quality' => 80]);
+                    $photo = Image::getImagine()->open(Yii::getAlias('@frontend/web') . '/images/reviews/' . $filename);
+                    $photo->thumbnail(new Box(180, 180))->save(Yii::getAlias('@frontend/web') . '/images/reviews/thumbnail/' . $filename, ['quality' => 80]);
+                } else {
+                    $filename = '';
+                }
 
                 $reviewName = $newReview->name;
                 $reviewEmail = $newReview->email;
@@ -316,19 +310,21 @@ class SiteController extends Controller
                 $reviewBody = $newReview->text;
                 $reviewMobile = $newReview->mobile;
 
-                //оздание ссылок на публикацию / изменение нового оставленного отзыва
+                //создание ссылок на публикацию / изменение нового оставленного отзыва
                 $linkPublic = 'http://admin.schekotim.ru/review/show?id=' . $newReview->id;
                 $linkEdit = 'http://admin.schekotim.ru/review/update?id=' . $newReview->id;
 
                 $newReview->sendNotificationReview(
                     Yii::$app->params['notificationReviewMail'],
+                    Yii::$app->params['trofimovaNatEmail'],
                     $reviewName,
                     $reviewEmail,
                     $reviewRating,
                     $reviewBody,
                     $reviewMobile,
                     $linkPublic,
-                    $linkEdit
+                    $linkEdit,
+                    $filename
                 );
 
                 if ($reviewRating == 1 || $reviewRating == 2) {
@@ -337,7 +333,8 @@ class SiteController extends Controller
                         $reviewEmail,
                         $reviewRating,
                         $reviewBody,
-                        $reviewMobile
+                        $reviewMobile,
+                        $filename
                     );
                 } else {
                     $newReview->sendReviewClientNegative(
@@ -345,7 +342,8 @@ class SiteController extends Controller
                         $reviewEmail,
                         $reviewRating,
                         $reviewBody,
-                        $reviewMobile
+                        $reviewMobile,
+                        $filename
                     );
                 }
 
@@ -394,6 +392,21 @@ class SiteController extends Controller
         ]);
 
         return $this->render('vakansii');
+    }
+
+    /**
+     * Displays vakansii page.
+     *
+     * @return mixed
+     */
+    public function actionStock()
+    {
+        $this->view->registerMetaTag([
+            'name' => 'description',
+            'content' => '«Щекотливая тема» - Акции и скидки'
+        ]);
+
+        return $this->render('stock');
     }
 
 }

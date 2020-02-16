@@ -51,11 +51,11 @@ if(!$inWidget instanceof \inWidget\Core) {
 	</head>
 <body>
 <div id="widget" class="widget">
-	<a href="https://instagram.com/<?= $inWidget->data->username ?>" target="_blank" class="title">
-		<div class="icon">&nbsp;</div>
-		<div class="text"><?= $inWidget->lang['title']; ?></div>
-		<div class="clear">&nbsp;</div>
-	</a>
+<!--	<a href="https://instagram.com/--><?//= $inWidget->data->username ?><!--" target="_blank" class="title">-->
+<!--		<div class="icon">&nbsp;</div>-->
+<!--		<div class="text">--><?//= $inWidget->lang['title']; ?><!--</div>-->
+<!--		<div class="clear">&nbsp;</div>-->
+<!--	</a>-->
 	<?php if($inWidget->toolbar == true): ?>
 		<table class="profile">
 			<tr>
@@ -119,9 +119,9 @@ if(!$inWidget instanceof \inWidget\Core) {
 		}
 	?>
 </div>
-<div class='copyright'>
-	&copy; <a href='https://inwidget.ru' target='_blank' title='Free Instagram widget for your website!'>inwidget.ru</a>
-</div>
+<!--<div class='copyright'>-->
+<!--	&copy; <a href='https://inwidget.ru' target='_blank' title='Free Instagram widget for your website!'>inwidget.ru</a>-->
+<!--</div>-->
 <?php if(isset($inWidget->data->isBackup)): ?>
 	<div class='cacheError'>
 		<?= $inWidget->lang['errorCache'].' '.date('Y-m-d H:i:s',$inWidget->data->lastupdate) .' <br /> '. $inWidget->lang['updateNeeded'] ?>

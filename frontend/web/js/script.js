@@ -26,6 +26,8 @@ function showReviewForm(){
     $("#reviewForm").fadeIn(600, 0);
     $("#showReviewFormButton").fadeOut(300, function () {
         $("#hideReviewFormButton").fadeIn(300, 0);
+        $("#zoon").fadeOut(300, 0);
+        $("#yand").fadeOut(300, 0);
     });
 }
 //Кнопка свернуть форму для отзыва
@@ -33,6 +35,25 @@ function hideReviewForm(){
     $("#reviewForm").fadeOut(600, 0);
     $("#hideReviewFormButton").fadeOut(300, function () {
         $("#showReviewFormButton").fadeIn(300, 0);
+        $("#zoon").fadeIn(300, 0);
+        $("#yand").fadeIn(300, 0);
     });
 }
 
+//Плавный переход к якорной ссылке (галерея)
+$("body").on('click', '[href*="#"]', function(e){
+    let fixed_offset = 75;
+    $('html,body').stop().animate({ scrollTop: $(this.hash).offset().top - fixed_offset }, 500);
+    e.preventDefault();
+});
+
+
+jQuery(document).ready(function(){
+    jQuery("#podolog").unitegallery();
+    jQuery("#manicure").unitegallery();
+    jQuery("#pedicure").unitegallery();
+});
+
+$(document).ready(function() {
+    $('.image-review-link').magnificPopup({type:'image'});
+});

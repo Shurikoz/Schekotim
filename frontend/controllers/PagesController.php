@@ -2,27 +2,15 @@
 
 namespace frontend\controllers;
 
-use backend\models\Gallery;
-use common\models\LoginForm;
-use frontend\components\NumericCaptcha;
-use frontend\models\ContactForm;
-use frontend\models\ReviewForm;
-use Imagine\Image\Box;
-use Yii;
-use yii\base\InvalidArgumentException;
-use yii\data\Pagination;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
-use yii\imagine\Image;
-use yii\web\BadRequestHttpException;
 use yii\web\Controller;
-use yii\web\UploadedFile;
 
 
 /**
  * Site controller
  */
-class SiteController extends Controller
+class PagesController extends Controller
 {
     /**
      * {@inheritdoc}
@@ -63,27 +51,113 @@ class SiteController extends Controller
         return [
             'error' => [
                 'class' => 'yii\web\ErrorAction',
-            ],
-            'captcha' => [
-                'class' => NumericCaptcha::className(),
-                'fixedVerifyCode' => YII_ENV_TEST ? 'testme' : null,
-            ],
+            ]
         ];
     }
 
     /**
-     * Displays homepage.
+     * Displays onihomikoz.
      *
      * @return mixed
      */
-    public function actionIndex()
+    public function actionOnihomikoz()
     {
 //        $this->view->registerMetaTag([
 //            'name' => 'description',
-//            'content' => '«Щекотливая тема» - Центр маникюра, педикюра и подологии.'
+//            'content' => ''
 //        ]);
 
-        return $this->render('index');
+        return $this->render('onihomikoz');
+    }
+
+    /**
+     * Displays treschini.
+     *
+     * @return mixed
+     */
+    public function actionTreschini()
+    {
+//        $this->view->registerMetaTag([
+//            'name' => 'description',
+//            'content' => ''
+//        ]);
+
+        return $this->render('treschini');
+    }
+
+    /**
+     * Displays oniholizis.
+     *
+     * @return mixed
+     */
+    public function actionOniholizis()
+    {
+//        $this->view->registerMetaTag([
+//            'name' => 'description',
+//            'content' => ''
+//        ]);
+
+        return $this->render('oniholizis');
+    }
+
+    /**
+     * Displays nogot.
+     *
+     * @return mixed
+     */
+    public function actionNogot()
+    {
+//        $this->view->registerMetaTag([
+//            'name' => 'description',
+//            'content' => ''
+//        ]);
+
+        return $this->render('nogot');
+    }
+
+    /**
+     * Displays mozol.
+     *
+     * @return mixed
+     */
+    public function actionMozol()
+    {
+//        $this->view->registerMetaTag([
+//            'name' => 'description',
+//            'content' => ''
+//        ]);
+
+        return $this->render('mozol');
+    }
+
+    /**
+     * Displays gematomi.
+     *
+     * @return mixed
+     */
+    public function actionGematoma()
+    {
+//        $this->view->registerMetaTag([
+//            'name' => 'description',
+//            'content' => ''
+//        ]);
+
+        return $this->render('gematoma');
+    }
+
+    /**
+     * Displays borodavki.
+     *
+     * @return mixed
+     */
+    public function actionBorodavki()
+    {
+//        $this->view->registerMetaTag([
+//            'name' => 'description',
+//            'content' => ''
+//        ]);
+
+        return $this->render('borodavki');
     }
 
 

@@ -5,8 +5,8 @@ use yii\helpers\FileHelper;
 //получим все сертификаты из папки certificates
 $files = FileHelper::findFiles('images/certificates');
 shuffle($files);
-$this->title = 'Технологии и опыт';
-$header = 'Технологии и опыт';
+$this->title = 'Дипломы и сертификаты';
+$header = 'Дипломы и сертификаты';
 ?>
         <!-- Header -->
 <?= $this->render('/partials/_header',compact('header')); ?>
@@ -15,9 +15,6 @@ $header = 'Технологии и опыт';
             <header class="main">
                 <h1><?= Html::encode($this->title) ?></h1>
                 <section>
-                    <header class="major">
-                        <h2>Дипломы и сертификаты</h2>
-                    </header>
                     <div class="posts">
                         <?php foreach ($files as $file){?>
                         <article>

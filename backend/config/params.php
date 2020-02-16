@@ -1,5 +1,5 @@
 <?php
 return [
     'adminEmail' => 'admin@schekotim.ru',
-    'supportEmail' => 'marketing@schekotim.ru',
+    'supportEmail' => 'admin@schekotim.ru',
 ];

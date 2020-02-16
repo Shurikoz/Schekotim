@@ -1,6 +1,15 @@
 <?php
+
+use yii\helpers\Url;
+
 $this->title = 'Щекотливая тема';
 $header = 'Центр маникюра, педикюра и подологии';
+
+$this->registerMetaTag([
+    'name' => 'description',
+    'content' => 'Центр маникюра, педикюра и подологии поможет Вам раз и навсегда решить проблемы стоп и ногтей. Лечение вросшего ногтя, лечение бородавок, лечение грибка стопы и многих других видов заболеваний в центре подологии "Щекотливая тема"'
+]);
+
 ?>
 
 <!-- Header -->
@@ -11,136 +20,99 @@ $header = 'Центр маникюра, педикюра и подологии';
 <section id="banner">
     <div class="content">
         <header>
-
-            <h1>Меня зовут<br/>
-                Анастасия Артанова</h1>
-            <p>Я - Подолог</p>
+            <h2>Чем занимается подолог?</h2>
         </header>
-        <p>Более 3 лет я работаю в области подологии. Кроме того, выполняю качественный и безопасный для здоровья моих
-            клиентов маникюр и педикюр.</p>
-        <p>Постоянно совершенствую свои знания и опыт: посещаю лекции, тренинги, семинары, практикумы ведущих
-            специалистов в области подологии, дерматологии-микологии и nail-индустрии.</p>
-        <p>Моя главная мотивация в работе – это улыбки и искренняя благодарность моих клиентов, которым я помогла
-            избавиться от проблем стоп и ногтей.</p>
+        <p><b>Подолог</b> - это специалист, осуществляющий полноценный уход за стопой.</p>
+        <p>Во время процедуры парамедицинского педикюра подолог аккуратно удаляет натоптыши, загрубевшие старые мозоли, глубокие трещины на пятках, а также занимается проблемой диабетической стопы, протезированием ногтей, подбором индивидуальных ортопедических ортезов.</p>
+        <p>С помощью корректирующих систем подолог безболезненно исправляет вросшие ногти и другие деформации ногтей.</p>
+        <p>Благодаря работе подолога пациенты могут избежать дискомфорта и стеснения, избавившись от многих неприятных проблем, а также минимизировать разрушающие кожу и ногти последствия других заболеваний, влияющих на состояние рук и ног.</p>
+        <p>Помимо этого, у подолога вы можете получить консультации по устранению излишней потливости ног, рекомендации по оптимальным средствам для ухода за кожей рук и ног, обработке пораженных тканей.</p>
+        <br>
+        <p><strong>Подологи Центра маникюра, педикюра и подологии «Щекотливая тема» помогают пациентам решать следующие вопросы:</strong></p>
+        <ul>
+            <li><a href="/nogot">Вросшие или деформированные ногти <i class="fa fa-external-link" aria-hidden="true"></i></a></li>
+            <li><a href="/borodavki">Бородавки <i class="fa fa-external-link" aria-hidden="true"></i></a></li>
+            <li><a href="/onihomikoz">Грибковые поражения ногтей и кожи ног и рук <i class="fa fa-external-link" aria-hidden="true"></i></a></li>
+            <li><a href="/mozol">Утолщение кожи на стопе разной этиологии, грубые мозоли, стержневые мозоли, натоптыши <i class="fa fa-external-link" aria-hidden="true"></i></a></li>
+            <li>Диабетическая стопа или другие нарушения, возникающие в результате заболеваний</li>
+            <li>Необходимость протезирования ногтей</li>
+            <li>Подбор или индивидуальное изготовление ортезов</li>
+            <li>Болезненные ощущения в области стоп</li>
+            <li>Лимфодренажное тейпирование</li>
+        </ul>
     </div>
+
     <span class="image object">
-		<img src="images/pic10.jpg" alt=""/>
+		<img src="images/20190705-MTRN1138.jpg" alt=""/>
 	</span>
 
 </section>
-
+<section>
+    <br>
+    <header class="major">
+        <h2>Мы в Instagram</h2>
+    </header>
+    <iframe src='inwidget/index.php?adaptive=true&width=100%&inline=3&view=9&toolbar=false&preview=large' data-inwidget scrolling='no' frameborder='no' style='border:none;width:800px;height:850px;overflow:hidden;'></iframe>
+</section>
 <!-- Section -->
 <section>
+    <br>
     <header class="major">
-        <h2>Направления нашей работы</h2>
+        <h2>Дополнительные направления нашей работы</h2>
     </header>
     <div class="features">
+
+<!--        <article>-->
+<!--            <a href="--><?//= Url::to(['podolog']); ?><!--">-->
+<!--                <span class="icon podology"></span>-->
+<!--            </a>-->
+<!--            <a href="--><?//= Url::to(['podolog']); ?><!--">-->
+<!--                <div class="content">-->
+<!--                    <h3>Подология</h3>-->
+<!--                    <p>Деформация ногтей стопы, изменение ногтевой пластины, изменения стопы,мозоли и дефекты - все это-->
+<!--                        вопросы, которыми занимается подолог.</p>-->
+<!--                </div>-->
+<!--            </a>-->
+<!--        </article>-->
+<!--        <article>-->
+<!--            <a href="--><?//= Url::to(['podolog']); ?><!--">-->
+<!---->
+<!--                <span class="icon ortonexia"></span>-->
+<!--            </a>-->
+<!--            <a href="--><?//= Url::to(['podolog']); ?><!--">-->
+<!---->
+<!--                <div class="content">-->
+<!--                    <h3>Ортониксия</h3>-->
+<!--                    <p>Ортониксия – безболезненный метод избавления от вросшего ногтя. Этот метод исправляет причину, а-->
+<!--                        не-->
+<!--                        только снимает симптомы. </p>-->
+<!--                </div>-->
+<!--            </a>-->
+<!--        </article>-->
         <article>
-            <span class="icon fa-diamond"></span>
-            <div class="content">
-                <h3>Подология</h3>
-                <p>Деформация ногтей стопы, изменение ногтевой пластины, изменения стопы,мозоли и дефекты - все это
-                    вопросы, которыми занимается подолог.</p>
-            </div>
+            <a href="<?= Url::to(['manicur']); ?>">
+                <span class="icon manicur"></span>
+            </a>
+            <a href="<?= Url::to(['manicur']); ?>">
+                <div class="content">
+                    <h3>Маникюр</h3>
+                    <p>Сотни оттенков гель-лаков, стразы, наклейки, краски, а главное, волшебные руки мастера и внимание
+                        к каждой детали – вот рецепт шикарного Nail-дизайна.</p>
+                </div>
+            </a>
         </article>
         <article>
-            <span class="icon fa-paper-plane"></span>
-            <div class="content">
-                <h3>Ортониксия</h3>
-                <p>Ортониксия – безболезненный метод избавления от вросшего ногтя. Этот метод исправляет причину, а не
-                    только снимает симптомы. </p>
-            </div>
-        </article>
-        <article>
-            <span class="icon fa-rocket"></span>
-            <div class="content">
-                <h3>Маникюр</h3>
-                <p>Сотни оттенков гель-лаков, стразы, наклейки, краски, а главное, волшебные руки мастера и внимание
-                    каждой детали – вот рецепт шикарного Nail-дизайна.</p>
-            </div>
-        </article>
-        <article>
-            <span class="icon fa-signal"></span>
-            <div class="content">
-                <h3>Педикюр</h3>
-                <p>Педикюр - это специальный уход за пальцами ног (например, удаление мозолей, полировка ногтей). По
-                    сути он представляет собой аналог маникюра для ног. </p>
-            </div>
+            <a href="<?= Url::to(['pedicur']); ?>">
+                <span class="icon pedicur"></span>
+            </a>
+            <a href="<?= Url::to(['pedicur']); ?>">
+                <div class="content">
+                    <h3>Педикюр</h3>
+                    <p>Педикюр - это специальный уход за пальцами ног (например, удаление мозолей, полировка ногтей). По
+                        сути он представляет собой аналог маникюра для ног. </p>
+                </div>
+            </a>
         </article>
     </div>
 </section>
 
-<!--<section>-->
-<!--    <header class="major">-->
-<!--        <h2>Статьи</h2>-->
-<!--    </header>-->
-<!--    <div class="posts">-->
-<!--        <article>-->
-<!--            <div class="video">-->
-<!--                <video id="video_1" src="video/nkhqRwAAAAA.mp4" muted loop onclick="videoPlay(1);"></video>-->
-<!--                <div id="buttonbar">-->
-<!--                    <button id="play_1" onclick="videoPlay(1)"><i class="fa fa-play" aria-hidden="true"></i></button>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--            <h3>Аппаратный педикюр</h3>-->
-<!--            <p>Это безопасный и современный уход за кожей стоп мужчин и женщин. Он подходит и пациентам с сахарным-->
-<!--                диабетом или микозом стопы.</p>-->
-<!--            <ul class="actions">-->
-<!--                <li><a href="#" class="button">Подробнее</a></li>-->
-<!--            </ul>-->
-<!--        </article>-->
-<!--        <article>-->
-<!---->
-<!--            <div class="video">-->
-<!--                <video id="video_2" src="video/YJ7rTQAAAAA.mp4" muted loop onclick="videoPlay(2);"></video>-->
-<!--                <div id="buttonbar">-->
-<!--                    <button id="play_2" onclick="videoPlay(2)"><i class="fa fa-play" aria-hidden="true"></i></button>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--            <h3>Классический педикюр</h3>-->
-<!--            <p>Aenean ornare velit lacus, ac varius enim lorem ullamcorper dolore. Proin aliquam facilisis ante-->
-<!--                interdum. Sed nulla amet lorem feugiat tempus aliquam.</p>-->
-<!--            <ul class="actions">-->
-<!--                <li><a href="#" class="button">Подробнее</a></li>-->
-<!--            </ul>-->
-<!--        </article>-->
-<!--        <article>-->
-<!--            <a href="#" class="image"><img src="images/podologia.jpg" alt=""/></a>-->
-<!--            <h3>Подология</h3>-->
-<!--            <p>Aenean ornare velit lacus, ac varius enim lorem ullamcorper dolore. Proin aliquam facilisis ante-->
-<!--                interdum. Sed nulla amet lorem feugiat tempus aliquam.</p>-->
-<!--            <ul class="actions">-->
-<!--                <li><a href="#" class="button">Подробнее</a></li>-->
-<!--            </ul>-->
-<!--        </article>-->
-<!--        <article>-->
-<!--            <a href="#" class="image"><img src="images/manicur.jpg" alt=""/></a>-->
-<!--            <h3>Маникюр</h3>-->
-<!--            <p>Aenean ornare velit lacus, ac varius enim lorem ullamcorper dolore. Proin aliquam facilisis ante-->
-<!--                interdum. Sed nulla amet lorem feugiat tempus aliquam.</p>-->
-<!--            <ul class="actions">-->
-<!--                <li><a href="#" class="button">Подробнее</a></li>-->
-<!--            </ul>-->
-<!--        </article>-->
-<!--        <article>-->
-<!--            <a href="#" class="image"><img src="images/pic05.jpg" alt=""/></a>-->
-<!--            <h3>Feugiat lorem aenean</h3>-->
-<!--            <p>Aenean ornare velit lacus, ac varius enim lorem ullamcorper dolore. Proin aliquam facilisis ante-->
-<!--                interdum. Sed nulla amet lorem feugiat tempus aliquam.</p>-->
-<!--            <ul class="actions">-->
-<!--                <li><a href="#" class="button">Подробнее</a></li>-->
-<!--            </ul>-->
-<!--        </article>-->
-<!--        <article>-->
-<!--            <a href="#" class="image"><img src="images/pic06.jpg" alt=""/></a>-->
-<!--            <h3>Amet varius aliquam</h3>-->
-<!--            <p>Aenean ornare velit lacus, ac varius enim lorem ullamcorper dolore. Proin aliquam facilisis ante-->
-<!--                interdum. Sed nulla amet lorem feugiat tempus aliquam.</p>-->
-<!--            <ul class="actions">-->
-<!--                <li><a href="#" class="button">Подробнее</a></li>-->
-<!--            </ul>-->
-<!--        </article>-->
-<!--    </div>-->
-<!--</section>-->
-<!---->
-<!---->

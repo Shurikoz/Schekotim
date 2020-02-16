@@ -10,7 +10,7 @@ $CONFIG = array(
 	// -------------------------------------------------------------
 		
 	// Primary Instagram login
-	'LOGIN' => 'salon_berger',
+	'LOGIN' => 'schekotim',
 		
 	// Primary hashtags
 	// Separate hashtags by a comma. For example: girl, man
@@ -66,7 +66,7 @@ $CONFIG = array(
 	// -------------------------------------------------------------
 		
 	// Random order of pictures [ true / false ]
-	'imgRandom' => true,
+	'imgRandom' => false,
 
 	// How many pictures the widget will get from Instagram?
 	'imgCount' => 30,
@@ -93,7 +93,7 @@ $CONFIG = array(
 	// Default skin. 
 	// Possible values: default, modern-blue, modern-green, modern-red, modern-orange, modern-grey, modern-black, modern-violet, modern-yellow
 	// This option may no effect if you set a skin by $_GET variable
-	'skinDefault' => 'modern-black',
+	'skinDefault' => 'default',
 	
 	// Possible skin values.
 	// If you are using a custom skin, add the skin filename in this array without extension. 

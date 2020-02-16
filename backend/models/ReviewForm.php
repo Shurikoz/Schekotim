@@ -17,7 +17,7 @@ class ReviewForm extends ActiveRecord
     {
         return [
             [['name', 'email', 'mobile', 'created_at', 'rating', 'text'], 'required'],
-            [['created_at'], 'safe'],
+            [['created_at', 'image'], 'safe'],
             [['rating', 'active'], 'integer'],
             [['text'], 'string'],
             [['name'], 'string', 'max' => 50],
@@ -39,6 +39,7 @@ class ReviewForm extends ActiveRecord
             'rating' => 'Оценка',
             'active' => 'Публикация',
             'text' => 'Отзыв',
+            'image' => 'Изображение'
         ];
     }
 
@@ -47,7 +48,7 @@ class ReviewForm extends ActiveRecord
      * Оповещение о публикации отзыва на email клиента
      */
 
-    public function sendReviewClientPublic($reviewName, $reviewEmail, $reviewRating, $reviewBody, $reviewMobile)
+    public function sendReviewClientPublic($reviewName, $reviewEmail, $reviewRating, $reviewBody, $reviewMobile, $reviewImage)
     {
         return Yii::$app->mailer->compose('mailReviewClientPublic', [
             'reviewName' => $reviewName,
@@ -55,6 +56,7 @@ class ReviewForm extends ActiveRecord
             'reviewRating' => $reviewRating,
             'reviewBody' => $reviewBody,
             'reviewMobile' => $reviewMobile,
+            'reviewImage' => $reviewImage,
         ])
             ->setFrom(['marketing@schekotim.ru' => 'Спасибо за оставленнный отзыв!'])
             ->setTo($reviewEmail)

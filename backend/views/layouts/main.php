@@ -40,6 +40,7 @@ AppAsset::register($this);
         $menuItems[] = ['label' => 'Вход', 'url' => ['/login']];
     } else {
         $menuItems[] = ['label' => 'Отзывы', 'url' => ['/review/index']];
+        $menuItems[] = ['label' => 'Галерея', 'url' => ['/gallery/index']];
         $menuItems[] = '<li>'
 
             . Html::beginForm(['/site/logout'], 'post')

@@ -5,6 +5,11 @@ use yii\helpers\Html;
 $this->title = 'Примеры работ';
 $header = 'Примеры работ';
 
+//перемешаем массивы с фото
+//shuffle($pod);
+//shuffle($man);
+//shuffle($ped);
+
 ?>
 
 <!-- Header -->
@@ -29,41 +34,111 @@ $header = 'Примеры работ';
     <header class="main">
         <h1><?= Html::encode($this->title) ?></h1>
     </header>
+    <div class="linkGalleryAnchore">
+        <a href="#podolog">#Подология</a>
+        <a href="#manicure">#Маникюр</a>
+        <a href="#pedicure">#Педикюр</a>
+    </div>
     <hr class="major"/>
-
     <h3>#подология</h3>
-    <div class="instagram">
-        <!-- LightWidget WIDGET -->
-        <script src="http://cdn.lightwidget.com/widgets/lightwidget.js"></script>
-        <iframe src="http://lightwidget.com/widgets/0a44476008e05b9a8ce0129f6588e479.html" scrolling="no"
-                allowtransparency="true" class="lightwidget-widget"
-                style="width:100%;border:0;overflow:hidden;"></iframe>
+    <div id="podolog" style="display:none;">
+        <?php foreach ($podolog as $photo) { ?>
+        <a href="http://schekotim.ru">
+            <img alt="<?= $photo->title ?>"
+                 src="images/gallery/thumbnail/<?= $photo->filename ?>"
+                 data-image="images/gallery/<?= $photo->filename ?>"
+                 data-description="<?= $photo->title ?>"
+                 style="display:none">
+        </a>
+        <?php } ?>
+
     </div>
+        <hr class="major"/>
 
-    <hr class="major"/>
-
-    <!-- InstaWidget -->
     <h3>#маникюр</h3>
-    <div class="instagram">
-        <!-- LightWidget WIDGET -->
-        <script src="http://cdn.lightwidget.com/widgets/lightwidget.js"></script>
-        <iframe src="http://lightwidget.com/widgets/444b3311c1e35c1994b7e00ef271977c.html" scrolling="no"
-                allowtransparency="true" class="lightwidget-widget"
-                style="width:100%;border:0;overflow:hidden;"></iframe>
-    </div>
+    <div id="manicure" style="display:none;">
 
+        <?php foreach ($manicure as $photo) { ?>
+            <a href="http://schekotim.ru">
+                <img alt="<?= $photo->title ?>"
+                     src="images/gallery/thumbnail/<?= $photo->filename ?>"
+                     data-image="images/gallery/<?= $photo->filename ?>"
+                     data-description="<?= $photo->title ?>"
+                     style="display:none">
+            </a>
+        <?php } ?>
+
+
+
+    </div>
     <hr class="major"/>
 
-    <!-- InstaWidget -->
     <h3>#педикюр</h3>
-    <div class="instagram">
-        <!-- LightWidget WIDGET -->
-        <script src="http://cdn.lightwidget.com/widgets/lightwidget.js"></script>
-        <iframe src="http://lightwidget.com/widgets/d02a0dbce0ee50db942df05e79612518.html" scrolling="no"
-                allowtransparency="true" class="lightwidget-widget"
-                style="width:100%;border:0;overflow:hidden;"></iframe>
+    <div id="pedicure" style="display:none;">
+
+        <?php foreach ($pedicure as $photo) { ?>
+            <a href="http://schekotim.ru">
+                <img alt="<?= $photo->title ?>"
+                     src="images/gallery/thumbnail/<?= $photo->filename ?>"
+                     data-image="images/gallery/<?= $photo->filename ?>"
+                     data-description="<?= $photo->title ?>"
+                     style="display:none">
+            </a>
+        <?php } ?>
+
     </div>
 
+
+<!--        <h3>#подология</h3>-->
+<!--        <div id="podolog" class="box alt">-->
+<!--            <div class="row gtr-50 gtr-uniform">-->
+<!--                --><?php //foreach ($pod as $item): ?>
+<!--                    <div class="col-2">-->
+<!--                    --><?php //for ($i = 0; $i < count($item); $i++): ?>
+<!--                        <span class="image fit wow fadeInLeft" data-wow-delay="0.--><?//= $i + 1 ?><!--s">-->
+<!--                        <a class="gal_pod" href="--><?//= $item ?><!--">-->
+<!--                            <img class="lazyImg" data-original="--><?//= $item ?><!--" width="auto" height="auto" alt="">-->
+<!--                        </a>-->
+<!--                        </span>-->
+<!--                        </div>-->
+<!--                    --><?php //endfor ?>
+<!--                --><?php //endforeach ?>
+<!--            </div>-->
+<!--        </div>-->
+<!--        <hr class="major"/>-->
+<!--        <h3>#маникюр</h3>-->
+<!--        <div id="manicure" class="box alt">-->
+<!--            <div class="row gtr-50 gtr-uniform">-->
+<!--                --><?php //foreach ($man as $item): ?>
+<!--                    <div class="col-2">-->
+<!--                    --><?php //for ($i = 0; $i < count($item); $i++): ?>
+<!--                        <span class="image fit wow fadeInLeft" data-wow-delay="0.--><?//= $i + 1 ?><!--s">-->
+<!--                        <a class="gal_man" href="--><?//= $item ?><!--">-->
+<!--                           <img class="lazyImg" data-original="--><?//= $item ?><!--" width="auto" height="auto" alt="">-->
+<!--                        </a>-->
+<!--                        </span>-->
+<!--                        </div>-->
+<!--                    --><?php //endfor ?>
+<!--                --><?php //endforeach ?>
+<!--            </div>-->
+<!--        </div>-->
+<!--        <hr class="major"/>-->
+<!--        <h3>#педикюр</h3>-->
+<!--        <div id="pedicure" class="box alt">-->
+<!--            <div class="row gtr-50 gtr-uniform">-->
+<!--                --><?php //foreach ($ped as $item): ?>
+<!--                    <div class="col-2">-->
+<!--                    --><?php //for ($i = 0; $i < count($item); $i++): ?>
+<!--                        <span class="image fit wow fadeInLeft" data-wow-delay="0.--><?//= $i + 1 ?><!--s">-->
+<!--                        <a class="gal_ped" href="--><?//= $item ?><!--">-->
+<!--                           <img class="lazyImg" data-original="--><?//= $item ?><!--" width="auto" height="auto" alt="">-->
+<!--                        </a>-->
+<!--                        </span>-->
+<!--                        </div>-->
+<!--                    --><?php //endfor ?>
+<!--                --><?php //endforeach ?>
+<!--            </div>-->
+<!--        </div>-->
 
 </section>
 

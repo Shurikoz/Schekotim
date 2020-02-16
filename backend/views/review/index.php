@@ -1,6 +1,7 @@
 <?php
 namespace app\models;
 
+use Yii;
 use yii\grid\GridView;
 use yii\helpers\Html;
 
@@ -41,6 +42,20 @@ $this->params['breadcrumbs'][] = $this->title;
                                 return Html::a('<span style="font-size: 18px" class="glyphicon glyphicon-remove">', ['review/hide', 'id' => $index], ['class' => 'btn btn-primary', 'title' => 'Снять с публикации']);
                             },
                         ]
+                    ],
+                    'image:image',
+                    [
+                        'label' => 'Картинка',
+                        'format' => 'raw',
+                        'value' => function ($data) {
+                            $link = Html::img('http://schekotim.ru/images/reviews/thumbnail/' . $data->image, ['alt' => 'Нет изображения', 'style' => 'width:50px;']);
+                            return Html::a($link,
+                                'http://schekotim.ru/images/reviews/' . $data->image,
+                                [
+                                    'target' => '_blank'
+                                ]
+                            );
+                        },
                     ],
                     'text:ntext',
                     ['class' => 'yii\grid\ActionColumn'],

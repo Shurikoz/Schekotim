@@ -30,7 +30,7 @@ AppAsset::register($this);
     <?php
     NavBar::begin([
 //        'brandLabel' => Yii::$app->name,
-        'brandLabel' => '<img src="/images/logo.png" class="pull-left" style="margin-top: -12px;"/>',
+        'brandLabel' => '<img src="/images/logo.png" class="pull-left" style="margin-top: -5px;height: 30px;"/>',
         'brandUrl' => Yii::$app->homeUrl,
         'options' => [
             'class' => 'navbar-inverse navbar-fixed-top',
@@ -41,6 +41,10 @@ AppAsset::register($this);
     if (Yii::$app->user->isGuest) {
         $menuItems[] = ['label' => 'Вход', 'url' => ['/login']];
     } else {
+        $menuItems[] = [
+            'label' => 'Главная страница',
+            'url' => ['/']
+        ];
         $menuItems[] = [
             'label' => 'Картотека',
             'url' => ['/card'],

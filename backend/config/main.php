@@ -12,11 +12,15 @@ return [
     'language' => 'ru-RU',
     'basePath' => dirname(__DIR__),
     'controllerNamespace' => 'backend\controllers',
-    'bootstrap' => ['log'],
+    'bootstrap' => ['gii'],
     'modules' => [
         'debug' => [
             'class' => 'yii\debug\Module',
             'allowedIPs' => ['*']
+        ],
+        'gii' => [
+            'class' => 'yii\gii\Module',
+            'allowedIPs' => ['*'],
         ],
         'admin' => [
             'class' => 'mdm\admin\Module',
@@ -30,7 +34,7 @@ return [
             ],
             'layout' => 'left-menu',
             'mainLayout' => '@backend/views/layouts/main.php',
-        ]
+        ],
     ],
     'components' => [
         'authManager' => [
@@ -73,12 +77,11 @@ return [
                 '<action:(show|hide)>' => 'review/<action>',
             ],
         ],
-
     ],
     'as access' => [
         'class' => 'mdm\admin\components\AccessControl',
         'allowActions' => [
-            'site/login',
+            'site/login'
         ]
     ],
     'params' => $params,

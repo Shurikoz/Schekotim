@@ -1,14 +1,14 @@
 <?php
 
 /* @var $this \yii\web\View */
+
 /* @var $content string */
 
 use backend\assets\AppAsset;
-use yii\helpers\Html;
+use common\widgets\Alert;
 use yii\bootstrap\Nav;
 use yii\bootstrap\NavBar;
-use yii\widgets\Breadcrumbs;
-use common\widgets\Alert;
+use yii\helpers\Html;
 
 AppAsset::register($this);
 ?>
@@ -29,21 +29,44 @@ AppAsset::register($this);
 <div class="wrap">
     <?php
     NavBar::begin([
-        'brandLabel' => Yii::$app->name,
+//        'brandLabel' => Yii::$app->name,
+        'brandLabel' => '<img src="/images/logo.png" class="pull-left" style="margin-top: -12px;"/>',
         'brandUrl' => Yii::$app->homeUrl,
         'options' => [
             'class' => 'navbar-inverse navbar-fixed-top',
         ],
     ]);
 
+
     if (Yii::$app->user->isGuest) {
         $menuItems[] = ['label' => 'Вход', 'url' => ['/login']];
     } else {
-        $menuItems[] = ['label' => 'Картотека', 'url' => ['/card']];
-        $menuItems[] = ['label' => 'Отзывы', 'url' => ['/review/index']];
-        $menuItems[] = ['label' => 'Галерея', 'url' => ['/gallery/index']];
+        $menuItems[] = [
+            'label' => 'Картотека',
+            'url' => ['/card'],
+            'visible' => Yii::$app->user->can('admin') || Yii::$app->user->can('user')
+        ];
+        $menuItems[] = [
+            'label' => 'Отзывы',
+            'url' => ['/review/index'],
+            'visible' => Yii::$app->user->can('admin')
+        ];
+        $menuItems[] = [
+            'label' => 'Галерея',
+            'url' => ['/gallery/index'],
+            'visible' => Yii::$app->user->can('admin')
+        ];
+        $menuItems[] = [
+            'label' => 'Фото работ',
+            'url' => ['/photo/index'],
+            'visible' => Yii::$app->user->can('admin') || Yii::$app->user->can('seo')
+        ];
+        $menuItems[] = [
+            'label' => 'Пользователи',
+            'url' => ['/admin/user'],
+            'visible' => Yii::$app->user->can('admin')
+        ];
         $menuItems[] = '<li>'
-
             . Html::beginForm(['/site/logout'], 'post')
             . Html::submitButton(
                 'Выход (' . Yii::$app->user->identity->username . ')',
@@ -60,9 +83,9 @@ AppAsset::register($this);
     ?>
 
     <div class="container">
-<!--        --><?//= Breadcrumbs::widget([
-//            'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
-//        ]) ?>
+        <!--        --><? //= Breadcrumbs::widget([
+        //            'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
+        //        ]) ?>
         <?= Alert::widget() ?>
         <?= $content ?>
     </div>

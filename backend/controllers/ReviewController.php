@@ -17,35 +17,19 @@ use backend\models\ReviewSearch;
  */
 class ReviewController extends Controller
 {
+
     /**
      * {@inheritdoc}
      */
-    public function behaviors()
+    public function actions()
     {
         return [
-            'access' => [
-                'class' => AccessControl::className(),
-                'rules' => [
-                    [
-                        'actions' => ['login', 'error'],
-                        'allow' => true,
-                        'roles' => ['?'],
-                    ],
-                    [
-                        'actions' => ['logout', 'index', 'review', 'update', 'view', 'create', 'delete', 'show', 'hide'],
-                        'allow' => true,
-                        'roles' => ['@'],
-                    ],
-                ],
-            ],
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'delete' => ['POST'],
-                ],
+            'error' => [
+                'class' => 'yii\web\ErrorAction',
             ],
         ];
     }
+
 
     /**
      * Lists all ReviewForm models.

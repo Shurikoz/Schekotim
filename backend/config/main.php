@@ -17,17 +17,35 @@ return [
         'debug' => [
             'class' => 'yii\debug\Module',
             'allowedIPs' => ['*']
+        ],
+        'admin' => [
+            'class' => 'mdm\admin\Module',
+            'controllerMap' => [
+                'assignment' => [
+                    'class' => 'mdm\admin\controllers\AssignmentController',
+                    /* 'userClassName' => 'app\models\User', */
+                    'idField' => 'id',
+                    'usernameField' => 'username',
+                ],
+            ],
+            'layout' => 'left-menu',
+            'mainLayout' => '@backend/views/layouts/main.php',
         ]
     ],
     'components' => [
+        'authManager' => [
+            'class' => 'yii\rbac\DbManager', // or use 'yii\rbac\DbManager'
+        ],
         'request' => [
             'csrfParam' => '_csrf-backend',
         ],
         'user' => [
-            'identityClass' => 'common\models\User',
+            'identityClass' => 'mdm\admin\models\User',
+            'loginUrl' => 'site/login',
+//            'loginUrl' => 'admin/user/login',
             'enableAutoLogin' => false,
             'identityCookie' => ['name' => '_identity-backend', 'httpOnly' => true],
-            'authTimeout' => 1200
+            'authTimeout' => 7200
         ],
         'session' => [
             // this is the name of the session cookie used for login on the backend
@@ -56,6 +74,12 @@ return [
             ],
         ],
 
+    ],
+    'as access' => [
+        'class' => 'mdm\admin\components\AccessControl',
+        'allowActions' => [
+            'site/login',
+        ]
     ],
     'params' => $params,
 ];

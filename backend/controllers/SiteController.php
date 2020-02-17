@@ -17,36 +17,6 @@ use yii\web\BadRequestHttpException;
  */
 class SiteController extends Controller
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function behaviors()
-    {
-        return [
-            'access' => [
-                'class' => AccessControl::className(),
-                'rules' => [
-                    [
-                        'actions' => ['login', 'error', 'request-password-reset', 'reset-password'],
-                        'allow' => true,
-                        'roles' => ['?'],
-                    ],
-                    [
-//                        'actions' => ['logout', 'index', 'review', 'show', 'hide'],
-                        'actions' => ['logout', 'index', 'review', 'request-password-reset', 'reset-password'],
-                        'allow' => true,
-                        'roles' => ['@'],
-                    ],
-                ],
-            ],
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'logout' => ['post'],
-                ],
-            ],
-        ];
-    }
 
     /**
      * {@inheritdoc}
@@ -163,6 +133,5 @@ class SiteController extends Controller
             'model' => $model,
         ]);
     }
-
 
 }

@@ -1,46 +1,67 @@
 <?php
+
+use yii\grid\GridView;
+use yii\widgets\LinkPager;
+use yii\helpers\Html;
+
 /* @var $this yii\web\View */
+/* @var $searchModel backend\models\CardSearch */
+/* @var $dataProvider yii\data\ActiveDataProvider */
 
-/* @var $model \common\models\User */
-
-$title = 'Карта клиента';
-
+$this->title = 'Карты пациентов';
+$this->params['breadcrumbs'][] = $this->title;
 ?>
+<div class="card-index">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box">
+                <h1><?= Html::encode($this->title) ?></h1>
+                <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+                <?php if (Yii::$app->user->can('admin') || Yii::$app->user->can('manager')) { ?>
+                    <p>
+                        <?= Html::a('Создать карту', ['create'], ['class' => 'btn btn-success']) ?>
+                    </p>
+                <?php } ?>
+                <?= GridView::widget([
+                    'dataProvider' => $dataProvider,
+                    'filterModel' => $searchModel,
+                    'pager' => [
+                        'firstPageLabel' => 'Начало',
+                        'lastPageLabel' => 'Конец',
+                    ],
+                    'columns' => [
+//                ['class' => 'yii\grid\SerialColumn'],
+//                'id',
+//                'user_id',
+                        'number',
+                        'city',
+                        'address_point',
+                        'doctor:ntext',
+                        'name',
+                        'surname',
+                        'middle_name',
+                        'birthday',
+                        'description:ntext',
+                        'created_at',
+                        [
+                            'class' => 'yii\grid\ActionColumn',
+                            'template' => '{update}',
+                            'visible' => Yii::$app->user->can('admin'),
 
-<div class="container">
-    <h1>Карта клиента № ***</h1>
+                        ],
+                        [
+                            'class' => 'yii\grid\ActionColumn',
+                            'template' => '{delete}',
+                            'visible' => Yii::$app->user->can('admin'),
 
-    <div class="box">
-        <div class="row">
-            <div class="col-md-4">
-                <label for="city">Город</label>
-                <input id="city" type="text">
+                        ],
+                        [
+                            'class' => 'yii\grid\ActionColumn',
+                            'template' => '{view}',
+                        ]
+                    ],
+                ]); ?>
             </div>
         </div>
     </div>
-    <div class="box">
-        <div class="row">
-            <div class="col-md-8">
-                <h4>2.</h4>
-            </div>
-            <div class="col-md-8">
-
-            </div>
-        </div>
-    </div>
-    <div class="box">
-        <div class="row">
-            <div class="col-md-12">
-                <h4>3.</h4>
-            </div>
-        </div>
-    </div>
-    <div class="box ">
-        <div class="row">
-            <div class="col-md-12">
-                <h4>4.</h4>
-            </div>
-        </div>
-    </div>
-    <hr>
 </div>

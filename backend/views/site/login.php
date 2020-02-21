@@ -30,7 +30,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 Забыли пароль? <?= Html::a('Восстановить', ['site/request-password-reset']) ?>.
             </div>
             <div class="form-group">
-                <?= Html::submitButton('Войти', ['class' => 'btn btn-primary', 'name' => 'login-button']) ?>
+                <?= Html::submitButton('Войти', ['class' => 'btn btn-primary btn-green btn-border-green', 'name' => 'login-button']) ?>
             </div>
 
             <?php ActiveForm::end(); ?>

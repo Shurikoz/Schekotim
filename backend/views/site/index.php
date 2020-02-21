@@ -4,6 +4,8 @@
 
 $this->title = 'Панель учета';
 ?>
+<div class="box">
+
 <div class="site-index">
     <div class="jumbotron">
         <h2>Система учета центра «Щекотливая тема»</h2>
@@ -46,4 +48,5 @@ $this->title = 'Панель учета';
     <!--        </div>-->
     <!---->
     <!--    </div>-->
+</div>
 </div>

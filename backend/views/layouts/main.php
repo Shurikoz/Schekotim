@@ -47,8 +47,8 @@ AppAsset::register($this);
         ];
         $menuItems[] = [
             'label' => 'Картотека',
-            'url' => ['/card'],
-            'visible' => Yii::$app->user->can('admin') || Yii::$app->user->can('user')
+            'url' => ['/card/index'],
+            'visible' => Yii::$app->user->can('admin') || Yii::$app->user->can('user') || Yii::$app->user->can('manager')
         ];
         $menuItems[] = [
             'label' => 'Отзывы',
@@ -67,7 +67,7 @@ AppAsset::register($this);
         ];
         $menuItems[] = [
             'label' => 'Пользователи',
-            'url' => ['/admin/user'],
+            'url' => ['/admin/user/index'],
             'visible' => Yii::$app->user->can('admin')
         ];
         $menuItems[] = '<li>'
@@ -98,7 +98,6 @@ AppAsset::register($this);
 <footer class="footer">
     <div class="container">
         <p class="pull-left">&copy; <?= Html::encode(Yii::$app->name) ?> <?= date('Y') ?></p>
-
         <p class="pull-right">О проблемах в работе просим сообщить администратору</p>
     </div>
 </footer>

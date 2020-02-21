@@ -1,6 +1,7 @@
 html,
 body {
     height: 100%;
+    background-color: #eef1f0;
 }
 
 .wrap {
@@ -138,4 +139,33 @@ a.desc:after {
     display: inline-block;
     width: 100%;
     border-radius: 2px;
+}
+
+.active {
+    background-color: #d4d4d4;
+}
+
+.box {
+    margin-bottom: 1em;
+    padding: 1.5em;
+    box-shadow: 0 1px 6px rgba(57, 73, 76, 0.35);
+    background: #fff;
+    display: inline-block;
+    width: 100%;
+    border-radius: 2px;
+}
+
+.btn-green {
+    background-color: #7ba335;
+    border-color: #7ba335;
+    color: #fff;
+}
+
+.btn-green:hover,
+.btn-green:focus,
+.btn-border-green:hover,
+.btn-border-green:focus {
+    background-color: #91b84c;
+    border-color: #91b84c;
+    color: #fff;
 }

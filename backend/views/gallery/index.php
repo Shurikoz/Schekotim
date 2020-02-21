@@ -4,6 +4,8 @@
 use yii\helpers\Html;
 
 ?>
+<div class="box">
+
 <h1>Галерея</h1>
 
 <p>
@@ -12,7 +14,6 @@ use yii\helpers\Html;
 
 <hr class="major"/>
 <h3>#подология</h3>
-
 <div class="row">
     <?php foreach ($podolog as $photo) { ?>
         <div class="col-md-3">
@@ -77,4 +78,5 @@ use yii\helpers\Html;
             </div>
         </div>
     <?php } ?>
+</div>
 </div>

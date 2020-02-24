@@ -46,11 +46,6 @@ class Card extends \yii\db\ActiveRecord
     }
 
 
-    public function getVisit()
-    {
-        return $this->hasMany(Visit::className(), ['card_number' => 'id']);
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -71,4 +66,11 @@ class Card extends \yii\db\ActiveRecord
             'created_at' => 'Дата создания',
         ];
     }
+
+    public function getVisit()
+    {
+        return $this->hasMany(Visit::className(), ['visit_id' => 'id']);
+    }
+
+
 }

@@ -15,17 +15,8 @@ class m200220_215925_create_photo_visit extends Migration
         $this->createTable('photo_visit', [
             'id' => $this->primaryKey(),
             'visit_id' => $this->integer(),
-
-            'photo_url' => $this->string(),
-            'city' => $this->string(),
-            'address_point' => $this->string(),
-            'doctor' => $this->string(),
-            'name' => $this->string(),
-            'surname' => $this->string(),
-            'middle_name' => $this->string(),
-            'birthday' => $this->string(),
-            'description' => $this->string(),
-            'created_at' => $this->string(),
+            'photo_url' => $this->text(),
+            'photo_thumbnail' => $this->text(),
 
         ]);
     }

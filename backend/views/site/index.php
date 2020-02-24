@@ -1,52 +1,85 @@
 <?php
 
 /* @var $this yii\web\View */
+/*
+ * 4 типа пользователей:
+ *  admin
+ *	user
+ *	SEO
+ *	Manager
+ *
+ */
+
+use yii\helpers\Html;
 
 $this->title = 'Панель учета';
 ?>
 <div class="box">
+    <div class="site-index">
+        <div class="jumbotron">
+            <h2>Система учета центра «Щекотливая тема»</h2>
+            <h3>Внимание! После 2 часов бездействия происходит автоматический выход из аккаунта!</h3>
+        </div>
+    </div>
+</div>
 
-<div class="site-index">
-    <div class="jumbotron">
-        <h2>Система учета центра «Щекотливая тема»</h2>
-        <h3>Внимание! После 2 часов бездействия происходит автоматический выход из аккаунта!</h3>
+<?php if (Yii::$app->user->can('admin') ||  Yii::$app->user->can('manager')) { ?>
+    <div class="col-md-6">
+        <div class="box">
+            <h3 class="text-center">Создать карту пациента</h3>
+            <br>
+            <?= Html::a('Создать карту', ['card/create'], ['class' => 'btn btn-lg btn-success center-block']) ?>
+        </div>
     </div>
 
-    <!--    <div class="body-content">-->
-    <!---->
-    <!--        <div class="row">-->
-    <!--            <div class="col-lg-4">-->
-    <!--                <h2>Heading</h2>-->
-    <!---->
-    <!--                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et-->
-    <!--                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip-->
-    <!--                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu-->
-    <!--                    fugiat nulla pariatur.</p>-->
-    <!---->
-    <!--                <p><a class="btn btn-default" href="http://www.yiiframework.com/doc/">Yii Documentation &raquo;</a></p>-->
-    <!--            </div>-->
-    <!--            <div class="col-lg-4">-->
-    <!--                <h2>Heading</h2>-->
-    <!---->
-    <!--                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et-->
-    <!--                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip-->
-    <!--                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu-->
-    <!--                    fugiat nulla pariatur.</p>-->
-    <!---->
-    <!--                <p><a class="btn btn-default" href="http://www.yiiframework.com/forum/">Yii Forum &raquo;</a></p>-->
-    <!--            </div>-->
-    <!--            <div class="col-lg-4">-->
-    <!--                <h2>Heading</h2>-->
-    <!---->
-    <!--                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et-->
-    <!--                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip-->
-    <!--                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu-->
-    <!--                    fugiat nulla pariatur.</p>-->
-    <!---->
-    <!--                <p><a class="btn btn-default" href="http://www.yiiframework.com/extensions/">Yii Extensions &raquo;</a></p>-->
-    <!--            </div>-->
-    <!--        </div>-->
-    <!---->
-    <!--    </div>-->
+<?php } ?>
+
+<?php if (Yii::$app->user->can('admin') || Yii::$app->user->can('user') || Yii::$app->user->can('manager')) { ?>
+<div class="col-md-6">
+    <div class="box">
+        <h3 class="text-center">Просмотр карт пациентов</h3>
+        <br>
+        <?= Html::a('Все карты', ['card/index'], ['class' => 'btn btn-lg btn-info center-block']) ?>
+    </div>
 </div>
-</div>
+<?php } ?>
+
+<?php if (Yii::$app->user->can('admin')) { ?>
+    <div class="col-md-6">
+        <div class="box">
+            <h3 class="text-center">Отзывы</h3>
+            <br>
+            <?= Html::a('Показать все отзывы', ['review/index'], ['class' => 'btn btn-lg btn-primary center-block']) ?>
+        </div>
+    </div>
+<?php } ?>
+
+<?php if (Yii::$app->user->can('admin')) { ?>
+    <div class="col-md-6">
+        <div class="box">
+            <h3 class="text-center">Галерея</h3>
+            <br>
+            <?= Html::a('Показать галерею сайта', ['gallery/index'], ['class' => 'btn btn-lg btn-primary center-block']) ?>
+        </div>
+    </div>
+<?php } ?>
+
+<?php if (Yii::$app->user->can('admin') || Yii::$app->user->can('seo')) { ?>
+    <div class="col-md-6">
+        <div class="box">
+            <h3 class="text-center">Фото работ (из карт клиентов)</h3>
+            <br>
+            <?= Html::a('Показать фото работ', ['photo/index'], ['class' => 'btn btn-lg btn-primary center-block']) ?>
+        </div>
+    </div>
+<?php } ?>
+
+<?php if (Yii::$app->user->can('admin')) { ?>
+    <div class="col-md-6">
+        <div class="box">
+            <h3 class="text-center">Настройка прав доступа</h3>
+            <br>
+            <?= Html::a('Пользователи', ['admin/user/index'], ['class' => 'btn btn-lg btn-warning center-block']) ?>
+        </div>
+    </div>
+<?php } ?>

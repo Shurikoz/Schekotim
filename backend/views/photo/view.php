@@ -4,14 +4,14 @@ use yii\helpers\Html;
 use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
-/* @var $model backend\models\Visit */
+/* @var $model backend\models\Photo */
 
 $this->title = $model->id;
-$this->params['breadcrumbs'][] = ['label' => 'Visits', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Photo', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 ?>
-<div class="visit-view">
+<div class="photo-visit-view">
 
     <h1><?= Html::encode($this->title) ?></h1>
 
@@ -20,7 +20,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <?= Html::a('Delete', ['delete', 'id' => $model->id], [
             'class' => 'btn btn-danger',
             'data' => [
-                'confirm' => 'Вы уверены что хотите удалить запись?',
+                'confirm' => 'Are you sure you want to delete this item?',
                 'method' => 'post',
             ],
         ]) ?>
@@ -30,16 +30,10 @@ $this->params['breadcrumbs'][] = $this->title;
         'model' => $model,
         'attributes' => [
             'id',
-            'card_number',
-            'city',
-            'address_point',
-            'reason:ntext',
-            'manipulation:ntext',
-            'recommendation:ntext',
-            'next_visit_from',
-            'next_visit_by',
-            'has_come',
-            'description:ntext',
+            'visit_id',
+            'url:ntext',
+            'thumbnail:ntext',
+            'used:ntext',
         ],
     ]) ?>
 

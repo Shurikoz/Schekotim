@@ -70,5 +70,9 @@ class Visit extends \yii\db\ActiveRecord
         return $this->hasOne(Card::className(), ['id' => 'card_number']);
     }
 
+    public function getPhoto()
+    {
+        return $this->hasMany(Photo::className(), ['visit_id' => 'id']);
+    }
 
 }

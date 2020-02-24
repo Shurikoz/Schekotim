@@ -42,7 +42,7 @@ AppAsset::register($this);
         $menuItems[] = ['label' => 'Вход', 'url' => ['/login']];
     } else {
         $menuItems[] = [
-            'label' => 'Главная страница',
+            'label' => 'Главная',
             'url' => ['/']
         ];
         $menuItems[] = [

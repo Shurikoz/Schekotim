@@ -3,12 +3,12 @@
 namespace backend\controllers;
 
 use backend\models\Card;
-use Yii;
 use backend\models\Visit;
 use backend\models\VisitSearch;
+use Yii;
+use yii\filters\VerbFilter;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
 
 /**
  * VisitController implements the CRUD actions for Visit model.
@@ -78,6 +78,24 @@ class VisitController extends Controller
         ]);
     }
 
+    /**
+     *
+     * @param integer $id
+     * @return mixed
+     * action смены статуса визита пациента что он пришел
+     * @throws NotFoundHttpException
+     */
+    public function actionCome($id, $card)
+    {
+        $model = $this->findModel($id);
+        $card = Card::find()->where(['number' => $card])->one();
+        $model->has_come = '1';
+        $model->save();
+        Yii::$app->session->setFlash('success', 'Посещение зафиксировано!');
+        return $this->redirect(['/card/view','id' => $card->id]);
+
+    }
+
 
     /**
      * Updates an existing Visit model.
@@ -89,11 +107,9 @@ class VisitController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         }
-
         return $this->render('update', [
             'model' => $model,
         ]);

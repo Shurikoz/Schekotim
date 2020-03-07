@@ -5,7 +5,7 @@
  * 4 типа пользователей:
  *  admin
  *	user
- *	SEO
+ *	smm
  *	Manager
  *
  */
@@ -44,6 +44,7 @@ $this->title = 'Панель учета';
 </div>
 <?php } ?>
 
+
 <?php if (Yii::$app->user->can('admin')) { ?>
     <div class="col-md-6">
         <div class="box">
@@ -64,7 +65,7 @@ $this->title = 'Панель учета';
     </div>
 <?php } ?>
 
-<?php if (Yii::$app->user->can('admin') || Yii::$app->user->can('seo')) { ?>
+<?php if (Yii::$app->user->can('admin') || Yii::$app->user->can('smm')) { ?>
     <div class="col-md-6">
         <div class="box">
             <h3 class="text-center">Фото работ (из карт клиентов)</h3>

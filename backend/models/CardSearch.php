@@ -18,7 +18,7 @@ class CardSearch extends Card
     {
         return [
             [['id', 'user_id', 'number'], 'integer'],
-            [['city', 'address_point', 'doctor', 'name', 'surname', 'middle_name', 'birthday', 'description', 'created_at'], 'safe'],
+            [['city', 'address_point', 'name', 'surname', 'middle_name', 'birthday', 'created_at'], 'safe'],
         ];
     }
 
@@ -46,6 +46,7 @@ class CardSearch extends Card
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+            'sort'=> ['defaultOrder' => ['number' => SORT_DESC]]// Отсортируем по убыванию
         ]);
 
         $this->load($params);
@@ -67,12 +68,9 @@ class CardSearch extends Card
 
         $query->andFilterWhere(['like', 'city', $this->city])
             ->andFilterWhere(['like', 'address_point', $this->address_point])
-            ->andFilterWhere(['like', 'doctor', $this->doctor])
             ->andFilterWhere(['like', 'name', $this->name])
             ->andFilterWhere(['like', 'surname', $this->surname])
-            ->andFilterWhere(['like', 'middle_name', $this->middle_name])
-            ->andFilterWhere(['like', 'description', $this->description]);
-
+            ->andFilterWhere(['like', 'middle_name', $this->middle_name]);
         return $dataProvider;
     }
 }

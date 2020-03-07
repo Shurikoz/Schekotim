@@ -37,6 +37,11 @@ return [
         ],
     ],
     'components' => [
+        'formatter' => [
+            'dateFormat' => 'dd.MM.yyyy',
+            'timeFormat' => 'H:i',
+            'locale' => 'ru-RU'
+        ],
         'authManager' => [
             'class' => 'yii\rbac\DbManager', // or use 'yii\rbac\DbManager'
         ],

@@ -12,6 +12,8 @@ use yii\widgets\ActiveForm;
     <div class="visit-form">
         <?php $form = ActiveForm::begin(); ?>
 
+<!--        --><?//= $form->field($model, 'user_id')->hiddenInput(['value' => Yii::$app->user->id])->label(false); ?>
+
         <?= $form->field($model, 'card_number')->hiddenInput(['value' => (int)Yii::$app->request->get('card_number')])->label(false); ?>
 
         <?= $form->field($model, 'city')->textInput([
@@ -23,6 +25,8 @@ use yii\widgets\ActiveForm;
             'maxlength' => true,
             'value' => Yii::$app->request->get('address_point')
         ]) ?>
+
+        <?= $form->field($model, 'podolog')->textInput(['maxlength' => true]) ?>
 
         <?= $form->field($model, 'reason')->textarea(['rows' => 6]) ?>
 

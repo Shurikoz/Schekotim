@@ -138,6 +138,7 @@ $this->registerJs($script, yii\web\View::POS_READY);
 
             <!-- Footer -->
             <footer id="footer">
+                <iframe src="https://yandex.ru/sprav/widget/rating-badge/34151440370" width="150" height="50" frameborder="0"></iframe>
                 <p class="copyright"> <?= date('Y') ?> &copy; «Щекотливая тема»<br>Все права защищены</p>
             </footer>
 

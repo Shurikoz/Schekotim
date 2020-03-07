@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "573cc5bb8061a007863d20cdc63b4d21",
+    "content-hash": "7dcd4cd4016bded6b467dfe580d971a8",
     "packages": [
         {
             "name": "bower-asset/bootstrap",
@@ -490,6 +490,62 @@
                 "yii"
             ],
             "time": "2018-11-12T12:35:44+00:00"
+        },
+        {
+            "name": "rmrevin/yii2-fontawesome",
+            "version": "3.x-dev",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/rmrevin/yii2-fontawesome.git",
+                "reference": "a1b448cef7e03a0b5a6286276bef004efa83f323"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/rmrevin/yii2-fontawesome/zipball/a1b448cef7e03a0b5a6286276bef004efa83f323",
+                "reference": "a1b448cef7e03a0b5a6286276bef004efa83f323",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4.0",
+                "yiisoft/yii2": "^2.0.0"
+            },
+            "require-dev": {
+                "doctrine/instantiator": "1.0.*",
+                "phpdocumentor/reflection-docblock": "~3.1.0",
+                "phpunit/phpunit": "^4.8"
+            },
+            "type": "yii2-extension",
+            "extra": {
+                "asset-installer-paths": {
+                    "npm-asset-library": "vendor/npm",
+                    "bower-asset-library": "vendor/bower"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "rmrevin\\yii\\fontawesome\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Revin Roman",
+                    "email": "roman@rmrevin.com",
+                    "homepage": "https://rmrevin.com/"
+                }
+            ],
+            "description": "Asset Bundle for Yii2 with Font Awesome",
+            "keywords": [
+                "asset",
+                "awesome",
+                "bundle",
+                "font",
+                "yii"
+            ],
+            "time": "2018-04-01T12:51:52+00:00"
         },
         {
             "name": "swiftmailer/swiftmailer",
@@ -1161,16 +1217,16 @@
     "packages-dev": [
         {
             "name": "behat/gherkin",
-            "version": "v4.6.0",
+            "version": "v4.6.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Behat/Gherkin.git",
-                "reference": "ab0a02ea14893860bca00f225f5621d351a3ad07"
+                "reference": "25bdcaf37898b4a939fa3031d5d753ced97e4759"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Behat/Gherkin/zipball/ab0a02ea14893860bca00f225f5621d351a3ad07",
-                "reference": "ab0a02ea14893860bca00f225f5621d351a3ad07",
+                "url": "https://api.github.com/repos/Behat/Gherkin/zipball/25bdcaf37898b4a939fa3031d5d753ced97e4759",
+                "reference": "25bdcaf37898b4a939fa3031d5d753ced97e4759",
                 "shasum": ""
             },
             "require": {
@@ -1216,7 +1272,7 @@
                 "gherkin",
                 "parser"
             ],
-            "time": "2019-01-16T14:22:17+00:00"
+            "time": "2020-02-27T11:29:57+00:00"
         },
         {
             "name": "bower-asset/typeahead.js",
@@ -1324,6 +1380,7 @@
                 "functional testing",
                 "unit testing"
             ],
+            "abandoned": true,
             "time": "2019-04-24T11:36:34+00:00"
         },
         {
@@ -2016,16 +2073,16 @@
         },
         {
             "name": "phpspec/prophecy",
-            "version": "v1.10.2",
+            "version": "v1.10.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpspec/prophecy.git",
-                "reference": "b4400efc9d206e83138e2bb97ed7f5b14b831cd9"
+                "reference": "451c3cd1418cf640de218914901e51b064abb093"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpspec/prophecy/zipball/b4400efc9d206e83138e2bb97ed7f5b14b831cd9",
-                "reference": "b4400efc9d206e83138e2bb97ed7f5b14b831cd9",
+                "url": "https://api.github.com/repos/phpspec/prophecy/zipball/451c3cd1418cf640de218914901e51b064abb093",
+                "reference": "451c3cd1418cf640de218914901e51b064abb093",
                 "shasum": ""
             },
             "require": {
@@ -2075,7 +2132,7 @@
                 "spy",
                 "stub"
             ],
-            "time": "2020-01-20T15:57:02+00:00"
+            "time": "2020-03-05T15:02:03+00:00"
         },
         {
             "name": "phpunit/php-code-coverage",
@@ -3168,7 +3225,7 @@
         },
         {
             "name": "symfony/browser-kit",
-            "version": "v3.4.37",
+            "version": "v3.4.38",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/browser-kit.git",
@@ -3225,16 +3282,16 @@
         },
         {
             "name": "symfony/console",
-            "version": "v3.4.37",
+            "version": "v3.4.38",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/console.git",
-                "reference": "7c5bdd346f9d90a2d22d4e1fe61e02dc19b98f12"
+                "reference": "6827023c5872bea44b29d145de693b21981cf4cd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/console/zipball/7c5bdd346f9d90a2d22d4e1fe61e02dc19b98f12",
-                "reference": "7c5bdd346f9d90a2d22d4e1fe61e02dc19b98f12",
+                "url": "https://api.github.com/repos/symfony/console/zipball/6827023c5872bea44b29d145de693b21981cf4cd",
+                "reference": "6827023c5872bea44b29d145de693b21981cf4cd",
                 "shasum": ""
             },
             "require": {
@@ -3293,20 +3350,20 @@
             ],
             "description": "Symfony Console Component",
             "homepage": "https://symfony.com",
-            "time": "2020-01-10T07:52:48+00:00"
+            "time": "2020-02-15T13:27:16+00:00"
         },
         {
             "name": "symfony/css-selector",
-            "version": "v3.4.37",
+            "version": "v3.4.38",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/css-selector.git",
-                "reference": "e1b3e1a0621d6e48ee46092b4c7d8280f746b3c5"
+                "reference": "ee9b946e7223b11257329a054c64396b19d619e1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/css-selector/zipball/e1b3e1a0621d6e48ee46092b4c7d8280f746b3c5",
-                "reference": "e1b3e1a0621d6e48ee46092b4c7d8280f746b3c5",
+                "url": "https://api.github.com/repos/symfony/css-selector/zipball/ee9b946e7223b11257329a054c64396b19d619e1",
+                "reference": "ee9b946e7223b11257329a054c64396b19d619e1",
                 "shasum": ""
             },
             "require": {
@@ -3346,20 +3403,20 @@
             ],
             "description": "Symfony CssSelector Component",
             "homepage": "https://symfony.com",
-            "time": "2020-01-01T11:03:25+00:00"
+            "time": "2020-02-04T08:04:52+00:00"
         },
         {
             "name": "symfony/debug",
-            "version": "v3.4.37",
+            "version": "v3.4.38",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/debug.git",
-                "reference": "70dd18e93bb8bdf3c4db7fde832619fef9828cf8"
+                "reference": "a99278d50af8a9164219da38d61fb161a7f6e0a6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/debug/zipball/70dd18e93bb8bdf3c4db7fde832619fef9828cf8",
-                "reference": "70dd18e93bb8bdf3c4db7fde832619fef9828cf8",
+                "url": "https://api.github.com/repos/symfony/debug/zipball/a99278d50af8a9164219da38d61fb161a7f6e0a6",
+                "reference": "a99278d50af8a9164219da38d61fb161a7f6e0a6",
                 "shasum": ""
             },
             "require": {
@@ -3402,20 +3459,20 @@
             ],
             "description": "Symfony Debug Component",
             "homepage": "https://symfony.com",
-            "time": "2020-01-08T16:36:15+00:00"
+            "time": "2020-02-03T15:10:40+00:00"
         },
         {
             "name": "symfony/dom-crawler",
-            "version": "v3.4.37",
+            "version": "v3.4.38",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/dom-crawler.git",
-                "reference": "c6fcc96c530ef18dcb4e605e3e9a97c483a160e6"
+                "reference": "5ea08fead7392bc5bfe83fb8a289ac9b72cb689e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/dom-crawler/zipball/c6fcc96c530ef18dcb4e605e3e9a97c483a160e6",
-                "reference": "c6fcc96c530ef18dcb4e605e3e9a97c483a160e6",
+                "url": "https://api.github.com/repos/symfony/dom-crawler/zipball/5ea08fead7392bc5bfe83fb8a289ac9b72cb689e",
+                "reference": "5ea08fead7392bc5bfe83fb8a289ac9b72cb689e",
                 "shasum": ""
             },
             "require": {
@@ -3459,20 +3516,20 @@
             ],
             "description": "Symfony DomCrawler Component",
             "homepage": "https://symfony.com",
-            "time": "2020-01-01T11:03:25+00:00"
+            "time": "2020-02-26T17:12:32+00:00"
         },
         {
             "name": "symfony/event-dispatcher",
-            "version": "v3.4.37",
+            "version": "v3.4.38",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/event-dispatcher.git",
-                "reference": "79ede8f2836e5ec910ebb325bde40f987244baa8"
+                "reference": "2f67a869aef3eecf42e7f8be4a8b86c92308686c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/event-dispatcher/zipball/79ede8f2836e5ec910ebb325bde40f987244baa8",
-                "reference": "79ede8f2836e5ec910ebb325bde40f987244baa8",
+                "url": "https://api.github.com/repos/symfony/event-dispatcher/zipball/2f67a869aef3eecf42e7f8be4a8b86c92308686c",
+                "reference": "2f67a869aef3eecf42e7f8be4a8b86c92308686c",
                 "shasum": ""
             },
             "require": {
@@ -3522,20 +3579,20 @@
             ],
             "description": "Symfony EventDispatcher Component",
             "homepage": "https://symfony.com",
-            "time": "2020-01-04T12:05:51+00:00"
+            "time": "2020-02-04T08:04:52+00:00"
         },
         {
             "name": "symfony/finder",
-            "version": "v3.4.37",
+            "version": "v3.4.38",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/finder.git",
-                "reference": "a90a9d3b9f458a5cdeabfa4090b20c000ca3962f"
+                "reference": "5ec813ccafa8164ef21757e8c725d3a57da59200"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/finder/zipball/a90a9d3b9f458a5cdeabfa4090b20c000ca3962f",
-                "reference": "a90a9d3b9f458a5cdeabfa4090b20c000ca3962f",
+                "url": "https://api.github.com/repos/symfony/finder/zipball/5ec813ccafa8164ef21757e8c725d3a57da59200",
+                "reference": "5ec813ccafa8164ef21757e8c725d3a57da59200",
                 "shasum": ""
             },
             "require": {
@@ -3571,7 +3628,7 @@
             ],
             "description": "Symfony Finder Component",
             "homepage": "https://symfony.com",
-            "time": "2020-01-01T11:03:25+00:00"
+            "time": "2020-02-14T07:34:21+00:00"
         },
         {
             "name": "symfony/polyfill-ctype",
@@ -3633,16 +3690,16 @@
         },
         {
             "name": "symfony/yaml",
-            "version": "v3.4.37",
+            "version": "v3.4.38",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/yaml.git",
-                "reference": "aa46bc2233097d5212332c907f9911533acfbf80"
+                "reference": "bc63e15160866e8730a1f738541b194c401f72bf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/yaml/zipball/aa46bc2233097d5212332c907f9911533acfbf80",
-                "reference": "aa46bc2233097d5212332c907f9911533acfbf80",
+                "url": "https://api.github.com/repos/symfony/yaml/zipball/bc63e15160866e8730a1f738541b194c401f72bf",
+                "reference": "bc63e15160866e8730a1f738541b194c401f72bf",
                 "shasum": ""
             },
             "require": {
@@ -3688,7 +3745,7 @@
             ],
             "description": "Symfony Yaml Component",
             "homepage": "https://symfony.com",
-            "time": "2020-01-13T08:00:59+00:00"
+            "time": "2020-01-16T19:04:26+00:00"
         },
         {
             "name": "theseer/tokenizer",
@@ -3934,7 +3991,7 @@
         }
     ],
     "aliases": [],
-    "minimum-stability": "stable",
+    "minimum-stability": "dev",
     "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,

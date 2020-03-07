@@ -12,12 +12,10 @@ use Yii;
  * @property int $number
  * @property string $city
  * @property string $address_point
- * @property string $doctor
  * @property string $name
  * @property string $surname
  * @property string $middle_name
  * @property string $birthday
- * @property string $description
  * @property string $created_at
  */
 class Card extends \yii\db\ActiveRecord
@@ -38,7 +36,6 @@ class Card extends \yii\db\ActiveRecord
         return [
             [['user_id', 'number'], 'integer'],
             [['number'], 'required'],
-            [['doctor', 'description'], 'string'],
             [['birthday', 'created_at'], 'safe'],
             [['city', 'address_point', 'name', 'surname', 'middle_name'], 'string', 'max' => 255],
             [['number'], 'unique'],
@@ -57,20 +54,22 @@ class Card extends \yii\db\ActiveRecord
             'number' => 'Карта №',
             'city' => 'Город',
             'address_point' => 'Точка',
-            'doctor' => 'Подолог',
             'name' => 'Имя',
             'surname' => 'Фамилия',
             'middle_name' => 'Отчество',
             'birthday' => 'День рождения',
-            'description' => 'Коментарии',
             'created_at' => 'Дата создания',
         ];
     }
 
     public function getVisit()
     {
-        return $this->hasMany(Visit::className(), ['visit_id' => 'id']);
+        return $this->hasMany(Visit::className(), ['card_number' => 'number']);
     }
 
+    public function getCity()
+    {
+        return $this->hasOne(City::className(), ['id' => 'city']);
+    }
 
 }

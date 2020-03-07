@@ -2,11 +2,14 @@
 
 namespace backend\controllers;
 
+use backend\models\AddressPoint;
 use backend\models\Card;
 use backend\models\CardSearch;
-use backend\models\Photo;
+use backend\models\City;
+use backend\models\Podolog;
 use backend\models\Visit;
 use Yii;
+use yii\data\Pagination;
 use yii\filters\VerbFilter;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -37,12 +40,19 @@ class CardController extends Controller
      */
     public function actionIndex()
     {
+        $cards = Card::find();
         $searchModel = new CardSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $pages = new Pagination(['totalCount' => $cards->count(), 'pageSizeLimit' => [1, 60], 'defaultPageSize' => 20]);
+        $model = $cards->offset($pages->offset)->limit($pages->limit)->orderBy(['id' => SORT_DESC])->with('visit')->all();
+
         return $this->render('index', [
+            'model' => $model,
+            'pages' => $pages,
+            'cards' => $cards,
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
-            ]);
+        ]);
     }
 
     /**
@@ -54,9 +64,14 @@ class CardController extends Controller
     public function actionView($id)
     {
         $model = $this->findModel($id);
-        $visits = Visit::find()->where(['card_number' => $this->findModel($id)->number])->with('photo')->all();
+        $visits = Visit::find()->where(['card_number' => $this->findModel($id)->number])->with(['photo', 'addressPoint', 'city'])->all();
+        $location = AddressPoint::find()->where(['id' => $model->address_point])->with('city')->one();
 
-        return $this->render('view', compact('model', 'visits'));
+        return $this->render('view', [
+            'model' => $model,
+            'visits' => $visits,
+            'location' => $location,
+        ]);
     }
 
     /**
@@ -66,18 +81,36 @@ class CardController extends Controller
      */
     public function actionCreate()
     {
-        $model = new Card();
+        $addressPoint = Yii::$app->user->identity->address_point;
+
+        $cardModel = new Card();
+        $visitModel = new Visit();
+        $podologModel = Podolog::find()->where(['address_point' => $addressPoint])->all();
+        $location = AddressPoint::find()->where(['id' => $addressPoint])->with('city')->one();
+
         //найдем последнюю запись, возьмем из нее номер карты
         $card = Card::find()->orderBy(['id' => SORT_DESC])->one();
+
         //добавим этот номер карты в нашу модель, прибавив 1
-        $model->number = (int)$card->number + 1;
-        $model->created_at = date('d-m-Y H:m');
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        $cardModel->number = (int)$card->number + 1;
+        $cardModel->created_at = date('d-m-Y H:m');
+
+        $visitModel->has_come = '0';
+        $visitModel->has_come = '0';
+        $visitModel->card_number = $cardModel->number;
+        $visitModel->address_point = Yii::$app->user->identity->address_point;
+
+        if ($cardModel->load(Yii::$app->request->post()) && $cardModel->save() &&
+            $visitModel->load(Yii::$app->request->post()) && $visitModel->save()) {
+            return $this->redirect(['view', 'id' => $cardModel->id]);
         }
 
+
         return $this->render('create', [
-            'model' => $model,
+            'cardModel' => $cardModel,
+            'visitModel' => $visitModel,
+            'podologModel' => $podologModel,
+            'location' => $location
         ]);
     }
 
@@ -136,17 +169,5 @@ class CardController extends Controller
         throw new NotFoundHttpException('Запрашиваемая страница не существует.');
     }
 
-    /**
-     * @param $id
-     * @return \yii\console\Response|\yii\web\Response
-     * @throws NotFoundHttpException
-     */
-    public function actionDownload($id) {
-        $image = Photo::findOne(['id' => $id]);
-        if ($image === null) {
-            throw new NotFoundHttpException('Фото не найдено');
-        }
-        return Yii::$app->response->sendFile(Yii::getAlias('@backend/web' . $image->url));
-    }
 
 }

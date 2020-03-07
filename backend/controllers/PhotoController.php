@@ -2,12 +2,13 @@
 
 namespace backend\controllers;
 
-use Yii;
 use backend\models\Photo;
-use backend\models\PhotoSearch;
+use backend\models\Visit;
+use backend\models\VisitSearch;
+use Yii;
+use yii\filters\VerbFilter;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
 
 /**
  * PhotoVisitController implements the CRUD actions for PhotoVisit model.
@@ -35,13 +36,30 @@ class PhotoController extends Controller
      */
     public function actionIndex()
     {
-        $searchModel = new PhotoSearch();
+//        $searchModel = new PhotoSearch();
+        $searchModel = new VisitSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $model = Visit::find()->with('photo')->all();
 
-        return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-        ]);
+//        return $this->render('index', [
+//            'searchModel' => $searchModel,
+//            'dataProvider' => $dataProvider,
+//        ]);
+        return $this->render('index', compact('model'));
+    }
+
+    public function actionUsed($id)
+    {
+        $visit = Visit::find()->where(['id' => $id])->one();
+        if ($visit->used_photo == '1') {
+            Yii::$app->session->setFlash('warning', 'Фотографии уже помечены как использованные!');
+        } else {
+            $visit->used_photo = '1';
+            $visit->save();
+            Yii::$app->session->setFlash('success', 'Фотографии помечены как использованные!');
+        }
+        return $this->redirect(['index']);
+
     }
 
     /**
@@ -124,4 +142,18 @@ class PhotoController extends Controller
 
         throw new NotFoundHttpException('The requested page does not exist.');
     }
+
+    /**
+     * @param $id
+     * @return \yii\console\Response|\yii\web\Response
+     * @throws NotFoundHttpException
+     */
+    public function actionDownload($id) {
+        $image = Photo::findOne(['id' => $id]);
+        if ($image === null) {
+            throw new NotFoundHttpException('Фото не найдено');
+        }
+        return Yii::$app->response->sendFile(Yii::getAlias('@backend/web' . $image->url));
+    }
+
 }

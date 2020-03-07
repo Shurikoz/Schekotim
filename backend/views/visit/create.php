@@ -11,15 +11,12 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="visit-create">
 
-    <h1><?= Html::encode($this->title) ?></h1>
-
-    <?= Html::button('Отмена', [
-        'class' => 'btn btn-success',
+    <?= Html::button('<span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span> Отмена', [
+        'class' => 'btn btn-default',
         'onclick' => 'history.back();'
     ]) ?>
 
-    <br>
-    <br>
+    <h1><?= Html::encode($this->title) ?></h1>
 
     <?= $this->render('_form', [
         'model' => $model,

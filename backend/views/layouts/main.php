@@ -63,7 +63,7 @@ AppAsset::register($this);
         $menuItems[] = [
             'label' => 'Фото работ',
             'url' => ['/photo/index'],
-            'visible' => Yii::$app->user->can('admin') || Yii::$app->user->can('seo')
+            'visible' => Yii::$app->user->can('admin') || Yii::$app->user->can('smm')
         ];
         $menuItems[] = [
             'label' => 'Пользователи',

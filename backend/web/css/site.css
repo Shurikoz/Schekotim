@@ -134,28 +134,35 @@ a.desc:after {
     background-color: #333;
 }
 
-.box {
-    margin-bottom: 1em;
-    padding: 1.5em;
-    box-shadow: 0 1px 6px rgba(57, 73, 76, 0.35);
-    background: #fff;
-    display: inline-block;
-    width: 100%;
-    border-radius: 2px;
-}
-
 .active {
     background-color: #d4d4d4;
 }
 
 .box {
+    border: 1px solid #e6eaee;
+    border-radius: 4px;
+    background-color: #fff;
     margin-bottom: 1em;
     padding: 1.5em;
-    box-shadow: 0 1px 6px rgba(57, 73, 76, 0.35);
     background: #fff;
     display: inline-block;
     width: 100%;
-    border-radius: 2px;
+}
+
+.titleLarge {
+    margin: 0;
+    font-size: 27px;
+}
+
+.titleNormal {
+    margin: 0;
+    font-size: 24px;
+}
+
+.titleMin {
+    margin: 0;
+    font-size: 17px;
+    color: #707070;
 }
 
 .btn-green {
@@ -171,4 +178,343 @@ a.desc:after {
     background-color: #91b84c;
     border-color: #91b84c;
     color: #fff;
+}
+
+.pagination > .active > a,
+.pagination > .active > span,
+.pagination > .active > a:hover,
+.pagination > .active > span:hover,
+.pagination > .active > a:focus,
+.pagination > .active > span:focus {
+    background-color: #7ba335;
+    border-color: #7ba335;
+}
+
+.pagination > li > a,
+.pagination > li > span {
+    color: #333;
+}
+/* card table */
+
+.c-table {
+    display: table;
+    width: 100%;
+    max-width: 100%;
+    border: 1px solid #e6eaee;
+    border-radius: 4px;
+    background-color: #fff;
+    border-collapse: collapse;
+}
+
+.c-table tr:hover{
+    background-color: #f5f8f1;
+}
+
+.c-table__title {
+    position: relative;
+    padding: 25px 30px;
+    border: 1px solid #e6eaee;
+    border-bottom-color: rgb(230, 234, 238);
+    border-bottom-style: solid;
+    border-bottom-width: 1px;
+    border-bottom: 0;
+    border-radius: 4px 4px 0 0;
+    background-color: #fff;
+    color: #354052;
+    font-size: 24px;
+    text-align: left;
+}
+
+.c-table__title small {
+    display: inline-block;
+    margin-left: 10px;
+    color: #7f8fa4;
+    font-size: 14px;
+}
+
+.c-table__title small::before {
+    display: inline-block;
+    position: relative;
+    bottom: -2px;
+    width: 1px;
+    height: 14px;
+    margin-right: 12px;
+    background-color: #dfe3e9;
+    content: "";
+}
+
+.c-table__row {
+    border-top: 1px solid #eef1f0;
+    border-bottom: 1px solid #eef1f0;
+}
+
+.c-table__row:last-child {
+    border-bottom: 0;
+}
+
+.c-table__head--slim {
+    padding: 0;
+    background-color: #f5f8fa;
+}
+
+.c-table__cell {
+    padding: 15px 0 15px 30px;
+    color: #333;
+    font-size: 1.3rem;
+    font-weight: 500;
+    text-align: left;
+    white-space: nowrap;
+    vertical-align: middle;
+}
+
+.c-table__visitInfoBlock{
+    padding: 15px;
+}
+
+.c-table__cell--head {
+    color: #7f8fa4;
+    font-size: 1.2rem;
+    font-weight: 500;
+}
+
+.c-table__head--slim .c-table__cell {
+    padding: 10px 0 10px 30px;
+}
+
+.c-table__row--danger,
+.c-table__row--info,
+.c-table__row--success,
+.c-table__row--warning,
+.c-table__row--wait{
+    border-left: 3px solid;
+    border-left-color: currentcolor;
+}
+
+.glyphicon-remove,
+.glyphicon-time,
+.glyphicon-ok {
+font-size: 18px;
+}
+.c-table__row--danger {
+    border-left-color: #ed1c24;
+}
+
+.glyphicon-remove{
+    color: #ed1c24;
+}
+
+.c-table__row--wait {
+    border-left-color: #a9a9a9;
+}
+
+.glyphicon-time {
+    color: #a9a9a9;
+}
+
+.c-table__row--success {
+    border-left-color: #7ba335;
+}
+
+.glyphicon-ok{
+    color: #7ba335;
+}
+
+.c-table__cell--empty{
+    text-align: center;
+    padding: 10px;
+}
+.visitMarker{
+    color: #7ba335;
+    font-size: 16px;
+}
+
+
+.c-dropdown {
+    display: inline-block;
+    position: relative;
+}
+
+.c-btn {
+    display: inline-block;
+    position: relative;
+    max-width: 100%;
+    margin: 0;
+    padding: .5rem 1.25rem;
+    padding-right: 1.25rem;
+    transition: all .15s ease-in-out;
+    border: 1px solid;
+    border-top-color: currentcolor;
+    border-right-color: currentcolor;
+    border-bottom-color: currentcolor;
+    border-left-color: currentcolor;
+    border-radius: 4px;
+    border-color: #1a91eb;
+    color: #fff;
+    font-size: 1.2rem;
+    font-weight: 400;
+    line-height: 1.5;
+    text-align: center;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    cursor: pointer;
+    overflow: hidden;
+    vertical-align: middle;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    background: #2ea1f8;
+    background: linear-gradient(180deg,#2ea1f8,#1990ea);
+}
+
+.c-btn--secondary {
+    background: #fff;
+    background: linear-gradient(180deg,#fff,#f2f4f7);
+    border-color: #dfe3e9;
+    color: #354052;
+}
+
+.c-btn--secondary:hover {
+    background: #fcfcfc;
+    background: linear-gradient(180deg, #fcfcfc, #eceff3);
+    color: #354052;
+}
+
+.c-btn.has-dropdown {
+    position: relative;
+}
+
+
+.c-dropdown__item {
+    display: block;
+    padding: 0.7rem 1.5rem;
+    border-bottom: 1px solid #dfe3e9;
+    color: #354052;
+    font-size: 1.2rem;
+    font-weight: 400;
+}
+
+.c-dropdown__item:hover {
+    background-color: #f2f4f7;
+    color: #2ea1f8;
+    text-decoration: none;
+}
+
+.dropdown-menu {
+    padding: 0;
+}
+
+.cardsOnPage {
+    padding: 10px 0 20px 20px;
+    color: #333;
+    text-decoration: none;
+}
+
+.cardsOnPage .active {
+    border-radius: 50%;
+    height: 30px;
+    width: 30px;
+    display: inline-block;
+    padding: 5px 0 0 7px;
+    background-color: #7ba335;
+    color: #fff;
+}
+
+.cardsOnPage a {
+    margin: 0 6px;
+    color: #333;
+    border-radius: 50%;
+    height: 30px;
+    width: 30px;
+    display: inline-block;
+    padding: 5px 0 0 6px;
+}
+
+.cardsOnPage a:hover {
+    text-decoration: none;
+    border-radius: 50%;
+    height: 30px;
+    width: 30px;
+    display: inline-block;
+    padding: 5px 0 0 7px;
+    background-color: #7ba335;
+    color: #fff;
+}
+
+.c-field__label {
+    display: block;
+    -ms-flex-preferred-size: 100%;
+    flex-basis: 100%;
+    margin: 0 0 .3125rem;
+    color: #7f8fa4;
+    font-size: 1.2rem;
+    font-weight: 400;
+}
+
+.c-input {
+    display: block;
+    width: 100%;
+    margin: 0;
+    padding: .59375rem .9375rem;
+    transition: all .3s;
+    border: 1px solid #dfe3e9;
+    border-radius: 4px;
+    background-color: #fff;
+    color: #354052;
+    font-size: 1.2rem;
+    font-weight: 400;
+    resize: none;
+}
+
+.c-input::placeholder {
+    transition: opacity .3s;
+    color: rgba(53, 64, 82, .5);
+    font-weight: 400;
+    opacity: .5;
+}
+
+.c-field__message {
+    display: inline-block;
+    margin: 0 .3125rem 0 0;
+    padding: 0;
+    color: rgba(53, 64, 82, .5);
+    font-size: 1.2rem;
+}
+
+/*  cardView  */
+
+.cardView{
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    margin-right: -15px;
+    margin-left: -15px;
+}
+.titleCardName{
+    font-size: 18px;
+    color: #333;
+}
+
+.visitInfoBlock{
+    margin-bottom: 30px;
+    border-bottom: 2px dotted #7ba335;
+    background-color: #eef1f0;
+}
+
+.borderDotted{
+    border: 2px dotted #7ba335;
+    padding: 20px;
+}
+
+.visitBox{
+    cursor: pointer;
+}
+
+.c-table tr.visitInfoBlock:hover {
+    background-color: #eef1f0;
 }

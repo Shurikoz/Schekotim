@@ -54,4 +54,6 @@ class Photo extends \yii\db\ActiveRecord
         return $this->hasOne(Visit::className(), ['id' => 'visit_id']);
     }
 
+
+
 }

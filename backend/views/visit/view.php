@@ -31,9 +31,9 @@ $this->params['breadcrumbs'][] = $this->title;
         'attributes' => [
             'id',
             'card_number',
-            'city',
-            'address_point',
-            'reason:ntext',
+            'city_id',
+            'address_point_id',
+            'anamnes:ntext',
             'manipulation:ntext',
             'recommendation:ntext',
             'next_visit_from',

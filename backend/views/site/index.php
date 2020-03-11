@@ -28,7 +28,7 @@ $this->title = 'Панель учета';
         <div class="box">
             <h3 class="text-center">Создать карту пациента</h3>
             <br>
-            <?= Html::a('Создать карту', ['card/create'], ['class' => 'btn btn-lg btn-success center-block']) ?>
+            <?= Html::a('Создать карту', ['card/create'], ['class' => 'btn btn-lg btn-green center-block']) ?>
         </div>
     </div>
 

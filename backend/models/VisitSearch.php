@@ -18,7 +18,7 @@ class VisitSearch extends Visit
     {
         return [
             [['id', 'card_number'], 'integer'],
-            [['city', 'address_point', 'reason', 'podolog', 'manipulation', 'recommendation', 'next_visit_from', 'next_visit_by', 'has_come', 'description'], 'safe'],
+            [['city_id', 'address_point_id', 'anamnes', 'podolog_id', 'manipulation', 'recommendation', 'next_visit_from', 'next_visit_by', 'has_come', 'description'], 'safe'],
         ];
     }
 
@@ -64,10 +64,10 @@ class VisitSearch extends Visit
             'next_visit_by' => $this->next_visit_by,
         ]);
 
-        $query->andFilterWhere(['like', 'city', $this->city])
-            ->andFilterWhere(['like', 'address_point', $this->address_point])
-            ->andFilterWhere(['like', 'reason', $this->reason])
-            ->andFilterWhere(['like', 'podolog', $this->podolog])
+        $query->andFilterWhere(['like', 'city', $this->city_id])
+            ->andFilterWhere(['like', 'address_point', $this->address_point_id])
+            ->andFilterWhere(['like', 'anamnes', $this->anamnes])
+            ->andFilterWhere(['like', 'podolog', $this->podolog_id])
             ->andFilterWhere(['like', 'manipulation', $this->manipulation])
             ->andFilterWhere(['like', 'recommendation', $this->recommendation])
             ->andFilterWhere(['like', 'has_come', $this->has_come])

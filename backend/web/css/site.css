@@ -292,9 +292,11 @@ a.desc:after {
 
 .glyphicon-remove,
 .glyphicon-time,
-.glyphicon-ok {
-font-size: 18px;
+.glyphicon-ok,
+.glyphicon-remove-circle {
+font-size: 22px;
 }
+
 .c-table__row--danger {
     border-left-color: #ed1c24;
 }
@@ -315,7 +317,8 @@ font-size: 18px;
     border-left-color: #7ba335;
 }
 
-.glyphicon-ok{
+.glyphicon-ok,
+.glyphicon-remove-circle{
     color: #7ba335;
 }
 
@@ -518,3 +521,13 @@ font-size: 18px;
 .c-table tr.visitInfoBlock:hover {
     background-color: #eef1f0;
 }
+
+.text-red{
+    color: #ed1c24;
+}
+
+.text-green{
+    color: #7ba335;
+}
+
+

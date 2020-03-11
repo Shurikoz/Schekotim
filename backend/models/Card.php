@@ -10,8 +10,8 @@ use Yii;
  * @property int $id
  * @property int $user_id
  * @property int $number
- * @property string $city
- * @property string $address_point
+ * @property string $city_id
+ * @property string $address_point_id
  * @property string $name
  * @property string $surname
  * @property string $middle_name
@@ -34,10 +34,10 @@ class Card extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['user_id', 'number'], 'integer'],
+            [['city_id', 'address_point_id', 'user_id', 'number'], 'integer'],
             [['number'], 'required'],
             [['birthday', 'created_at'], 'safe'],
-            [['city', 'address_point', 'name', 'surname', 'middle_name'], 'string', 'max' => 255],
+            [['name', 'surname', 'middle_name'], 'string', 'max' => 255],
             [['number'], 'unique'],
         ];
     }
@@ -52,8 +52,8 @@ class Card extends \yii\db\ActiveRecord
             'id' => 'ID',
             'user_id' => 'User ID',
             'number' => 'Карта №',
-            'city' => 'Город',
-            'address_point' => 'Точка',
+            'city_id' => 'Город',
+            'address_point_id' => 'Точка',
             'name' => 'Имя',
             'surname' => 'Фамилия',
             'middle_name' => 'Отчество',
@@ -69,7 +69,13 @@ class Card extends \yii\db\ActiveRecord
 
     public function getCity()
     {
-        return $this->hasOne(City::className(), ['id' => 'city']);
+        return $this->hasOne(City::className(), ['id' => 'city_id']);
     }
+
+    public function getAddressPoint()
+    {
+        return $this->hasOne(AddressPoint::className(), ['id' => 'address_point_id']);
+    }
+
 
 }

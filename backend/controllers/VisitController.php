@@ -2,7 +2,10 @@
 
 namespace backend\controllers;
 
+use backend\models\AddressPoint;
 use backend\models\Card;
+use backend\models\Podolog;
+use backend\models\Problem;
 use backend\models\Visit;
 use backend\models\VisitSearch;
 use Yii;
@@ -65,16 +68,27 @@ class VisitController extends Controller
      */
     public function actionCreate()
     {
-        $model = new Visit();
         $post = Yii::$app->request->post();
+        $model = new Visit();
 
+        //получим id точки из аккаунта текущего пользователя
+        $addressPoint = Yii::$app->user->identity->address_point_id;
+
+        $location = AddressPoint::find()->where(['id' => $addressPoint])->with('city')->one();
+        $podolog = Podolog::find()->where(['user_id' => Yii::$app->user->identity->id])->one();
+//        $card = Card::find()->where(['number' => $model->card_number])->one();
+        $problem = Problem::find()->all();
+        $model->edit = 1;
+        $model->timestamp = time();
         if ($model->load($post) && $model->save()) {
-            $card = Card::find()->where(['number' => $model->card_number])->one();
             Yii::$app->session->setFlash('success', 'Данные сохранены!');
-            return $this->redirect(['card/view', 'id' => $card->id]);
+            return $this->redirect(['card/view', 'id' => Yii::$app->request->get('id')]);
         }
         return $this->render('create', [
             'model' => $model,
+            'location' => $location,
+            'podolog' => $podolog,
+            'problem' => $problem,
         ]);
     }
 
@@ -89,11 +103,10 @@ class VisitController extends Controller
     {
         $model = $this->findModel($id);
         $card = Card::find()->where(['number' => $card])->one();
-        $model->has_come = '1';
+        $model->has_come = 1;
         $model->save();
         Yii::$app->session->setFlash('success', 'Посещение зафиксировано!');
-        return $this->redirect(['/card/view','id' => $card->id]);
-
+        return $this->redirect(['/card/view', 'id' => $card->id]);
     }
 
 
@@ -121,12 +134,14 @@ class VisitController extends Controller
      * @param integer $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
+     * @throws \Throwable
+     * @throws \yii\db\StaleObjectException
      */
-    public function actionDelete($id)
+    public function actionDelete($id, $card)
     {
         $this->findModel($id)->delete();
-
-        return $this->redirect(['index']);
+        Yii::$app->session->setFlash('success', 'Посещение удалено!');
+        return $this->redirect(['/card/view', 'id' => $card]);
     }
 
     /**

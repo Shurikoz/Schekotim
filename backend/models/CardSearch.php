@@ -18,7 +18,7 @@ class CardSearch extends Card
     {
         return [
             [['id', 'user_id', 'number'], 'integer'],
-            [['city', 'address_point', 'name', 'surname', 'middle_name', 'birthday', 'created_at'], 'safe'],
+            [['city_id', 'address_point_id', 'name', 'surname', 'middle_name', 'birthday', 'created_at'], 'safe'],
         ];
     }
 
@@ -40,7 +40,7 @@ class CardSearch extends Card
      */
     public function search($params)
     {
-        $query = Card::find();
+        $query = Card::find()->with('addressPoint', 'city');
 
         // add conditions that should always apply here
 
@@ -66,8 +66,8 @@ class CardSearch extends Card
             'created_at' => $this->created_at,
         ]);
 
-        $query->andFilterWhere(['like', 'city', $this->city])
-            ->andFilterWhere(['like', 'address_point', $this->address_point])
+        $query->andFilterWhere(['like', 'city_id', $this->city])
+            ->andFilterWhere(['like', 'address_point_id', $this->address_point_id])
             ->andFilterWhere(['like', 'name', $this->name])
             ->andFilterWhere(['like', 'surname', $this->surname])
             ->andFilterWhere(['like', 'middle_name', $this->middle_name]);

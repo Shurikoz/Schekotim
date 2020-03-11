@@ -29,7 +29,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'card_number',
             'city',
             'address_point',
-            'reason:ntext',
+            'anamnes:ntext',
             //'manipulation:ntext',
             //'recommendation:ntext',
             //'next_visit_from',

@@ -64,8 +64,8 @@ class CardController extends Controller
     public function actionView($id)
     {
         $model = $this->findModel($id);
-        $visits = Visit::find()->where(['card_number' => $this->findModel($id)->number])->with(['photo', 'addressPoint', 'city'])->all();
-        $location = AddressPoint::find()->where(['id' => $model->address_point])->with('city')->one();
+        $visits = Visit::find()->where(['card_number' => $this->findModel($id)->number])->with(['photo', 'addressPoint', 'city', 'problem'])->all();
+        $location = AddressPoint::find()->where(['id' => $model->address_point_id])->with('city')->one();
 
         return $this->render('view', [
             'model' => $model,
@@ -81,11 +81,15 @@ class CardController extends Controller
      */
     public function actionCreate()
     {
-        $addressPoint = Yii::$app->user->identity->address_point;
+        //получим что пришло через POST
+        $post = Yii::$app->request->post();
+
+        //получим id точки из аккаунта текущего пользователя
+        $addressPoint = Yii::$app->user->identity->address_point_id;
 
         $cardModel = new Card();
         $visitModel = new Visit();
-        $podologModel = Podolog::find()->where(['address_point' => $addressPoint])->all();
+        $podologModel = Podolog::find()->where(['address_point_id' => $addressPoint])->all();
         $location = AddressPoint::find()->where(['id' => $addressPoint])->with('city')->one();
 
         //найдем последнюю запись, возьмем из нее номер карты
@@ -95,16 +99,20 @@ class CardController extends Controller
         $cardModel->number = (int)$card->number + 1;
         $cardModel->created_at = date('d-m-Y H:m');
 
-        $visitModel->has_come = '0';
-        $visitModel->has_come = '0';
+        // 0 - ожидает посещения, 1 - пришел, 2 - не пришел
+        $visitModel->has_come = '1';
+        $visitModel->next_visit_from = date('Y-m-d');
+        $visitModel->visit_time = date('H:i:s');
         $visitModel->card_number = $cardModel->number;
-        $visitModel->address_point = Yii::$app->user->identity->address_point;
+        $visitModel->city_id = $location->city->id;
+        $visitModel->address_point_id = $addressPoint;
+        $visitModel->podolog_id = $post->podolog;
 
-        if ($cardModel->load(Yii::$app->request->post()) && $cardModel->save() &&
-            $visitModel->load(Yii::$app->request->post()) && $visitModel->save()) {
+        if ($cardModel->load($post) && $cardModel->save() &&
+            $visitModel->load($post) && $visitModel->save()) {
+            Yii::$app->session->setFlash('success', 'Карта создана!');
             return $this->redirect(['view', 'id' => $cardModel->id]);
         }
-
 
         return $this->render('create', [
             'cardModel' => $cardModel,
@@ -123,14 +131,18 @@ class CardController extends Controller
      */
     public function actionUpdate($id)
     {
-        $model = $this->findModel($id);
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        $cardModel = $this->findModel($id);
+//return '<pre>' . print_r($cardModel) . '</pre>';
+        if ($cardModel->load(Yii::$app->request->post()) && $cardModel->save()) {
+            Yii::$app->session->setFlash('success', 'Изменения сохранены!');
+            return $this->redirect(['view', 'id' => $cardModel->id]);
         }
 
         return $this->render('update', [
-            'model' => $model,
+            'cardModel' => $cardModel,
+            'visitModel' => $visitModel,
+            'podologModel' => $podologModel,
+            'location' => $location
         ]);
     }
 
@@ -151,6 +163,7 @@ class CardController extends Controller
             $visit->delete();
         }
         $this->findModel($id)->delete();
+        Yii::$app->session->setFlash('success', 'Карта удалена!');
         return $this->redirect(['index']);
     }
 

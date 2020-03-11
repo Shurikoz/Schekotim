@@ -19,11 +19,11 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'card_number') ?>
 
-    <?= $form->field($model, 'city') ?>
+    <?= $form->field($model, 'city_id') ?>
 
-    <?= $form->field($model, 'address_point') ?>
+    <?= $form->field($model, 'address_point_id') ?>
 
-    <?= $form->field($model, 'reason') ?>
+    <?= $form->field($model, 'anamnes') ?>
 
     <?php // echo $form->field($model, 'manipulation') ?>
 

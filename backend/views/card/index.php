@@ -62,8 +62,8 @@ $this->params['breadcrumbs'][] = $this->title;
                             <td class="c-table__cell"><b><?= $item->number ?></b></td>
 
                             <td class="c-table__cell">
-                                <p><?= $item->city ?></p>
-                                <p><?= $item->address_point ?></p>
+                                <p><?= $item->city->name ?></p>
+                                <p><?= $item->addressPoint->address_point ?></p>
                             </td>
 
                             <td class="c-table__cell">

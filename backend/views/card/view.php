@@ -9,8 +9,6 @@ use yii\widgets\Pjax;
 /* @var $model backend\models\Card */
 
 $this->title = 'Карта №: ' . $model->number;
-$this->params['breadcrumbs'][] = ['label' => 'Cards', 'url' => ['index']];
-$this->params['breadcrumbs'][] = $this->title;
 
 \yii\web\YiiAsset::register($this);
 
@@ -18,15 +16,8 @@ $visit_number = count($visits);
 
 ?>
 
-<pre>
-<!--    --><?//= print_r($visits)?>
-</pre>
-
 <div class="card-view">
-    <?= Html::button(FAS::icon('angle-left', ['class' => 'big', 'data-role' => 'arrow']) . '&nbsp Вернуться к списку карт', [
-        'class' => 'btn btn-default',
-        'onclick' => 'history.back();'
-    ]) ?>
+    <?= Html::a(FAS::icon('angle-left', ['class' => 'big', 'data-role' => 'arrow']) . '&nbsp Вернуться к списку карт', ['/card/index'], ['class'=>'btn btn-default']) ?>
     <br>
     <?php if (Yii::$app->user->can('admin')) { ?>
         <p>
@@ -58,9 +49,9 @@ $visit_number = count($visits);
             </div>
         </div>
         <div class="col-md-6">
-                <div class="box">
-                    <b>Место создания: </b><?= $location->city->name ?>, <?= $location->address_point ?>
-                </div>
+            <div class="box">
+                <b>Место создания: </b><?= $location->city->name ?>, <?= $location->address_point ?>
+            </div>
         </div>
     </div>
     <table class="c-table">
@@ -70,7 +61,7 @@ $visit_number = count($visits);
             <small>(одна проблема - одно посещение)</small>
             <div class="pull-right">
                 <?php if (Yii::$app->user->can('admin') || Yii::$app->user->can('user')) { ?>
-                    <?= Html::a('<span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Создать новый визит', ['visit/create', 'id' => $model->id, 'card_number' => $model->number, 'city' => $model->city, 'address_point' => $model->address_point], ['class' => 'btn btn-green']) ?>
+                    <?= Html::a('<span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Создать новый визит', ['visit/create', 'id' => $model->id, 'card_number' => $model->number], ['class' => 'btn btn-green']) ?>
                 <?php } ?>
             </div>
         </caption>
@@ -92,71 +83,103 @@ $visit_number = count($visits);
         <?php Pjax::begin(['timeout' => 5000]); ?>
         <?php if (count($visits) != 0) { ?>
             <?php foreach (array_reverse($visits) as $item) { ?>
-                <?php if ($item->has_come == 0) {
+
+                <?php
+                // проверим указатель пришел ли пациент
+                if ($item->has_come == 0) {
                     $hasCome = 'c-table__row--wait';
-                    $pic = 'glyphicon-time';
+                    $picCome = '<span class="glyphicon glyphicon-time"></span>';
                 } elseif ($item->has_come == 1) {
                     $hasCome = 'c-table__row--success';
-                    $pic = 'glyphicon-ok';
+                    $picCome = '<span class="glyphicon glyphicon-ok"></span>';
                 } else {
                     $hasCome = 'c-table__row--danger';
-                    $pic = 'glyphicon-remove';
-                } ?>
+                    $picCome = '<span class="glyphicon glyphicon-remove"></span>';
+                }
 
+                // проверим решена проблема или нет
+                if ($item->resolve == 1) {
+                    $picResolve = '<span class="glyphicon glyphicon-remove-circle"></span>';
+                }
+
+                ?>
                 <tr class="c-table__row <?= $hasCome ?> visitBox">
-                    <td class="c-table__cell"><p><?= $visit_number ?></p></td>
+                    <td class="c-table__cell">
+                        <span><?= $visit_number ?></span>
+                    </td>
                     <td class="c-table__cell">
                         <p><?= $item->city->name ?></p>
                         <p><?= $item->addressPoint->address_point ?></p>
                     </td>
-                    <td class="c-table__cell"><?= $item->reason ?></td>
-                    <td class="c-table__cell"><?= $item->podolog->name?></td>
                     <td class="c-table__cell">
-                        <p><b>С:</b> <?= Yii::$app->formatter->asDate($item->next_visit_from) ?></p>
-                        <p><b>ДО:</b> <?= Yii::$app->formatter->asDate($item->next_visit_by) ?></p>
+                        <?php if ($item->problem_id == 0) { ?>
+                            <span class="text-red">Не указана</span>
+                        <?php } else { ?>
+                            <?= $item->problem->name ?>
+                        <?php } ?>
                     </td>
                     <td class="c-table__cell">
-                        <p><b><?= Yii::$app->formatter->asTime($item->visit_time) ?></b></p>
+                        <?= $item->podolog->name ?>
                     </td>
                     <td class="c-table__cell">
-                        <span class="glyphicon <?= $pic ?>"></span>
+                        <?php if ($item->next_visit_by != null) { ?>
+                            <p><b>С:</b> <?= Yii::$app->formatter->asDate($item->next_visit_from) ?></p>
+                            <p><b>ДО:</b> <?= Yii::$app->formatter->asDate($item->next_visit_by) ?></p>
+                        <?php } else { ?>
+                            <span> <?= Yii::$app->formatter->asDate($item->next_visit_from) ?></span>
+                        <?php } ?>
                     </td>
-
+                    <td class="c-table__cell">
+                        <?php if ($item->visit_time != null) { ?>
+                            <span><b><?= Yii::$app->formatter->asTime($item->visit_time) ?></b></span>
+                        <?php } else { ?>
+                            <span>-</span>
+                        <?php } ?>
+                    </td>
+                    <td class="c-table__cell">
+                        <?= $picCome ?>
+                        <?= $picResolve ?>
+                    </td>
                 </tr>
                 <tr class="c-table__row visitInfoBlock hide hideBox">
                     <td colspan="10" class="c-table__visitInfoBlock">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="userStatus pull-right">
-                                    <?php if (Yii::$app->user->can('admin') || Yii::$app->user->can('user')) { ?>
-                                        <?php if ($item->has_come == 0) { ?>
-                                            <?= Html::a('Пришел', ['visit/come', 'id' => $item->id, 'card' => $model->number], [
-                                                'class' => 'btn btn-green',
+                        <?php if ($item->podolog->user_id == Yii::$app->user->id || Yii::$app->user->can('admin')) { ?>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="userStatus pull-right">
+
+                                        <?php //проверка, если текущий пользователь является указанным в визите подологом, то он может редактировать этот визит
+                                        if (($item->podolog->user_id == Yii::$app->user->id && $item->timestamp + 60*60*24*2 >= time()) || Yii::$app->user->can('admin')) { ?>
+                                            <?= Html::a('Изменить посещение', ['visit/update', 'id' => $item->id], ['class' => 'btn btn-info']) ?>
+                                        <?php } ?>
+                                        <?php if (Yii::$app->user->can('admin')) { ?>
+                                            <?= Html::a('Удалить', ['visit/delete', 'id' => $item->id, 'card' => $model->id], [
+                                                'class' => 'btn btn-danger',
                                                 'data' => [
-                                                    'confirm' => 'Отметить посещение пациента?',
+                                                    'confirm' => 'Вы уверены, что хотите удалить посещение?',
+                                                    'method' => 'post',
                                                 ],
                                             ]) ?>
-                                            <br>
-                                            <br>
                                         <?php } ?>
-                                    <?php } ?>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                            <hr>
+                        <?php } ?>
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="box">
                                     <div class="col-md-12">
                                         <p><b>Манипуляции:</b></p>
                                         <br>
-                                        <p><?= $item->manipulation == null ? 'Не заполнено' : $item->manipulation ?></p>
+                                        <p><?= $item->manipulation == null ? '<span class="text-red">Не заполнено</span>' : $item->manipulation ?></p>
                                     </div>
                                 </div>
                                 <div class="box">
                                     <div class="col-md-12">
                                         <p><b>Рекомендации:</b></p>
                                         <br>
-                                        <p><?= $item->recommendation == null ? 'Не заполнено' : $item->recommendation ?></p>
+                                        <p><?= $item->recommendation == null ? '<span class="text-red">Не заполнено</span>' : $item->recommendation ?></p>
                                     </div>
                                 </div>
                             </div>
@@ -164,41 +187,50 @@ $visit_number = count($visits);
                                 <div class="box">
                                     <div class="col-md-12">
                                         <p><b>Фото ДО</b></p>
-                                        <?php foreach ($item->photo as $photo) { ?>
-                                            <?php if ($photo->made == 'before') { ?>
-                                                <div class="photo" style="float: left; margin-right: 20px ">
-                                                    <img src="<?= $photo->thumbnail ?>" alt="">
-                                                    <br>
-                                                    <?= Html::a('Скачать файл', ['photo/download', 'id' => $photo->id]) ?>
-                                                    <?php ?>
-                                                </div>
+                                        <?php if ($photo->photo != '') { ?>
+                                            <?php foreach ($item->photo as $photo) { ?>
+                                                <?php if ($photo->made == 'before') { ?>
+                                                    <div class="photo" style="float: left; margin-right: 20px ">
+                                                        <img src="<?= $photo->thumbnail ?>" alt="">
+                                                        <br>
+                                                        <?= Html::a('Скачать файл', ['photo/download', 'id' => $photo->id]) ?>
+                                                        <?php ?>
+                                                    </div>
+                                                <?php } ?>
                                             <?php } ?>
+                                        <?php } else { ?>
+                                            <p><span class="text-red">Не заполнено</span></p>
                                         <?php } ?>
                                     </div>
                                 </div>
                                 <div class="box">
                                     <div class="col-md-12">
                                         <p><b>Фото ПОСЛЕ</b></p>
-                                        <?php foreach ($item->photo as $photo) { ?>
-                                            <?php if ($photo->made == 'after') { ?>
-                                                <div class="photo" style="float: left; margin-right: 20px ">
-                                                    <img src="<?= $photo->thumbnail ?>" alt="">
-                                                    <br>
-                                                    <?= Html::a('Скачать файл', ['photo/download', 'id' => $photo->id]) ?>
-                                                    <?php ?>
-                                                </div>
+                                        <?php if ($photo->photo != '') { ?>
+
+                                            <?php foreach ($item->photo as $photo) { ?>
+                                                <?php if ($photo->made == 'after') { ?>
+                                                    <div class="photo" style="float: left; margin-right: 20px ">
+                                                        <img src="<?= $photo->thumbnail ?>" alt="">
+                                                        <br>
+                                                        <?= Html::a('Скачать файл', ['photo/download', 'id' => $photo->id]) ?>
+                                                        <?php ?>
+                                                    </div>
+                                                <?php } ?>
                                             <?php } ?>
+                                        <?php } else { ?>
+                                            <p><span class="text-red">Не заполнено</span></p>
                                         <?php } ?>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div class="row">
-                            <div class="box">
-                                <div class="col-md-12">
+                            <div class="col-md-12">
+                                <div class="box">
                                     <p><b>Комментарий:</b></p>
                                     <br>
-                                    <p><?= $item->description == null ? 'Не заполнено' : $item->description ?></p>
+                                    <p><?= $item->description == null ? '<span class="text-red">Не заполнено</span>' : $item->description ?></p>
                                 </div>
                             </div>
                         </div>
@@ -218,7 +250,9 @@ $visit_number = count($visits);
     <br>
     <div class="pull-right">
         <p><span class="glyphicon glyphicon-time"></span> - ожидание посещения</p>
-        <p><span class="glyphicon glyphicon-ok"></span> - пациент пришел в указанное время</p>
+        <p><span class="glyphicon glyphicon-ok"></span> - посещение зафиксировано</p>
         <p><span class="glyphicon glyphicon-remove"></span> - пациент не пришел в указанное время</p>
+        <p><span class="glyphicon glyphicon-remove-circle"></span> - проблема решена</p>
+
     </div>
 </div>

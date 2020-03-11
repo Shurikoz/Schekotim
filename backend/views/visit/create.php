@@ -4,10 +4,8 @@ use yii\helpers\Html;
 
 /* @var $this yii\web\View */
 /* @var $model backend\models\Visit */
-
 $this->title = 'Новое посещение';
-$this->params['breadcrumbs'][] = ['label' => 'Посещения', 'url' => ['index']];
-$this->params['breadcrumbs'][] = $this->title;
+
 ?>
 <div class="visit-create">
 
@@ -20,6 +18,11 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?= $this->render('_form', [
         'model' => $model,
+        'location' => $location,
+        'podolog' => $podolog,
+        'problem' => $problem,
+
+
     ]) ?>
 
 </div>

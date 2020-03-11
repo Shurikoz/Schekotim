@@ -11,11 +11,15 @@ use yii\widgets\ActiveForm;
 <div class="card-search">
     <div class="box">
         <div class="col-sm-12">
+
             <?php $form = ActiveForm::begin([
                 'action' => ['index'],
                 'method' => 'get',
             ]); ?>
+            <?= Html::button('Сбросить', ['class' => 'btn btn-default resetFormButton pull-right']) ?>
 
+            <p class="titleNormal">Фильтр</p>
+            <hr>
             <!--    --><? //= $form->field($model, 'id')->textInput(['class' => 'autoSearchSubmit']) ?>
             <!---->
             <!--    --><? //= $form->field($model, 'user_id')->textInput(['class' => 'autoSearchSubmit']) ?>
@@ -36,7 +40,7 @@ use yii\widgets\ActiveForm;
 
                 <div class="col-md-3">
                     <div class="c-field">
-                        <?= $form->field($model, 'address_point')
+                        <?= $form->field($model, 'address_point_id')
                             ->dropDownList(['' => '', 'Самуила Маршака 20' => 'Самуила Маршака 20', 'Кирова 7' => 'Кирова 7'], ['class' => 'autoSearchSubmit c-input'])
                             ->label('Точка', ['class' => 'c-field__label']) ?>
                     </div>
@@ -68,7 +72,6 @@ use yii\widgets\ActiveForm;
                     </div>
                 </div>
             </div>
-            <hr>
 
             <!--            <div class="c-field">-->
             <!--                --><?php //echo $form->field($model, 'description')->textInput(['class' => 'autoSearchSubmit c-input']) ?>
@@ -80,7 +83,6 @@ use yii\widgets\ActiveForm;
             <!--        --><? //= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>
             <!--        --><? //= Html::resetButton('Reset', ['class' => 'btn btn-default']) ?>
             <!--    </div>-->
-            <?= Html::button('Сбросить', ['class' => 'btn btn-default resetFormButton pull-right']) ?>
 
             <?php ActiveForm::end(); ?>
         </div>

@@ -129,7 +129,7 @@ $this->registerJs($script, yii\web\View::POS_READY);
                 </header>
                 <ul class="contact">
                     <li class="fa-whatsapp"><a href="https://api.whatsapp.com/send?phone=+79100048558&text=Здравствуйте! Хочу записаться к вам на прием!">+7(910)004-85-58</a></li>
-                    <li class="fa-phone"><a href="tel:+74951818780">+7(495)181-87-70</a></li>
+                    <li class="fa-phone"><a href="tel:+74951818780">+7(495)181-87-80</a></li>
                     <li class="fa-envelope-o"><a href="mailto:info@schekotim.ru">info@schekotim.ru</a></li>
                     <li class="fa-home">г. Москва, ул. Самуила Маршака 20, <br>(вход со двора)</li>
                     <li class="fa-clock-o">Работаем ежедневно <br>с 10:00 до 21:00<br>по предварительной записи</li>

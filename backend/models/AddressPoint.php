@@ -52,7 +52,12 @@ class AddressPoint extends \yii\db\ActiveRecord
 
     public function getVisit()
     {
-        return $this->hasMany(Visit::className(), ['address_point' => 'id']);
+        return $this->hasMany(Visit::className(), ['address_point_id' => 'id']);
+    }
+
+    public function getCard()
+    {
+        return $this->hasOne(Card::className(), ['address_point_id' => 'id']);
     }
 
 }

@@ -32,6 +32,21 @@ class VisitController extends Controller
             ],
         ];
     }
+    
+    /**
+     * @param $insert
+     * @return bool
+     */
+    public function beforeSave($insert)
+    {
+        if (parent::beforeSave($insert)) {
+
+            //... тут ваш код
+
+            return true;
+        }
+        return false;
+    }
 
     /**
      * Lists all Visit models.
@@ -76,7 +91,6 @@ class VisitController extends Controller
         $location = AddressPoint::find()->where(['id' => $addressPoint])->with('city')->one();
         $podolog = Podolog::find()->where(['user_id' => Yii::$app->user->identity->id])->one();
 
-
         $model->has_come = 1;
         $model->edit = 1; //возможность редактирования - 1 можно, 0 запрещено
         $model->timestamp = time() + 60*60*24*2; // 2 суток на редактирование
@@ -84,7 +98,9 @@ class VisitController extends Controller
         $model->visit_date = date('Y-m-d');
 
 
+
         if ($model->load($post) && $model->save()) {
+//            print_r($model->load($post->next_visit_from));die;
             Yii::$app->session->setFlash('success', 'Данные сохранены!');
             return $this->redirect(['card/view', 'id' => Yii::$app->request->get('id')]);
         }

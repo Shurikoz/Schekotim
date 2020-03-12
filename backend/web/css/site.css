@@ -530,4 +530,22 @@ font-size: 22px;
     color: #7ba335;
 }
 
+.datepicker-dropdown {
+    padding: 1.25rem;
+}
 
+.datepicker table tr td,
+.datepicker table tr th {
+    text-align: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: .25rem;
+    border: none;
+    padding: 12px;
+    font-size: 16px;
+}
+
+.userStatus div {
+    float: left;
+    margin-left: 10px;
+}

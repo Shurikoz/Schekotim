@@ -17,7 +17,7 @@ $visit_number = count($visits);
 ?>
 
 <div class="card-view">
-    <?= Html::a(FAS::icon('angle-left', ['class' => 'big', 'data-role' => 'arrow']) . '&nbsp Вернуться к списку карт', ['/card/index'], ['class'=>'btn btn-default']) ?>
+    <?= Html::a(FAS::icon('angle-left', ['class' => 'big', 'data-role' => 'arrow']) . '&nbsp Вернуться к списку карт', ['/card/index'], ['class' => 'btn btn-default']) ?>
     <br>
     <?php if (Yii::$app->user->can('admin')) { ?>
         <p>
@@ -157,22 +157,22 @@ $visit_number = count($visits);
                                                     'tagName' => 'span',
                                                     'events' => [
                                                         'finish' => 'function(){console.log($(\'#blockEdit_\' + $(this).parent().attr("data-id")).remove())}',
-                                                    ],
-
+                                                    ]
                                                 ]) ?>
-                                                <span id="timer_<?= $item->id ?>"></span>
                                                 <?= Html::a('Изменить посещение', ['visit/update', 'id' => $item->id], ['class' => 'btn btn-info']) ?>
                                             <?php } ?>
-                                            <?php if (Yii::$app->user->can('admin')) { ?>
-                                                <?= Html::a('Удалить', ['visit/delete', 'id' => $item->id, 'card' => $model->id], [
-                                                    'class' => 'btn btn-danger',
-                                                    'data' => [
-                                                        'confirm' => 'Вы уверены, что хотите удалить посещение?',
-                                                        'method' => 'post',
-                                                    ],
-                                                ]) ?>
-                                            <?php } ?>
                                         </div>
+                                        <?php if (Yii::$app->user->can('admin')) { ?>
+                                            <div>
+                                            <?= Html::a('Удалить', ['visit/delete', 'id' => $item->id, 'card' => $model->id], [
+                                                'class' => 'btn btn-danger',
+                                                'data' => [
+                                                    'confirm' => 'Вы уверены, что хотите удалить посещение?',
+                                                    'method' => 'post',
+                                                ],
+                                            ]) ?>
+                                        <?php } ?>
+                                            </div>
                                     </div>
                                 </div>
                             </div>

@@ -21,8 +21,6 @@ $this->title = 'Новое посещение';
         'location' => $location,
         'podolog' => $podolog,
         'problem' => $problem,
-
-
     ]) ?>
 
 </div>

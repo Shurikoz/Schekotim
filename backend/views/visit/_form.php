@@ -48,6 +48,11 @@ $problem = ArrayHelper::map($problem, 'id', 'name');
                     ->label('Проблема') ?>
             </div>
         </div>
+        <div class="col-md-3">
+            <div class="box">
+                <?= $form->field($model, 'has_come')->checkbox(['value' => '1', 'checked ' => true])->label(false); ?>
+            </div>
+        </div>
     </div>
     <hr>
     <div class="row">
@@ -67,8 +72,16 @@ $problem = ArrayHelper::map($problem, 'id', 'name');
                 <?= $form->field($model, 'recommendation')->textarea(['rows' => 6]) ?>
             </div>
         </div>
+        <div class="col-md-12">
+            <div class="box">
+                <?= $form->field($model, 'description')->textarea(['rows' => 2]) ?>
+            </div>
+        </div>
     </div>
     <hr>
+
+    <p class="titleNormal">Назначение следующего посещения (если необходимо)</p>
+    <br>
     <div class="row">
         <div class="col-md-3">
             <div class="box">
@@ -81,11 +94,8 @@ $problem = ArrayHelper::map($problem, 'id', 'name');
             </div>
         </div>
     </div>
+    <hr>
 
-
-
-
-    <?= $form->field($model, 'has_come')->checkbox(['value' => '1', 'checked ' => false])->label(''); ?>
 
     <?= $form->field($model, 'description')->textarea(['rows' => 6]) ?>
 

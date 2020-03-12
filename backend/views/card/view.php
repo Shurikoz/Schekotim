@@ -1,9 +1,9 @@
 <?php
 
 use rmrevin\yii\fontawesome\FAS;
+use russ666\widgets\Countdown;
 use yii\helpers\Html;
 use yii\widgets\Pjax;
-
 
 /* @var $this yii\web\View */
 /* @var $model backend\models\Card */
@@ -61,7 +61,7 @@ $visit_number = count($visits);
             <small>(одна проблема - одно посещение)</small>
             <div class="pull-right">
                 <?php if (Yii::$app->user->can('admin') || Yii::$app->user->can('user')) { ?>
-                    <?= Html::a('<span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Создать новый визит', ['visit/create', 'id' => $model->id, 'card_number' => $model->number], ['class' => 'btn btn-green']) ?>
+                    <?= Html::a('<span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Создать новое посещение', ['visit/create', 'id' => $model->id, 'card_number' => $model->number], ['class' => 'btn btn-green']) ?>
                 <?php } ?>
             </div>
         </caption>
@@ -122,11 +122,11 @@ $visit_number = count($visits);
                         <?= $item->podolog->name ?>
                     </td>
                     <td class="c-table__cell">
-                        <?php if ($item->next_visit_by != null) { ?>
+                        <?php if ($item->visit_date == null) { ?>
                             <p><b>С:</b> <?= Yii::$app->formatter->asDate($item->next_visit_from) ?></p>
                             <p><b>ДО:</b> <?= Yii::$app->formatter->asDate($item->next_visit_by) ?></p>
                         <?php } else { ?>
-                            <span> <?= Yii::$app->formatter->asDate($item->next_visit_from) ?></span>
+                            <span> <?= Yii::$app->formatter->asDate($item->visit_date) ?></span>
                         <?php } ?>
                     </td>
                     <td class="c-table__cell">
@@ -147,20 +147,32 @@ $visit_number = count($visits);
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="userStatus pull-right">
+                                        <div id="blockEdit_<?= $item->id ?>" data-id="<?= $item->id ?>">
+                                            <?php //проверка, если текущий пользователь является указанным в визите подологом, то он может редактировать этот визит
+                                            if (($item->podolog->user_id == Yii::$app->user->id && $item->timestamp + 60 * 60 * 24 * 2 >= time()) || Yii::$app->user->can('admin')) { ?>
+                                                <?= Countdown::widget([
+                                                    'id' => 'timer_' . $item->id,
+                                                    'datetime' => date('Y-m-d H:i:s O', time() + ($item->timestamp - time())),
+                                                    'format' => '\Возможность редактирования открыта: <span style=\"color: red\"\>%-D д. %-H:%-M:%-S</span> ',
+                                                    'tagName' => 'span',
+                                                    'events' => [
+                                                        'finish' => 'function(){console.log($(\'#blockEdit_\' + $(this).parent().attr("data-id")).remove())}',
+                                                    ],
 
-                                        <?php //проверка, если текущий пользователь является указанным в визите подологом, то он может редактировать этот визит
-                                        if (($item->podolog->user_id == Yii::$app->user->id && $item->timestamp + 60*60*24*2 >= time()) || Yii::$app->user->can('admin')) { ?>
-                                            <?= Html::a('Изменить посещение', ['visit/update', 'id' => $item->id], ['class' => 'btn btn-info']) ?>
-                                        <?php } ?>
-                                        <?php if (Yii::$app->user->can('admin')) { ?>
-                                            <?= Html::a('Удалить', ['visit/delete', 'id' => $item->id, 'card' => $model->id], [
-                                                'class' => 'btn btn-danger',
-                                                'data' => [
-                                                    'confirm' => 'Вы уверены, что хотите удалить посещение?',
-                                                    'method' => 'post',
-                                                ],
-                                            ]) ?>
-                                        <?php } ?>
+                                                ]) ?>
+                                                <span id="timer_<?= $item->id ?>"></span>
+                                                <?= Html::a('Изменить посещение', ['visit/update', 'id' => $item->id], ['class' => 'btn btn-info']) ?>
+                                            <?php } ?>
+                                            <?php if (Yii::$app->user->can('admin')) { ?>
+                                                <?= Html::a('Удалить', ['visit/delete', 'id' => $item->id, 'card' => $model->id], [
+                                                    'class' => 'btn btn-danger',
+                                                    'data' => [
+                                                        'confirm' => 'Вы уверены, что хотите удалить посещение?',
+                                                        'method' => 'post',
+                                                    ],
+                                                ]) ?>
+                                            <?php } ?>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

@@ -73,13 +73,17 @@ class VisitController extends Controller
 
         //получим id точки из аккаунта текущего пользователя
         $addressPoint = Yii::$app->user->identity->address_point_id;
-
         $location = AddressPoint::find()->where(['id' => $addressPoint])->with('city')->one();
         $podolog = Podolog::find()->where(['user_id' => Yii::$app->user->identity->id])->one();
-//        $card = Card::find()->where(['number' => $model->card_number])->one();
-        $problem = Problem::find()->all();
-        $model->edit = 1;
-        $model->timestamp = time();
+
+
+        $model->has_come = 1;
+        $model->edit = 1; //возможность редактирования - 1 можно, 0 запрещено
+        $model->timestamp = time() + 60*60*24*2; // 2 суток на редактирование
+        $model->visit_time = date('H:m:i');
+        $model->visit_date = date('Y-m-d');
+
+
         if ($model->load($post) && $model->save()) {
             Yii::$app->session->setFlash('success', 'Данные сохранены!');
             return $this->redirect(['card/view', 'id' => Yii::$app->request->get('id')]);
@@ -88,7 +92,7 @@ class VisitController extends Controller
             'model' => $model,
             'location' => $location,
             'podolog' => $podolog,
-            'problem' => $problem,
+            'problem' => $this->findProblem(),
         ]);
     }
 
@@ -159,4 +163,13 @@ class VisitController extends Controller
 
         throw new NotFoundHttpException('The requested page does not exist.');
     }
+
+    /**
+     * @return array|\yii\db\ActiveRecord[]
+     */
+    protected function findProblem(){
+        $problem = Problem::find()->all();
+        return $problem;
+    }
+
 }

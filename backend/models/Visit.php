@@ -19,6 +19,7 @@ use Yii;
  * @property string $next_visit_from
  * @property string $next_visit_by
  * @property string $visit_time
+ * @property string $visit_date
  * @property string $has_come
  * @property string $resolve
  * @property string $used_photo
@@ -44,7 +45,7 @@ class Visit extends \yii\db\ActiveRecord
         return [
             [['problem_id', 'address_point_id', 'podolog_id', 'city_id', 'card_number', 'used_photo', 'edit'], 'integer'],
             [['anamnes', 'manipulation', 'recommendation', 'description'], 'string'],
-            [['timestamp', 'next_visit_from', 'next_visit_by', 'visit_time'], 'safe'],
+            [['timestamp', 'next_visit_from', 'next_visit_by', 'visit_date', 'visit_time'], 'safe'],
             [['resolve', 'has_come'], 'string', 'max' => 255],
         ];
     }
@@ -67,8 +68,9 @@ class Visit extends \yii\db\ActiveRecord
             'recommendation' => 'Рекомендации',
             'next_visit_from' => 'Следующий визит с',
             'next_visit_by' => 'Следующий визит по',
-            'visit_time' => 'Время',
-            'has_come' => 'Посещение',
+            'visit_time' => 'Время посещения',
+            'visit_date' => 'Дата посещения',
+            'has_come' => 'Пациент пришел',
             'resolve' => 'Решена',
             'used_photo' => 'Фото использовано',
             'description' => 'Комментарий',

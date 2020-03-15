@@ -291,25 +291,25 @@ a.desc:after {
 }
 
 .glyphicon-remove,
-.glyphicon-time,
+.glyphicon-hourglass,
 .glyphicon-ok,
 .glyphicon-remove-circle {
 font-size: 22px;
 }
 
 .c-table__row--danger {
-    border-left-color: #ed1c24;
+    border-left-color: #d84248;
 }
 
 .glyphicon-remove{
-    color: #ed1c24;
+    color: #d84248;
 }
 
 .c-table__row--wait {
     border-left-color: #a9a9a9;
 }
 
-.glyphicon-time {
+.glyphicon-hourglass {
     color: #a9a9a9;
 }
 

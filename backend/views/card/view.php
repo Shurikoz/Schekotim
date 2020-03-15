@@ -87,7 +87,7 @@ $visit_number = count($visits);
                 // проверим указатель пришел ли пациент
                 if ($item->has_come == 0) {
                     $hasCome = 'c-table__row--wait';
-                    $picCome = '<span class="glyphicon glyphicon-time"></span>';
+                    $picCome = '<span class="glyphicon glyphicon-hourglass"></span>';
                 } elseif ($item->has_come == 1) {
                     $hasCome = 'c-table__row--success';
                     $picCome = '<span class="glyphicon glyphicon-ok"></span>';

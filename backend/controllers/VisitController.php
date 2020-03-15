@@ -84,7 +84,6 @@ class VisitController extends Controller
         $model->visit_date = date('Y-m-d');
 
         if ($model->load($post) && $model->save()) {
-            print_r($model);die;
             Yii::$app->session->setFlash('success', 'Данные сохранены!');
             return $this->redirect(['card/view', 'id' => Yii::$app->request->get('id')]);
         }
@@ -128,8 +127,15 @@ class VisitController extends Controller
     {
         $model = $this->findModel($id);
         $result = $this->redirect(['/card/view', 'id' => $card]);
+
+        //достанем то что записано в дате будущего визита и перезапишем
+        $next_visit_from = $model->next_visit_from;
+        $next_visit_by = $model->next_visit_by;
+
         if ($resolve == true) {
             $model->resolve = 1;
+            $model->next_visit_from = $next_visit_from;
+            $model->next_visit_by = $next_visit_by;
             if ($model->save()) {
                 Yii::$app->session->setFlash('success', 'Проблема помечена решенной!');
                 return $result;

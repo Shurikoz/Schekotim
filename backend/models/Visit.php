@@ -43,12 +43,14 @@ class Visit extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['problem_id', 'address_point_id', 'podolog_id', 'city_id', 'card_number', 'used_photo', 'edit'], 'integer'],
+            [['address_point_id', 'podolog_id', 'city_id', 'card_number', 'used_photo', 'edit'], 'integer'],
             [['anamnes', 'manipulation', 'recommendation', 'description'], 'string'],
             [['resolve', 'has_come', 'timestamp', 'next_visit_from', 'next_visit_by', 'visit_date', 'visit_time'], 'safe'],
+            ['problem_id', 'integer', 'min' => '1', 'tooSmall' => 'Проблема не выбрана!'],
+
+
         ];
     }
-
 
     /**
      * {@inheritdoc}
@@ -85,8 +87,6 @@ class Visit extends \yii\db\ActiveRecord
             $next_visit_by = $_POST["Visit"]["next_visit_by"];
             $this->next_visit_from = $next_visit_from == null ? null : date("Y-m-d", strtotime($next_visit_from));
             $this->next_visit_by = $next_visit_by == null ? null : date("Y-m-d", strtotime($next_visit_by));
-
-
             return true;
         }
         return false;

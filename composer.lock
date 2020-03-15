@@ -1871,12 +1871,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/fzaninotto/Faker.git",
-                "reference": "32017468e09881eb7ba9e12fc79358eac4d6ce27"
+                "reference": "468dfa602d9a94da0d61022c7b62274db9d5861a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fzaninotto/Faker/zipball/32017468e09881eb7ba9e12fc79358eac4d6ce27",
-                "reference": "32017468e09881eb7ba9e12fc79358eac4d6ce27",
+                "url": "https://api.github.com/repos/fzaninotto/Faker/zipball/468dfa602d9a94da0d61022c7b62274db9d5861a",
+                "reference": "468dfa602d9a94da0d61022c7b62274db9d5861a",
                 "shasum": ""
             },
             "require": {
@@ -1913,7 +1913,7 @@
                 "faker",
                 "fixtures"
             ],
-            "time": "2020-03-11T13:48:07+00:00"
+            "time": "2020-03-12T11:12:10+00:00"
         },
         {
             "name": "guzzlehttp/psr7",

@@ -16,7 +16,7 @@ $this->title = 'Редактирование посещения, карта №:
         <?= print_r($model);?>
     </pre>
 
-<!--    --><?//= $this->render('_form', [
+<!--    --><?//= $this->render('_formUpdate', [
 //        'model' => $model,
 //    ]) ?>
 

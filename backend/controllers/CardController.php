@@ -5,7 +5,6 @@ namespace backend\controllers;
 use backend\models\AddressPoint;
 use backend\models\Card;
 use backend\models\CardSearch;
-use backend\models\City;
 use backend\models\Podolog;
 use backend\models\Visit;
 use Yii;
@@ -66,6 +65,18 @@ class CardController extends Controller
         $model = $this->findModel($id);
         $visits = Visit::find()->where(['card_number' => $this->findModel($id)->number])->with(['photo', 'addressPoint', 'city', 'problem'])->all();
         $location = AddressPoint::find()->where(['id' => $model->address_point_id])->with('city')->one();
+
+        //пройдемся по посещениям, если пациент не пришел до указанного времени, сделаем отметку
+        foreach ($visits as $visit) {
+            if ($visit->next_visit_from != null && $visit->next_visit_by != null){
+                if (strtotime($visit->next_visit_by) < time()) {
+                    $visit->has_come = 2;
+                    $visit->visit_date = null;
+                    $visit->visit_time = null;
+                    $visit->save();
+                }
+            }
+        }
 
         return $this->render('view', [
             'model' => $model,

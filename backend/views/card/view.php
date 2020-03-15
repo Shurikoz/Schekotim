@@ -33,9 +33,9 @@ $visit_number = count($visits);
     <?php } ?>
     <br>
     <div class="box">
-        <h3><?= Html::encode($this->title) ?></h3>
+        <h3><b><?= Html::encode($this->title) ?></b></h3>
         <hr>
-        <p class="titleCardName"><?= $model->surname ?> <?= $model->name ?> <?= $model->middle_name ?></p>
+        <p class="titleCardName"><b>ФИО:</b> <?= $model->surname ?> <?= $model->name ?> <?= $model->middle_name ?></p>
     </div>
     <div class="row cardView">
         <div class="col-md-3">
@@ -83,7 +83,6 @@ $visit_number = count($visits);
         <?php Pjax::begin(['timeout' => 5000]); ?>
         <?php if (count($visits) != 0) { ?>
             <?php foreach (array_reverse($visits) as $item) { ?>
-
                 <?php
                 // проверим указатель пришел ли пациент
                 if ($item->has_come == 0) {
@@ -98,8 +97,10 @@ $visit_number = count($visits);
                 }
 
                 // проверим решена проблема или нет
-                if ($item->resolve == 1) {
+                if ($item->resolve != 0) {
                     $picResolve = '<span class="glyphicon glyphicon-remove-circle"></span>';
+                } else {
+                    $picResolve = '';
                 }
 
                 ?>
@@ -122,11 +123,13 @@ $visit_number = count($visits);
                         <?= $item->podolog->name ?>
                     </td>
                     <td class="c-table__cell">
-                        <?php if ($item->visit_date == null) { ?>
+                        <?php if ($item->next_visit_from != null && $item->next_visit_by != null && $item->has_come == 0) { ?>
                             <p><b>С:</b> <?= Yii::$app->formatter->asDate($item->next_visit_from) ?></p>
                             <p><b>ДО:</b> <?= Yii::$app->formatter->asDate($item->next_visit_by) ?></p>
-                        <?php } else { ?>
+                        <?php } else if ($item->has_come == 1) { ?>
                             <span> <?= Yii::$app->formatter->asDate($item->visit_date) ?></span>
+                        <?php } else if ($item->has_come == 2) { ?>
+                            <span>-</span>
                         <?php } ?>
                     </td>
                     <td class="c-table__cell">
@@ -147,32 +150,52 @@ $visit_number = count($visits);
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="userStatus pull-right">
-                                        <div id="blockEdit_<?= $item->id ?>" data-id="<?= $item->id ?>">
-                                            <?php //проверка, если текущий пользователь является указанным в визите подологом, то он может редактировать этот визит
-                                            if (($item->podolog->user_id == Yii::$app->user->id && $item->timestamp + 60 * 60 * 24 * 2 >= time()) || Yii::$app->user->can('admin')) { ?>
+                                        <?php //проверка, если текущий пользователь является указанным в визите подологом, то он может редактировать этот визит
+                                        if (($item->podolog->user_id == Yii::$app->user->id && $item->timestamp + 60 * 60 * 24 * 2 >= time())) { ?>
+                                            <div id="blockEdit_<?= $item->id ?>" data-id="<?= $item->id ?>">
+                                                <?= Html::a('Изменить посещение', ['visit/update', 'id' => $item->id], ['class' => 'btn btn-info']) ?>
                                                 <?= Countdown::widget([
                                                     'id' => 'timer_' . $item->id,
                                                     'datetime' => date('Y-m-d H:i:s O', time() + ($item->timestamp - time())),
-                                                    'format' => '\Возможность редактирования открыта: <span style=\"color: red\"\>%-D д. %-H:%-M:%-S</span> ',
+                                                    'format' => '<span style=\"color: red\"\>%-D д. %-H:%-M:%-S</span> ',
                                                     'tagName' => 'span',
                                                     'events' => [
-                                                        'finish' => 'function(){console.log($(\'#blockEdit_\' + $(this).parent().attr("data-id")).remove())}',
+                                                        'finish' => 'function(){$(\'#blockEdit_\' + $(this).parent().attr("data-id")).remove()}',
                                                     ]
                                                 ]) ?>
-                                                <?= Html::a('Изменить посещение', ['visit/update', 'id' => $item->id], ['class' => 'btn btn-info']) ?>
-                                            <?php } ?>
-                                        </div>
+                                            </div>
+                                        <?php } elseif (Yii::$app->user->can('admin')) { ?>
+                                        <div>
+                                            <?= Html::a('Изменить посещение', ['visit/update', 'id' => $item->id], ['class' => 'btn btn-info']) ?>
+                                            </div>
+                                        <?php } ?>
+
+                                        <?php //кнопка «Проблема решена» доступна админу или тому, кто создал посещение?>
+                                        <?php if ($item->podolog->user_id == Yii::$app->user->id || Yii::$app->user->can('admin')) { ?>
+                                            <div>
+                                                <?php if ($item->resolve == 0) { ?>
+                                                    <?= Html::a('Проблема решена!', ['visit/completed', 'id' => $item->id, 'card' => $model->id, 'resolve' => true], [
+                                                        'class' => 'btn btn-green'
+                                                    ]) ?>
+                                                <?php } else { ?>
+                                                    <?= Html::a('Снять отметку «Проблема решена»!', ['visit/completed', 'id' => $item->id, 'card' => $model->id, 'resolve' => false], [
+                                                        'class' => 'btn btn-default'
+                                                    ]) ?>
+                                                <?php } ?>
+                                            </div>
+                                        <?php } ?>
+
                                         <?php if (Yii::$app->user->can('admin')) { ?>
                                             <div>
-                                            <?= Html::a('Удалить', ['visit/delete', 'id' => $item->id, 'card' => $model->id], [
-                                                'class' => 'btn btn-danger',
-                                                'data' => [
-                                                    'confirm' => 'Вы уверены, что хотите удалить посещение?',
-                                                    'method' => 'post',
-                                                ],
-                                            ]) ?>
-                                        <?php } ?>
+                                                <?= Html::a('Удалить', ['visit/delete', 'id' => $item->id, 'card' => $model->id], [
+                                                    'class' => 'btn btn-danger',
+                                                    'data' => [
+                                                        'confirm' => 'Вы уверены, что хотите удалить посещение?',
+                                                        'method' => 'post',
+                                                    ],
+                                                ]) ?>
                                             </div>
+                                        <?php } ?>
                                     </div>
                                 </div>
                             </div>
@@ -242,7 +265,7 @@ $visit_number = count($visits);
                                 <div class="box">
                                     <p><b>Комментарий:</b></p>
                                     <br>
-                                    <p><?= $item->description == null ? '<span class="text-red">Не заполнено</span>' : $item->description ?></p>
+                                    <p><?= $item->description == null ? '<span>Не заполнено</span>' : $item->description ?></p>
                                 </div>
                             </div>
                         </div>

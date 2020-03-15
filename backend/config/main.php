@@ -1,4 +1,7 @@
 <?php
+
+use \kartik\datecontrol\Module;
+
 $params = array_merge(
     require __DIR__ . '/../../common/config/params.php',
     require __DIR__ . '/../../common/config/params-local.php',
@@ -40,7 +43,9 @@ return [
         'formatter' => [
             'dateFormat' => 'dd.MM.yyyy',
             'timeFormat' => 'H:i',
-            'locale' => 'ru-RU'
+            'locale' => 'ru-RU',
+            'timeZone' => 'UTC'
+
         ],
         'authManager' => [
             'class' => 'yii\rbac\DbManager', // or use 'yii\rbac\DbManager'
@@ -84,6 +89,7 @@ return [
         ],
         'assetManager' => [
             'bundles' => [
+                'language' => 'ru',
                 'kartik\form\ActiveFormAsset' => [
                     'bsDependencyEnabled' => false // do not load bootstrap assets for a specific asset bundle
                 ],

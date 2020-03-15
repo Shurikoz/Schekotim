@@ -8,8 +8,12 @@ use Yii;
  * This is the model class for table "problem".
  *
  * @property int $id
- * @property string $problem
+ * @property string $name
+ * @property string $anamnes
+ * @property string $manipulation
+ * @property string $recommendation
  */
+
 class Problem extends \yii\db\ActiveRecord
 {
     /**
@@ -28,6 +32,7 @@ class Problem extends \yii\db\ActiveRecord
         return [
             [['name'], 'required'],
             [['name'], 'string'],
+            [['anamnes', 'manipulation', 'recommendation'], 'safe'],
         ];
     }
 

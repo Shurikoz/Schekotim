@@ -32,21 +32,6 @@ class VisitController extends Controller
             ],
         ];
     }
-    
-    /**
-     * @param $insert
-     * @return bool
-     */
-    public function beforeSave($insert)
-    {
-        if (parent::beforeSave($insert)) {
-
-            //... тут ваш код
-
-            return true;
-        }
-        return false;
-    }
 
     /**
      * Lists all Visit models.
@@ -83,6 +68,7 @@ class VisitController extends Controller
      */
     public function actionCreate()
     {
+        $insert = '';
         $post = Yii::$app->request->post();
         $model = new Visit();
 
@@ -93,14 +79,12 @@ class VisitController extends Controller
 
         $model->has_come = 1;
         $model->edit = 1; //возможность редактирования - 1 можно, 0 запрещено
-        $model->timestamp = time() + 60*60*24*2; // 2 суток на редактирование
+        $model->timestamp = time() + 60 * 60 * 24 * 2; // 2 суток на редактирование
         $model->visit_time = date('H:m:i');
         $model->visit_date = date('Y-m-d');
 
-
-
         if ($model->load($post) && $model->save()) {
-//            print_r($model->load($post->next_visit_from));die;
+            print_r($model);die;
             Yii::$app->session->setFlash('success', 'Данные сохранены!');
             return $this->redirect(['card/view', 'id' => Yii::$app->request->get('id')]);
         }
@@ -113,8 +97,9 @@ class VisitController extends Controller
     }
 
     /**
-     *
+     *Отметка что пациент пришел
      * @param integer $id
+     * @param $card
      * @return mixed
      * action смены статуса визита пациента что он пришел
      * @throws NotFoundHttpException
@@ -122,13 +107,46 @@ class VisitController extends Controller
     public function actionCome($id, $card)
     {
         $model = $this->findModel($id);
-        $card = Card::find()->where(['number' => $card])->one();
+        $result = $this->redirect(['/card/view', 'id' => $card]);
         $model->has_come = 1;
-        $model->save();
-        Yii::$app->session->setFlash('success', 'Посещение зафиксировано!');
-        return $this->redirect(['/card/view', 'id' => $card->id]);
+        if ($model->save()) {
+            Yii::$app->session->setFlash('success', 'Посещение зафиксировано!');
+            return $result;
+        }
     }
 
+    /**
+     * Отметка о решении проблемы
+     * @param integer $id
+     * @param $card
+     * @param $resolve
+     * @return mixed
+     * action смены отметки о решении проблемы
+     * @throws NotFoundHttpException
+     */
+    public function actionCompleted($id, $card, $resolve)
+    {
+        $model = $this->findModel($id);
+        $result = $this->redirect(['/card/view', 'id' => $card]);
+        if ($resolve == true) {
+            $model->resolve = 1;
+            if ($model->save()) {
+                Yii::$app->session->setFlash('success', 'Проблема помечена решенной!');
+                return $result;
+            }
+        } else if ($resolve == false) {
+            $model->resolve = 0;
+            if ($model->save()) {
+                Yii::$app->session->setFlash('info', 'Проблема помечена как нерешенная.');
+                return $result;
+            }
+        } else {
+            Yii::$app->session->setFlash('danger', 'Ошибка отметки проблемы!');
+            return $result;
+        }
+        Yii::$app->session->setFlash('danger', 'Неизвестная ошибка!');
+        return $result;
+    }
 
     /**
      * Updates an existing Visit model.
@@ -183,9 +201,22 @@ class VisitController extends Controller
     /**
      * @return array|\yii\db\ActiveRecord[]
      */
-    protected function findProblem(){
+    protected function findProblem()
+    {
         $problem = Problem::find()->all();
         return $problem;
+    }
+
+    /**
+     * @return string
+     */
+    public function actionReceive($id)
+    {
+        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        if (Yii::$app->request->isAjax) {
+            $problem = Problem::find()->where(['id' => $id])->one();
+            return $problem;
+        }
     }
 
 }

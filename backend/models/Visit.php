@@ -45,8 +45,7 @@ class Visit extends \yii\db\ActiveRecord
         return [
             [['problem_id', 'address_point_id', 'podolog_id', 'city_id', 'card_number', 'used_photo', 'edit'], 'integer'],
             [['anamnes', 'manipulation', 'recommendation', 'description'], 'string'],
-            [['timestamp', 'next_visit_from', 'next_visit_by', 'visit_date', 'visit_time'], 'safe'],
-            [['resolve', 'has_come'], 'string', 'max' => 255],
+            [['resolve', 'has_come', 'timestamp', 'next_visit_from', 'next_visit_by', 'visit_date', 'visit_time'], 'safe'],
         ];
     }
 
@@ -78,6 +77,20 @@ class Visit extends \yii\db\ActiveRecord
         ];
     }
 
+
+    public function beforeSave($insert)
+    {
+        if (parent::beforeSave($insert)) {
+            $next_visit_from = $_POST["Visit"]["next_visit_from"];
+            $next_visit_by = $_POST["Visit"]["next_visit_by"];
+            $this->next_visit_from = $next_visit_from == null ? null : date("Y-m-d", strtotime($next_visit_from));
+            $this->next_visit_by = $next_visit_by == null ? null : date("Y-m-d", strtotime($next_visit_by));
+
+
+            return true;
+        }
+        return false;
+    }
 
     public function getCard()
     {

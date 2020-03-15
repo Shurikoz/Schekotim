@@ -9,8 +9,8 @@ use yii\widgets\ActiveForm;
 /* @var $model backend\models\Visit */
 /* @var $form yii\widgets\ActiveForm */
 
-$problem = ArrayHelper::map($problem, 'id', 'name');
-
+$problemName = ArrayHelper::map($problem, 'id', 'name');
+array_unshift($problemName, '');
 ?>
 <div class="visit-form">
     <div class="row">
@@ -45,8 +45,9 @@ $problem = ArrayHelper::map($problem, 'id', 'name');
         <div class="col-md-4">
             <div class="box">
                 <?= $form->field($model, 'problem_id')
-                    ->dropDownList($problem)
+                    ->dropDownList($problemName)
                     ->label('Проблема') ?>
+                <div id="errorData"></div>
             </div>
         </div>
         <div class="col-md-3">
@@ -59,18 +60,17 @@ $problem = ArrayHelper::map($problem, 'id', 'name');
     <div class="row">
         <div class="col-md-6">
             <div class="box">
-                <?= $form->field($model, 'anamnes')->textarea(['rows' => 6]) ?>
-
+                <?= $form->field($model, 'anamnes')->textarea(['value' => $problem->anamnes, 'rows' => 6]) ?>
             </div>
         </div>
         <div class="col-md-6">
             <div class="box">
-                <?= $form->field($model, 'manipulation')->textarea(['rows' => 6]) ?>
+                <?= $form->field($model, 'manipulation')->textarea(['value' => $problem->manipulation, 'rows' => 6]) ?>
             </div>
         </div>
         <div class="col-md-12">
             <div class="box">
-                <?= $form->field($model, 'recommendation')->textarea(['rows' => 6]) ?>
+                <?= $form->field($model, 'recommendation')->textarea(['value' => $problem->recommendation, 'rows' => 6]) ?>
             </div>
         </div>
         <div class="col-md-12">
@@ -79,47 +79,40 @@ $problem = ArrayHelper::map($problem, 'id', 'name');
             </div>
         </div>
     </div>
-    <hr>
+    <hr style="border-color: red">
 
-    <p class="titleNormal">Назначение следующего посещения (если необходимо)</p>
+    <?= Html::button('Назначить следующее посещение', ['class' => 'btn btn-primary setSecondVisit']) ?>
     <br>
-    <div class="row">
-        <div class="col-md-4">
-            <div class="box">
-                <?php
-                echo '<label class="control-label">Назначение даты (разделитель « - »)</label>';
-                echo DatePicker::widget([
-                    'model' => $model,
-                    'name' => 'next_visit_from',
-                    'value' => 'день-месяц-год',
-                    'type' => DatePicker::TYPE_RANGE,
-                    'name2' => 'next_visit_by',
-                    'value2' => 'день-месяц-год',
-                    'separator' => 'по',
-                    'pluginOptions' => [
-                        'autoclose' => false,
-                        'format' => 'dd-mm-yyyy',
-                    ]
-                ]);
-                ?>
-                <!--                --><? //= $form->field($model, 'next_visit_from')->textInput(['type' => 'date']) ?>
+    <br>
+    <div class="secondVisit hide">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="box">
+                    <?php
+                    echo '<label class="control-label">Назначение даты (разделитель « - »)</label>';
+                    echo DatePicker::widget([
+                        'model' => $model,
+                        'name' => 'next_visit_from',
+                        'attribute' => 'next_visit_from',
+                        'value' => 'день-месяц-год',
+                        'type' => DatePicker::TYPE_RANGE,
+                        'name2' => 'next_visit_by',
+                        'attribute2' => 'next_visit_by',
+                        'value2' => 'день-месяц-год',
+                        'separator' => 'по',
+                        'pluginOptions' => [
+                            'autoclose' => false,
+                            'format' => 'dd-mm-yyyy',
+                        ]
+                    ]);
+                    ?>
+                </div>
             </div>
         </div>
-        <div class="col-md-3">
-            <div class="box">
-                <!--                --><? //= $form->field($model, 'next_visit_by')->textInput(['type' => 'date']) ?>
-            </div>
-        </div>
+        <hr>
     </div>
-    <hr>
-
-
-    <?= $form->field($model, 'description')->textarea(['rows' => 6]) ?>
-
-    <div class="form-group">
+    <div class="form-group pull-right">
         <?= Html::submitButton('Сохранить', ['class' => 'btn btn-success']) ?>
     </div>
-
     <?php ActiveForm::end(); ?>
-
 </div>

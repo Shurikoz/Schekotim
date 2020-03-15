@@ -14,9 +14,9 @@ $this->title = 'Новое посещение';
         'onclick' => 'history.back();'
     ]) ?>
 
-    <h1><?= Html::encode($this->title) ?></h1>
+    <p class="titleNormal"><?= Html::encode($this->title) ?></p>
 
-    <?= $this->render('_form', [
+    <?= $this->render('_formCreate', [
         'model' => $model,
         'location' => $location,
         'podolog' => $podolog,

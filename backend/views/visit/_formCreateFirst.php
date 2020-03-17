@@ -36,23 +36,23 @@ array_unshift($problemName, '');
     <hr>
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'card_number')->hiddenInput(['value' => (int)Yii::$app->request->get('card_number')])->label(false); ?>
-    <?= $form->field($model, 'city_id')->hiddenInput(['value' => $location->city->id])->label(false); ?>
-    <?= $form->field($model, 'address_point_id')->hiddenInput(['value' => $location->id])->label(false); ?>
-    <?= $form->field($model, 'podolog_id')->hiddenInput(['value' => $podolog->id])->label(false); ?>
+    <?= $form->field($modelFirst, 'card_number')->hiddenInput(['value' => (int)Yii::$app->request->get('card_number')])->label(false); ?>
+    <?= $form->field($modelFirst, 'city_id')->hiddenInput(['value' => $location->city->id])->label(false); ?>
+    <?= $form->field($modelFirst, 'address_point_id')->hiddenInput(['value' => $location->id])->label(false); ?>
+    <?= $form->field($modelFirst, 'podolog_id')->hiddenInput(['value' => $podolog->id])->label(false); ?>
 
     <div class="row">
         <div class="col-md-4">
             <div class="box">
-                <?= $form->field($model, 'problem_id')
+                <?= $form->field($modelFirst, 'problem_id')
                     ->dropDownList($problemName)
-                    ->label('Проблема') ?>
-                <div id="errorData"></div>
+                    ->label('Проблема <div id="errorData" class="" style="float: right"></div>') ?>
+
             </div>
         </div>
         <div class="col-md-3">
             <div class="box">
-                <?= $form->field($model, 'has_come')->checkbox(['value' => '1', 'checked ' => true])->label(false); ?>
+                <?= $form->field($modelFirst, 'has_come')->checkbox(['value' => '1', 'checked ' => true])->label('Зафиксировать посещение'); ?>
             </div>
         </div>
     </div>
@@ -60,22 +60,22 @@ array_unshift($problemName, '');
     <div class="row">
         <div class="col-md-6">
             <div class="box">
-                <?= $form->field($model, 'anamnes')->textarea(['value' => $problem->anamnes, 'rows' => 6]) ?>
+                <?= $form->field($modelFirst, 'anamnes')->textarea(['value' => $problem->anamnes, 'rows' => 6]) ?>
             </div>
         </div>
         <div class="col-md-6">
             <div class="box">
-                <?= $form->field($model, 'manipulation')->textarea(['value' => $problem->manipulation, 'rows' => 6]) ?>
+                <?= $form->field($modelFirst, 'manipulation')->textarea(['value' => $problem->manipulation, 'rows' => 6]) ?>
             </div>
         </div>
         <div class="col-md-12">
             <div class="box">
-                <?= $form->field($model, 'recommendation')->textarea(['value' => $problem->recommendation, 'rows' => 6]) ?>
+                <?= $form->field($modelFirst, 'recommendation')->textarea(['value' => $problem->recommendation, 'rows' => 6]) ?>
             </div>
         </div>
         <div class="col-md-12">
             <div class="box">
-                <?= $form->field($model, 'description')->textarea(['rows' => 2]) ?>
+                <?= $form->field($modelFirst, 'description')->textarea(['rows' => 2]) ?>
             </div>
         </div>
     </div>
@@ -91,7 +91,7 @@ array_unshift($problemName, '');
                     <?php
                     echo '<label class="control-label">Назначение даты (разделитель « - »)</label>';
                     echo DatePicker::widget([
-                        'model' => $model,
+                        'model' => $modelFirst,
                         'name' => 'next_visit_from',
                         'attribute' => 'next_visit_from',
                         'value' => 'день-месяц-год',

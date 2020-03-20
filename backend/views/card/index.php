@@ -42,6 +42,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
                 <thead class="c-table__head c-table__head--slim">
                 <tr class="c-table__row">
+                    <th class="c-table__cell c-table__cell--head">ID</th>
                     <th class="c-table__cell c-table__cell--head">№</th>
                     <th class="c-table__cell c-table__cell--head">Город / Точка</th>
                     <th class="c-table__cell c-table__cell--head">Пациент</th>
@@ -59,8 +60,8 @@ $this->params['breadcrumbs'][] = $this->title;
                 <?php if (count($dataProvider->getModels()) != 0) { ?>
                     <?php foreach ($dataProvider->getModels() as $item) { ?>
                         <tr class="c-table__row">
+                            <td class="c-table__cell"><b><?= $item->id ?></b></td>
                             <td class="c-table__cell"><b><?= $item->number ?></b></td>
-
                             <td class="c-table__cell">
                                 <p><?= $item->city->name ?></p>
                                 <p><?= $item->addressPoint->address_point ?></p>
@@ -111,43 +112,4 @@ $this->params['breadcrumbs'][] = $this->title;
 
         </div>
     </div>
-<!--    --><?//= GridView::widget([
-//        'dataProvider' => $dataProvider,
-//        'filterModel' => $searchModel,
-//        'pager' => [
-//            'firstPageLabel' => 'Начало',
-//            'lastPageLabel' => 'Конец',
-//        ],
-//        'columns' => [
-////                ['class' => 'yii\grid\SerialColumn'],
-////                'id',
-////                'user_id',
-//            'number',
-//            'city',
-//            'address_point',
-//            'doctor:ntext',
-//            'name',
-//            'surname',
-//            'middle_name',
-//            'birthday',
-//            'description:ntext',
-//            'created_at',
-//            [
-//                'class' => 'yii\grid\ActionColumn',
-//                'template' => '{update}',
-//                'visible' => Yii::$app->user->can('admin'),
-//
-//            ],
-//            [
-//                'class' => 'yii\grid\ActionColumn',
-//                'template' => '{delete}',
-//                'visible' => Yii::$app->user->can('admin'),
-//
-//            ],
-//            [
-//                'class' => 'yii\grid\ActionColumn',
-//                'template' => '{view}',
-//            ]
-//        ],
-//    ]); ?>
 </div>

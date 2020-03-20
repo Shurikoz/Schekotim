@@ -6,6 +6,7 @@ use backend\models\Photo;
 use backend\models\Visit;
 use backend\models\VisitSearch;
 use Yii;
+use yii\data\Pagination;
 use yii\filters\VerbFilter;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -36,16 +37,14 @@ class PhotoController extends Controller
      */
     public function actionIndex()
     {
-//        $searchModel = new PhotoSearch();
-        $searchModel = new VisitSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-        $model = Visit::find()->with('photo')->all();
+        $visits = Visit::find();
+        $pages = new Pagination(['totalCount' => $visits->count(), 'pageSizeLimit' => [1, 60], 'defaultPageSize' => 20]);
+        $model = $visits->offset($pages->offset)->limit($pages->limit)->orderBy(['id' => SORT_DESC])->with('photo')->all();
 
-//        return $this->render('index', [
-//            'searchModel' => $searchModel,
-//            'dataProvider' => $dataProvider,
-//        ]);
-        return $this->render('index', compact('model'));
+        return $this->render('index', [
+            'model' => $model,
+            'pages' => $pages
+        ]);
     }
 
     public function actionUsed($id)

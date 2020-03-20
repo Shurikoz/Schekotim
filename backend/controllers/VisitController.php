@@ -3,7 +3,7 @@
 namespace backend\controllers;
 
 use backend\models\AddressPoint;
-use backend\models\Card;
+use backend\models\Photo;
 use backend\models\Podolog;
 use backend\models\Problem;
 use backend\models\Visit;
@@ -12,6 +12,7 @@ use Yii;
 use yii\filters\VerbFilter;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
+use yii\web\UploadedFile;
 
 /**
  * VisitController implements the CRUD actions for Visit model.
@@ -62,32 +63,89 @@ class VisitController extends Controller
     }
 
     /**
+     * создание нового фактического посещения
      * Creates a new Visit model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate()
+    public function actionCreateFirst()
     {
-        $insert = '';
-        $post = Yii::$app->request->post();
         $model = new Visit();
+        $photoBefore = new Photo();
+        $photoAfter = new Photo();
 
         //получим id точки из аккаунта текущего пользователя
         $addressPoint = Yii::$app->user->identity->address_point_id;
         $location = AddressPoint::find()->where(['id' => $addressPoint])->with('city')->one();
         $podolog = Podolog::find()->where(['user_id' => Yii::$app->user->identity->id])->one();
 
+        //присвоим некоторые стандартные значения
+        //для первого посещения
         $model->has_come = 1;
         $model->edit = 1; //возможность редактирования - 1 можно, 0 запрещено
         $model->timestamp = time() + 60 * 60 * 24 * 2; // 2 суток на редактирование
         $model->visit_time = date('H:m:i');
         $model->visit_date = date('Y-m-d');
 
-        if ($model->load($post) && $model->save()) {
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            $photoBefore->before = UploadedFile::getInstances($photoBefore, 'before');
+            $photoAfter->after = UploadedFile::getInstances($photoAfter, 'after');
+
+            //передадим в модель параметры:
+            //1. саму модель
+            //2. visitId
+            //3. $location->address_point
+            //4. cardNumber
+            //5. dateVisit
+            $photoBefore->uploadBefore($model->id, $location->address_point, Yii::$app->request->get('card_number'), $model->visit_date);
+            $photoAfter->uploadAfter($model->id, $location->address_point, Yii::$app->request->get('card_number'), $model->visit_date);
+
             Yii::$app->session->setFlash('success', 'Данные сохранены!');
             return $this->redirect(['card/view', 'id' => Yii::$app->request->get('id')]);
         }
-        return $this->render('create', [
+        return $this->render('createFirst', [
+            'model' => $model,
+            'photoBefore' => $photoBefore,
+            'photoAfter' => $photoAfter,
+            'location' => $location,
+            'podolog' => $podolog,
+            'problem' => $this->findProblem(),
+        ]);
+    }
+
+    /**
+     * создание нового будущего посещения на основе выбранного
+     * Creates a new Visit model.
+     * If creation is successful, the browser will be redirected to the 'view' page.
+     * @return mixed
+     * @throws NotFoundHttpException
+     */
+    public function actionCreateSecond($id, $card)
+    {
+        $modelFirst = $this->findModel($id);
+
+        $model = new Visit();
+        $model->setAttributes($modelFirst->attributes);
+
+        //получим id точки из аккаунта текущего пользователя
+        $addressPoint = Yii::$app->user->identity->address_point_id;
+        $location = AddressPoint::find()->where(['id' => $addressPoint])->with('city')->one();
+        $podolog = Podolog::find()->where(['user_id' => Yii::$app->user->identity->id])->one();
+
+        //присвоим некоторые стандартные значения
+        //для первого посещения
+        $model->has_come = 0;
+        $model->edit = 1; //возможность редактирования - 1 можно, 0 запрещено
+        //$model->timestamp = time() + 60 * 60 * 24 * 2; // 2 суток на редактирование
+        $model->visit_time = null;
+        $model->visit_date = null;
+
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+//            print_r($modelSecond);die;
+            Yii::$app->session->setFlash('success', 'Данные сохранены!');
+            return $this->redirect(['card/view', 'id' => Yii::$app->request->get('card')]);
+        }
+        return $this->render('createSecond', [
             'model' => $model,
             'location' => $location,
             'podolog' => $podolog,
@@ -120,7 +178,6 @@ class VisitController extends Controller
      * @param $card
      * @param $resolve
      * @return mixed
-     * action смены отметки о решении проблемы
      * @throws NotFoundHttpException
      */
     public function actionCompleted($id, $card, $resolve)
@@ -146,11 +203,8 @@ class VisitController extends Controller
                 Yii::$app->session->setFlash('info', 'Проблема помечена как нерешенная.');
                 return $result;
             }
-        } else {
-            Yii::$app->session->setFlash('danger', 'Ошибка отметки проблемы!');
-            return $result;
         }
-        Yii::$app->session->setFlash('danger', 'Неизвестная ошибка!');
+        Yii::$app->session->setFlash('danger', 'Ошибка отметки проблемы!');
         return $result;
     }
 
@@ -164,11 +218,21 @@ class VisitController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+        $addressPoint = Yii::$app->user->identity->address_point_id;
+        $location = AddressPoint::find()->where(['id' => $addressPoint])->with('city')->one();
+        $podolog = Podolog::find()->where(['user_id' => Yii::$app->user->identity->id])->one();
+
+        $model->visit_time = date('H:m:i');
+        $model->visit_date = date('Y-m-d');
+
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            return $this->redirect(['card/view', 'id' => Yii::$app->request->get('card')]);
         }
         return $this->render('update', [
             'model' => $model,
+            'location' => $location,
+            'podolog' => $podolog,
+            'problem' => $this->findProblem(),
         ]);
     }
 
@@ -183,7 +247,18 @@ class VisitController extends Controller
      */
     public function actionDelete($id, $card)
     {
-        $this->findModel($id)->delete();
+        $model = $this->findModel($id);
+        $modelPhoto = Photo::find()->where(['visit_id' => $model->id])->all();
+        $model->delete();
+        foreach ($modelPhoto as $item) {
+            $item->delete();
+        }
+
+        //TODO дописать удаление папки с файлами при переносе на хостинг
+//        $dir = Yii::getAlias('@webroot/upload/photo/') . $id;
+//        chmod($dir, 0777);
+//        unlink($dir);
+
         Yii::$app->session->setFlash('success', 'Посещение удалено!');
         return $this->redirect(['/card/view', 'id' => $card]);
     }

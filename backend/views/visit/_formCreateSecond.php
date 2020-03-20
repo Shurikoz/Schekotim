@@ -47,14 +47,32 @@ array_unshift($problemName, '');
                 <?= $form->field($model, 'problem_id')
                     ->dropDownList($problemName)
                     ->label('Проблема <div id="errorData" class="" style="float: right"></div>') ?>
-
             </div>
         </div>
-<!--        <div class="col-md-3">-->
-<!--            <div class="box">-->
-<!--                --><?//= $form->field($model, 'has_come')->checkbox(['value' => '1', 'checked ' => true])->label('Зафиксировать посещение'); ?>
-<!--            </div>-->
-<!--        </div>-->
+        <div class="col-md-4">
+            <div class="box">
+                <?php
+                echo '<p><label class="control-label">Назначение даты (разделитель « . »)</label></p>';
+                echo DatePicker::widget([
+                    'model' => $model,
+                    'name' => 'next_visit_from',
+                    'attribute' => 'next_visit_from',
+                    'value' => date("m.d.y"),
+                    'type' => DatePicker::TYPE_RANGE,
+                    'name2' => 'next_visit_by',
+                    'attribute2' => 'next_visit_by',
+                    'value2' => date("m.d.y"),
+                    'separator' => 'по',
+                    'options' => ['placeholder' => 'с день-мес-год'],
+                    'options2' => ['placeholder' => 'до день-мес-год'],
+                    'pluginOptions' => [
+                        'autoclose' => false,
+                        'format' => 'dd.mm.yyyy',
+                    ]
+                ]);
+                ?>
+            </div>
+        </div>
     </div>
     <hr>
     <div class="row">
@@ -79,38 +97,7 @@ array_unshift($problemName, '');
             </div>
         </div>
     </div>
-    <hr style="border-color: red">
-
-    <?= Html::button('Назначить следующее посещение', ['class' => 'btn btn-primary setSecondVisit']) ?>
-    <br>
-    <br>
-    <div class="secondVisit hide">
-        <div class="row">
-            <div class="col-md-4">
-                <div class="box">
-                    <?php
-                    echo '<label class="control-label">Назначение даты (разделитель « - »)</label>';
-                    echo DatePicker::widget([
-                        'model' => $model,
-                        'name' => 'next_visit_from',
-                        'attribute' => 'next_visit_from',
-                        'value' => 'день-месяц-год',
-                        'type' => DatePicker::TYPE_RANGE,
-                        'name2' => 'next_visit_by',
-                        'attribute2' => 'next_visit_by',
-                        'value2' => 'день-месяц-год',
-                        'separator' => 'по',
-                        'pluginOptions' => [
-                            'autoclose' => false,
-                            'format' => 'dd-mm-yyyy',
-                        ]
-                    ]);
-                    ?>
-                </div>
-            </div>
-        </div>
-        <hr>
-    </div>
+    <hr>
     <div class="form-group pull-right">
         <?= Html::submitButton('Сохранить', ['class' => 'btn btn-success']) ?>
     </div>

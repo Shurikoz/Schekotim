@@ -12,12 +12,15 @@ $this->title = 'Редактирование посещения, карта №:
 
     <h1><?= Html::encode($this->title) ?></h1>
 
-    <pre>
-        <?= print_r($model);?>
-    </pre>
+<!--    <pre>-->
+<!--        --><?//= print_r($model);?>
+<!--    </pre>-->
 
-<!--    --><?//= $this->render('_formUpdate', [
-//        'model' => $model,
-//    ]) ?>
+    <?= $this->render('_formUpdate', [
+        'model' => $model,
+        'location' => $location,
+        'podolog' => $podolog,
+        'problem' => $problem,
+    ]) ?>
 
 </div>

@@ -17,8 +17,9 @@ $this->title = 'Новое посещение';
     <p class="titleNormal"><?= Html::encode($this->title) ?></p>
 
     <?= $this->render('_formCreateFirst', [
-        'modelFirst' => $modelFirst,
-        'modelSecond' => $modelSecond,
+        'model' => $model,
+        'photoBefore' => $photoBefore,
+        'photoAfter' => $photoAfter,
         'location' => $location,
         'podolog' => $podolog,
         'problem' => $problem,

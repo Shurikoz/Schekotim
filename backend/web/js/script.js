@@ -28,11 +28,6 @@ $(document).on('click', 'tr.visitBox', function (e) {
     $('tr.visitInfoBlock').not(b).addClass('hide');
 });
 
-//функция для показа формы повторного посещения (visit/create)
-$(document).on('click', '.setSecondVisit', function () {
-    $('.secondVisit').toggleClass('hide');
-});
-
 //функция для загрузки "рыбы" при заполнении полей в создании посещения (visit/create)
 $("#visit-problem_id").on('change',function(){
     let getValue = $(this).val();
@@ -42,7 +37,7 @@ $("#visit-problem_id").on('change',function(){
         data:{},
         method: "POST",
         beforeSend: function (xhr) {
-            $("#errorData").removeClass('textRed').html('Загрузка...');
+            $("#errorData").removeClass('textRed').addClass('errorData').html('');
         }
     }).done(function (data) {
         if (data != null){
@@ -54,9 +49,14 @@ $("#visit-problem_id").on('change',function(){
             $("#visit-manipulation").val('');
             $("#visit-recommendation").val('');
         }
-        $("#errorData").removeClass('textRed').html('');
+        $("#errorData").removeClass('textRed errorData').html('');
     }).fail(function (data) {
-        $("#errorData").addClass('text-red').html('Во время загрузки данных произошла ошибка!');
+        $("#errorData").removeClass('errorData').addClass('text-red').html('Ошибка загрузки данных!');
     });
 });
 
+//функция для автопоиска после изменения инпута
+$("#submitFirstVisit").click(function () {
+    $('.wrap').fadeTo(500, 0.2).addClass();
+    $('body').append('<div class="loader"></div>');
+});

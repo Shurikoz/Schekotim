@@ -2,6 +2,8 @@
 
 use yii\helpers\Html;
 use yii\widgets\DetailView;
+use yii\widgets\LinkPager;
+use yii\helpers\Url;
 
 /* @var $this yii\web\View */
 /* @var $searchModel backend\models\PhotoSearch */
@@ -9,19 +11,30 @@ use yii\widgets\DetailView;
 
 $this->title = 'Фотографии работ';
 $this->params['breadcrumbs'][] = $this->title;
+$count_visits = ($_GET['per-page']) ? $_GET['per-page'] : 20;
+
 ?>
 <div class="photo-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
+    <br>
+    <br>
+    <div class="pull-left visitsOnPage">
+        <span>Посещений на странице:</span>
+        <?= Html::a(20, Url::current(['per-page' => 20]), ['class' => ($count_visits == 20) ? 'active' : '']) ?>
+        <?= Html::a(40, Url::current(['per-page' => 40]), ['class' => ($count_visits == 40) ? 'active' : '']) ?>
+        <?= Html::a(60, Url::current(['per-page' => 60]), ['class' => ($count_visits == 60) ? 'active' : '']) ?>
+    </div>
+    <br>
+    <br>
 
-    <br><br>
-
-    <?php foreach (array_reverse($model) as $item) { ?>
-        <h4>ID: <?= $item->id ?></h4>
+    <?php foreach ($model as $item) { ?>
+        <br>
         <div class="box">
             <?= DetailView::widget([
                 'model' => $item,
                 'attributes' => [
+                    'id',
                     'anamnes',
                     'manipulation',
                     'recommendation',
@@ -34,7 +47,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <?php if (!$item->used_photo == 1) { ?>
             <div>
                 <?= Html::a('Использовано', ['photo/used', 'id' => $item->id], [
-                    'class' => 'btn btn-success',
+                    'class' => 'btn btn-green',
                     'data' => [
                         'confirm' => 'Отметить фото использованными?',
                     ],
@@ -80,7 +93,12 @@ $this->params['breadcrumbs'][] = $this->title;
         </div>
 
     <?php } ?>
-
+    <?= LinkPager::widget([
+        'pagination' => $pages,
+        'maxButtonCount' => 5,
+        'firstPageLabel' => 'Начало',
+        'lastPageLabel' => 'Конец',
+    ]); ?>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <!--    --><? //= GridView::widget([

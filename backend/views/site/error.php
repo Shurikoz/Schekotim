@@ -10,9 +10,9 @@ use yii\helpers\Html;
 $this->title = $name;
 ?>
 <div class="site-error">
-
-    <h1><?= Html::encode($this->title) ?></h1>
-
+<!--    --><?//= Html::encode($this->title) ?>
+    <h1>Ошибка #404</h1>
+<h3>Страница не найдена</h3>
     <div class="alert alert-danger">
         <?= nl2br(Html::encode($message)) ?>
     </div>

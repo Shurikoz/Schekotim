@@ -293,7 +293,8 @@ a.desc:after {
 .glyphicon-remove,
 .glyphicon-hourglass,
 .glyphicon-ok,
-.glyphicon-remove-circle {
+.glyphicon-remove-circle,
+.glyphicon-camera{
 font-size: 22px;
 }
 
@@ -301,7 +302,8 @@ font-size: 22px;
     border-left-color: #d84248;
 }
 
-.glyphicon-remove{
+.glyphicon-remove,
+.glyphicon-camera{
     color: #d84248;
 }
 
@@ -415,8 +417,14 @@ font-size: 22px;
     color: #333;
     text-decoration: none;
 }
+.visitsOnPage {
+    padding: 10px 0 20px 20px;
+    color: #333;
+    text-decoration: none;
+}
 
-.cardsOnPage .active {
+.cardsOnPage .active,
+.visitsOnPage .active{
     border-radius: 50%;
     height: 30px;
     width: 30px;
@@ -426,7 +434,8 @@ font-size: 22px;
     color: #fff;
 }
 
-.cardsOnPage a {
+.cardsOnPage a,
+.visitsOnPage a{
     margin: 0 6px;
     color: #333;
     border-radius: 50%;
@@ -436,7 +445,8 @@ font-size: 22px;
     padding: 5px 0 0 6px;
 }
 
-.cardsOnPage a:hover {
+.cardsOnPage a:hover,
+.visitsOnPage a:hover{
     text-decoration: none;
     border-radius: 50%;
     height: 30px;
@@ -548,4 +558,28 @@ font-size: 22px;
 .userStatus div {
     float: left;
     margin-left: 10px;
+}
+
+.errorData {
+    background-image: url("../images/loader.gif");
+    width: 24px;
+    height: 24px;
+    margin-left: 10px;
+    margin-top: -4px;
+}
+
+.timerBox{
+    border: 1px solid #a9a9a9;
+    border-radius: 3px;
+    padding: 5px;
+}
+
+.loader{
+    background-image: url("../images/loader.gif");
+    width: 24px;
+    height: 24px;
+    top: 50%;
+    left: 50%;
+    display: block;
+    position: absolute;
 }

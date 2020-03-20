@@ -17,6 +17,7 @@ use Yii;
  * @property string $middle_name
  * @property string $birthday
  * @property string $created_at
+ * @property string $phone
  */
 class Card extends \yii\db\ActiveRecord
 {
@@ -34,8 +35,9 @@ class Card extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
+            ['phone', 'match', 'pattern' => '/^\+7\s\([0-9]{3}\)\s[0-9]{3}\s[0-9]{2}\s[0-9]{2}$/', 'message' => 'Неправильно указан номер' ],
             [['city_id', 'address_point_id', 'user_id', 'number'], 'integer'],
-            [['number'], 'required'],
+            [['name', 'surname', 'middle_name', 'number', 'phone', 'user_id', 'birthday'], 'required'],
             [['birthday', 'created_at'], 'safe'],
             [['name', 'surname', 'middle_name'], 'string', 'max' => 255],
             [['number'], 'unique'],
@@ -59,6 +61,7 @@ class Card extends \yii\db\ActiveRecord
             'middle_name' => 'Отчество',
             'birthday' => 'День рождения',
             'created_at' => 'Дата создания',
+            'phone' => 'Телефон',
         ];
     }
 

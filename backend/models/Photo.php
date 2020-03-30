@@ -3,12 +3,11 @@
 namespace backend\models;
 
 use Yii;
-use yii\web\UploadedFile;
-use yii\imagine\Image;
 use yii\db\ActiveRecord;
+use yii\imagine\Image;
 
 /**
- * This is the model class for table "photo_visit".
+ * This is the model class for table "photo".
  *
  * @property int $id
  * @property int $visit_id
@@ -21,6 +20,9 @@ class Photo extends ActiveRecord
 
     public $before;
     public $after;
+
+    public $onePhotoBefore;
+    public $onePhotoAfter;
 
 
     /**
@@ -40,18 +42,16 @@ class Photo extends ActiveRecord
             [['visit_id'], 'integer'],
             [['url', 'thumbnail'], 'string'],
 
-            ['before', 'image',
+            [['before', 'after'], 'image',
                 'extensions' => ['jpg', 'jpeg'],
                 'checkExtensionByMimeType' => true,
                 'maxFiles' => 5,
                 'tooMany' => 'Вы можете загрузить не более 5 файлов'
             ],
 
-            ['after', 'image',
+            [['onePhotoBefore', 'onePhotoAfter'], 'image',
                 'extensions' => ['jpg', 'jpeg'],
-                'checkExtensionByMimeType' => true,
-                'maxFiles' => 5,
-                'tooMany' => 'Вы можете загрузить не более 5 файлов'
+                'checkExtensionByMimeType' => true
             ]
         ];
     }
@@ -66,10 +66,13 @@ class Photo extends ActiveRecord
             'visit_id' => 'Номер посещения',
             'url' => 'Фотография',
             'thumbnail' => 'Превью',
+            'onePhotoBefore' => 'Добавить фото',
+            'onePhotoAfter' => 'Добавить фото'
         ];
     }
 
     /**
+     * Функция добавления до 5 фото "До обработки" при создании нового посещения
      * @param $model
      * @param $visitId
      * @param $addressPoint
@@ -158,6 +161,14 @@ class Photo extends ActiveRecord
         }
     }
 
+    /**
+     * Функция добавления до 5 фото "После обработки" при создании нового посещения
+     * @param $visitId
+     * @param $addressPoint
+     * @param $cardNumber
+     * @param $dateVisit
+     * @return bool
+     */
     public function uploadAfter($visitId, $addressPoint, $cardNumber, $dateVisit)
     {
         if ($this->validate()) {
@@ -239,6 +250,87 @@ class Photo extends ActiveRecord
         }
     }
 
+    public function uploadOnephotobefore($visitId, $addressPoint, $cardNumber, $dateVisit)
+    {
+        if ($this->validate()) {
+            $dir = 'upload/photo/' . $visitId;
+            if (!file_exists($dir)) {
+                mkdir($dir, 0777, true);
+                mkdir($dir . '/temp', 0777, true);
+                mkdir($dir . '/before', 0777, true);
+                mkdir($dir . '/after', 0777, true);
+                mkdir($dir . '/thumbBefore', 0777, true);
+                mkdir($dir . '/thumbAfter', 0777, true);
+            } elseif (!file_exists('upload/photo/' . $visitId . '/temp')){
+                mkdir($dir . '/temp', 0777, true);
+            } elseif (!file_exists('upload/photo/' . $visitId . '/after')){
+                mkdir($dir . '/after', 0777, true);
+            } elseif (!file_exists('upload/photo/' . $visitId . '/thumbAfter')){
+                mkdir($dir . '/thumbAfter', 0777, true);
+            }
+
+            $fileName = $this->randomFileName($this->onePhotoBefore->extension);
+            $this->onePhotoBefore->saveAs($dir . '/temp/' . $fileName);
+die;
+            //изображение в папке temp
+            $tempImage = Yii::getAlias($dir . '/temp/' . $fileName);
+
+            //параметры текста для фото
+            $text = '
+    Точка: ' . $addressPoint . '
+    Пациент: ' . $cardNumber . '
+    Дата: ' . $dateVisit;
+
+            $fontFile = Yii::getAlias('@webroot/fonts/Phenomena-Regular.otf');
+            $start = [0, 0];
+            $fontOptions = [
+                'size' => 30,    // Размер шрифта
+                'color' => '0b9341', // цвет шрифта
+            ];
+
+            //параметры логотипа
+            $watermark = Yii::getAlias('@webroot/images/logoImage.png');
+            $size = getimagesize($tempImage); // Определяем размер картинки
+            $imageWidth = $size[0]; // Ширина картинки
+            $imageHeight = $size[1]; // Высота картинки
+            $watermarkPositionLeft = $imageWidth - 386; // Новая позиция watermark по оси X (горизонтально)
+            $watermarkPositionTop = $imageHeight - 113; // Новая позиция watermark по оси Y (вертикально)
+
+            //создадим миниатюру
+            $thumb = $dir . '/thumbAfter/' . $fileName;
+            Image::thumbnail($tempImage, 120, 120)
+                ->save(Yii::getAlias($thumb), ['quality' => 100]);
+
+            //наложим логотип
+            Image::watermark($tempImage, $watermark, [$watermarkPositionLeft, $watermarkPositionTop])
+                ->save($tempImage, ['quality' => 100]);
+
+            //наложим текст
+            $url = $dir . '/after/' . $fileName;
+            Image::text($tempImage, $text, $fontFile, $start, $fontOptions)
+                ->save(Yii::getAlias($url), ['quality' => 100]);
+
+            //сохраним в бд
+            $model = new Photo();
+            $model->visit_id = $visitId;
+            $model->url = '/' . $dir . '/after/' . $fileName;
+            $model->thumbnail = '/' . $dir . '/thumbAfter/' . $fileName;
+            $model->made = 'after';
+            $model->save(false);
+
+            //очистим папку temp
+            if (file_exists('upload/photo/' . $visitId . '/temp/')) {
+                foreach (glob('upload/photo/' . $visitId . '/temp/*') as $file) {
+                    unlink($file);
+                }
+            }
+            return true;
+        } else {
+            return false;
+        }
+
+    }
+
     private function randomFileName($extension = false)
     {
         $extension = $extension ? '.' . $extension : '';
@@ -248,11 +340,6 @@ class Photo extends ActiveRecord
         } while (file_exists($file));
         return $file;
     }
-
-    public function fileSizeValidate($array){
-        print_r($array);
-    }
-
 
     public function getVisit()
     {

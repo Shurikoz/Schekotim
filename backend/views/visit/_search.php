@@ -25,6 +25,8 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'anamnes') ?>
 
+    <?= $form->field($model, 'used_photo') ?>
+
     <?php // echo $form->field($model, 'manipulation') ?>
 
     <?php // echo $form->field($model, 'recommendation') ?>

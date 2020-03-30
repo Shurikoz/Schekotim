@@ -46,6 +46,9 @@ class CardSearch extends Card
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+            'pagination' => [
+                'pageSizeLimit' => [1, 60],
+            ],
             'sort'=> ['defaultOrder' => ['number' => SORT_DESC]]// Отсортируем по убыванию
         ]);
 

@@ -84,7 +84,7 @@ array_unshift($problemName, '');
         </div>
         <div class="col-md-6">
             <div class="box">
-                <?= $form->field($photoAfter, 'after[]')->fileInput(['multiple' => true, 'accept' => 'image/*', 'class' => ['tratatata']])->label('После обработки') ?>
+                <?= $form->field($photoAfter, 'after[]')->fileInput(['multiple' => true, 'accept' => 'image/*'])->label('После обработки') ?>
             </div>
         </div>
     </div>

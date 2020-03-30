@@ -1,9 +1,10 @@
 <?php
 
-use kartik\date\DatePicker;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
+use yii\helpers\Url;
 use yii\widgets\ActiveForm;
+use yii\widgets\Pjax;
 
 /* @var $this yii\web\View */
 /* @var $model backend\models\Visit */
@@ -11,6 +12,7 @@ use yii\widgets\ActiveForm;
 
 $problemName = ArrayHelper::map($problem, 'id', 'name');
 array_unshift($problemName, '');
+$card_id = (int)Yii::$app->request->get('card_number');
 ?>
 <div class="visit-form">
     <div class="row">
@@ -34,9 +36,9 @@ array_unshift($problemName, '');
         </div>
     </div>
     <hr>
-    <?php $form = ActiveForm::begin(); ?>
+    <?php $form = ActiveForm::begin(['id' => 'formUpdate']); ?>
 
-    <?= $form->field($model, 'card_number')->hiddenInput(['value' => (int)Yii::$app->request->get('card_number')])->label(false); ?>
+    <?= $form->field($model, 'card_number')->hiddenInput(['value' => $card_id])->label(false); ?>
     <?= $form->field($model, 'city_id')->hiddenInput(['value' => $location->city->id])->label(false); ?>
     <?= $form->field($model, 'address_point_id')->hiddenInput(['value' => $location->id])->label(false); ?>
     <?= $form->field($model, 'podolog_id')->hiddenInput(['value' => $podolog->id])->label(false); ?>
@@ -80,8 +82,112 @@ array_unshift($problemName, '');
         </div>
     </div>
     <hr>
+
     <div class="form-group pull-right">
         <?= Html::submitButton('Сохранить', ['class' => 'btn btn-success']) ?>
     </div>
     <?php ActiveForm::end(); ?>
 </div>
+
+<?php //$photo = ActiveForm::begin(['options' => ['data-pjax' => true]]); ?>
+
+<?php Pjax::begin(['timeout' => 5000, 'id' => 'photoEdit', 'enablePushState' => false]); ?>
+
+<div id="photoForm">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="titleNormal">Фотографии</div>
+            <br>
+        </div>
+        <div class="col-md-6">
+            <p><b>Фото до обработки</b></p>
+            <?php for ($i = 0; $i <= 4; $i++) { ?>
+                <?php if ($photoBefore[$i] != null) { ?>
+                    <div class="col-md-6" style="margin-bottom: 20px ">
+                        <div id="box_<?= $i?>" class="box">
+                            <span><?= Html::a('<img src="' . $photoBefore[$i]->thumbnail . '">', $photoBefore[$i]->url, ['target' => '_blank', 'data-pjax' => '0']) ?></span>
+                            <span style="margin-left: 20px">
+                                <?= Html::a('<span class="glyphicon glyphicon-trash"></span>', ['#'], [
+                                    'class' => 'btn btn-sm btn-info',
+                                    'onclick' =>
+                                    "
+                                    if (confirm('Вы уверены, что хотите удалить эту фотографию?')) {    
+                                        $.ajax({
+                                        type:'POST',
+                                        cache: false,
+                                        url: '" . Url::to(['visit/delete-photo', 'id' => $photoBefore[$i]->id]) . "',
+                                        success: function() {
+                                            $('#box_' + '$i').remove();
+                                            $.pjax.reload({container:'#photoEdit'});
+                                        }
+                                        });
+                                    }
+                                    return false;
+                                ",
+                                ]); ?>
+                            </span>
+                        </div>
+                    </div>
+                <?php } ?>
+            <?php } ?>
+            <?php if (count($photoBefore) < 5) { ?>
+                <div class="col-md-12">
+
+                    <?php $photo = ActiveForm::begin(['id' => 'addOnePhotoBefore', 'options' => ['data-pjax' => true, 'data-id' => $model->id, 'data-card' => $card_id]]); ?>
+                        <?= $photo->field($onePhotoBefore, 'onePhotoBefore')->fileInput(['data-id' => $model->id]) ?>
+                    <div class="uploadBtnBefore">
+                        <?= Html::submitButton('Загрузить', ['class' => 'btn btn-sm btn-primary']) ?>
+                    </div>
+                    <?php ActiveForm::end(); ?>
+
+                </div>
+            <?php } ?>
+        </div>
+        <div class="col-md-6">
+            <p><b>Фото после обработки</b></p>
+            <?php for ($i = 0; $i <= 4; $i++) { ?>
+                <?php if ($photoAfter[$i] != null) { ?>
+                    <div class="col-md-6" style="margin-bottom: 20px ">
+                        <div class="box">
+                            <span><?= Html::a('<img src="' . $photoAfter[$i]->thumbnail . '">', $photoAfter[$i]->url, ['target' => '_blank', 'data-pjax' => '0']) ?></span>
+                            <span style="margin-left: 20px">
+                            <?= Html::a('<span class="glyphicon glyphicon-trash"></span>', ['#'], [
+                                'class' => 'btn btn-sm btn-info',
+                                'onclick' =>
+                                    "
+                                    if (confirm('Вы уверены, что хотите удалить эту фотографию?')) {    
+                                        $.ajax({
+                                        type:'POST',
+                                        cache: false,
+                                        url: '" . Url::to(['visit/delete-photo', 'id' => $photoAfter[$i]->id]) . "',
+                                        success: function() {
+                                            $('#box_' + '$i').remove();
+                                            $.pjax.reload({container:'#photoEdit'});
+                                        }
+                                        });
+                                    }
+                                    return false;
+                                ",
+                            ]); ?>
+
+                        </span>
+                        </div>
+                    </div>
+                <?php } ?>
+            <?php } ?>
+            <?php if (count($photoAfter) < 5) { ?>
+                <div class="col-md-12">
+                    <?php $photo = ActiveForm::begin(['id' => 'addOnePhotoAfter', 'options' => ['data-pjax' => true, 'data-id' => $model->id]]); ?>
+                        <?= $photo->field($onePhotoAfter, 'onePhotoAfter')->fileInput() ?>
+                    <div class="uploadBtnAfter">
+                        <?= Html::submitButton('Загрузить', ['class' => 'btn btn-sm btn-primary']) ?>
+                    </div>
+
+                    <?php ActiveForm::end(); ?>
+                </div>
+            <?php } ?>
+        </div>
+    </div>
+</div>
+<?php Pjax::end(); ?>
+

@@ -675,12 +675,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/kartik-v/yii2-widget-datepicker.git",
-                "reference": "d75bfb12918b29902d96ecf8decd7e40b007d77f"
+                "reference": "fada92bc506d382ea3367daac6a1f7a9adf434b2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/kartik-v/yii2-widget-datepicker/zipball/d75bfb12918b29902d96ecf8decd7e40b007d77f",
-                "reference": "d75bfb12918b29902d96ecf8decd7e40b007d77f",
+                "url": "https://api.github.com/repos/kartik-v/yii2-widget-datepicker/zipball/fada92bc506d382ea3367daac6a1f7a9adf434b2",
+                "reference": "fada92bc506d382ea3367daac6a1f7a9adf434b2",
                 "shasum": ""
             },
             "require": {
@@ -721,7 +721,7 @@
                 "widget",
                 "yii2"
             ],
-            "time": "2019-08-23T17:23:20+00:00"
+            "time": "2020-03-20T14:21:31+00:00"
         },
         {
             "name": "mdmsoft/yii2-admin",
@@ -729,12 +729,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/mdmsoft/yii2-admin.git",
-                "reference": "984d4c3bb83214807630645148bd4edc2764273e"
+                "reference": "f4029481b7574265bf6c1848e5bb5344f2952996"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mdmsoft/yii2-admin/zipball/984d4c3bb83214807630645148bd4edc2764273e",
-                "reference": "984d4c3bb83214807630645148bd4edc2764273e",
+                "url": "https://api.github.com/repos/mdmsoft/yii2-admin/zipball/f4029481b7574265bf6c1848e5bb5344f2952996",
+                "reference": "f4029481b7574265bf6c1848e5bb5344f2952996",
                 "shasum": ""
             },
             "require": {
@@ -779,7 +779,7 @@
                 "rbac",
                 "yii"
             ],
-            "time": "2020-03-10T09:33:44+00:00"
+            "time": "2020-03-21T16:25:42+00:00"
         },
         {
             "name": "rmrevin/yii2-fontawesome",
@@ -1177,12 +1177,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/yiisoft/yii2-framework.git",
-                "reference": "3c265aafd4798766f5c46b0787a9ccbe4f21fecb"
+                "reference": "dadd2c12f3f71fd57d6b4a403931082fca39d662"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/yiisoft/yii2-framework/zipball/3c265aafd4798766f5c46b0787a9ccbe4f21fecb",
-                "reference": "3c265aafd4798766f5c46b0787a9ccbe4f21fecb",
+                "url": "https://api.github.com/repos/yiisoft/yii2-framework/zipball/dadd2c12f3f71fd57d6b4a403931082fca39d662",
+                "reference": "dadd2c12f3f71fd57d6b4a403931082fca39d662",
                 "shasum": ""
             },
             "require": {
@@ -1283,7 +1283,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2020-03-12T21:15:57+00:00"
+            "time": "2020-03-26T20:42:47+00:00"
         },
         {
             "name": "yiisoft/yii2-bootstrap",
@@ -1711,16 +1711,16 @@
         },
         {
             "name": "codeception/phpunit-wrapper",
-            "version": "6.8.0",
+            "version": "6.8.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Codeception/phpunit-wrapper.git",
-                "reference": "20e054e9cee8de0523322367bcccde8e6a3db263"
+                "reference": "ca6e94c6dadc19db05698d4e0d84214e570ce045"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Codeception/phpunit-wrapper/zipball/20e054e9cee8de0523322367bcccde8e6a3db263",
-                "reference": "20e054e9cee8de0523322367bcccde8e6a3db263",
+                "url": "https://api.github.com/repos/Codeception/phpunit-wrapper/zipball/ca6e94c6dadc19db05698d4e0d84214e570ce045",
+                "reference": "ca6e94c6dadc19db05698d4e0d84214e570ce045",
                 "shasum": ""
             },
             "require": {
@@ -1739,7 +1739,7 @@
             "type": "library",
             "autoload": {
                 "psr-4": {
-                    "Codeception\\PHPUnit\\": "src\\"
+                    "Codeception\\PHPUnit\\": "src/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -1753,7 +1753,7 @@
                 }
             ],
             "description": "PHPUnit classes used by Codeception",
-            "time": "2020-01-03T08:01:16+00:00"
+            "time": "2020-03-20T08:05:05+00:00"
         },
         {
             "name": "codeception/stub",
@@ -2909,12 +2909,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-fig/log.git",
-                "reference": "e1cb6eca27ccfd46567a2837eeba62bc5fecdee2"
+                "reference": "0f73288fd15629204f9d42b7055f72dacbe811fc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-fig/log/zipball/e1cb6eca27ccfd46567a2837eeba62bc5fecdee2",
-                "reference": "e1cb6eca27ccfd46567a2837eeba62bc5fecdee2",
+                "url": "https://api.github.com/repos/php-fig/log/zipball/0f73288fd15629204f9d42b7055f72dacbe811fc",
+                "reference": "0f73288fd15629204f9d42b7055f72dacbe811fc",
                 "shasum": ""
             },
             "require": {
@@ -2948,7 +2948,7 @@
                 "psr",
                 "psr-3"
             ],
-            "time": "2020-02-28T08:38:25+00:00"
+            "time": "2020-03-23T09:12:05+00:00"
         },
         {
             "name": "ralouphie/getallheaders",
@@ -3779,12 +3779,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/debug.git",
-                "reference": "ed3231ef3802ff57021af236f32908f8bb78d7c5"
+                "reference": "ce9f3b5e8e1c50f849fded59b3a1b6bc3562ec29"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/debug/zipball/ed3231ef3802ff57021af236f32908f8bb78d7c5",
-                "reference": "ed3231ef3802ff57021af236f32908f8bb78d7c5",
+                "url": "https://api.github.com/repos/symfony/debug/zipball/ce9f3b5e8e1c50f849fded59b3a1b6bc3562ec29",
+                "reference": "ce9f3b5e8e1c50f849fded59b3a1b6bc3562ec29",
                 "shasum": ""
             },
             "require": {
@@ -3841,7 +3841,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2020-03-15T09:38:08+00:00"
+            "time": "2020-03-23T10:22:40+00:00"
         },
         {
             "name": "symfony/dom-crawler",
@@ -4373,12 +4373,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/yiisoft/yii2-gii.git",
-                "reference": "e5d741a66a8255042074d1286581b88558b5d510"
+                "reference": "6c63058e3e3d944767e9dfac0e0d2ef4623a6cca"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/yiisoft/yii2-gii/zipball/e5d741a66a8255042074d1286581b88558b5d510",
-                "reference": "e5d741a66a8255042074d1286581b88558b5d510",
+                "url": "https://api.github.com/repos/yiisoft/yii2-gii/zipball/6c63058e3e3d944767e9dfac0e0d2ef4623a6cca",
+                "reference": "6c63058e3e3d944767e9dfac0e0d2ef4623a6cca",
                 "shasum": ""
             },
             "require": {
@@ -4416,7 +4416,21 @@
                 "gii",
                 "yii2"
             ],
-            "time": "2020-02-22T14:08:57+00:00"
+            "funding": [
+                {
+                    "url": "https://github.com/yiisoft",
+                    "type": "github"
+                },
+                {
+                    "url": "https://opencollective.com/yiisoft",
+                    "type": "open_collective"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/yiisoft/yii2-gii",
+                    "type": "tidelift"
+                }
+            ],
+            "time": "2020-03-24T22:12:29+00:00"
         }
     ],
     "aliases": [],

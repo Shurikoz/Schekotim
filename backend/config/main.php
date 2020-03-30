@@ -1,7 +1,5 @@
 <?php
 
-use \kartik\datecontrol\Module;
-
 $params = array_merge(
     require __DIR__ . '/../../common/config/params.php',
     require __DIR__ . '/../../common/config/params-local.php',
@@ -15,11 +13,10 @@ return [
     'language' => 'ru-RU',
     'basePath' => dirname(__DIR__),
     'controllerNamespace' => 'backend\controllers',
-    'bootstrap' => ['gii'],
+    'bootstrap' => ['gii', 'debug'],
     'modules' => [
         'debug' => [
             'class' => 'yii\debug\Module',
-            'allowedIPs' => ['*']
         ],
         'gii' => [
             'class' => 'yii\gii\Module',
@@ -86,6 +83,7 @@ return [
                 '<action:(index|review|login)>' => 'site/<action>',
                 '<action:(show|hide)>' => 'review/<action>',
             ],
+
         ],
         'assetManager' => [
             'bundles' => [

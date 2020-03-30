@@ -1,7 +1,7 @@
 <?php
 
 use yii\helpers\Html;
-
+use backend\models\Photo;
 /* @var $this yii\web\View */
 /* @var $model backend\models\Visit */
 
@@ -12,15 +12,15 @@ $this->title = 'Редактирование посещения, карта №:
 
     <h1><?= Html::encode($this->title) ?></h1>
 
-<!--    <pre>-->
-<!--        --><?//= print_r($model);?>
-<!--    </pre>-->
-
     <?= $this->render('_formUpdate', [
         'model' => $model,
         'location' => $location,
         'podolog' => $podolog,
         'problem' => $problem,
+        'photoBefore' => $photoBefore,
+        'photoAfter' => $photoAfter,
+        'onePhotoBefore' => new Photo(),
+        'onePhotoAfter' => new Photo()
     ]) ?>
 
 </div>

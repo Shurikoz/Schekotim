@@ -43,11 +43,9 @@ class CardController extends Controller
         $cards = Card::find();
         $searchModel = new CardSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-        $pages = new Pagination(['totalCount' => $cards->count(), 'pageSizeLimit' => [1, 60], 'defaultPageSize' => 20]);
-        $model = $cards->offset($pages->offset)->limit($pages->limit)->orderBy(['id' => SORT_DESC])->with('visit')->all();
+        $pages = new Pagination(['totalCount' => $dataProvider->getTotalCount(), 'pageSizeLimit' => [1, 60], 'defaultPageSize' => 20]);
 
         return $this->render('index', [
-            'model' => $model,
             'pages' => $pages,
             'cards' => $cards,
             'searchModel' => $searchModel,

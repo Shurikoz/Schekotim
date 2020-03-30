@@ -18,20 +18,30 @@ $visit_number = count($visits);
 ?>
 
 <div class="card-view">
-    <?= Html::a(FAS::icon('angle-left', ['class' => 'big', 'data-role' => 'arrow']) . '&nbsp Вернуться к списку карт', ['/card/index'], ['class' => 'btn btn-default']) ?>
-    <br>
-    <?php if (Yii::$app->user->can('admin')) { ?>
-        <p>
-            <?= Html::a('Изменить', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-            <?= Html::a('Удалить', ['delete', 'id' => $model->id], [
-                'class' => 'btn btn-danger',
-                'data' => [
-                    'confirm' => 'Вы уверены, что хотите удалить карту?',
-                    'method' => 'post',
-                ],
-            ]) ?>
-        </p>
-    <?php } ?>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="pull-left">
+                <?= Html::a(FAS::icon('angle-left', ['class' => 'big', 'data-role' => 'arrow']) . '&nbsp Вернуться к списку карт', ['/card/index'], ['class' => 'btn btn-default']) ?>
+            </div>
+            <div class="pull-right">
+                <span style="display: block;margin-top: 6px;">ID: <?= $model->id ?></span>
+            </div>
+            <br>
+            <?php if (Yii::$app->user->can('admin')) { ?>
+                <p>
+                    <?= Html::a('Изменить', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+                    <?= Html::a('Удалить', ['delete', 'id' => $model->id], [
+                        'class' => 'btn btn-danger',
+                        'data' => [
+                            'confirm' => 'Вы уверены, что хотите удалить карту?',
+                            'method' => 'post',
+                        ],
+                    ]) ?>
+                </p>
+            <?php } ?>
+        </div>
+    </div>
+
     <br>
     <div class="box">
         <h3><b><?= Html::encode($this->title) ?></b></h3>
@@ -114,7 +124,7 @@ $visit_number = count($visits);
                     $picResolve = '';
                 }
 
-                if ($item->photo == null){
+                if ($item->photo == null) {
                     $picCamera = '<span class="glyphicon glyphicon-camera"></span>';
                 } else {
                     $picCamera = '';
@@ -175,7 +185,7 @@ $visit_number = count($visits);
                                             <?= Html::a('<span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Создать будущее посещение', ['visit/create-second', 'id' => $item->id, 'card' => $model->id, 'card_number' => $model->number], ['class' => 'btn btn-green']) ?>
                                         </div>
                                         <?php //проверка, если текущий пользователь является указанным в визите подологом, то он может редактировать этот визит
-                                        if (($item->podolog->user_id == Yii::$app->user->id && $item->timestamp + 60 * 60 * 24 * 2 >= time()) &&  $item->has_come != 2) { ?>
+                                        if (($item->podolog->user_id == Yii::$app->user->id && $item->timestamp + 60 * 60 * 24 * 2 >= time()) && $item->has_come != 2) { ?>
                                             <div id="blockEdit_<?= $item->id ?>" data-id="<?= $item->id ?>">
                                                 <?= Html::a('Изменить посещение', ['visit/update', 'id' => $item->id, 'card' => $model->id, 'card_number' => $model->number], ['class' => 'btn btn-info']) ?>
                                                 <?php //если указан интервал посещения, то таймер не выводим ?>
@@ -186,7 +196,10 @@ $visit_number = count($visits);
                                                         'format' => '<span style=\"color: red\"\>%-D д. %-H:%-M:%-S</span> ',
                                                         'tagName' => 'span',
                                                         'events' => [
-                                                            'finish' => 'function(){$(\'#blockEdit_\' + $(this).parent().attr("data-id")).remove()}',
+                                                            'finish' => 'function(){
+                                                            $(\'#blockEdit_\' + $(this).parent().attr("data-id")).remove();
+                                                            
+                                                            }',
                                                         ],
                                                         'options' => [
                                                             'class' => 'timerBox'
@@ -237,6 +250,13 @@ $visit_number = count($visits);
                             <div class="col-md-6">
                                 <div class="box">
                                     <div class="col-md-12">
+                                        <p><b>Анамнез:</b></p>
+                                        <br>
+                                        <p><?= $item->anamnes == null ? '<span class="text-red">Не заполнено</span>' : $item->manipulation ?></p>
+                                    </div>
+                                </div>
+                                <div class="box">
+                                    <div class="col-md-12">
                                         <p><b>Манипуляции:</b></p>
                                         <br>
                                         <p><?= $item->manipulation == null ? '<span class="text-red">Не заполнено</span>' : $item->manipulation ?></p>
@@ -249,20 +269,28 @@ $visit_number = count($visits);
                                         <p><?= $item->recommendation == null ? '<span class="text-red">Не заполнено</span>' : $item->recommendation ?></p>
                                     </div>
                                 </div>
+                                <div class="box">
+                                    <div class="col-md-12">
+                                        <p><b>Комментарий:</b></p>
+                                        <br>
+                                        <p><?= $item->description == null ? '<span>Не заполнено</span>' : $item->description ?></p>
+                                    </div>
+                                </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="box">
                                     <div class="col-md-12">
-                                        <p><b>Фото до обработки</b></p>
+                                        <p class="titleMin"><b>Фото до обработки:</b></p>
                                         <?php if ($item->photo != null) { ?>
                                             <?php foreach ($item->photo as $photo) { ?>
                                                 <?php if ($photo->made == 'before') { ?>
-                                                    <div class="photo" style="float: left; margin-right: 20px ">
-                                                        <?= Html::a('<img src="'. $photo->thumbnail . '">', $photo->url, ['target'=>'_blank']) ?>
+                                                    <div style="float: left; margin: 0 0 20px 20px;">
+                                                        <?= Html::a('<img src="' . $photo->thumbnail . '">', $photo->url, ['target' => '_blank']) ?>
                                                         <br>
-                                                        <?= Html::a('Скачать файл', ['photo/download', 'id' => $photo->id]) ?>
+                                                        <?= Html::a('<span class="glyphicon glyphicon-download-alt"></span> Скачать', ['photo/download', 'id' => $photo->id]) ?>
                                                         <?php ?>
                                                     </div>
+
                                                 <?php } ?>
                                             <?php } ?>
                                         <?php } else { ?>
@@ -270,33 +298,26 @@ $visit_number = count($visits);
                                         <?php } ?>
                                     </div>
                                 </div>
-                                <div class="box">
-                                    <div class="col-md-12">
-                                        <p><b>Фото после обработки</b></p>
+                                <hr>
+                                <div class="col-md-12">
+                                    <div class="box">
+                                        <p class="titleMin"><b>Фото после обработки:</b></p>
                                         <?php if ($item->photo != null) { ?>
                                             <?php foreach ($item->photo as $photo) { ?>
                                                 <?php if ($photo->made == 'after') { ?>
-                                                    <div class="photo" style="float: left; margin-right: 20px ">
-                                                        <?= Html::a('<img src="'. $photo->thumbnail . '">', $photo->url, ['target'=>'_blank']) ?>
+                                                    <div style="float: left; margin: 0 0 20px 20px;">
+                                                    <?= Html::a('<img src="' . $photo->thumbnail . '">', $photo->url, ['target' => '_blank']) ?>
                                                         <br>
-                                                        <?= Html::a('Скачать файл', ['photo/download', 'id' => $photo->id]) ?>
+                                                        <?= Html::a('<span class="glyphicon glyphicon-download-alt"></span> Скачать', ['photo/download', 'id' => $photo->id]) ?>
                                                         <?php ?>
                                                     </div>
+
                                                 <?php } ?>
                                             <?php } ?>
                                         <?php } else { ?>
                                             <p><span class="text-red">Не заполнено</span></p>
                                         <?php } ?>
                                     </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="box">
-                                    <p><b>Комментарий:</b></p>
-                                    <br>
-                                    <p><?= $item->description == null ? '<span>Не заполнено</span>' : $item->description ?></p>
                                 </div>
                             </div>
                         </div>

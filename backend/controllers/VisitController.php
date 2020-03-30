@@ -91,14 +91,18 @@ class VisitController extends Controller
             $photoBefore->before = UploadedFile::getInstances($photoBefore, 'before');
             $photoAfter->after = UploadedFile::getInstances($photoAfter, 'after');
 
-            //передадим в модель параметры:
-            //1. саму модель
-            //2. visitId
-            //3. $location->address_point
-            //4. cardNumber
-            //5. dateVisit
-            $photoBefore->uploadBefore($model->id, $location->address_point, Yii::$app->request->get('card_number'), $model->visit_date);
-            $photoAfter->uploadAfter($model->id, $location->address_point, Yii::$app->request->get('card_number'), $model->visit_date);
+            $photoBefore->uploadBefore(
+                $model->id,
+                $location->address_point,
+                Yii::$app->request->get('card_number'),
+                $model->visit_date
+            );
+            $photoAfter->uploadAfter(
+                $model->id,
+                $location->address_point,
+                Yii::$app->request->get('card_number'),
+                $model->visit_date
+            );
 
             Yii::$app->session->setFlash('success', 'Данные сохранены!');
             return $this->redirect(['card/view', 'id' => Yii::$app->request->get('id')]);
@@ -218,6 +222,9 @@ class VisitController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+        $onePhoto = new Photo();
+        $photoBefore = Photo::find()->where(['visit_id' => $model->id, 'made' => 'before'])->all();
+        $photoAfter = Photo::find()->where(['visit_id' => $model->id, 'made' => 'after'])->all();
         $addressPoint = Yii::$app->user->identity->address_point_id;
         $location = AddressPoint::find()->where(['id' => $addressPoint])->with('city')->one();
         $podolog = Podolog::find()->where(['user_id' => Yii::$app->user->identity->id])->one();
@@ -233,6 +240,8 @@ class VisitController extends Controller
             'location' => $location,
             'podolog' => $podolog,
             'problem' => $this->findProblem(),
+            'photoBefore' => $photoBefore,
+            'photoAfter' => $photoAfter
         ]);
     }
 
@@ -289,6 +298,7 @@ class VisitController extends Controller
     }
 
     /**
+     * функция получения "рыбы" для форм в добавлении нового посещения
      * @return string
      */
     public function actionReceive($id)
@@ -298,6 +308,60 @@ class VisitController extends Controller
             $problem = Problem::find()->where(['id' => $id])->one();
             return $problem;
         }
+    }
+
+    public function actionAddPhoto($visitId, $cardId)
+    {
+        $photo = new Photo();
+        $visit = Visit::findOne($visitId);
+
+        $photoBefore = Photo::find()->where(['visit_id' => $visitId, 'made' => 'before'])->all();
+        $photoAfter = Photo::find()->where(['visit_id' => $visitId, 'made' => 'after'])->all();
+
+        $addressPoint = Yii::$app->user->identity->address_point_id;
+        $location = AddressPoint::find()->where(['id' => $addressPoint])->with('city')->one();
+
+        if (Yii::$app->request->isAjax) {
+
+
+            $photo->onePhotoBefore = $_FILES['img'];
+
+
+            $photo->uploadOnephotobefore(
+                $visitId,
+                $location->address_point,
+                $cardId,
+                $visit->visit_date
+            );
+            return $this->renderAjax('/photo/photo', [
+                'photoBefore' => $photoBefore,
+                'photoAfter' => $photoAfter,
+                'onePhotoBefore' => new Photo(),
+                'onePhotoAfter' => new Photo()
+            ]);
+        }
+    }
+
+    /**
+     * @param $id
+     * @return string
+     * @throws \Throwable
+     * @throws \yii\db\StaleObjectException
+     */
+    public function actionDeletePhoto($id)
+    {
+
+        $photoBefore = Photo::find()->where(['visit_id' => $id, 'made' => 'before'])->all();
+        $photoAfter = Photo::find()->where(['visit_id' => $id, 'made' => 'after'])->all();
+
+        Photo::findOne($id)->delete();
+
+        return $this->renderAjax('/photo/photo', [
+            'photoBefore' => $photoBefore,
+            'photoAfter' => $photoAfter,
+            'onePhotoBefore' => new Photo(),
+            'onePhotoAfter' => new Photo()
+        ]);
     }
 
 }

@@ -16,20 +16,20 @@ use yii\web\NotFoundHttpException;
  */
 class PhotoController extends Controller
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function behaviors()
-    {
-        return [
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'delete' => ['POST'],
-                ],
-            ],
-        ];
-    }
+//    /**
+//     * {@inheritdoc}
+//     */
+//    public function behaviors()
+//    {
+//        return [
+//            'verbs' => [
+//                'class' => VerbFilter::className(),
+//                'actions' => [
+//                    'delete' => ['POST'],
+//                ],
+//            ],
+//        ];
+//    }
 
     /**
      * Lists all PhotoVisit models.
@@ -37,25 +37,30 @@ class PhotoController extends Controller
      */
     public function actionIndex()
     {
-        $visits = Visit::find();
-        $pages = new Pagination(['totalCount' => $visits->count(), 'pageSizeLimit' => [1, 60], 'defaultPageSize' => 20]);
-        $model = $visits->offset($pages->offset)->limit($pages->limit)->orderBy(['id' => SORT_DESC])->with('photo')->all();
+        $searchModel = new VisitSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $pages = new Pagination(['totalCount' => $dataProvider->getTotalCount(), 'pageSizeLimit' => [1, 60], 'defaultPageSize' => 20]);
 
         return $this->render('index', [
-            'model' => $model,
-            'pages' => $pages
+            'pages' => $pages,
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
         ]);
     }
 
     public function actionUsed($id)
     {
         $visit = Visit::find()->where(['id' => $id])->one();
-        if ($visit->used_photo == '1') {
+
+        if ($visit->used_photo == 1) {
             Yii::$app->session->setFlash('warning', 'Фотографии уже помечены как использованные!');
         } else {
-            $visit->used_photo = '1';
-            $visit->save();
-            Yii::$app->session->setFlash('success', 'Фотографии помечены как использованные!');
+            $visit->used_photo = 1;
+            if ($visit->save(false)){
+                Yii::$app->session->setFlash('success', 'Посещение №' . $visit->id . ' помечено как использованное!');
+            } else {
+                Yii::$app->session->setFlash('error', 'Что-то пошло не так...');
+            }
         }
         return $this->redirect(['index']);
 
@@ -110,20 +115,6 @@ class PhotoController extends Controller
         return $this->render('update', [
             'model' => $model,
         ]);
-    }
-
-    /**
-     * Deletes an existing PhotoVisit model.
-     * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param integer $id
-     * @return mixed
-     * @throws NotFoundHttpException if the model cannot be found
-     */
-    public function actionDelete($id)
-    {
-        $this->findModel($id)->delete();
-
-        return $this->redirect(['index']);
     }
 
     /**

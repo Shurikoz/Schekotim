@@ -70,7 +70,7 @@ $this->title = 'Панель учета';
         <div class="box">
             <h3 class="text-center">Фото работ (из карт клиентов)</h3>
             <br>
-            <?= Html::a('Показать фото работ', ['photo/index'], ['class' => 'btn btn-lg btn-primary center-block']) ?>
+            <?= Html::a('Показать фото работ', ['photo/index'], ['class' => 'btn btn-lg btn-info center-block']) ?>
         </div>
     </div>
 <?php } ?>

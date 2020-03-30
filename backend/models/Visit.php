@@ -58,9 +58,9 @@ class Visit extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => 'ID',
+            'id' => 'Номер посещения',
             'user_id' => 'ID пользователя',
-            'card_number' => 'Card ID',
+            'card_number' => 'Номер карты',
             'city_id' => 'City ID',
             'address_point_id' => 'Точка',
             'podolog_id' => 'Подолог',
@@ -73,7 +73,7 @@ class Visit extends \yii\db\ActiveRecord
             'visit_date' => 'Дата посещения',
             'has_come' => 'Пациент пришел',
             'resolve' => 'Решена',
-            'used_photo' => 'Фото использовано',
+            'used_photo' => '',
             'description' => 'Комментарий',
             'edit' => 'Редактирование'
         ];

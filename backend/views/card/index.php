@@ -1,11 +1,10 @@
 <?php
 
-use yii\grid\GridView;
+use rmrevin\yii\fontawesome\FAS;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\LinkPager;
 use yii\widgets\Pjax;
-use rmrevin\yii\fontawesome\FAS;
 
 /* @var $this yii\web\View */
 /* @var $searchModel backend\models\CardSearch */
@@ -14,7 +13,7 @@ use rmrevin\yii\fontawesome\FAS;
 $count_orders = ($_GET['per-page']) ? $_GET['per-page'] : 20;
 
 $this->title = 'Карты пациентов';
-$this->params['breadcrumbs'][] = $this->title;
+
 ?>
 <div class="card-index">
     <div class="row">
@@ -23,13 +22,26 @@ $this->params['breadcrumbs'][] = $this->title;
             <?= $this->render('_search', [
                 'model' => $searchModel,
             ]) ?>
-
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
             <div class="pull-left cardsOnPage">
                 <span>Карт на странице:</span>
                 <?= Html::a(20, Url::current(['per-page' => 20]), ['class' => ($count_orders == 20) ? 'active' : '']) ?>
                 <?= Html::a(40, Url::current(['per-page' => 40]), ['class' => ($count_orders == 40) ? 'active' : '']) ?>
                 <?= Html::a(60, Url::current(['per-page' => 60]), ['class' => ($count_orders == 60) ? 'active' : '']) ?>
             </div>
+            <div class="pull-right perPage">
+                <?= LinkPager::widget([
+                    'pagination' => $pages,
+                    'maxButtonCount' => 5,
+                ]); ?>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
             <table class="c-table">
                 <caption class="c-table__title">
                     <?= Html::encode($this->title) ?>
@@ -42,7 +54,6 @@ $this->params['breadcrumbs'][] = $this->title;
 
                 <thead class="c-table__head c-table__head--slim">
                 <tr class="c-table__row">
-                    <th class="c-table__cell c-table__cell--head">ID</th>
                     <th class="c-table__cell c-table__cell--head">№</th>
                     <th class="c-table__cell c-table__cell--head">Город / Точка</th>
                     <th class="c-table__cell c-table__cell--head">Пациент</th>
@@ -60,7 +71,6 @@ $this->params['breadcrumbs'][] = $this->title;
                 <?php if (count($dataProvider->getModels()) != 0) { ?>
                     <?php foreach ($dataProvider->getModels() as $item) { ?>
                         <tr class="c-table__row">
-                            <td class="c-table__cell"><b><?= $item->id ?></b></td>
                             <td class="c-table__cell"><b><?= $item->number ?></b></td>
                             <td class="c-table__cell">
                                 <p><?= $item->city->name ?></p>
@@ -72,13 +82,14 @@ $this->params['breadcrumbs'][] = $this->title;
                                 <p>Г.р.: <?= Yii::$app->formatter->asDate($item->birthday) ?></p>
                             </td>
 
-                            <td class="c-table__cell"><span class="visitMarker"><?= count($item->visit)?></span></td>
+                            <td class="c-table__cell"><span class="visitMarker"><?= count($item->visit) ?></span></td>
 
                             <td class="c-table__cell">
                                 <div class="c-dropdown dropdown">
                                     <button class="c-btn c-btn--secondary has-dropdown dropdown-toggle"
                                             id="dropdownMenuButton1" data-toggle="dropdown" aria-haspopup="true"
-                                            aria-expanded="false">Действия &nbsp <?= FAS::icon('angle-down', ['class' => 'big', 'data-role' => 'arrow']);?>
+                                            aria-expanded="false">Действия
+                                        &nbsp <?= FAS::icon('angle-down', ['class' => 'big', 'data-role' => 'arrow']); ?>
                                     </button>
                                     <div class="c-dropdown__menu dropdown-menu"
                                          aria-labelledby="dropdownMenuButton1" x-placement="bottom-start">
@@ -102,13 +113,13 @@ $this->params['breadcrumbs'][] = $this->title;
                 <?php Pjax::end(); ?>
                 </tbody>
             </table>
-            <?= LinkPager::widget([
-                'pagination' => $pages,
-                'maxButtonCount' => 5,
-                'firstPageLabel' => 'Начало',
-                'lastPageLabel' => 'Конец',
-            ]); ?>
+            <div class="pull-right">
+                <?= LinkPager::widget([
+                    'pagination' => $pages,
+                    'maxButtonCount' => 5,
+                ]); ?>
 
+            </div>
 
         </div>
     </div>

@@ -4,13 +4,13 @@ namespace backend\models;
 
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use backend\models\Visit;
 
 /**
  * VisitSearch represents the model behind the search form of `backend\models\Visit`.
  */
 class VisitSearch extends Visit
 {
+
     /**
      * {@inheritdoc}
      */
@@ -18,7 +18,7 @@ class VisitSearch extends Visit
     {
         return [
             [['id', 'card_number'], 'integer'],
-            [['city_id', 'address_point_id', 'anamnes', 'podolog_id', 'manipulation', 'recommendation', 'next_visit_from', 'next_visit_by', 'has_come', 'description'], 'safe'],
+            [['city_id', 'address_point_id', 'anamnes', 'podolog_id', 'manipulation', 'recommendation', 'next_visit_from', 'next_visit_by', 'has_come', 'description', 'used_photo'], 'safe'],
         ];
     }
 
@@ -46,6 +46,10 @@ class VisitSearch extends Visit
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+            'pagination' => [
+                'pageSizeLimit' => [1, 60],
+            ],
+            'sort' => ['defaultOrder' => ['id' => SORT_DESC]]// Отсортируем по убыванию
         ]);
 
         $this->load($params);
@@ -62,6 +66,7 @@ class VisitSearch extends Visit
             'card_number' => $this->card_number,
             'next_visit_from' => $this->next_visit_from,
             'next_visit_by' => $this->next_visit_by,
+            'used_photo' => $this->used_photo
         ]);
 
         $query->andFilterWhere(['like', 'city', $this->city_id])
@@ -71,8 +76,8 @@ class VisitSearch extends Visit
             ->andFilterWhere(['like', 'manipulation', $this->manipulation])
             ->andFilterWhere(['like', 'recommendation', $this->recommendation])
             ->andFilterWhere(['like', 'has_come', $this->has_come])
+            ->andFilterWhere(['like', 'used_photo', $this->used_photo])
             ->andFilterWhere(['like', 'description', $this->description]);
-
         return $dataProvider;
     }
 }

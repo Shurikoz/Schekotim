@@ -162,7 +162,6 @@ a.desc:after {
 .titleMin {
     margin: 0;
     font-size: 17px;
-    color: #707070;
 }
 
 .btn-green {
@@ -206,9 +205,11 @@ a.desc:after {
     border-collapse: collapse;
 }
 
-.c-table tr:hover{
+.c-table tr:hover,
+.c-table .activeBox{
     background-color: #f5f8f1;
 }
+
 
 .c-table__title {
     position: relative;
@@ -413,7 +414,7 @@ font-size: 22px;
 }
 
 .cardsOnPage {
-    padding: 10px 0 20px 20px;
+    padding: 10px 0 30px 20px;
     color: #333;
     text-decoration: none;
 }
@@ -582,4 +583,38 @@ font-size: 22px;
     left: 50%;
     display: block;
     position: absolute;
+}
+
+.blockCard{
+    border: 1px solid #7ba335;
+    border-radius: 5px;
+    padding: 20px;
+}
+.usingCard{
+    opacity: 0.3;
+}
+.perPage{
+    margin-top: -10px;
+}
+
+.btnSearchVisit{
+    float: left;
+    margin: 20px 0 0 0;
+    display: block;
+    padding: 4px 20px;
+    transition: all .3s;
+    border: 1px solid #dfe3e9;
+    border-radius: 4px;
+    background-color: #fff;
+    color: #7f8fa4;
+}
+.btnSearchVisit:hover{
+    background-color: #7ba335;
+    color: #fff;
+    text-decoration: none;
+}
+.searchVisit .active{
+    background-color: #7ba335;
+    color: #fff;
+    text-decoration: none;
 }

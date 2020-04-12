@@ -4,15 +4,12 @@ window.setTimeout(function () {
     $(".alert-success, .alert-danger, .alert-info, .alert-error ").fadeTo(500, 0).slideUp(500, function () {
         $(this).remove();
     });
-}, 5000);
+}, 7000);
 
 //функция для автопоиска после изменения инпута
 $(".autoSearchSubmit").change(function () {
     this.form.submit();
 });
-
-
-
 
 //сброс формы поиска
 $(".resetFormButton").click(function () {
@@ -58,51 +55,11 @@ $("#visit-problem_id").on('change', function () {
     });
 });
 
-//функция для автопоиска после изменения инпута
-$("#submitFirstVisit").click(function () {
-    $('.wrap').fadeTo(500, 0.2).addClass();
-    $('body').append('<div class="loader"></div>');
+//функция открывать в новом окне
+$(document).on('click', '.linkNewWindow', function (e) {
+    var id = $(e.target).data('id');
+    if ($('#openNewWindow').is(':checked')) {
+        window.open("/card/view?id=" + id);
+        return false;
+    }
 });
-
-
-// $(document).ready(function () {
-//     $("#photo-onephotobefore").on('change', function () {
-//         if (jQuery('#photo-onephotobefore').val()) {
-//             $('.uploadBtnBefore').toggleClass('hidden');
-//         }
-//     });
-//     $("#photo-onephotoafter").on('change', function () {
-//         if (jQuery('#photo-onephotoafter').val()) {
-//             $('.uploadBtnAfter').toggleClass('hidden');
-//         }
-//     });
-// });
-
-
-//отследим событие валидации формы, посчитав количество ошибок после валидации
-//если = 0, то выполним код
-// $("#addOnePhotoBefore").on("afterValidate", function (event, messages, errorAttributes) {
-//     if (!errorAttributes.length) {
-//             let visitId = $(this).attr('data-id');
-//             let cardId = $(this).attr('data-card');
-//             let photo = $("#photo-onephotobefore");
-//             let fd = new FormData;
-//             fd.append('img', photo.prop('files')[0]);
-//             $.ajax({
-//                 type: "POST",
-//                 cache: false,
-//                 processData: false,
-//                 contentType: false,
-//                 url: "/visit/add-photo?visitId=" + visitId + "&cardId=" + cardId,
-//                 data: fd
-//             }).done(function (data) {
-//                 console.log(data);
-//             }).fail(function () {
-//                 console.log(false);
-//             });
-//     }
-// });
-
-// $('#photo-onephotobefore').click(function() {
-//     alert( "Handler for .change() called." );
-// });

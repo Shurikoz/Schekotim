@@ -4,6 +4,11 @@
 </IfModule>
 
 <IfModule mod_rewrite.c>
+
+    #enable HTTPS only
+    #RewriteCond %{HTTPS} !=on
+    #RewriteRule ^/?(.*) https://%{SERVER_NAME}/$1 [R,L]
+
     # если /admin, то в backend
     RewriteCond %{REQUEST_URI} ^/(admin)
     RewriteRule ^admin/assets/(.*)$ backend/web/assets/$1 [L]

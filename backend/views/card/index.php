@@ -1,6 +1,5 @@
 <?php
 
-use rmrevin\yii\fontawesome\FAS;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\LinkPager;
@@ -45,7 +44,7 @@ $this->title = 'Карты пациентов';
             <table class="c-table">
                 <caption class="c-table__title">
                     <?= Html::encode($this->title) ?>
-                    <small>Найдено карт: <?= $cards->count() ?></small>
+                    <small>Найдено карт: <?= $dataProvider->getTotalCount() ?></small>
 
                     <?php if (Yii::$app->user->can('admin') || Yii::$app->user->can('manager')) { ?>
                         <?= Html::a('Создать карту', ['card/create'], ['style' => 'float:right;', 'class' => 'btn btn-md btn-green center-block']) ?>
@@ -68,13 +67,13 @@ $this->title = 'Карты пациентов';
                 <?php // TODO Исправить timeout?>
                 <?php Pjax::begin(['timeout' => 5000]); ?>
 
-                <?php if (count($dataProvider->getModels()) != 0) { ?>
+                <?php if ($dataProvider->getModels()) { ?>
                     <?php foreach ($dataProvider->getModels() as $item) { ?>
                         <tr class="c-table__row">
                             <td class="c-table__cell"><b><?= $item->number ?></b></td>
                             <td class="c-table__cell">
-                                <p><?= $item->city->name ?></p>
-                                <p><?= $item->addressPoint->address_point ?></p>
+                                <p><?= $item->city ?></p>
+                                <p><?= $item->address_point?></p>
                             </td>
 
                             <td class="c-table__cell">
@@ -84,23 +83,19 @@ $this->title = 'Карты пациентов';
 
                             <td class="c-table__cell"><span class="visitMarker"><?= count($item->visit) ?></span></td>
 
-                            <td class="c-table__cell">
-                                <div class="c-dropdown dropdown">
-                                    <button class="c-btn c-btn--secondary has-dropdown dropdown-toggle"
-                                            id="dropdownMenuButton1" data-toggle="dropdown" aria-haspopup="true"
-                                            aria-expanded="false">Действия
-                                        &nbsp <?= FAS::icon('angle-down', ['class' => 'big', 'data-role' => 'arrow']); ?>
-                                    </button>
-                                    <div class="c-dropdown__menu dropdown-menu"
-                                         aria-labelledby="dropdownMenuButton1" x-placement="bottom-start">
-                                        <?= Html::a('<span class="glyphicon glyphicon-eye-open"></span> Просмотреть', ['card/view', 'id' => $item->id], ['class' => 'c-dropdown__item dropdown-item']) ?>
-                                        <?php if (Yii::$app->user->can('admin')) { ?>
-                                            <?= Html::a('<span class="glyphicon glyphicon-pencil"></span> Изменить', ['card/update', 'id' => $item->id], ['class' => 'c-dropdown__item dropdown-item']) ?>
-                                            <?= Html::a('<span class="glyphicon glyphicon-trash"></span> Удалить', ['card/delete', 'id' => $item->id], ['class' => 'c-dropdown__item dropdown-item', 'data-method' => 'POST', 'data-confirm' => 'Вы уверены, что хотите удалить карту?']) ?>
-                                        <?php } ?>
-
-                                    </div>
-                                </div>
+                            <td class="c-table__cell cardBtn">
+                                <?= Html::a('<span class="glyphicon glyphicon-eye-open"></span>', ['card/view', 'id' => $item->id], [
+                                    'class' => 'btn linkNewWindow',
+                                    'data-id' => $item->id
+                                ]) ?>
+                                <?php if (Yii::$app->user->can('admin')) { ?>
+                                    <?= Html::a('<span class="glyphicon glyphicon-pencil"></span>', ['card/update', 'id' => $item->id], ['class' => 'btn']) ?>
+                                    <?= Html::a('<span class="glyphicon glyphicon-trash"></span>', ['card/delete', 'id' => $item->id], [
+                                        'class' => 'btn',
+                                        'data-method' => 'POST',
+                                        'data-confirm' => 'Вы уверены, что хотите удалить карту?'
+                                    ]) ?>
+                                <?php } ?>
                             </td>
                         </tr>
                     <?php } ?>

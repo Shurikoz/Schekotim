@@ -1,6 +1,6 @@
 <?php
 
-use kartik\date\DatePicker;
+use kartik\file\FileInput;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
@@ -12,35 +12,25 @@ use yii\widgets\ActiveForm;
 $problemName = ArrayHelper::map($problem, 'id', 'name');
 array_unshift($problemName, '');
 ?>
+<br>
 <div class="visit-form">
     <div class="row">
         <div class="col-md-4">
-            <div class="box">
-                <b>Город:</b> <?= $location->city->name ?>
-            </div>
+            <b>Город:</b> <?= Yii::$app->user->identity->city ?>
         </div>
-        <div class="col-md-5">
-            <div class="box">
-                <b>Точка:</b> <?= $location->address_point ?>
-            </div>
-        </div>
-    </div>
-    <hr>
-    <div class="row">
         <div class="col-md-4">
-            <div class="box">
-                <b>Подолог:</b> <?= $podolog->name ?>
-            </div>
+            <b>Точка:</b> <?= Yii::$app->user->identity->address_point ?>
+        </div>
+        <div class="col-md-4">
+            <b>Подолог:</b> <?= $podolog->name ?>
         </div>
     </div>
     <hr>
     <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]); ?>
-
     <?= $form->field($model, 'card_number')->hiddenInput(['value' => (int)Yii::$app->request->get('card_number')])->label(false); ?>
-    <?= $form->field($model, 'city_id')->hiddenInput(['value' => $location->city->id])->label(false); ?>
-    <?= $form->field($model, 'address_point_id')->hiddenInput(['value' => $location->id])->label(false); ?>
+    <?= $form->field($model, 'city')->hiddenInput(['value' => Yii::$app->user->identity->city])->label(false); ?>
+    <?= $form->field($model, 'address_point')->hiddenInput(['value' => Yii::$app->user->identity->address_point])->label(false); ?>
     <?= $form->field($model, 'podolog_id')->hiddenInput(['value' => $podolog->id])->label(false); ?>
-
     <div class="row">
         <div class="col-md-4">
             <div class="box">
@@ -79,18 +69,49 @@ array_unshift($problemName, '');
     <div class="row">
         <div class="col-md-6">
             <div class="box">
-                <?= $form->field($photoBefore, 'before[]')->fileInput(['multiple' => true, 'accept' => 'image/*'])->label('До обработки') ?>
+                <!--                --><? //= $form->field($photoBefore, 'before[]')->fileInput(['multiple' => true, 'accept' => 'image/*'])->label('До обработки') ?>
+
+                <?= $form->field($photoBefore, 'before[]')
+                    ->widget(FileInput::classname(), [
+                        'options' => [
+                            'multiple' => true,
+                            'accept' => 'image/*'
+                        ],
+                        'pluginOptions' => [
+                            'previewFileType' => 'image',
+                            'allowedFileExtensions' => ['jpg', 'jpeg'],
+                            'showUpload' => false,
+                            'maxFileCount' => 5
+                        ]
+                    ])
+                    ->label('До обработки') ?>
+
             </div>
         </div>
         <div class="col-md-6">
             <div class="box">
-                <?= $form->field($photoAfter, 'after[]')->fileInput(['multiple' => true, 'accept' => 'image/*'])->label('После обработки') ?>
+                <!--                --><? //= $form->field($photoAfter, 'after[]')->fileInput(['multiple' => true, 'accept' => 'image/*'])->label('После обработки') ?>
+                <?= $form->field($photoAfter, 'after[]')
+                    ->widget(FileInput::classname(), [
+                        'options' => [
+                            'multiple' => true,
+                            'accept' => 'image/*'
+                        ],
+                        'pluginOptions' => [
+                            'previewFileType' => 'image',
+                            'allowedFileExtensions' => ['jpg', 'jpeg'],
+                            'showUpload' => false,
+                            'maxFileCount' => 5
+                        ]
+                    ])
+                    ->label('После обработки') ?>
+
             </div>
         </div>
     </div>
     <hr>
     <div class="form-group pull-right">
-        <?= Html::submitButton('Сохранить', ['class' => 'btn btn-success', 'id' => 'submitFirstVisit']) ?>
+        <?= Html::submitButton('Сохранить', ['class' => 'btn btn-success']) ?>
     </div>
     <?php ActiveForm::end(); ?>
 </div>

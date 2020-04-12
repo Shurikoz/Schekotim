@@ -13,7 +13,8 @@ $this->title = 'Новое посещение';
         'class' => 'btn btn-default',
         'onclick' => 'history.back();'
     ]) ?>
-
+    <br>
+    <br>
     <p class="titleNormal"><?= Html::encode($this->title) ?></p>
 
     <?= $this->render('_formCreateSecond', [

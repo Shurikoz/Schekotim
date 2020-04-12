@@ -62,8 +62,8 @@ class CardController extends Controller
     public function actionView($id)
     {
         $model = $this->findModel($id);
-        $visits = Visit::find()->where(['card_number' => $this->findModel($id)->number])->with(['photo', 'addressPoint', 'city', 'problem'])->all();
-        $location = AddressPoint::find()->where(['id' => $model->address_point_id])->with('city')->one();
+        $visits = Visit::find()->where(['card_number' => $this->findModel($id)->number])->with(['photo', 'problem'])->all();
+        $location = AddressPoint::find()->where(['id' => $model->address_point])->with('city')->one();
 
         //пройдемся по посещениям, если пациент не пришел до указанного времени, сделаем отметку
         foreach ($visits as $visit) {
@@ -94,13 +94,13 @@ class CardController extends Controller
         //получим что пришло через POST
         $post = Yii::$app->request->post();
 
-        //получим id точки из аккаунта текущего пользователя
-        $addressPoint = Yii::$app->user->identity->address_point_id;
+        $addressPoint = Yii::$app->user->identity->address_point;
+        $city = Yii::$app->user->identity->city;
+
+        $podologModel = Podolog::find()->where(['address_point' => $addressPoint])->all();
 
         $cardModel = new Card();
         $visitModel = new Visit();
-        $podologModel = Podolog::find()->where(['address_point_id' => $addressPoint])->all();
-        $location = AddressPoint::find()->where(['id' => $addressPoint])->with('city')->one();
 
         //найдем последнюю запись, возьмем из нее номер карты
         $card = Card::find()->orderBy(['id' => SORT_DESC])->one();
@@ -113,10 +113,10 @@ class CardController extends Controller
         $visitModel->has_come = '1';
         $visitModel->timestamp = time() + 60 * 60 * 24 * 2; // 2 суток на редактирование
         $visitModel->next_visit_from = date('Y-m-d');
-        $visitModel->visit_time = date('H:i:s');
+        $visitModel->visit_time = date("H:i:s");
         $visitModel->card_number = $cardModel->number;
-        $visitModel->city_id = $location->city->id;
-        $visitModel->address_point_id = $addressPoint;
+        $visitModel->city = $city;
+        $visitModel->address_point = $addressPoint;
         $visitModel->podolog_id = $post->podolog;
         $visitModel->visit_time = date('H:m:i');
         $visitModel->visit_date = date('Y-m-d');
@@ -130,8 +130,7 @@ class CardController extends Controller
         return $this->render('create', [
             'cardModel' => $cardModel,
             'visitModel' => $visitModel,
-            'podologModel' => $podologModel,
-            'location' => $location
+            'podologModel' => $podologModel
         ]);
     }
 
@@ -170,13 +169,13 @@ class CardController extends Controller
      */
     public function actionDelete($id)
     {
-//        $card_number = Card::find()->where(['number' => $this->findModel($id)->number])->one();
         $visits = Visit::find()->where(['card_number' => $this->findModel($id)->number])->joinWith('photo')->all();
 
         foreach ($visits as $visit) {
             foreach ($visit->photo as $item) {
                 $item->delete();
             }
+            $visit->delete();
         }
 
         $this->findModel($id)->delete();

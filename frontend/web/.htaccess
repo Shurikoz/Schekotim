@@ -1,8 +1,8 @@
 RewriteEngine on
 
-# если это папка или файл, открываем его
+RewriteCond %{HTTPS} off
+RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,NE,R=301]
+
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
-
-# в противном случае перенаправляем на index.php
 RewriteRule . index.php

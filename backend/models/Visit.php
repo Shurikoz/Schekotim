@@ -10,8 +10,8 @@ use Yii;
  * @property int $id
  * @property string $podolog_id
  * @property int $card_number
- * @property string $city_id
- * @property string $address_point_id
+ * @property string $city
+ * @property string $address_point
  * @property string $problem_id
  * @property string $anamnes
  * @property string $manipulation
@@ -43,12 +43,10 @@ class Visit extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['address_point_id', 'podolog_id', 'city_id', 'card_number', 'used_photo', 'edit'], 'integer'],
+            [['podolog_id', 'card_number', 'used_photo', 'edit'], 'integer'],
             [['anamnes', 'manipulation', 'recommendation', 'description'], 'string'],
-            [['resolve', 'has_come', 'timestamp', 'next_visit_from', 'next_visit_by', 'visit_date', 'visit_time'], 'safe'],
+            [['address_point', 'city', 'resolve', 'has_come', 'timestamp', 'next_visit_from', 'next_visit_by', 'visit_date', 'visit_time'], 'safe'],
             ['problem_id', 'integer', 'min' => '1', 'tooSmall' => 'Проблема не выбрана!'],
-
-
         ];
     }
 
@@ -61,8 +59,8 @@ class Visit extends \yii\db\ActiveRecord
             'id' => 'Номер посещения',
             'user_id' => 'ID пользователя',
             'card_number' => 'Номер карты',
-            'city_id' => 'City ID',
-            'address_point_id' => 'Точка',
+            'city' => 'City ID',
+            'address_point' => 'Точка',
             'podolog_id' => 'Подолог',
             'anamnes' => 'Анамнез',
             'manipulation' => 'Манипуляции',
@@ -100,16 +98,6 @@ class Visit extends \yii\db\ActiveRecord
     public function getPhoto()
     {
         return $this->hasMany(Photo::className(), ['visit_id' => 'id']);
-    }
-
-    public function getAddressPoint()
-    {
-        return $this->hasOne(AddressPoint::className(), ['id' => 'address_point_id']);
-    }
-
-    public function getCity()
-    {
-        return $this->hasOne(City::className(), ['id' => 'city_id']);
     }
 
     public function getPodolog()

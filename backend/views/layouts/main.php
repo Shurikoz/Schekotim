@@ -33,7 +33,7 @@ AppAsset::register($this);
         'brandLabel' => '<img src="/images/logo.png" class="pull-left" style="margin-top: -5px;height: 30px;"/>',
         'brandUrl' => Yii::$app->homeUrl,
         'options' => [
-            'class' => 'navbar-inverse navbar-fixed-top',
+            'class' => 'navbar-inverse navbar-fixed-top navbar-top-menu',
         ],
     ]);
 

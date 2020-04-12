@@ -18,7 +18,7 @@ class VisitSearch extends Visit
     {
         return [
             [['id', 'card_number'], 'integer'],
-            [['city_id', 'address_point_id', 'anamnes', 'podolog_id', 'manipulation', 'recommendation', 'next_visit_from', 'next_visit_by', 'has_come', 'description', 'used_photo'], 'safe'],
+            [['city', 'address_point', 'anamnes', 'podolog_id', 'manipulation', 'recommendation', 'next_visit_from', 'next_visit_by', 'has_come', 'description', 'used_photo'], 'safe'],
         ];
     }
 
@@ -69,8 +69,8 @@ class VisitSearch extends Visit
             'used_photo' => $this->used_photo
         ]);
 
-        $query->andFilterWhere(['like', 'city', $this->city_id])
-            ->andFilterWhere(['like', 'address_point', $this->address_point_id])
+        $query->andFilterWhere(['like', 'city', $this->city])
+            ->andFilterWhere(['like', 'address_point', $this->address_point])
             ->andFilterWhere(['like', 'anamnes', $this->anamnes])
             ->andFilterWhere(['like', 'podolog', $this->podolog_id])
             ->andFilterWhere(['like', 'manipulation', $this->manipulation])

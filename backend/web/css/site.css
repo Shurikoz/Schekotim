@@ -7,6 +7,11 @@ body {
 hr {
     border-top: 1px solid #ddd;
 }
+
+label {
+    font-weight: 400;
+}
+
 .wrap {
     min-height: 100%;
     height: auto;
@@ -294,7 +299,7 @@ a.desc:after {
 .glyphicon-remove,
 .glyphicon-hourglass,
 .glyphicon-ok,
-.glyphicon-remove-circle,
+.glyphicon-ok-circle,
 .glyphicon-camera{
 font-size: 22px;
 }
@@ -321,7 +326,7 @@ font-size: 22px;
 }
 
 .glyphicon-ok,
-.glyphicon-remove-circle{
+.glyphicon-ok-circle{
     color: #7ba335;
 }
 
@@ -618,3 +623,36 @@ font-size: 22px;
     color: #fff;
     text-decoration: none;
 }
+
+.cardBtn .btn {
+    border: 1px solid;
+    font-size: 16px;
+    padding: 7px 10px 3px 10px;
+    color: #7ba335;
+}
+.cardBtn .btn:hover{
+    background-color: #0a73bb66;
+}
+.cardInfo{
+    font-size: 21px;
+    line-height: 47px;
+}
+.cardHeader{
+    font-size: 27px;
+    line-height: 47px;
+}
+
+.openNewWindow {
+    display: inline-block;
+    padding: 5px 30px 0 30px;
+    margin: 0 30px;
+}
+
+.navbar-top-menu .dropdown-menu > li > a {
+    padding: 10px 30px !important;
+}
+
+.krajee-default.file-preview-frame .kv-file-content {
+    width: 204px;
+}
+

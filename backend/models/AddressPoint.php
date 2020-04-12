@@ -55,9 +55,4 @@ class AddressPoint extends \yii\db\ActiveRecord
         return $this->hasMany(Visit::className(), ['address_point_id' => 'id']);
     }
 
-    public function getCard()
-    {
-        return $this->hasOne(Card::className(), ['address_point_id' => 'id']);
-    }
-
 }

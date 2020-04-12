@@ -1,68 +1,106 @@
 <?php
-
 use yii\helpers\Html;
-use yii\widgets\ActiveForm;
-
+use yii\helpers\Url;
 ?>
-<?php $photo = ActiveForm::begin(['options' => ['data-pjax' => true]]); ?>
-<div class="row">
-    <div class="col-md-12">
-        <div class="titleNormal">Фотографии</div>
-        <br>
-    </div>
-    <div class="col-md-6">
-        <p><b>Фото до обработки</b></p>
-        <?php for ($i = 0; $i <= 4; $i++) { ?>
-            <?php if ($photoBefore[$i] != null) { ?>
-                <div class="col-md-6" style="margin-bottom: 20px ">
-                    <div class="box">
-                        <span><?= Html::a('<img src="' . $photoBefore[$i]->thumbnail . '">', $photoBefore[$i]->url, ['target' => '_blank', 'data-pjax' => '0']) ?></span>
-                        <span style="margin-left: 20px">
-                            <?= Html::a('<span class="glyphicon glyphicon-trash"></span>', ['photo/delete-photo', 'id' => $photoBefore[$i]->id], [
-                                'class' => 'btn btn-sm btn-info',
-                                'data-pjax' => true,
-                                'data' => [
-                                    'confirm' => 'Вы уверены, что хотите удалить эту фотографию?',
-                                ],
-                            ]) ?>
+<div id="photoForm">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="titleNormal">Фотографии</div>
+            <br>
+        </div>
+        <div class="col-md-6">
+            <p><b>Фото до обработки</b></p>
+            <?php if (count($photoBefore) < 5) { ?>
+                <div class="col-md-12">
+                    <?= $form->field($addPhotoBefore, 'before[]')
+                        ->widget(FileInput::classname(), [
+                            'options' => [
+                                'multiple' => true,
+                                'accept' => 'image/*'
+                            ],
+                            'pluginOptions' => [
+                                'previewFileType' => 'image',
+                                'allowedFileExtensions' => ['jpg', 'jpeg'],
+                                'showUpload' => false,
+                                'maxFileCount' => 5 - count($photoBefore)
+                            ]
+                        ]) ?>
+                </div>
+            <?php } ?>
+            <?php for ($i = 0; $i <= 4; $i++) { ?>
+                <?php if ($photoBefore[$i] != null) { ?>
+                    <div class="col-md-6" style="margin-bottom: 20px ">
+                        <div id="box_<?= $i ?>" class="box">
+                            <span><?= Html::a('<img src="' . $photoBefore[$i]->thumbnail . '">', $photoBefore[$i]->url, ['target' => '_blank', 'data-pjax' => '0']) ?></span>
+                            <span style="margin-left: 20px">
+                                <?= Html::a('<span class="glyphicon glyphicon-trash"></span>', ['#'], [
+                                    'class' => 'btn btn-sm btn-info',
+                                    'onclick' =>
+                                        "
+                                    if (confirm('Вы уверены, что хотите удалить эту фотографию?')) {    
+                                        $.ajax({
+                                        type:'POST',
+                                        cache: false,
+                                        url: '" . Url::to(['visit/delete-photo', 'id' => $photoBefore[$i]->id]) . "',
+                                        complete: function() {
+                                            $.pjax.reload({container:'#photoEdit'});
+                                        }
+                                        });
+                                    }
+                                    return false;
+                                ",
+                                ]); ?>
                             </span>
+                        </div>
                     </div>
+                <?php } ?>
+            <?php } ?>
+        </div>
+        <div class="col-md-6">
+            <p><b>Фото после обработки</b></p>
+            <?php if (count($photoAfter) < 5) { ?>
+                <div class="col-md-12">
+                    <?= $form->field($addPhotoAfter, 'after[]')->widget(FileInput::classname(), [
+                        'options' => [
+                            'multiple' => true,
+                            'accept' => 'image/*'
+                        ],
+                        'pluginOptions' => [
+                            'previewFileType' => 'image',
+                            'allowedFileExtensions' => ['jpg', 'jpeg'],
+                            'showUpload' => false,
+                            'maxFileCount' => 5 - count($photoAfter)
+                        ]
+                    ]) ?>
                 </div>
             <?php } ?>
-        <?php } ?>
-        <?php if (count($photoBefore) < 5) { ?>
-            <div class="col-md-6">
-                <?= $photo->field($onePhotoBefore, 'onePhotoBefore')->fileInput(['class' => 'btn btn-default', 'style' => 'width: 100%;']) ?>
-            </div>
-        <?php } ?>
-
-    </div>
-    <div class="col-md-6">
-        <p><b>Фото после обработки</b></p>
-        <?php for ($i = 0; $i <= 4; $i++) { ?>
-            <?php if ($photoAfter[$i] != null) { ?>
-                <div class="col-md-6" style="margin-bottom: 20px ">
-                    <div class="box">
-                        <span><?= Html::a('<img src="' . $photoAfter[$i]->thumbnail . '">', $photoAfter[$i]->url, ['target' => '_blank', 'data-pjax' => '0']) ?></span>
-                        <span style="margin-left: 20px">
-                            <?= Html::a('<span class="glyphicon glyphicon-trash"></span>', ['photo/delete-photo', 'id' => $photoAfter[$i]->id], [
+            <?php for ($i = 0; $i <= 4; $i++) { ?>
+                <?php if ($photoAfter[$i] != null) { ?>
+                    <div class="col-md-6" style="margin-bottom: 20px ">
+                        <div class="box">
+                            <span><?= Html::a('<img src="' . $photoAfter[$i]->thumbnail . '">', $photoAfter[$i]->url, ['target' => '_blank', 'data-pjax' => '0']) ?></span>
+                            <span style="margin-left: 20px">
+                            <?= Html::a('<span class="glyphicon glyphicon-trash"></span>', ['#'], [
                                 'class' => 'btn btn-sm btn-info',
-                                'data-pjax' => true,
-                                'data' => [
-                                    'confirm' => 'Вы уверены, что хотите удалить эту фотографию?',
-                                ],
-                            ]) ?>
-                        </span>
+                                'onclick' =>
+                                    "
+                                    if (confirm('Вы уверены, что хотите удалить эту фотографию?')) {    
+                                        $.ajax({
+                                        type:'POST',
+                                        cache: false,
+                                        url: '" . Url::to(['visit/delete-photo', 'id' => $photoAfter[$i]->id]) . "',
+                                        complete: function() {
+                                            $.pjax.reload({container:'#photoEdit'});
+                                        }
+                                        });
+                                    }
+                                    return false;
+                                ",
+                            ]); ?></span>
+                        </div>
                     </div>
-                </div>
+                <?php } ?>
             <?php } ?>
-        <?php } ?>
-        <?php if (count($photoAfter) < 5) { ?>
-            <div class="col-md-6">
-                <?= $photo->field($onePhotoAfter, 'onePhotoAfter')->fileInput(['class' => 'btn btn-default', 'style' => 'width: 100%;']) ?>
-            </div>
-        <?php } ?>
-
+        </div>
     </div>
 </div>
-<?php ActiveForm::end(); ?>

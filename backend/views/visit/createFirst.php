@@ -8,11 +8,12 @@ $this->title = 'Новое посещение';
 
 ?>
 <div class="visit-create">
-
     <?= Html::button('<span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span> Отмена', [
         'class' => 'btn btn-default',
         'onclick' => 'history.back();'
     ]) ?>
+    <br>
+    <br>
 
     <p class="titleNormal"><?= Html::encode($this->title) ?></p>
 

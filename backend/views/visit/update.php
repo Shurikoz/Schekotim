@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use backend\models\Photo;
+use rmrevin\yii\fontawesome\FAS;
 /* @var $this yii\web\View */
 /* @var $model backend\models\Visit */
 
@@ -9,9 +10,12 @@ $this->title = 'Редактирование посещения, карта №:
 
 ?>
 <div class="visit-update">
-
+<div class="row">
+    <div class="col-md-12">
+        <?= Html::a('Отмена', ['/card/view?id=' . $card->id], ['class' => 'btn btn-default']) ?>
+    </div>
+</div>
     <h1><?= Html::encode($this->title) ?></h1>
-
     <?= $this->render('_formUpdate', [
         'model' => $model,
         'location' => $location,
@@ -19,8 +23,7 @@ $this->title = 'Редактирование посещения, карта №:
         'problem' => $problem,
         'photoBefore' => $photoBefore,
         'photoAfter' => $photoAfter,
-        'onePhotoBefore' => new Photo(),
-        'onePhotoAfter' => new Photo()
+        'addPhotoBefore' => $addPhotoBefore,
+        'addPhotoAfter' => $addPhotoAfter
     ]) ?>
-
 </div>

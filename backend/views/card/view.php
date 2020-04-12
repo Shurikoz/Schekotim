@@ -44,7 +44,7 @@ $visit_number = count($visits);
 
     <br>
     <div class="box">
-        <h3><b><?= Html::encode($this->title) ?></b></h3>
+        <span class="cardHeader"><b><?= Html::encode($this->title) ?></b></span>
     </div>
     <div class="row cardView">
         <div class="col-md-6">
@@ -70,7 +70,7 @@ $visit_number = count($visits);
         </div>
         <div class="col-md-6">
             <div class="box">
-                <b>Место создания: </b><?= $location->city->name ?>, <?= $location->address_point ?>
+                <b>Место создания: </b><?= $model->city ?>, <?= $model->address_point ?>
             </div>
         </div>
     </div>
@@ -119,7 +119,7 @@ $visit_number = count($visits);
                 }
                 // проверим решена проблема или нет
                 if ($item->resolve != 0) {
-                    $picResolve = '<span class="glyphicon glyphicon-remove-circle"></span>';
+                    $picResolve = '<span class="glyphicon glyphicon-ok-circle"></span>';
                 } else {
                     $picResolve = '';
                 }
@@ -138,8 +138,8 @@ $visit_number = count($visits);
                         <span><?= $visit_number ?></span>
                     </td>
                     <td class="c-table__cell">
-                        <p><?= $item->city->name ?></p>
-                        <p><?= $item->addressPoint->address_point ?></p>
+                        <p><?= $item->city ?></p>
+                        <p><?= $item->address_point ?></p>
                     </td>
                     <td class="c-table__cell">
                         <?php if ($item->problem_id == 0) { ?>
@@ -172,7 +172,6 @@ $visit_number = count($visits);
                         <?= $picCamera ?>
                         <?= $picCome ?>
                         <?= $picResolve ?>
-
                     </td>
                 </tr>
                 <tr class="c-table__row visitInfoBlock hide hideBox">
@@ -212,7 +211,6 @@ $visit_number = count($visits);
                                                 <?= Html::a('Изменить посещение', ['visit/update', 'id' => $item->id, 'card' => $model->id, 'card_number' => $model->number], ['class' => 'btn btn-info']) ?>
                                             </div>
                                         <?php } ?>
-
                                         <?php //кнопка «Проблема решена» доступна админу или тому, кто создал посещение?>
                                         <?php if ($item->podolog->user_id == Yii::$app->user->id || Yii::$app->user->can('admin')) { ?>
                                             <div>
@@ -229,8 +227,15 @@ $visit_number = count($visits);
                                                 <?php } ?>
                                             </div>
                                         <?php } ?>
-
                                         <?php if (Yii::$app->user->can('admin')) { ?>
+                                            <div>
+                                                <?= Html::a('Изменить подолога', ['visit/set-pod'], [
+                                                    'class' => 'btn btn-primary',
+                                                    'data' => [
+                                                        'method' => 'post',
+                                                    ],
+                                                ]) ?>
+                                            </div>
                                             <div>
                                                 <?= Html::a('Удалить', ['visit/delete', 'id' => $item->id, 'card' => $model->id], [
                                                     'class' => 'btn btn-danger',
@@ -246,6 +251,23 @@ $visit_number = count($visits);
                             </div>
                             <hr>
                         <?php } ?>
+
+                        <?php if (Yii::$app->user->can('manager')) { ?>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="userStatus pull-right">
+                                        <?= Html::a('Изменить подолога', ['visit/set-pod'], [
+                                            'class' => 'btn btn-primary',
+                                            'data' => [
+                                                'method' => 'post',
+                                            ],
+                                        ]) ?>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr>
+                        <?php } ?>
+
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="box">
@@ -286,9 +308,6 @@ $visit_number = count($visits);
                                                 <?php if ($photo->made == 'before') { ?>
                                                     <div style="float: left; margin: 0 0 20px 20px;">
                                                         <?= Html::a('<img src="' . $photo->thumbnail . '">', $photo->url, ['target' => '_blank']) ?>
-                                                        <br>
-                                                        <?= Html::a('<span class="glyphicon glyphicon-download-alt"></span> Скачать', ['photo/download', 'id' => $photo->id]) ?>
-                                                        <?php ?>
                                                     </div>
 
                                                 <?php } ?>
@@ -306,10 +325,7 @@ $visit_number = count($visits);
                                             <?php foreach ($item->photo as $photo) { ?>
                                                 <?php if ($photo->made == 'after') { ?>
                                                     <div style="float: left; margin: 0 0 20px 20px;">
-                                                    <?= Html::a('<img src="' . $photo->thumbnail . '">', $photo->url, ['target' => '_blank']) ?>
-                                                        <br>
-                                                        <?= Html::a('<span class="glyphicon glyphicon-download-alt"></span> Скачать', ['photo/download', 'id' => $photo->id]) ?>
-                                                        <?php ?>
+                                                        <?= Html::a('<img src="' . $photo->thumbnail . '">', $photo->url, ['target' => '_blank']) ?>
                                                     </div>
 
                                                 <?php } ?>
@@ -339,7 +355,7 @@ $visit_number = count($visits);
         <p><span class="glyphicon glyphicon-hourglass"></span> - ожидание посещения</p>
         <p><span class="glyphicon glyphicon-ok"></span> - посещение зафиксировано</p>
         <p><span class="glyphicon glyphicon-remove"></span> - пациент не пришел в указанное время</p>
-        <p><span class="glyphicon glyphicon-remove-circle"></span> - проблема решена</p>
+        <p><span class="glyphicon glyphicon-ok-circle"></span> - проблема решена</p>
         <p><span class="glyphicon glyphicon-camera"></span> - не добавлены фотографии</p>
 
     </div>

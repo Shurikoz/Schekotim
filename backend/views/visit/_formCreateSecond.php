@@ -12,33 +12,26 @@ use yii\widgets\ActiveForm;
 $problemName = ArrayHelper::map($problem, 'id', 'name');
 array_unshift($problemName, '');
 ?>
+<br>
+
 <div class="visit-form">
     <div class="row">
         <div class="col-md-4">
-            <div class="box">
-                <b>Город:</b> <?= $location->city->name ?>
-            </div>
+            <b>Город:</b> <?= Yii::$app->user->identity->city ?>
         </div>
-        <div class="col-md-5">
-            <div class="box">
-                <b>Точка:</b> <?= $location->address_point ?>
-            </div>
-        </div>
-    </div>
-    <hr>
-    <div class="row">
         <div class="col-md-4">
-            <div class="box">
-                <b>Подолог:</b> <?= $podolog->name ?>
-            </div>
+            <b>Точка:</b> <?= Yii::$app->user->identity->address_point ?>
+        </div>
+        <div class="col-md-4">
+            <b>Подолог:</b> <?= $podolog->name ?>
         </div>
     </div>
     <hr>
     <?php $form = ActiveForm::begin(); ?>
 
     <?= $form->field($model, 'card_number')->hiddenInput(['value' => (int)Yii::$app->request->get('card_number')])->label(false); ?>
-    <?= $form->field($model, 'city_id')->hiddenInput(['value' => $location->city->id])->label(false); ?>
-    <?= $form->field($model, 'address_point_id')->hiddenInput(['value' => $location->id])->label(false); ?>
+    <?= $form->field($model, 'city')->hiddenInput(['value' => Yii::$app->user->identity->city])->label(false); ?>
+    <?= $form->field($model, 'address_point')->hiddenInput(['value' => Yii::$app->user->identity->address_point])->label(false); ?>
     <?= $form->field($model, 'podolog_id')->hiddenInput(['value' => $podolog->id])->label(false); ?>
 
     <div class="row">
@@ -63,8 +56,14 @@ array_unshift($problemName, '');
                     'attribute2' => 'next_visit_by',
                     'value2' => date("m.d.y"),
                     'separator' => 'по',
-                    'options' => ['placeholder' => 'с день-мес-год'],
-                    'options2' => ['placeholder' => 'до день-мес-год'],
+                    'options' => [
+                        'placeholder' => 'с день-мес-год',
+                        'required' => true
+                    ],
+                    'options2' => [
+                        'placeholder' => 'до день-мес-год',
+                        'required' => true
+                    ],
                     'pluginOptions' => [
                         'autoclose' => false,
                         'format' => 'dd.mm.yyyy',

@@ -10,7 +10,6 @@ use yii\widgets\MaskedInput;
 $podologList = ArrayHelper::map($podologModel, 'id', 'name');
 
 ?>
-
 <div class="row">
     <div class="col-md-12">
         <p class="titleNormal"><?= Html::encode($this->title) ?></p>
@@ -19,30 +18,24 @@ $podologList = ArrayHelper::map($podologModel, 'id', 'name');
 <hr>
 <div class="row">
     <div class="col-md-4">
-        <div class="box">
-            <div class="col-md-2"><b>Город:</b></div>
-            <div class="col-md-10"><?= $location->city->name ?></div>
+            <b>Город:</b> <?= Yii::$app->user->identity->city ?>
         </div>
-    </div>
-    <div class="col-md-5">
-        <div class="box">
-            <div class="col-md-2"><b>Точка:</b></div>
-            <div class="col-md-10"><?= $location->address_point ?></div>
-        </div>
+    <div class="col-md-4">
+            <b>Точка:</b> <?= Yii::$app->user->identity->address_point ?>
     </div>
 </div>
 <hr>
 <div class="row">
     <div class="col-md-12">
-        <p class="titleMin">Общие данные <?= FAS::i('question') ?></p>
+        <p class="titleMin">Общие данные</p>
     </div>
 </div>
 <div class="card-form">
     <?php $form = ActiveForm::begin(); ?>
 
     <?= $form->field($cardModel, 'user_id')->hiddenInput(['value' => Yii::$app->user->id])->label(false); ?>
-    <?= $form->field($cardModel, 'city_id')->hiddenInput(['value' => $location->city->id])->label(false); ?>
-    <?= $form->field($cardModel, 'address_point_id')->hiddenInput(['value' => $location->id])->label(false); ?>
+    <?= $form->field($cardModel, 'city')->hiddenInput(['value' => Yii::$app->user->identity->city])->label(false); ?>
+    <?= $form->field($cardModel, 'address_point')->hiddenInput(['value' => Yii::$app->user->identity->address_point])->label(false); ?>
 
     <div class="row">
         <div class="col-md-4">
@@ -60,7 +53,9 @@ $podologList = ArrayHelper::map($podologModel, 'id', 'name');
                 <?= $form->field($cardModel, 'middle_name')->textInput(['maxlength' => true]) ?>
             </div>
         </div>
-        <div class="col-md-4">
+    </div>
+    <div class="row">
+    <div class="col-md-4">
             <div class="box">
                 <!--                --><? //= $form->field($cardModel, 'birthday')->textInput(['type' => 'date']) ?>
                 <?php echo $form->field($cardModel, 'birthday')->widget(DatePicker::classname(), [
@@ -68,7 +63,8 @@ $podologList = ArrayHelper::map($podologModel, 'id', 'name');
                     'removeButton' => false,
                     'pluginOptions' => [
                         'autoclose' => true
-                    ]
+                    ],
+                    'options' => ['placeholder' => 'дд.мм.гггг']
                 ]);
 
                 ?>
@@ -87,7 +83,7 @@ $podologList = ArrayHelper::map($podologModel, 'id', 'name');
         <div class="col-md-4">
             <div class="row">
                 <div class="col-md-12">
-                    <p class="titleMin">Выбор специалиста <?= FAS::i('question') ?></p>
+                    <p class="titleMin">Выбор специалиста</p>
                 </div>
             </div>
             <br>

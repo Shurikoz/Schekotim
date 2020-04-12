@@ -3,6 +3,7 @@
 namespace backend\controllers;
 
 use backend\models\AddressPoint;
+use backend\models\Card;
 use backend\models\Photo;
 use backend\models\Podolog;
 use backend\models\Problem;
@@ -75,7 +76,7 @@ class VisitController extends Controller
         $photoAfter = new Photo();
 
         //получим id точки из аккаунта текущего пользователя
-        $addressPoint = Yii::$app->user->identity->address_point_id;
+        $addressPoint = Yii::$app->user->identity->address_point;
         $location = AddressPoint::find()->where(['id' => $addressPoint])->with('city')->one();
         $podolog = Podolog::find()->where(['user_id' => Yii::$app->user->identity->id])->one();
 
@@ -84,22 +85,23 @@ class VisitController extends Controller
         $model->has_come = 1;
         $model->edit = 1; //возможность редактирования - 1 можно, 0 запрещено
         $model->timestamp = time() + 60 * 60 * 24 * 2; // 2 суток на редактирование
-        $model->visit_time = date('H:m:i');
+        $model->visit_time = date('H:i:s');
         $model->visit_date = date('Y-m-d');
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+
             $photoBefore->before = UploadedFile::getInstances($photoBefore, 'before');
             $photoAfter->after = UploadedFile::getInstances($photoAfter, 'after');
 
             $photoBefore->uploadBefore(
                 $model->id,
-                $location->address_point,
+                $model->address_point,
                 Yii::$app->request->get('card_number'),
                 $model->visit_date
             );
             $photoAfter->uploadAfter(
                 $model->id,
-                $location->address_point,
+                $model->address_point,
                 Yii::$app->request->get('card_number'),
                 $model->visit_date
             );
@@ -132,7 +134,7 @@ class VisitController extends Controller
         $model->setAttributes($modelFirst->attributes);
 
         //получим id точки из аккаунта текущего пользователя
-        $addressPoint = Yii::$app->user->identity->address_point_id;
+        $addressPoint = Yii::$app->user->identity->address_point;
         $location = AddressPoint::find()->where(['id' => $addressPoint])->with('city')->one();
         $podolog = Podolog::find()->where(['user_id' => Yii::$app->user->identity->id])->one();
 
@@ -198,13 +200,13 @@ class VisitController extends Controller
             $model->next_visit_from = $next_visit_from;
             $model->next_visit_by = $next_visit_by;
             if ($model->save()) {
-                Yii::$app->session->setFlash('success', 'Проблема помечена решенной!');
+                Yii::$app->session->setFlash('success', 'Проблема #' . $model->id . ' помечена решенной!');
                 return $result;
             }
         } else if ($resolve == false) {
             $model->resolve = 0;
             if ($model->save()) {
-                Yii::$app->session->setFlash('info', 'Проблема помечена как нерешенная.');
+                Yii::$app->session->setFlash('info', 'Проблема #' . $model->id . ' помечена как нерешенная.');
                 return $result;
             }
         }
@@ -222,26 +224,51 @@ class VisitController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-        $onePhoto = new Photo();
+        $addPhotoBefore = new Photo();
+        $addPhotoAfter = new Photo();
+
+        $addressPoint = Yii::$app->user->identity->address_point;
         $photoBefore = Photo::find()->where(['visit_id' => $model->id, 'made' => 'before'])->all();
         $photoAfter = Photo::find()->where(['visit_id' => $model->id, 'made' => 'after'])->all();
-        $addressPoint = Yii::$app->user->identity->address_point_id;
         $location = AddressPoint::find()->where(['id' => $addressPoint])->with('city')->one();
         $podolog = Podolog::find()->where(['user_id' => Yii::$app->user->identity->id])->one();
+        $card = Card::find()->where(['number' => $model->card_number])->one();
 
         $model->visit_time = date('H:m:i');
         $model->visit_date = date('Y-m-d');
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            $addPhotoBefore->before = UploadedFile::getInstances($addPhotoBefore, 'before');
+            $addPhotoAfter->after = UploadedFile::getInstances($addPhotoAfter, 'after');
+
+            $addPhotoBefore->uploadBefore(
+                $model->id,
+                $model->address_point,
+                Yii::$app->request->get('card_number'),
+                $model->visit_date
+            );
+            $addPhotoAfter->uploadAfter(
+                $model->id,
+                $model->address_point,
+                Yii::$app->request->get('card_number'),
+                $model->visit_date
+            );
+
+            Yii::$app->session->setFlash('success', 'Данные сохранены!');
+
             return $this->redirect(['card/view', 'id' => Yii::$app->request->get('card')]);
         }
         return $this->render('update', [
+            'card' => $card,
             'model' => $model,
             'location' => $location,
             'podolog' => $podolog,
             'problem' => $this->findProblem(),
             'photoBefore' => $photoBefore,
-            'photoAfter' => $photoAfter
+            'photoAfter' => $photoAfter,
+            'addPhotoBefore' => $addPhotoBefore,
+            'addPhotoAfter' => $addPhotoAfter
+
         ]);
     }
 
@@ -310,38 +337,6 @@ class VisitController extends Controller
         }
     }
 
-    public function actionAddPhoto($visitId, $cardId)
-    {
-        $photo = new Photo();
-        $visit = Visit::findOne($visitId);
-
-        $photoBefore = Photo::find()->where(['visit_id' => $visitId, 'made' => 'before'])->all();
-        $photoAfter = Photo::find()->where(['visit_id' => $visitId, 'made' => 'after'])->all();
-
-        $addressPoint = Yii::$app->user->identity->address_point_id;
-        $location = AddressPoint::find()->where(['id' => $addressPoint])->with('city')->one();
-
-        if (Yii::$app->request->isAjax) {
-
-
-            $photo->onePhotoBefore = $_FILES['img'];
-
-
-            $photo->uploadOnephotobefore(
-                $visitId,
-                $location->address_point,
-                $cardId,
-                $visit->visit_date
-            );
-            return $this->renderAjax('/photo/photo', [
-                'photoBefore' => $photoBefore,
-                'photoAfter' => $photoAfter,
-                'onePhotoBefore' => new Photo(),
-                'onePhotoAfter' => new Photo()
-            ]);
-        }
-    }
-
     /**
      * @param $id
      * @return string
@@ -354,13 +349,16 @@ class VisitController extends Controller
         $photoBefore = Photo::find()->where(['visit_id' => $id, 'made' => 'before'])->all();
         $photoAfter = Photo::find()->where(['visit_id' => $id, 'made' => 'after'])->all();
 
+        $addPhotoBefore = new Photo();
+        $addPhotoAfter = new Photo();
+
         Photo::findOne($id)->delete();
 
         return $this->renderAjax('/photo/photo', [
             'photoBefore' => $photoBefore,
             'photoAfter' => $photoAfter,
-            'onePhotoBefore' => new Photo(),
-            'onePhotoAfter' => new Photo()
+            'addPhotoBefore' => $addPhotoBefore,
+            'addPhotoAfter' => $addPhotoAfter
         ]);
     }
 

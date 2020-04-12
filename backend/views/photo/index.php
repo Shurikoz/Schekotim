@@ -54,6 +54,23 @@ $_GET['VisitSearch']['used_photo'] == '0' ? $usedPhoto0 = 'active' : $usedPhoto0
                         </div>
                     </div>
                 </div>
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="c-field">
+                            <?= $form->field($searchModel, 'anamnes')->textInput(['class' => 'autoSearchSubmit c-input'])->label('Анамнез', ['class' => 'c-field__label']) ?>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="c-field">
+                            <?= $form->field($searchModel, 'manipulation')->textInput(['class' => 'autoSearchSubmit c-input'])->label('Манипуляции', ['class' => 'c-field__label']) ?>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="c-field">
+                            <?= $form->field($searchModel, 'recommendation')->textInput(['class' => 'autoSearchSubmit c-input'])->label('Рекомендации', ['class' => 'c-field__label']) ?>
+                        </div>
+                    </div>
+                </div>
                 <?php ActiveForm::end(); ?>
             </div>
         </div>
@@ -75,6 +92,7 @@ $_GET['VisitSearch']['used_photo'] == '0' ? $usedPhoto0 = 'active' : $usedPhoto0
         <br>
 
         <?php // TODO Исправить timeout?>
+        <?php if ($dataProvider->models) {?>
         <?php foreach ($dataProvider->models as $item) { ?>
             <div class="blockCard <?= $item->used_photo == 1 ? 'usingCard' : '' ?>">
                 <?php if ($item->used_photo != 1) { ?>
@@ -176,6 +194,9 @@ $_GET['VisitSearch']['used_photo'] == '0' ? $usedPhoto0 = 'active' : $usedPhoto0
                     <hr style="margin: 35px 0;border: 2px solid #7ba335;">
                 </div>
             </div>
+        <?php } ?>
+        <?php } else {?>
+            <div align="center">Ничего не найдено :(</div>
         <?php } ?>
         <div class="pull-right">
             <?= LinkPager::widget([

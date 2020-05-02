@@ -3950,6 +3950,11 @@ header.main .rew-title{
     text-align: center;
 }
 
+
+header.main .reviewTitleText{
+    margin-top: 20px;
+}
+
 .main .row .col-4{
 
 }
@@ -3961,4 +3966,14 @@ header.main .rew-title{
 .happyNewYear{
     width: 100%;
     margin-bottom: 0 !important;
+}
+
+/*чтобы капча не выходила за пределы*/
+.g-recaptcha, .g-recaptcha div{
+    overflow: hidden;
+    max-width: 100%;
+}
+.g-recaptcha iframe, body > div[style]:last-of-type
+{ transform: scale(0.75);
+    transform-origin: left top;
 }

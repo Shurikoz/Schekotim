@@ -21,22 +21,22 @@ window.setTimeout(function () {
     });
 }, 10000);
 
+
+
 //Кнопка развернуть форму для отзыва
 function showReviewForm(){
-    $("#reviewForm").fadeIn(600, 0);
+    $('#reviewForm').slideDown();
     $("#showReviewFormButton").fadeOut(300, function () {
         $("#hideReviewFormButton").fadeIn(300, 0);
-        $("#zoon").fadeOut(300, 0);
-        $("#yand").fadeOut(300, 0);
     });
+
+
 }
 //Кнопка свернуть форму для отзыва
 function hideReviewForm(){
-    $("#reviewForm").fadeOut(600, 0);
+    $('#reviewForm').slideUp();
     $("#hideReviewFormButton").fadeOut(300, function () {
         $("#showReviewFormButton").fadeIn(300, 0);
-        $("#zoon").fadeIn(300, 0);
-        $("#yand").fadeIn(300, 0);
     });
 }
 

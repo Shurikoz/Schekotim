@@ -17,29 +17,33 @@ $header = 'Отзывы';
 <!-- Content -->
 <section>
     <header class="main">
-        <p><b>Щекотливая тема</b> благодарит вас за посещение. Если вы хотите поделиться отзывом и поставить оценку, перейдите по ссылке в QR-коде. </p>
+        <p class="reviewTitleText"><b>Щекотливая тема</b> благодарит вас за посещение. Если вы хотите поделиться отзывом и поставить оценку, перейдите по ссылке в QR-коде. </p>
         <?= Alert::widget() ?>
         <div class="row">
-            <div class="col-4 col-12-medium">
-                <?= Html::button('Оставить отзыв на сайте', ['class' => 'button primary box qrc', 'id' => 'showReviewFormButton', 'onClick' => 'showReviewForm()']) ?>
-                <?= Html::button('Отмена', ['class' => 'button primary box', 'style' => 'display:none;', 'id' => 'hideReviewFormButton', 'onClick' => 'hideReviewForm()']) ?>
-            </div>
-            <div id="zoon" class="col-4 col-12-medium">
+            <div id="zoon" class="col-4 col-12-medium" style="padding: 0;">
                 <p class="rew-title">Оставьте отзыв на <a href="https://zoon.ru/msk/medical/tsentr_podologii_schekotlivaya_tema_na_ulitse_samuila_marshaka_vo_vnukovskom_poselenii/" target="_blank">zoon.ru</a></p>
                 <a href="https://zoon.ru/msk/medical/tsentr_podologii_schekotlivaya_tema_na_ulitse_samuila_marshaka_vo_vnukovskom_poselenii/" target="_blank"><img class="qrc" src="https://zoon.ru/images/header/zoon_logo.png?v=2" alt=""></a>
                 <a href="https://zoon.ru/msk/medical/tsentr_podologii_schekotlivaya_tema_na_ulitse_samuila_marshaka_vo_vnukovskom_poselenii/" target="_blank"><img class="qrc" src="http://qrcoder.ru/code/?https%3A%2F%2Fzoon.ru%2Fmsk%2Fmedical%2Ftsentr_podologii_schekotlivaya_tema_na_ulitse_samuila_marshaka_vo_vnukovskom_poselenii%2F&4&0" alt=""></a>
             </div>
-            <div id="yand" class="col-4 col-12-medium">
+            <div id="yand" class="col-4 col-12-medium" style="padding: 0;">
                 <p class="rew-title">Оставьте отзыв на <a href="https://yandex.ru/profile/34151440370">Yandex.ru</a></p>
                 <a href="https://yandex.ru/profile/34151440370"><img class="qrc" src="/images/yandex.jpg" alt=""></a>
                 <a href="https://yandex.ru/profile/34151440370"><img class="qrc" src="/images/qryan.jpg" alt=""></a>
+            </div>
+            <div class="col-4 col-12-medium">
+                <p class="rew-title">Оставьте отзыв на нашем сайте</p>
+                <br>
+                <br>
+                <img class="qrc" src="/images/logoSchekotim.jpg" alt="">
+                <br>
+                <?= Html::button('Оставить отзыв на сайте', ['class' => 'button primary box qrc', 'id' => 'showReviewFormButton', 'onClick' => 'showReviewForm()']) ?>
+                <?= Html::button('Отмена', ['class' => 'button primary box qrc', 'style' => 'display:none;', 'id' => 'hideReviewFormButton', 'onClick' => 'hideReviewForm()']) ?>
             </div>
         </div>
     </header>
 </section>
 <div class="row">
     <div class="col-12 col-12-medium">
-
         <div id="reviewForm" style="display: none" class="box">
             <h2>Оставить отзыв</h2>
             <?php $form = ActiveForm::begin(); ?>
@@ -90,14 +94,12 @@ $header = 'Отзывы';
             <br>
 
             <div class="row">
-<!--                --><?//= $form->field($newReview, 'verifyCode')->widget(Captcha::className(), [
-//                    'template' => '<div class="col-1 col-12-xsmall">{image}</div><div class="col-1 col-12-xsmall">{input}</div>',
-//                    'captchaAction' => '/site/captcha',
-//                ]) ?>
+                <div class="col-12 col-12-xsmall">
                 <?= $form->field($newReview, 'reCaptcha')->widget(
                     \himiklab\yii2\recaptcha\ReCaptcha::className(),
                     ['siteKey' => '6Lf4qbgUAAAAAJN00e-Jk_USGrubqMJxg3qmqbKw']
                 ) ?>
+                </div>
             </div>
             <div class="row">
                 <div class="form-group">

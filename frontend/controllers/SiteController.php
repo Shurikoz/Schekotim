@@ -126,7 +126,7 @@ class SiteController extends Controller
      *
      * @return mixed
      */
-    public function actionContact()
+    public function actionContacts()
     {
         $this->view->registerMetaTag([
             'name' => 'description',
@@ -142,7 +142,7 @@ class SiteController extends Controller
             }
             return $this->refresh();
         } else {
-            return $this->render('contact', [
+            return $this->render('contacts', [
                 'model' => $model,
             ]);
         }

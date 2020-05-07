@@ -58,15 +58,17 @@ array_unshift($problemName, '');
                     'separator' => 'по',
                     'options' => [
                         'placeholder' => 'с день-мес-год',
-                        'required' => true
+                        'required' => true,
                     ],
                     'options2' => [
-                        'placeholder' => 'до день-мес-год',
-                        'required' => true
+                        'placeholder' => 'по день-мес-год',
+                        'required' => true,
                     ],
                     'pluginOptions' => [
                         'autoclose' => false,
                         'format' => 'dd.mm.yyyy',
+                        'todayHighlight' => true,
+                        'startDate' => date('Ymd'),
                     ]
                 ]);
                 ?>
@@ -77,17 +79,17 @@ array_unshift($problemName, '');
     <div class="row">
         <div class="col-md-6">
             <div class="box">
-                <?= $form->field($model, 'anamnes')->textarea(['value' => $problem->anamnes, 'rows' => 6]) ?>
+                <?= $form->field($model, 'anamnes')->textarea(['rows' => 6]) ?>
             </div>
         </div>
         <div class="col-md-6">
             <div class="box">
-                <?= $form->field($model, 'manipulation')->textarea(['value' => $problem->manipulation, 'rows' => 6]) ?>
+                <?= $form->field($model, 'manipulation')->textarea(['rows' => 6]) ?>
             </div>
         </div>
         <div class="col-md-12">
             <div class="box">
-                <?= $form->field($model, 'recommendation')->textarea(['value' => $problem->recommendation, 'rows' => 6]) ?>
+                <?= $form->field($model, 'recommendation')->textarea(['rows' => 6]) ?>
             </div>
         </div>
         <div class="col-md-12">

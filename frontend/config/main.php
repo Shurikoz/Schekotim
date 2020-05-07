@@ -42,7 +42,7 @@ return [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
-                    '<action:(index|contacts|uslugi|sertificats|raboty|obuchenie|review|vakansii|stock)>' => 'site/<action>',
+                    '<action:(index|contacts|uslugi|sertificats|raboty|obuchenie|review|vakansii|stock|franchise)>' => 'site/<action>',
                     '<action:(treschini|onihomikoz|oniholizis|nogot|mozol|gematoma|borodavki)>' => 'pages/<action>'
 //                '<action:\w+>' => 'site/<action>',
             ],

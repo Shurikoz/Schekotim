@@ -41,8 +41,8 @@ $header = 'Отзывы';
             </div>
         </div>
     </header>
-</section>
-<div class="row">
+    <br>
+    <div class="row">
     <div class="col-12 col-12-medium">
         <div id="reviewForm" style="display: none" class="box">
             <h2>Оставить отзыв</h2>
@@ -146,4 +146,4 @@ $header = 'Отзывы';
         'class' => ''
     ]); ?>
 </div>
-
+</section>

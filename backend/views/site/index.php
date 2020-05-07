@@ -35,7 +35,6 @@ $this->title = 'Панель учета';
                 <?= Html::a('Создать карту', ['card/create'], ['class' => 'btn btn-lg btn-green center-block']) ?>
             </div>
         </div>
-
     <?php } ?>
 
     <?php if (Yii::$app->user->can('admin') || Yii::$app->user->can('user') || Yii::$app->user->can('manager')) { ?>
@@ -48,6 +47,15 @@ $this->title = 'Панель учета';
         </div>
     <?php } ?>
 
+    <?php if (Yii::$app->user->can('admin') || Yii::$app->user->can('manager')) { ?>
+        <div class="col-md-6">
+            <div class="box">
+                <h3 class="text-center">Просмотр пропущенных посещений</h3>
+                <br>
+                <?= Html::a('Просмотр пропущенных посещений', ['visit/view'], ['class' => 'btn btn-lg btn-primary center-block']) ?>
+            </div>
+        </div>
+    <?php } ?>
 
     <?php if (Yii::$app->user->can('admin')) { ?>
         <div class="col-md-6">

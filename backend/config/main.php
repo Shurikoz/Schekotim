@@ -1,5 +1,6 @@
 <?php
 
+
 $params = array_merge(
     require __DIR__ . '/../../common/config/params.php',
     require __DIR__ . '/../../common/config/params-local.php',
@@ -74,13 +75,12 @@ return [
         'errorHandler' => [
             'errorAction' => 'site/error',
         ],
-
         'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'baseUrl' => '',
             'rules' => [
-                '<action:(index|review|login)>' => 'site/<action>',
+                '<action:(index|review|login|request-password-reset|reset-password)>' => 'site/<action>',
                 '<action:(show|hide)>' => 'review/<action>',
             ],
 
@@ -92,12 +92,14 @@ return [
                     'bsDependencyEnabled' => false // do not load bootstrap assets for a specific asset bundle
                 ],
             ],
-        ],
+        ]
     ],
     'as access' => [
         'class' => 'mdm\admin\components\AccessControl',
         'allowActions' => [
             'site/login',
+            'site/request-password-reset',
+            'site/reset-password',
 //            'site/*'
         ]
     ],

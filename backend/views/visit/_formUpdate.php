@@ -53,17 +53,17 @@ $card_id = (int)Yii::$app->request->get('card_number');
     <div class="row">
         <div class="col-md-6">
             <div class="box">
-                <?= $form->field($model, 'anamnes')->textarea(['value' => $problem->anamnes, 'rows' => 6]) ?>
+                <?= $form->field($model, 'anamnes')->textarea(['rows' => 6]) ?>
             </div>
         </div>
         <div class="col-md-6">
             <div class="box">
-                <?= $form->field($model, 'manipulation')->textarea(['value' => $problem->manipulation, 'rows' => 6]) ?>
+                <?= $form->field($model, 'manipulation')->textarea(['rows' => 6]) ?>
             </div>
         </div>
         <div class="col-md-12">
             <div class="box">
-                <?= $form->field($model, 'recommendation')->textarea(['value' => $problem->recommendation, 'rows' => 6]) ?>
+                <?= $form->field($model, 'recommendation')->textarea(['rows' => 6]) ?>
             </div>
         </div>
         <div class="col-md-12">
@@ -100,7 +100,7 @@ $card_id = (int)Yii::$app->request->get('card_number');
                     </div>
                 <?php } ?>
                 <?php for ($i = 0; $i <= 4; $i++) { ?>
-                    <?php if ($photoBefore[$i] != null) { ?>
+                    <?php if (isset($photoBefore[$i])) { ?>
                         <div class="col-md-6" style="margin-bottom: 20px ">
                             <div id="box_<?= $i ?>" class="box">
                                 <span><?= Html::a('<img src="' . $photoBefore[$i]->thumbnail . '">', $photoBefore[$i]->url, ['target' => '_blank', 'data-pjax' => '0']) ?></span>
@@ -147,7 +147,7 @@ $card_id = (int)Yii::$app->request->get('card_number');
                     </div>
                 <?php } ?>
                 <?php for ($i = 0; $i <= 4; $i++) { ?>
-                    <?php if ($photoAfter[$i] != null) { ?>
+                    <?php if (isset($photoAfter[$i])) { ?>
                         <div class="col-md-6" style="margin-bottom: 20px ">
                             <div class="box">
                                 <span><?= Html::a('<img src="' . $photoAfter[$i]->thumbnail . '">', $photoAfter[$i]->url, ['target' => '_blank', 'data-pjax' => '0']) ?></span>

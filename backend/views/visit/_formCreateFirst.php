@@ -44,17 +44,17 @@ array_unshift($problemName, '');
     <div class="row">
         <div class="col-md-6">
             <div class="box">
-                <?= $form->field($model, 'anamnes')->textarea(['value' => $problem->anamnes, 'rows' => 6]) ?>
+                <?= $form->field($model, 'anamnes')->textarea(['value' => '', 'rows' => 6]) ?>
             </div>
         </div>
         <div class="col-md-6">
             <div class="box">
-                <?= $form->field($model, 'manipulation')->textarea(['value' => $problem->manipulation, 'rows' => 6]) ?>
+                <?= $form->field($model, 'manipulation')->textarea(['value' => '', 'rows' => 6]) ?>
             </div>
         </div>
         <div class="col-md-12">
             <div class="box">
-                <?= $form->field($model, 'recommendation')->textarea(['value' => $problem->recommendation, 'rows' => 6]) ?>
+                <?= $form->field($model, 'recommendation')->textarea(['value' => '', 'rows' => 6]) ?>
             </div>
         </div>
         <div class="col-md-12">

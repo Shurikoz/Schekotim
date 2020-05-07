@@ -27,7 +27,7 @@ $this->params['breadcrumbs'][] = $this->title;
             <?= $form->field($model, 'rememberMe')->checkbox() ?>
 
             <div style="color:#999;margin:1em 0">
-                Забыли пароль? <?= Html::a('Восстановить', ['site/request-password-reset']) ?>.
+                Забыли пароль? <?= Html::a('Восстановить', ['/request-password-reset']) ?>.
             </div>
             <div class="form-group">
                 <?= Html::submitButton('Войти', ['class' => 'btn btn-primary btn-green btn-border-green', 'name' => 'login-button']) ?>

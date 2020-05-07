@@ -106,9 +106,14 @@ class CardController extends Controller
         $card = Card::find()->orderBy(['id' => SORT_DESC])->one();
 
         //добавим этот номер карты в нашу модель, прибавив 1
-        $cardModel->number = (int)$card->number + 1;
-        $cardModel->created_at = date('d-m-Y H:m');
+        //сделаем проверку на случай, если карт еще нет
+        if ($card != null){
+            $cardModel->number = (int)$card->number + 1;
+        } else {
+            $cardModel->number = 1;
+        }
 
+        $cardModel->created_at = date('d-m-Y H:m');
         // 0 - ожидает посещения, 1 - пришел, 2 - не пришел
         $visitModel->has_come = '1';
         $visitModel->timestamp = time() + 60 * 60 * 24 * 2; // 2 суток на редактирование
@@ -117,7 +122,6 @@ class CardController extends Controller
         $visitModel->card_number = $cardModel->number;
         $visitModel->city = $city;
         $visitModel->address_point = $addressPoint;
-        $visitModel->podolog_id = $post->podolog;
         $visitModel->visit_time = date('H:m:i');
         $visitModel->visit_date = date('Y-m-d');
 

@@ -62,7 +62,9 @@ $podologList = ArrayHelper::map($podologModel, 'id', 'name');
                     'options' => ['placeholder' => 'Дата рождения'],
                     'removeButton' => false,
                     'pluginOptions' => [
-                        'autoclose' => true
+                        'autoclose' => true,
+                        'todayHighlight' => true,
+                        'endDate' => date('Ymd'),
                     ],
                     'options' => ['placeholder' => 'дд.мм.гггг']
                 ]);

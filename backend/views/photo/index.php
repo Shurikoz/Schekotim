@@ -10,11 +10,18 @@ use yii\widgets\LinkPager;
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
 $this->title = 'Фотографии работ';
-$count_visits = ($_GET['per-page']) ? $_GET['per-page'] : 20;
+$count_visits = (isset($_GET['per-page'])) ? $_GET['per-page'] : 20;
 
-$_GET['VisitSearch']['used_photo'] == '' ? $all = 'active' : $all = '';
-$_GET['VisitSearch']['used_photo'] == '1' ? $usedPhoto1 = 'active' : $usedPhoto1 = '';
-$_GET['VisitSearch']['used_photo'] == '0' ? $usedPhoto0 = 'active' : $usedPhoto0 = '';
+if (isset($_GET['VisitSearch']['used_photo'])){
+    $all = $_GET['VisitSearch']['used_photo'] == '' ? 'active' : '';
+    $usedPhoto1 = $_GET['VisitSearch']['used_photo'] == '1' ? 'active' : '';
+    $usedPhoto0 = $_GET['VisitSearch']['used_photo'] == '0' ? 'active' : '';
+} else {
+    $all = 'active';
+    $usedPhoto1 = '';
+    $usedPhoto0 = '';
+}
+
 
 ?>
 <div class="photo-index">

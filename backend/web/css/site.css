@@ -3,7 +3,9 @@ body {
     height: 100%;
     background-color: #eef1f0;
 }
-
+p {
+    margin: 0;
+}
 hr {
     border-top: 1px solid #ddd;
 }
@@ -653,6 +655,6 @@ font-size: 22px;
 }
 
 .krajee-default.file-preview-frame .kv-file-content {
-    width: 204px;
+    width: 195px;
 }
 

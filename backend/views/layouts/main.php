@@ -39,7 +39,11 @@ AppAsset::register($this);
 
 
     if (Yii::$app->user->isGuest) {
-        $menuItems[] = ['label' => 'Вход', 'url' => ['/login']];
+        $menuItems[] = [
+            'label' => 'Вход',
+            'url' => ['/login'],
+//            'options'=>['class'=>'btn btn-info']
+        ];
     } else {
         $menuItems[] = [
             'label' => 'Главная',

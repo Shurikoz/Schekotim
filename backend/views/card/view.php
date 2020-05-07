@@ -3,8 +3,10 @@
 use common\widgets\Alert;
 use rmrevin\yii\fontawesome\FAS;
 use russ666\widgets\Countdown;
+use yii\bootstrap\Modal;
 use yii\helpers\Html;
 use yii\widgets\Pjax;
+use kartik\mpdf\Pdf;
 
 /* @var $this yii\web\View */
 /* @var $model backend\models\Card */
@@ -22,23 +24,24 @@ $visit_number = count($visits);
         <div class="col-md-12">
             <div class="pull-left">
                 <?= Html::a(FAS::icon('angle-left', ['class' => 'big', 'data-role' => 'arrow']) . '&nbsp Вернуться к списку карт', ['/card/index'], ['class' => 'btn btn-default']) ?>
+                <?php if (Yii::$app->user->can('admin')) { ?>
+                    <br>
+                    <br>
+                    <p>
+                        <?= Html::a('Изменить', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+                        <?= Html::a('Удалить', ['delete', 'id' => $model->id], [
+                            'class' => 'btn btn-danger',
+                            'data' => [
+                                'confirm' => 'Вы уверены, что хотите удалить карту?',
+                                'method' => 'post',
+                            ],
+                        ]) ?>
+                    </p>
+                <?php } ?>
             </div>
             <div class="pull-right">
                 <span style="display: block;margin-top: 6px;">ID: <?= $model->id ?></span>
             </div>
-            <br>
-            <?php if (Yii::$app->user->can('admin')) { ?>
-                <p>
-                    <?= Html::a('Изменить', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-                    <?= Html::a('Удалить', ['delete', 'id' => $model->id], [
-                        'class' => 'btn btn-danger',
-                        'data' => [
-                            'confirm' => 'Вы уверены, что хотите удалить карту?',
-                            'method' => 'post',
-                        ],
-                    ]) ?>
-                </p>
-            <?php } ?>
         </div>
     </div>
 
@@ -48,7 +51,7 @@ $visit_number = count($visits);
     </div>
     <div class="row cardView">
         <div class="col-md-6">
-            <div class="box">
+            <div class="box" style="border: 1px solid grey">
                 <p class="titleCardName">
                     <b>ФИО:</b> <?= $model->surname ?> <?= $model->name ?> <?= $model->middle_name ?></p>
             </div>
@@ -74,6 +77,20 @@ $visit_number = count($visits);
             </div>
         </div>
     </div>
+
+    <div class="row">
+        <div class="col-md-6">
+<?php
+echo Html::a('Privacy Statement', ['/visit/print-pdf'], [
+    'class'=>'btn btn-danger',
+    'target'=>'_blank',
+    'data-toggle'=>'tooltip',
+    'title'=>'Will open the generated PDF file in a new window'
+]);
+?>
+        </div>
+    </div>
+
     <table class="c-table">
         <?= Alert::widget() ?>
         <caption class="c-table__title">
@@ -153,8 +170,8 @@ $visit_number = count($visits);
                     </td>
                     <td class="c-table__cell">
                         <?php if ($item->next_visit_from != null && $item->next_visit_by != null && $item->has_come == 0) { ?>
-                            <p><b>С:</b> <?= Yii::$app->formatter->asDate($item->next_visit_from) ?></p>
-                            <p><b>ДО:</b> <?= Yii::$app->formatter->asDate($item->next_visit_by) ?></p>
+                            <p>с <?= Yii::$app->formatter->asDate($item->next_visit_from) ?></p>
+                            <p>до <?= Yii::$app->formatter->asDate($item->next_visit_by) ?></p>
                         <?php } else if ($item->has_come == 1) { ?>
                             <span> <?= Yii::$app->formatter->asDate($item->visit_date) ?></span>
                         <?php } else if ($item->has_come == 2) { ?>
@@ -183,6 +200,7 @@ $visit_number = count($visits);
                                         <div>
                                             <?= Html::a('<span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Создать будущее посещение', ['visit/create-second', 'id' => $item->id, 'card' => $model->id, 'card_number' => $model->number], ['class' => 'btn btn-green']) ?>
                                         </div>
+
                                         <?php //проверка, если текущий пользователь является указанным в визите подологом, то он может редактировать этот визит
                                         if (($item->podolog->user_id == Yii::$app->user->id && $item->timestamp + 60 * 60 * 24 * 2 >= time()) && $item->has_come != 2) { ?>
                                             <div id="blockEdit_<?= $item->id ?>" data-id="<?= $item->id ?>">
@@ -229,14 +247,6 @@ $visit_number = count($visits);
                                         <?php } ?>
                                         <?php if (Yii::$app->user->can('admin')) { ?>
                                             <div>
-                                                <?= Html::a('Изменить подолога', ['visit/set-pod'], [
-                                                    'class' => 'btn btn-primary',
-                                                    'data' => [
-                                                        'method' => 'post',
-                                                    ],
-                                                ]) ?>
-                                            </div>
-                                            <div>
                                                 <?= Html::a('Удалить', ['visit/delete', 'id' => $item->id, 'card' => $model->id], [
                                                     'class' => 'btn btn-danger',
                                                     'data' => [
@@ -252,22 +262,30 @@ $visit_number = count($visits);
                             <hr>
                         <?php } ?>
 
-                        <?php if (Yii::$app->user->can('manager')) { ?>
+                        <?php if (Yii::$app->user->can('manager') || Yii::$app->user->can('admin')) { ?>
+
                             <div class="row">
                                 <div class="col-md-12">
-                                    <div class="userStatus pull-right">
-                                        <?= Html::a('Изменить подолога', ['visit/set-pod'], [
+                                    <?php Modal::begin([
+                                        'header' => 'Изменить подолога',
+                                        'toggleButton' => [
+                                            'label' => 'Изменить подолога',
+                                            'class' => 'btn btn-primary userStatus pull-right',
+                                        ],
+                                        'footer' => Html::a('Сохранить', ['visit/set-pod', 'id' => $item->id], [
                                             'class' => 'btn btn-primary',
                                             'data' => [
                                                 'method' => 'post',
                                             ],
-                                        ]) ?>
-                                    </div>
+                                        ]),
+                                    ]);
+                                    echo $item->id;
+                                    Modal::end();
+                                    ?>
                                 </div>
                             </div>
                             <hr>
                         <?php } ?>
-
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="box">

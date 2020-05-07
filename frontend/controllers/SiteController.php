@@ -135,7 +135,7 @@ class SiteController extends Controller
 
         $model = new ContactForm();
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
-            if ($model->sendEmail(Yii::$app->params['adminEmail'])) {
+            if ($model->sendEmail(Yii::$app->params['marketingEmail'])) {
                 Yii::$app->session->setFlash('success', 'Спасибо, что написали нам. Мы ответим вам как можно скорее.');
             } else {
                 Yii::$app->session->setFlash('error', 'При отправке вашего сообщения произошла ошибка.');
@@ -245,6 +245,16 @@ class SiteController extends Controller
         ]);
         return $this->render('sertificats');
     }
+
+    public function actionFranchise()
+    {
+        $this->view->registerMetaTag([
+            'name' => 'description',
+            'content' => '«Щекотливая тема» - Франшиза'
+        ]);
+        return $this->render('franchise');
+    }
+
 
     /**
      * Displays raboty page.

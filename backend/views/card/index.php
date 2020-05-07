@@ -4,12 +4,13 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\LinkPager;
 use yii\widgets\Pjax;
+use common\widgets\Alert;
 
 /* @var $this yii\web\View */
 /* @var $searchModel backend\models\CardSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$count_orders = ($_GET['per-page']) ? $_GET['per-page'] : 20;
+$count_orders = (isset($_GET['per-page'])) ? $_GET['per-page'] : 20;
 
 $this->title = 'Карты пациентов';
 
@@ -37,6 +38,11 @@ $this->title = 'Карты пациентов';
                     'maxButtonCount' => 5,
                 ]); ?>
             </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <?= Alert::widget() ?>
         </div>
     </div>
     <div class="row">

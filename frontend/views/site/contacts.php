@@ -5,7 +5,6 @@
 /* @var $model \frontend\models\ContactForm */
 
 use yii\bootstrap\ActiveForm;
-use yii\captcha\Captcha;
 use yii\helpers\Html;
 
 $this->title = 'Контакты';
@@ -18,10 +17,9 @@ $header = 'Контакты';
 
 <!-- Content -->
 <section>
-    <header class="main">
-        <h1><?= Html::encode($this->title) ?></h1>
-    </header>
-</section>
+<header class="main">
+    <h1><?= Html::encode($this->title) ?></h1>
+</header>
 <div class="site-contact">
     <div class="row">
         <div class="col-7 col-12-medium">
@@ -48,17 +46,13 @@ $header = 'Контакты';
                 <hr class="major"/>
                 <?php $form = ActiveForm::begin(['id' => 'contact-form']); ?>
 
-                <?= $form->field($model, 'name')->textInput(['autofocus' => true]) ?>
+                <?= $form->field($model, 'name')->textInput() ?>
 
                 <?= $form->field($model, 'email') ?>
 
                 <?= $form->field($model, 'subject') ?>
 
                 <?= $form->field($model, 'body')->textarea(['rows' => 6]) ?>
-
-<!--                --><?//= $form->field($model, 'verifyCode')->widget(Captcha::className(), [
-//                    'template' => '<div class="row"><div class="col-lg-3">{image}</div><div class="col-lg-6">{input}</div></div>',
-//                ]) ?>
 
                 <?= $form->field($model, 'reCaptcha')->widget(
                     \himiklab\yii2\recaptcha\ReCaptcha::className(),
@@ -73,3 +67,4 @@ $header = 'Контакты';
         </div>
     </div>
 </div>
+</section>

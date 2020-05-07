@@ -3,7 +3,6 @@
 namespace backend\models;
 
 use Yii;
-
 /**
  * This is the model class for table "card".
  *
@@ -35,15 +34,24 @@ class Card extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            ['phone', 'match', 'pattern' => '/^\+7\s\([0-9]{3}\)\s[0-9]{3}\s[0-9]{2}\s[0-9]{2}$/', 'message' => 'Неправильно указан номер' ],
+            ['phone', 'match', 'pattern' => '/^\+7\s\([0-9]{3}\)\s[0-9]{3}\s[0-9]{2}\s[0-9]{2}$/', 'message' => 'Неправильно указан номер'],
+            [['name', 'surname', 'middle_name'], 'match', 'pattern' => '/^([а-яА-ЯЁё]+)$/u', 'message' => 'Разрешено вводить только кириллические символы'],
             [['user_id', 'number'], 'integer'],
             [['city', 'address_point', 'name', 'surname', 'middle_name', 'number', 'phone', 'user_id', 'birthday'], 'required'],
-            [['birthday', 'created_at'], 'safe'],
+            [['created_at'], 'safe'],
             [['name', 'surname', 'middle_name'], 'string', 'max' => 255],
             [['number'], 'unique'],
         ];
     }
-
+//
+//    public function beforeSave($insert)
+//    {
+//        if (parent::beforeSave($insert)) {
+//            $this->birthday = isset($_POST["Card"]["birthday"]) ? $_POST["Card"]["birthday"] : null;
+//            return true;
+//        }
+//        return false;
+//    }
 
     /**
      * {@inheritdoc}

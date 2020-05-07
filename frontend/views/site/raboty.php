@@ -54,10 +54,8 @@ $header = 'Примеры работ';
 
     </div>
         <hr class="major"/>
-
     <h3>#маникюр</h3>
     <div id="manicure" style="display:none;">
-
         <?php foreach ($manicure as $photo) { ?>
             <a href="http://schekotim.ru">
                 <img alt="<?= $photo->title ?>"
@@ -67,15 +65,10 @@ $header = 'Примеры работ';
                      style="display:none">
             </a>
         <?php } ?>
-
-
-
     </div>
     <hr class="major"/>
-
     <h3>#педикюр</h3>
     <div id="pedicure" style="display:none;">
-
         <?php foreach ($pedicure as $photo) { ?>
             <a href="http://schekotim.ru">
                 <img alt="<?= $photo->title ?>"
@@ -85,60 +78,6 @@ $header = 'Примеры работ';
                      style="display:none">
             </a>
         <?php } ?>
-
     </div>
-
-
-<!--        <h3>#подология</h3>-->
-<!--        <div id="podolog" class="box alt">-->
-<!--            <div class="row gtr-50 gtr-uniform">-->
-<!--                --><?php //foreach ($pod as $item): ?>
-<!--                    <div class="col-2">-->
-<!--                    --><?php //for ($i = 0; $i < count($item); $i++): ?>
-<!--                        <span class="image fit wow fadeInLeft" data-wow-delay="0.--><?//= $i + 1 ?><!--s">-->
-<!--                        <a class="gal_pod" href="--><?//= $item ?><!--">-->
-<!--                            <img class="lazyImg" data-original="--><?//= $item ?><!--" width="auto" height="auto" alt="">-->
-<!--                        </a>-->
-<!--                        </span>-->
-<!--                        </div>-->
-<!--                    --><?php //endfor ?>
-<!--                --><?php //endforeach ?>
-<!--            </div>-->
-<!--        </div>-->
-<!--        <hr class="major"/>-->
-<!--        <h3>#маникюр</h3>-->
-<!--        <div id="manicure" class="box alt">-->
-<!--            <div class="row gtr-50 gtr-uniform">-->
-<!--                --><?php //foreach ($man as $item): ?>
-<!--                    <div class="col-2">-->
-<!--                    --><?php //for ($i = 0; $i < count($item); $i++): ?>
-<!--                        <span class="image fit wow fadeInLeft" data-wow-delay="0.--><?//= $i + 1 ?><!--s">-->
-<!--                        <a class="gal_man" href="--><?//= $item ?><!--">-->
-<!--                           <img class="lazyImg" data-original="--><?//= $item ?><!--" width="auto" height="auto" alt="">-->
-<!--                        </a>-->
-<!--                        </span>-->
-<!--                        </div>-->
-<!--                    --><?php //endfor ?>
-<!--                --><?php //endforeach ?>
-<!--            </div>-->
-<!--        </div>-->
-<!--        <hr class="major"/>-->
-<!--        <h3>#педикюр</h3>-->
-<!--        <div id="pedicure" class="box alt">-->
-<!--            <div class="row gtr-50 gtr-uniform">-->
-<!--                --><?php //foreach ($ped as $item): ?>
-<!--                    <div class="col-2">-->
-<!--                    --><?php //for ($i = 0; $i < count($item); $i++): ?>
-<!--                        <span class="image fit wow fadeInLeft" data-wow-delay="0.--><?//= $i + 1 ?><!--s">-->
-<!--                        <a class="gal_ped" href="--><?//= $item ?><!--">-->
-<!--                           <img class="lazyImg" data-original="--><?//= $item ?><!--" width="auto" height="auto" alt="">-->
-<!--                        </a>-->
-<!--                        </span>-->
-<!--                        </div>-->
-<!--                    --><?php //endfor ?>
-<!--                --><?php //endforeach ?>
-<!--            </div>-->
-<!--        </div>-->
-
 </section>
 

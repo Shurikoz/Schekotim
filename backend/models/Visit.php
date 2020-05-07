@@ -81,8 +81,8 @@ class Visit extends \yii\db\ActiveRecord
     public function beforeSave($insert)
     {
         if (parent::beforeSave($insert)) {
-            $next_visit_from = $_POST["Visit"]["next_visit_from"];
-            $next_visit_by = $_POST["Visit"]["next_visit_by"];
+            $next_visit_from = isset($_POST["Visit"]["next_visit_from"]) ? $_POST["Visit"]["next_visit_from"] : null;
+            $next_visit_by = isset($_POST["Visit"]["next_visit_by"]) ? $_POST["Visit"]["next_visit_by"] : null;
             $this->next_visit_from = $next_visit_from == null ? null : date("Y-m-d", strtotime($next_visit_from));
             $this->next_visit_by = $next_visit_by == null ? null : date("Y-m-d", strtotime($next_visit_by));
             return true;

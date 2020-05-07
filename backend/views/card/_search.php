@@ -73,15 +73,18 @@ use kartik\date\DatePicker;
                     <div class="c-field has-addon-left">
                         <?php echo $form->field($model, 'birthday')->widget(DatePicker::classname(), [
                             'options' => [
-                                'placeholder' => 'Дата рождения',
+                                'placeholder' => 'дд.мм.гггг',
                                 'class' => 'autoSearchSubmit c-input'
                             ],
                             'removeButton' => false,
                             'pluginOptions' => [
-                                'autoclose' => true
+                                'autoclose' => true,
+                                'endDate' => date('Ymd'),
+                                'todayHighlight' => true,
                             ]
                         ])->label('Дата рождения', ['class' => 'c-field__label'])
                         ?>
+
                     </div>
                 </div>
             </div>

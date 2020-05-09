@@ -4,6 +4,11 @@ use yii\helpers\Html;
 
 $this->title = 'Онихомикоз (грибок)';
 $header = 'Онихомикоз (грибок)';
+
+$this->registerMetaTag([
+    'name' => 'description',
+    'content' => 'Лечение грибка стопы недорого и качественно. После посещения подолога в нашем центре грибок стопы (Онихомикоз) больше не будет вас беспокоить, мы уберем его раз и навсегда!'
+]);
 ?>
 <!-- Header -->
 <?= $this->render('/partials/_header', compact('header')); ?>

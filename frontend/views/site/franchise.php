@@ -2,8 +2,13 @@
 
 use yii\helpers\Html;
 
-$this->title = 'Франшиза';
-$header = 'Франшиза';
+$this->title = 'Франчайзинг';
+$header = 'Франчайзинг';
+
+$this->registerMetaTag([
+    'name' => 'description',
+    'content' => 'Центр маникюра, педикюра и подологии «Щекотливая тема» - Франчайзинг «Щекотливая тема»'
+]);
 ?>
 <!-- Header -->
 <?= $this->render('/partials/_header', compact('header')); ?>

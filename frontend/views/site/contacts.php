@@ -9,6 +9,11 @@ use yii\helpers\Html;
 
 $this->title = 'Контакты';
 $header = 'Контакты';
+
+$this->registerMetaTag([
+    'name' => 'description',
+    'content' => 'Центр маникюра, педикюра и подологии «Щекотливая тема», как нас найти и связаться.'
+]);
 ?>
 
 <!-- Header -->

@@ -10,6 +10,11 @@ use yii\widgets\MaskedInput;
 
 $this->title = 'Отзывы ' . '(' . $totalReviews . ')';
 $header = 'Отзывы';
+
+$this->registerMetaTag([
+    'name' => 'description',
+    'content' => 'Центр маникюра, педикюра и подологии «Щекотливая тема» - Отзывы о нашей работе'
+]);
 ?>
 <!-- Header -->
 <?= $this->render('/partials/_header', compact('header')); ?>

@@ -4,6 +4,11 @@ use yii\helpers\Html;
 
 $this->title = 'Акции и скидки';
 $header = 'Акции и скидки';
+
+$this->registerMetaTag([
+    'name' => 'description',
+    'content' => 'Центр маникюра, педикюра и подологии «Щекотливая тема» - Акции и скидки'
+]);
 ?>
 <!-- Header -->
 <?= $this->render('/partials/_header', compact('header')); ?>

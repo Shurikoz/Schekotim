@@ -4,6 +4,11 @@ use yii\helpers\Html;
 
 $this->title = 'Обучение';
 $header = 'Обучение';
+
+$this->registerMetaTag([
+    'name' => 'description',
+    'content' => 'Обучение на подолога в Центре маникюра, педикюра и подологии «Щекотливая тема»'
+]);
 ?>
 <!-- Header -->
 <?= $this->render('/partials/_header', compact('header')); ?>

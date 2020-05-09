@@ -4,6 +4,11 @@ use yii\helpers\Html;
 
 $this->title = 'Онихолизис';
 $header = 'Онихолизис';
+
+$this->registerMetaTag([
+    'name' => 'description',
+    'content' => ''
+]);
 ?>
 <!-- Header -->
 <?= $this->render('/partials/_header', compact('header')); ?>

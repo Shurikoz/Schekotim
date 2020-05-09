@@ -1,7 +1,4 @@
 <header id="header">
-<!--    <div class="logo"><img src="images/logo_small.png" alt="Центр маникюра, педикюра и подологии">-->
-<!--        <span class="logo-text font-phenomena" style="color: #0b9341"></span>-->
-<!--    </div>-->
     <ul class="icons">
         <li class="font-phenomena" style="color: #0b9341"><a href="tel:+74951818780" class="icon fas fa-phone">&nbsp;<span>Позвонить</span></a></li>
         <li class="font-phenomena" style="color: #0b9341"><a href="https://api.whatsapp.com/send?phone=+79100048558&text=Здравствуйте! Хочу записаться к вам на прием!" class="icon fab fa-whatsapp">&nbsp;<span>WhatsApp</span></a></li>
@@ -9,6 +6,3 @@
         <li><iframe src="https://yandex.ru/sprav/widget/rating-badge/34151440370" width="150" height="50" frameborder="0"></iframe></li>
     </ul>
 </header>
-<!--<div class="image main happyNewYear">-->
-<!--    <img src="images/new-year.jpg" alt=""/>-->
-<!--</div>-->

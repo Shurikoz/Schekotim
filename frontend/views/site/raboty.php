@@ -5,6 +5,11 @@ use yii\helpers\Html;
 $this->title = 'Примеры работ';
 $header = 'Примеры работ';
 
+$this->registerMetaTag([
+    'name' => 'description',
+    'content' => 'Центр маникюра, педикюра и подологии «Щекотливая тема» - Примеры работ'
+]);
+
 //перемешаем массивы с фото
 //shuffle($pod);
 //shuffle($man);

@@ -136,7 +136,7 @@ $this->registerJs($script, yii\web\View::POS_READY);
                     <li><a href="/review">Отзывы</a></li>
                     <li><a href="/obuchenie">Обучение</a></li>
                     <li><a href="/vakansii">Вакансии</a></li>
-                    <li><a href="/franchise">Франшиза</a></li>
+                    <li><a href="/franchise">Франчайзинг</a></li>
                     <li><a href="/contacts">Контакты</a></li>
                 </ul>
             </nav>

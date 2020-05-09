@@ -8,6 +8,11 @@ $files = FileHelper::findFiles('images/certificates');
 shuffle($files);
 $this->title = 'Дипломы и сертификаты';
 $header = 'Дипломы и сертификаты';
+
+$this->registerMetaTag([
+    'name' => 'description',
+    'content' => 'Центр маникюра, педикюра и подологии «Щекотливая тема» - Сертификаты и дипломы наших специалистов'
+]);
 ?>
 <!-- Header -->
 <?= $this->render('/partials/_header', compact('header')); ?>

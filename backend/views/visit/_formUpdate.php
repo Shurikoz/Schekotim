@@ -73,6 +73,31 @@ $card_id = (int)Yii::$app->request->get('card_number');
         </div>
     </div>
     <hr>
+    <p class="titleNormal">Рекомендовано посещение:</p>
+    <br>
+    <div class="row">
+        <div class="col-md-3">
+            <div class="box">
+                <?= $form->field($model, 'dermatolog', ['options' => ['class' => 'form-checkbox']])->checkbox(); ?>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="box">
+                <?= $form->field($model, 'immunolog', ['options' => ['class' => 'form-checkbox']])->checkbox(); ?>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="box">
+                <?= $form->field($model, 'ortoped', ['options' => ['class' => 'form-checkbox']])->checkbox(); ?>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="box">
+                <?= $form->field($model, 'hirurg', ['options' => ['class' => 'form-checkbox']])->checkbox(); ?>
+            </div>
+        </div>
+    </div>
+    <hr>
     <?php Pjax::begin(['timeout' => 5000, 'id' => 'photoEdit', 'enablePushState' => false]); ?>
     <div id="photoForm">
         <div class="row">

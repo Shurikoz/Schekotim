@@ -64,13 +64,37 @@ array_unshift($problemName, '');
         </div>
     </div>
     <hr>
+    <p class="titleNormal">Рекомендовано посещение:</p>
+    <br>
+    <div class="row">
+        <div class="col-md-3">
+            <div class="box">
+                <?= $form->field($model, 'dermatolog', ['options' => ['class' => 'form-checkbox']])->checkbox(); ?>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="box">
+                <?= $form->field($model, 'immunolog', ['options' => ['class' => 'form-checkbox']])->checkbox(); ?>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="box">
+                <?= $form->field($model, 'ortoped', ['options' => ['class' => 'form-checkbox']])->checkbox(); ?>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="box">
+                <?= $form->field($model, 'hirurg', ['options' => ['class' => 'form-checkbox']])->checkbox(); ?>
+            </div>
+        </div>
+    </div>
+    <hr>
+
     <p class="titleNormal">Фотографии работ (максимум по 5 фотографий)</p>
     <br>
     <div class="row">
         <div class="col-md-6">
             <div class="box">
-                <!--                --><? //= $form->field($photoBefore, 'before[]')->fileInput(['multiple' => true, 'accept' => 'image/*'])->label('До обработки') ?>
-
                 <?= $form->field($photoBefore, 'before[]')
                     ->widget(FileInput::classname(), [
                         'options' => [
@@ -90,7 +114,6 @@ array_unshift($problemName, '');
         </div>
         <div class="col-md-6">
             <div class="box">
-                <!--                --><? //= $form->field($photoAfter, 'after[]')->fileInput(['multiple' => true, 'accept' => 'image/*'])->label('После обработки') ?>
                 <?= $form->field($photoAfter, 'after[]')
                     ->widget(FileInput::classname(), [
                         'options' => [

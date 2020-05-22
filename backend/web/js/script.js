@@ -4,7 +4,7 @@ window.setTimeout(function () {
     $(".alert-success, .alert-danger, .alert-info, .alert-error ").fadeTo(500, 0).slideUp(500, function () {
         $(this).remove();
     });
-}, 7000);
+}, 10000);
 
 //функция для автопоиска после изменения инпута
 $(".autoSearchSubmit").change(function () {
@@ -63,3 +63,4 @@ $(document).on('click', '.linkNewWindow', function (e) {
         return false;
     }
 });
+

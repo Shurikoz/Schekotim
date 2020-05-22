@@ -9,12 +9,12 @@ use backend\models\Podolog;
 use backend\models\Problem;
 use backend\models\Visit;
 use backend\models\VisitSearch;
+use kartik\mpdf\Pdf;
 use Yii;
 use yii\filters\VerbFilter;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\web\UploadedFile;
-use kartik\mpdf\Pdf;
 
 
 /**
@@ -365,6 +365,28 @@ class VisitController extends Controller
         ]);
     }
 
+    /**
+     * @param $id
+     * @return array|mixed
+     * @throws NotFoundHttpException
+     */
+    public function actionSetPodolog($id, $card){
+        $model = $this->findModel($id);
+        $post = Yii::$app->request->post();
+
+        if ($model->load($post)) {
+            $postId = (int)$post['Visit']['podolog_id'];
+            $model->podolog_id = $postId;
+        }
+        $podolog = Podolog::find()->where(['id' => $postId])->one();
+        if ($model->save(false)) {
+            Yii::$app->session->setFlash('success', 'Подолог в посещении <b>#' . $model->id . '</b> изменен на <b>' . $podolog->name . '</b>');
+            return Yii::$app->response->redirect(['card/view', 'id' => $card]);
+        } else {
+            Yii::$app->session->setFlash('danger', 'Данные не сохранены!');
+            return Yii::$app->response->redirect(['card/view', 'id' => $card]);
+        }
+    }
 
     /**
      * @return mixed

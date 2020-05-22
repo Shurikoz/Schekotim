@@ -26,7 +26,16 @@ use Yii;
  * @property string $description
  * @property string $timestamp
  * @property string $edit
+ * @property string $dermatolog
+ * @property string $immunolog
+ * @property string $ortoped
+ * @property string $hirurg
+ *
  */
+
+
+
+
 class Visit extends \yii\db\ActiveRecord
 {
     /**
@@ -43,7 +52,7 @@ class Visit extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['podolog_id', 'card_number', 'used_photo', 'edit'], 'integer'],
+            [['podolog_id', 'card_number', 'used_photo', 'edit', 'dermatolog', 'immunolog', 'ortoped', 'hirurg'], 'integer'],
             [['anamnes', 'manipulation', 'recommendation', 'description'], 'string'],
             [['address_point', 'city', 'resolve', 'has_come', 'timestamp', 'next_visit_from', 'next_visit_by', 'visit_date', 'visit_time'], 'safe'],
             ['problem_id', 'integer', 'min' => '1', 'tooSmall' => 'Проблема не выбрана!'],
@@ -65,6 +74,10 @@ class Visit extends \yii\db\ActiveRecord
             'anamnes' => 'Анамнез',
             'manipulation' => 'Манипуляции',
             'recommendation' => 'Рекомендации',
+            'dermatolog' => 'Дерматолог',
+            'immunolog' => 'Иммунолог',
+            'ortoped' => 'Ортопед',
+            'hirurg' => 'Хирург',
             'next_visit_from' => 'Следующий визит с',
             'next_visit_by' => 'Следующий визит по',
             'visit_time' => 'Время посещения',

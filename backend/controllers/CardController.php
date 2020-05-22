@@ -65,6 +65,9 @@ class CardController extends Controller
         $visits = Visit::find()->where(['card_number' => $this->findModel($id)->number])->with(['photo', 'problem'])->all();
         $location = AddressPoint::find()->where(['id' => $model->address_point])->with('city')->one();
 
+        $addressPoint = Yii::$app->user->identity->address_point;
+        $podologModel = Podolog::find()->where(['address_point' => $addressPoint])->all();
+
         //пройдемся по посещениям, если пациент не пришел до указанного времени, сделаем отметку
         foreach ($visits as $visit) {
             if ($visit->next_visit_from != null && $visit->next_visit_by != null){
@@ -76,11 +79,11 @@ class CardController extends Controller
                 }
             }
         }
-
         return $this->render('view', [
             'model' => $model,
             'visits' => $visits,
             'location' => $location,
+            'podologModel' => $podologModel
         ]);
     }
 
@@ -113,16 +116,16 @@ class CardController extends Controller
             $cardModel->number = 1;
         }
 
-        $cardModel->created_at = date('d-m-Y H:m');
+        $cardModel->created_at = date('Y-m-d');
         // 0 - ожидает посещения, 1 - пришел, 2 - не пришел
         $visitModel->has_come = '1';
         $visitModel->timestamp = time() + 60 * 60 * 24 * 2; // 2 суток на редактирование
         $visitModel->next_visit_from = date('Y-m-d');
-        $visitModel->visit_time = date("H:i:s");
+        $visitModel->visit_time = date("H:i");
         $visitModel->card_number = $cardModel->number;
         $visitModel->city = $city;
         $visitModel->address_point = $addressPoint;
-        $visitModel->visit_time = date('H:m:i');
+        $visitModel->visit_time = date('H:i');
         $visitModel->visit_date = date('Y-m-d');
 
         if ($cardModel->load($post) && $cardModel->save() &&

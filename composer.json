@@ -31,7 +31,8 @@
     "kartik-v/yii2-widget-datepicker": "@dev",
     "kartik-v/yii2-field-range": "*",
     "kartik-v/bootstrap-fileinput": "dev-master",
-    "kartik-v/yii2-widget-fileinput": "dev-master"
+    "kartik-v/yii2-widget-fileinput": "dev-master",
+    "kartik-v/yii2-mpdf": "dev-master"
   },
   "require-dev": {
     "yiisoft/yii2-debug": "~2.1.0",

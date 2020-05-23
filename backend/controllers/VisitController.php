@@ -367,8 +367,10 @@ class VisitController extends Controller
 
     /**
      * @param $id
+     * @param $card
      * @return array|mixed
      * @throws NotFoundHttpException
+     * @var TYPE_NAME $postId
      */
     public function actionSetPodolog($id, $card){
         $model = $this->findModel($id);
@@ -395,14 +397,25 @@ class VisitController extends Controller
      * @throws \setasign\Fpdi\PdfParser\PdfParserException
      * @throws \setasign\Fpdi\PdfParser\Type\PdfTypeException
      * @throws \yii\base\InvalidConfigException
+     * @throws NotFoundHttpException
      */
-    public function actionPrintPdf() {
+    public function actionPrintPdf($id, $card_id) {
+        
         // get your HTML raw content without any layouts or scripts
-        $content = $this->renderPartial('_pdfView');
+        $visit = $this->findModel($id);
+        $card = Card::find()->where(['id' => $card_id])->one();
+        $podolog = Podolog::find()->where(['id' => $visit->podolog_id])->one();
+
+        $content = $this->renderPartial('_pdfView', [
+            'visit' => $visit,
+            'card' => $card,
+            'podolog' => $podolog
+            ]);
+
         // setup kartik\mpdf\Pdf component
         $pdf = new Pdf([
             // set to use core fonts only
-            'mode' => Pdf::MODE_CORE,
+            'mode' => Pdf::MODE_UTF8,
             // A4 paper format
             'format' => Pdf::FORMAT_A4,
             // portrait orientation
@@ -413,18 +426,22 @@ class VisitController extends Controller
             'content' => $content,
             // format content from your own css file if needed or use the
             // enhanced bootstrap css built by Krajee for mPDF formatting
-            'cssFile' => '@vendor/kartik-v/yii2-mpdf/assets/kv-mpdf-bootstrap.min.css',
+            'cssFile' => '@vendor/kartik-v/yii2-mpdf/src/assets/kv-mpdf-bootstrap.min.css',
             // any css to be embedded if required
             'cssInline' => '.kv-heading-1{font-size:18px}',
             // set mPDF properties on the fly
-            'options' => ['title' => 'Krajee Report Title'],
+            'options' => [
+                'title' => 'Центр подологии «Щекотливая тема»',
+                'showWatermarkImage' => true,
+                ],
             // call mPDF methods on the fly
             'methods' => [
-                'SetHeader'=>['Krajee Report Header'],
-                'SetFooter'=>['{PAGENO}'],
+//                'SetHeader'=>['Центр подологии «Щекотливая тема» / ' . date('d.m.Y')],
+                'SetWatermarkImage' => ['./images/blank.png'],
+//                'SetFooter'=>['{PAGENO}'],
+                'SetFooter'=>['Центр подологии «Щекотливая тема» / ' . date('d.m.Y')],
             ]
         ]);
-
         // return the pdf output as per the destination setting
         return $pdf->render();
     }

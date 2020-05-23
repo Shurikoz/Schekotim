@@ -1,14 +1,12 @@
 <?php
 
 use common\widgets\Alert;
-use kartik\mpdf\Pdf;
 use rmrevin\yii\fontawesome\FAS;
 use russ666\widgets\Countdown;
 use yii\bootstrap\Modal;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
-use yii\widgets\Pjax;
 
 /* @var $this yii\web\View */
 /* @var $model backend\models\Card */
@@ -76,18 +74,6 @@ $visit_number = count($visits);
             <div class="box">
                 <b>Место создания: </b><?= $model->city ?>, <?= $model->address_point ?>
             </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-6">
-<?php
-//echo Html::a('Privacy Statement', ['/visit/print-pdf'], [
-//    'class'=>'btn btn-danger',
-//    'target'=>'_blank',
-//    'data-toggle'=>'tooltip',
-//    'title'=>'Will open the generated PDF file in a new window'
-//]);
-//?>
         </div>
     </div>
     <table class="c-table">
@@ -261,28 +247,41 @@ $visit_number = count($visits);
                             <?php if (Yii::$app->user->can('manager') || Yii::$app->user->can('admin')) { ?>
                                 <div class="row">
                                     <div class="col-md-12">
-                                        <?php
-                                        $form = ActiveForm::begin();
-                                        Modal::begin([
-                                            'header' => 'Изменить подолога',
-                                            'toggleButton' => [
-                                                'label' => 'Изменить подолога',
-                                                'class' => 'btn btn-primary userStatus pull-right',
-                                            ],
-                                            'footer' => Html::a('Сохранить', ['visit/set-podolog', 'id' => $item->id, 'card' => $model->id], [
-                                                'class' => 'btn btn-primary',
-                                                'data' => [
-                                                    'method' => 'post',
-                                                ],
-                                            ]),
-                                        ]);
-                                        $podologList = ArrayHelper::map($podologModel, 'id', 'name');
-                                        echo $form->field($item, 'podolog_id')
-                                            ->dropDownList($podologList)
-                                            ->label('Подолог');
-                                        Modal::end();
-                                        ActiveForm::end();
-                                        ?>
+                                        <div class="userStatus pull-right">
+                                            <div>
+                                                <?php
+                                                echo Html::a('Распечатать рекомендации', ['/visit/print-pdf', 'id' => $item->id, 'card_id' => $model->id], [
+                                                    'class' => 'btn btn-warning',
+                                                    'target' => '_blank',
+                                                    'data-toggle' => 'tooltip',
+                                                    'title' => 'Откроет сгенерированный PDF файл  в новом окне'
+                                                ]); ?>
+                                            </div>
+                                            <div>
+                                                <?php
+                                                $form = ActiveForm::begin();
+                                                Modal::begin([
+                                                    'header' => 'Изменить подолога',
+                                                    'toggleButton' => [
+                                                        'label' => 'Изменить подолога',
+                                                        'class' => 'btn btn-primary userStatus pull-right',
+                                                    ],
+                                                    'footer' => Html::a('Сохранить', ['visit/set-podolog', 'id' => $item->id, 'card' => $model->id], [
+                                                        'class' => 'btn btn-primary',
+                                                        'data' => [
+                                                            'method' => 'post',
+                                                        ],
+                                                    ]),
+                                                ]);
+                                                $podologList = ArrayHelper::map($podologModel, 'id', 'name');
+                                                echo $form->field($item, 'podolog_id')
+                                                    ->dropDownList($podologList)
+                                                    ->label('Подолог');
+                                                Modal::end();
+                                                ActiveForm::end();
+                                                ?>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                                 <hr>

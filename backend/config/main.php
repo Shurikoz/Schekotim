@@ -1,4 +1,5 @@
 <?php
+use kartik\mpdf\Pdf;
 
 
 $params = array_merge(
@@ -92,6 +93,13 @@ return [
                     'bsDependencyEnabled' => false // do not load bootstrap assets for a specific asset bundle
                 ],
             ],
+        ],
+        'pdf' => [
+            'class' => Pdf::classname(),
+            'format' => Pdf::FORMAT_A4,
+            'orientation' => Pdf::ORIENT_PORTRAIT,
+            'destination' => Pdf::DEST_BROWSER,
+            // refer settings section for all configuration options
         ]
     ],
     'as access' => [

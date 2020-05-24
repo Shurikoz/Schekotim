@@ -64,3 +64,13 @@ $(document).on('click', '.linkNewWindow', function (e) {
     }
 });
 
+//показать/скрыть информацию в фотографиях работ для SEO
+$('.infoHiddenBlockBtn').on('click',function(e){
+    let a = e.target.getAttribute('data-id');
+    $('.infoHiddenBlock' + a).slideToggle(300);
+    if ($(this).html() == 'Показать информацию <span class="glyphicon glyphicon-arrow-down"></span>') {
+        $(this).html('Скрыть информацию <span class="glyphicon glyphicon-arrow-up"></span>');
+    } else {
+        $(this).html('Показать информацию <span class="glyphicon glyphicon-arrow-down"></span>');
+    }
+});

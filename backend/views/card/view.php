@@ -11,7 +11,7 @@ use yii\widgets\ActiveForm;
 /* @var $this yii\web\View */
 /* @var $model backend\models\Card */
 
-$this->title = 'Карта №: ' . $model->number;
+$this->title = 'Карта № ' . $model->number;
 
 \yii\web\YiiAsset::register($this);
 
@@ -162,7 +162,7 @@ $visit_number = count($visits);
                             <?php } ?>
                         </td>
                         <td class="c-table__cell">
-                            <?php if ($item->visit_time != null) { ?>
+                            <?php if ($item->visit_time != null &&  ($item->has_come == 0 || $item->has_come == 1)) { ?>
                                 <span><b><?= Yii::$app->formatter->asTime($item->visit_time) ?></b></span>
                             <?php } else { ?>
                                 <span>-</span>
@@ -215,7 +215,7 @@ $visit_number = count($visits);
                                             <?php //кнопка «Проблема решена» доступна админу или тому, кто создал посещение?>
                                             <?php if ($item->podolog->user_id == Yii::$app->user->id || Yii::$app->user->can('admin')) { ?>
                                                 <div>
-                                                    <?php if ($item->visit_date != null && $item->problem_id != 0) { ?>
+                                                    <?php if ($item->visit_date != null && $item->problem_id != 0 && $item->has_come != 2) { ?>
                                                         <?php if ($item->resolve == 0) { ?>
                                                             <?= Html::a('Проблема решена!', ['visit/completed', 'id' => $item->id, 'card' => $model->id, 'resolve' => true], [
                                                                 'class' => 'btn btn-green'
@@ -257,31 +257,30 @@ $visit_number = count($visits);
                                                     'title' => 'Откроет сгенерированный PDF файл  в новом окне'
                                                 ]); ?>
                                             </div>
-                                            <div>
-                                                <?php
-                                                $form = ActiveForm::begin();
-                                                Modal::begin([
-                                                    'header' => 'Изменить подолога',
-                                                    'toggleButton' => [
-                                                        'label' => 'Изменить подолога',
-                                                        'class' => 'btn btn-primary userStatus pull-right',
-                                                    ],
-                                                    'footer' => Html::a('Сохранить', ['visit/set-podolog', 'id' => $item->id, 'card' => $model->id], [
-                                                        'class' => 'btn btn-primary',
-                                                        'data' => [
-                                                            'method' => 'post',
-                                                        ],
-                                                    ]),
-                                                ]);
-                                                $podologList = ArrayHelper::map($podologModel, 'id', 'name');
-                                                echo $form->field($item, 'podolog_id')
-                                                    ->dropDownList($podologList)
-                                                    ->label('Подолог');
-                                                Modal::end();
-                                                ActiveForm::end();
-                                                ?>
-                                            </div>
+
                                         </div>
+                                        <?php
+                                        $form = ActiveForm::begin();
+                                        Modal::begin([
+                                            'header' => 'Изменить подолога',
+                                            'toggleButton' => [
+                                                'label' => 'Изменить подолога',
+                                                'class' => 'btn btn-primary userStatus pull-right',
+                                            ],
+                                            'footer' => Html::a('Сохранить', ['visit/set-podolog', 'id' => $item->id, 'card' => $model->id], [
+                                                'class' => 'btn btn-primary',
+                                                'data' => [
+                                                    'method' => 'post',
+                                                ],
+                                            ]),
+                                        ]);
+                                        $podologList = ArrayHelper::map($podologModel, 'id', 'name');
+                                        echo $form->field($item, 'podolog_id')
+                                            ->dropDownList($podologList)
+                                            ->label('Подолог');
+                                        Modal::end();
+                                        ActiveForm::end();
+                                        ?>
                                     </div>
                                 </div>
                                 <hr>
@@ -335,7 +334,6 @@ $visit_number = count($visits);
                                                         <div style="float: left; margin: 0 0 20px 20px;">
                                                             <?= Html::a('<img src="' . $photo->thumbnail . '">', $photo->url, ['target' => '_blank']) ?>
                                                         </div>
-
                                                     <?php } ?>
                                                 <?php } ?>
                                             <?php } else { ?>
@@ -344,8 +342,8 @@ $visit_number = count($visits);
                                         </div>
                                     </div>
                                     <hr>
-                                    <div class="col-md-12">
-                                        <div class="box">
+                                    <div class="box">
+                                        <div class="col-md-12">
                                             <p class="titleMin"><b>Фото после обработки:</b></p>
                                             <?php if ($item->photo != null) { ?>
                                                 <?php foreach ($item->photo as $photo) { ?>

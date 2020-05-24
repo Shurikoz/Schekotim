@@ -129,36 +129,47 @@ if (isset($_GET['VisitSearch']['used_photo'])){
                             <p><?= $item->id ?></p>
                         </div>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-6">
+                    <div class="col-md-3">
                         <div class="box">
-                            <p><b>Анамнез:</b></p>
-                            <br>
-                            <p><?= $item->anamnes == null ? 'Не заполнено' : $item->manipulation ?></p>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="box">
-                            <p><b>Манипуляции:</b></p>
-                            <br>
-                            <p><?= $item->manipulation == null ? 'Не заполнено' : $item->manipulation ?></p>
+                            <?= Html::button('Показать информацию <span class="glyphicon glyphicon-arrow-down"></span>', [
+                                    'class' => 'btn btn-default infoHiddenBlockBtn',
+                                    'style' => 'margin: 3px;',
+                                    'data' => ['id' => $item->id]
+                                ]) ?>
                         </div>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="box">
-                            <p><b>Рекомендации:</b></p>
-                            <br>
-                            <p><?= $item->recommendation == null ? 'Не заполнено' : $item->recommendation ?></p>
+                <div class="infoHiddenBlock<?=$item->id?>" hidden>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="box">
+                                <p><b>Анамнез:</b></p>
+                                <br>
+                                <p><?= $item->anamnes == null ? 'Не заполнено' : nl2br($item->manipulation) ?></p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="box">
+                                <p><b>Манипуляции:</b></p>
+                                <br>
+                                <p><?= $item->manipulation == null ? 'Не заполнено' : nl2br($item->manipulation) ?></p>
+                            </div>
                         </div>
                     </div>
-                    <div class="col-md-6">
-                        <div class="box">
-                            <p><b>Комментарий:</b></p>
-                            <br>
-                            <p><?= $item->description == null ? 'Не заполнено' : $item->description ?></p>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="box">
+                                <p><b>Рекомендации:</b></p>
+                                <br>
+                                <p><?= $item->recommendation == null ? 'Не заполнено' : nl2br($item->recommendation) ?></p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="box">
+                                <p><b>Комментарий:</b></p>
+                                <br>
+                                <p><?= $item->description == null ? 'Не заполнено' : nl2br($item->description) ?></p>
+                            </div>
                         </div>
                     </div>
                 </div>

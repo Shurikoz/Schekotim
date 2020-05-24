@@ -60,7 +60,7 @@ class VisitController extends Controller
      */
     public function actionView()
     {
-        $model = Visit::find()->where(['has_come' => '0'])->all();
+        $model = Visit::find()->where(['has_come' => '2'])->all();
         return $this->render('view', [
             'model' => $model
         ]);
@@ -400,7 +400,7 @@ class VisitController extends Controller
      * @throws NotFoundHttpException
      */
     public function actionPrintPdf($id, $card_id) {
-        
+
         // get your HTML raw content without any layouts or scripts
         $visit = $this->findModel($id);
         $card = Card::find()->where(['id' => $card_id])->one();

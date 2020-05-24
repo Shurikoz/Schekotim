@@ -328,7 +328,8 @@ font-size: 22px;
 }
 
 .glyphicon-ok,
-.glyphicon-ok-circle{
+.glyphicon-ok-circle,
+.glyphicon-new-window{
     color: #7ba335;
 }
 

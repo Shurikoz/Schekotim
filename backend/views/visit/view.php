@@ -87,7 +87,7 @@ use yii\widgets\DetailView;
                     <span class="glyphicon glyphicon-remove"></span>
                 </td>
                 <td class="c-table__cell cardBtn">
-                    <?= Html::a('<span class="glyphicon glyphicon-new-window"></span>', ['card/view', 'id' => $item->id], [
+                    <?= Html::a('<span class="glyphicon glyphicon-new-window"></span>', ['card/view', 'number' => $item->card_number], [
                         'class' => 'btn linkNewWindow',
                         'title' => 'Открыть карту пациента'
                     ]) ?>

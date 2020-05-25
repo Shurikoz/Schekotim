@@ -64,6 +64,13 @@ if (isset($_GET['VisitSearch']['used_photo'])){
                 <div class="row">
                     <div class="col-md-3">
                         <div class="c-field">
+
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="c-field">
                             <?= $form->field($searchModel, 'anamnes')->textInput(['class' => 'autoSearchSubmit c-input'])->label('Анамнез', ['class' => 'c-field__label']) ?>
                         </div>
                     </div>
@@ -131,15 +138,26 @@ if (isset($_GET['VisitSearch']['used_photo'])){
                     </div>
                     <div class="col-md-3">
                         <div class="box">
-                            <?= Html::button('Показать информацию <span class="glyphicon glyphicon-arrow-down"></span>', [
-                                    'class' => 'btn btn-default infoHiddenBlockBtn',
-                                    'style' => 'margin: 3px;',
-                                    'data' => ['id' => $item->id]
-                                ]) ?>
+                            <p><b>Проблема:</b></p>
+                            <?php if ($item->problem_id == '0') { ?>
+                                <span class="text-red">Не указана</span>
+                            <?php } else { ?>
+                                <p><?= $item->problem->name ?></p>
+                            <?php } ?>
                         </div>
                     </div>
                 </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <?= Html::button('Показать информацию <span class="glyphicon glyphicon-arrow-down"></span>', [
+                            'class' => 'btn btn-default infoHiddenBlockBtn',
+                            'style' => 'margin: 3px;',
+                            'data' => ['id' => $item->id]
+                        ]) ?>
+                    </div>
+                </div>
                 <div class="infoHiddenBlock<?=$item->id?>" hidden>
+                    <br>
                     <div class="row">
                         <div class="col-md-6">
                             <div class="box">

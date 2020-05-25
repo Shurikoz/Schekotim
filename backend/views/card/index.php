@@ -90,9 +90,9 @@ $this->title = 'Карты пациентов';
                             <td class="c-table__cell"><span class="visitMarker"><?= count($item->visit) ?></span></td>
 
                             <td class="c-table__cell cardBtn">
-                                <?= Html::a('<span class="glyphicon glyphicon-eye-open"></span>', ['card/view', 'id' => $item->id], [
+                                <?= Html::a('<span class="glyphicon glyphicon-eye-open"></span>', ['card/view', 'number' => $item->number], [
                                     'class' => 'btn linkNewWindow',
-                                    'data-id' => $item->id
+                                    'data-id' => $item->number
                                 ]) ?>
                                 <?php if (Yii::$app->user->can('admin')) { ?>
                                     <?= Html::a('<span class="glyphicon glyphicon-pencil"></span>', ['card/update', 'id' => $item->id], ['class' => 'btn']) ?>

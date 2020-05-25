@@ -59,10 +59,10 @@ class CardController extends Controller
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionView($id)
+    public function actionView($number)
     {
-        $model = $this->findModel($id);
-        $visits = Visit::find()->where(['card_number' => $this->findModel($id)->number])->with(['photo', 'problem'])->all();
+        $model = Card::find()->where(['number' => $number])->one();
+        $visits = Visit::find()->where(['card_number' => $number])->with(['photo', 'problem'])->all();
         $location = AddressPoint::find()->where(['id' => $model->address_point])->with('city')->one();
 
         $addressPoint = Yii::$app->user->identity->address_point;

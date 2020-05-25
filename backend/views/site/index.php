@@ -13,6 +13,12 @@
 use yii\helpers\Html;
 
 $this->title = 'Панель учета';
+
+$admin = Yii::$app->user->can('admin');
+$manager = Yii::$app->user->can('manager');
+$smm = Yii::$app->user->can('smm');
+$user = Yii::$app->user->can('user');
+
 ?>
 <div class="row">
     <div class="col-md-12">
@@ -27,7 +33,7 @@ $this->title = 'Панель учета';
     </div>
 </div>
 <div class="row">
-    <?php if (Yii::$app->user->can('admin') || Yii::$app->user->can('manager')) { ?>
+    <?php if ($admin || $manager) { ?>
         <div class="col-md-6">
             <div class="box">
                 <h3 class="text-center">Создать карту пациента</h3>
@@ -37,7 +43,7 @@ $this->title = 'Панель учета';
         </div>
     <?php } ?>
 
-    <?php if (Yii::$app->user->can('admin') || Yii::$app->user->can('user') || Yii::$app->user->can('manager')) { ?>
+    <?php if ($admin || $user || $manager) { ?>
         <div class="col-md-6">
             <div class="box">
                 <h3 class="text-center">Просмотр карт пациентов</h3>
@@ -47,37 +53,7 @@ $this->title = 'Панель учета';
         </div>
     <?php } ?>
 
-    <?php if (Yii::$app->user->can('admin') || Yii::$app->user->can('manager')) { ?>
-        <div class="col-md-6">
-            <div class="box">
-                <h3 class="text-center">Просмотр пропущенных посещений</h3>
-                <br>
-                <?= Html::a('Просмотр пропущенных посещений', ['visit/view'], ['class' => 'btn btn-lg btn-primary center-block']) ?>
-            </div>
-        </div>
-    <?php } ?>
-
-    <?php if (Yii::$app->user->can('admin')) { ?>
-        <div class="col-md-6">
-            <div class="box">
-                <h3 class="text-center">Отзывы</h3>
-                <br>
-                <?= Html::a('Показать все отзывы', ['review/index'], ['class' => 'btn btn-lg btn-primary center-block']) ?>
-            </div>
-        </div>
-    <?php } ?>
-
-    <?php if (Yii::$app->user->can('admin')) { ?>
-        <div class="col-md-6">
-            <div class="box">
-                <h3 class="text-center">Галерея</h3>
-                <br>
-                <?= Html::a('Показать галерею сайта', ['gallery/index'], ['class' => 'btn btn-lg btn-primary center-block']) ?>
-            </div>
-        </div>
-    <?php } ?>
-
-    <?php if (Yii::$app->user->can('admin') || Yii::$app->user->can('smm')) { ?>
+    <?php if ($admin || $smm) { ?>
         <div class="col-md-6">
             <div class="box">
                 <h3 class="text-center">Фото работ (из карт клиентов)</h3>
@@ -87,7 +63,40 @@ $this->title = 'Панель учета';
         </div>
     <?php } ?>
 
-    <?php if (Yii::$app->user->can('admin')) { ?>
+    <?php if ($admin || $manager) { ?>
+        <div class="col-md-6">
+            <div class="box">
+                <h3 class="text-center">Просмотр пропущенных посещений</h3>
+                <br>
+                <?= Html::a('Просмотр пропущенных посещений', ['visit/view'], ['class' => 'btn btn-lg btn-primary center-block']) ?>
+            </div>
+        </div>
+    <?php } ?>
+</div>
+
+<?php if ($admin) { ?>
+    <hr>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="box">
+                <h3 class="text-center">Отзывы</h3>
+                <br>
+                <?= Html::a('Показать все отзывы', ['review/index'], ['class' => 'btn btn-lg btn-primary center-block']) ?>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="box">
+                <h3 class="text-center">Галерея</h3>
+                <br>
+                <?= Html::a('Показать галерею сайта', ['gallery/index'], ['class' => 'btn btn-lg btn-primary center-block']) ?>
+            </div>
+        </div>
+    </div>
+<?php } ?>
+
+<?php if ($admin) { ?>
+    <div class="row">
+        <hr>
         <div class="col-md-6">
             <div class="box">
                 <h3 class="text-center">Настройка прав доступа</h3>
@@ -95,5 +104,12 @@ $this->title = 'Панель учета';
                 <?= Html::a('Пользователи', ['admin/user/index'], ['class' => 'btn btn-lg btn-warning center-block']) ?>
             </div>
         </div>
-    <?php } ?>
-</div>
+        <div class="col-md-6">
+            <div class="box">
+                <h3 class="text-center">Создать нового пользователя</h3>
+                <br>
+                <?= Html::a('Создать', ['site/signup'], ['class' => 'btn btn-lg btn-warning center-block']) ?>
+            </div>
+        </div>
+    </div>
+<?php } ?>

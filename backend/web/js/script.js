@@ -55,6 +55,31 @@ $("#visit-problem_id").on('change', function () {
     });
 });
 
+//функция для получения адресов точек в выбранном городе
+$("#signupuser-city").on('change', function () {
+    let getValue = $(this).val();
+    let data = [];
+    let select = document.getElementById("signupuser-address_point");
+    $.ajax({
+        url: "/site/get-address-point?id=" + getValue,
+        cache: false,
+        data: data,
+        method: "POST",
+        dataType: "json",
+        beforeSend: function () {
+            $("#errorData").removeClass('textRed').addClass('errorData').html('');
+        }
+    }).done(function (data) {
+        select.options[0] = new Option("", "0");
+        data.forEach(function (item, i, data) {
+            select.options[i + 1] = new Option(item.address_point, i + 1);
+        });
+        $("#errorData").removeClass('textRed errorData').html('');
+    }).fail(function () {
+        $("#errorData").removeClass('errorData').addClass('text-red').html('Ошибка загрузки данных!');
+    });
+});
+
 //функция открывать в новом окне
 $(document).on('click', '.linkNewWindow', function (e) {
     var id = $(e.target).data('id');
@@ -67,10 +92,10 @@ $(document).on('click', '.linkNewWindow', function (e) {
 //показать/скрыть информацию в фотографиях работ для SEO
 $('.infoHiddenBlockBtn').on('click',function(e){
     let a = e.target.getAttribute('data-id');
-    $('.infoHiddenBlock' + a).slideToggle(300);
     if ($(this).html() == 'Показать информацию <span class="glyphicon glyphicon-arrow-down"></span>') {
         $(this).html('Скрыть информацию <span class="glyphicon glyphicon-arrow-up"></span>');
     } else {
         $(this).html('Показать информацию <span class="glyphicon glyphicon-arrow-down"></span>');
     }
+    $('.infoHiddenBlock' + a).slideToggle(300);
 });

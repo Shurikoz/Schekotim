@@ -1,6 +1,9 @@
 <?php
 namespace backend\controllers;
 
+use backend\models\AddressPoint;
+use backend\models\City;
+use backend\models\SignupUser;
 use Yii;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
@@ -10,6 +13,7 @@ use backend\models\ResetPasswordForm;
 use backend\models\PasswordResetRequestForm;
 use yii\base\InvalidArgumentException;
 use yii\web\BadRequestHttpException;
+use mdm\admin\models\form\Signup;
 
 
 /**
@@ -134,4 +138,33 @@ class SiteController extends Controller
         ]);
     }
 
+    /**
+     * Signup new user
+     * @return string
+     */
+    public function actionSignup()
+    {
+        $model = new SignupUser();
+        $city = City::find()->all();
+        if ($model->load(Yii::$app->getRequest()->post())) {
+            if ($user = $model->signup()) {
+                Yii::$app->session->setFlash('success', 'Пользователь <b>' . $user->username . '</b> создан! Назначьте ему права доступа.');
+            }
+        }
+
+        return $this->render('signup', [
+            'model' => $model,
+            'city' => $city,
+        ]);
+    }
+
+    public function actionGetAddressPoint($id)
+    {
+        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        if (Yii::$app->request->isAjax) {
+            $addressPoint = AddressPoint::find()->where(['city_id' => $id])->all();
+            return $addressPoint;
+        }
+        return false;
+    }
 }

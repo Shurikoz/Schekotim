@@ -91,23 +91,23 @@ class SiteController extends Controller
      *
      * @return mixed
      */
-    public function actionLogin()
-    {
-        if (!Yii::$app->user->isGuest) {
-            return $this->goHome();
-        }
-
-        $model = new LoginForm();
-        if ($model->load(Yii::$app->request->post()) && $model->login()) {
-            return $this->goBack();
-        } else {
-            $model->password = '';
-
-            return $this->render('login', [
-                'model' => $model,
-            ]);
-        }
-    }
+//    public function actionLogin()
+//    {
+//        if (!Yii::$app->user->isGuest) {
+//            return $this->goHome();
+//        }
+//
+//        $model = new LoginForm();
+//        if ($model->load(Yii::$app->request->post()) && $model->login()) {
+//            return $this->goBack();
+//        } else {
+//            $model->password = '';
+//
+//            return $this->render('login', [
+//                'model' => $model,
+//            ]);
+//        }
+//    }
 
     /**
      * Logs out the current user.
@@ -153,21 +153,21 @@ class SiteController extends Controller
      *
      * @return mixed
      */
-    public function actionSignup()
-    {
-        $model = new SignupForm();
-        if ($model->load(Yii::$app->request->post())) {
-            if ($user = $model->signup()) {
-                if (Yii::$app->getUser()->login($user)) {
-                    return $this->goHome();
-                }
-            }
-        }
-
-        return $this->render('signup', [
-            'model' => $model,
-        ]);
-    }
+//    public function actionSignup()
+//    {
+//        $model = new SignupForm();
+//        if ($model->load(Yii::$app->request->post())) {
+//            if ($user = $model->signup()) {
+//                if (Yii::$app->getUser()->login($user)) {
+//                    return $this->goHome();
+//                }
+//            }
+//        }
+//
+//        return $this->render('signup', [
+//            'model' => $model,
+//        ]);
+//    }
 
     /**
      * Requests password reset.
@@ -254,7 +254,6 @@ class SiteController extends Controller
         ]);
         return $this->render('franchise');
     }
-
 
     /**
      * Displays raboty page.

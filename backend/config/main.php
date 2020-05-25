@@ -55,7 +55,7 @@ return [
         'user' => [
             'identityClass' => 'mdm\admin\models\User',
             'loginUrl' => 'site/login',
-//            'loginUrl' => 'admin/user/login',
+            //'loginUrl' => 'admin/user/login',
             'enableAutoLogin' => false,
             'identityCookie' => ['name' => '_identity-backend', 'httpOnly' => true],
             'authTimeout' => 7200

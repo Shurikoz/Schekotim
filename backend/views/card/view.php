@@ -24,20 +24,6 @@ $visit_number = count($visits);
         <div class="col-md-12">
             <div class="pull-left">
                 <?= Html::a(FAS::icon('angle-left', ['class' => 'big', 'data-role' => 'arrow']) . '&nbsp Вернуться к списку карт', ['/card/index'], ['class' => 'btn btn-default']) ?>
-                <?php if (Yii::$app->user->can('admin')) { ?>
-                    <br>
-                    <br>
-                    <p>
-                        <?= Html::a('Изменить', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-                        <?= Html::a('Удалить', ['delete', 'id' => $model->id], [
-                            'class' => 'btn btn-danger',
-                            'data' => [
-                                'confirm' => 'Вы уверены, что хотите удалить карту?',
-                                'method' => 'post',
-                            ],
-                        ]) ?>
-                    </p>
-                <?php } ?>
             </div>
             <div class="pull-right">
                 <span style="display: block;margin-top: 6px;">ID: <?= $model->id ?></span>

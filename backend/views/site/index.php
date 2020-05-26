@@ -32,6 +32,13 @@ $user = Yii::$app->user->can('user');
         </div>
     </div>
 </div>
+<hr>
+<div class="row">
+    <div class="col-md-12">
+        <h3>Учет карт и посещений клиентов</h3>
+    </div>
+</div>
+<br>
 <div class="row">
     <?php if ($admin || $manager) { ?>
         <div class="col-md-6">
@@ -68,7 +75,7 @@ $user = Yii::$app->user->can('user');
             <div class="box">
                 <h3 class="text-center">Просмотр пропущенных посещений</h3>
                 <br>
-                <?= Html::a('Просмотр пропущенных посещений', ['visit/view'], ['class' => 'btn btn-lg btn-primary center-block']) ?>
+                <?= Html::a('Просмотр пропущенных посещений', ['visit/view'], ['class' => 'btn btn-lg btn-danger center-block']) ?>
             </div>
         </div>
     <?php } ?>
@@ -76,6 +83,12 @@ $user = Yii::$app->user->can('user');
 
 <?php if ($admin) { ?>
     <hr>
+    <div class="row">
+        <div class="col-md-12">
+            <h3>Управление сайтом</h3>
+        </div>
+    </div>
+    <br>
     <div class="row">
         <div class="col-md-6">
             <div class="box">
@@ -95,8 +108,14 @@ $user = Yii::$app->user->can('user');
 <?php } ?>
 
 <?php if ($admin) { ?>
+    <hr>
     <div class="row">
-        <hr>
+        <div class="col-md-12">
+            <h3>Управление пользователями</h3>
+        </div>
+    </div>
+    <br>
+    <div class="row">
         <div class="col-md-6">
             <div class="box">
                 <h3 class="text-center">Настройка прав доступа</h3>

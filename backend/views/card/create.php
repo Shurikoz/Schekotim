@@ -26,6 +26,7 @@ $this->params['breadcrumbs'][] = $this->title;
         'cardModel' => $cardModel,
         'visitModel' => $visitModel,
         'podologModel' => $podologModel,
+        'cityModel' => $cityModel
     ]) ?>
 
 </div>

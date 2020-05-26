@@ -6,23 +6,17 @@ use yii\helpers\ArrayHelper;
 /* @var $this yii\web\View */
 /* @var $model backend\models\Card */
 
-$this->title = 'Update Card: ' . $model->name;
-$this->params['breadcrumbs'][] = ['label' => 'Cards', 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => $model->name, 'url' => ['view', 'id' => $model->id]];
-$this->params['breadcrumbs'][] = 'Update';
+$this->title = 'Редактирование карты №: ' . $cardModel->number;
 
-$podologList = ArrayHelper::map($podologModel, 'id', 'name');
 
 ?>
 <div class="card-update">
 
     <h1><?= Html::encode($this->title) ?></h1>
 
-    <?= $this->render('_form', [
+    <?= $this->render('_formUpdate', [
         'cardModel' => $cardModel,
-        'visitModel' => $visitModel,
-        'podologModel' => $podologModel,
-        'location' => $location
+//        'podologModel' => $podologModel,
     ]) ?>
 
 </div>

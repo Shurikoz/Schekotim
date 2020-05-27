@@ -173,7 +173,9 @@ $visit_number = count($visits);
                                             <?php //проверка, если текущий пользователь является указанным в визите подологом, то он может редактировать этот визит
                                             if (($item->podolog->user_id == Yii::$app->user->id && $item->timestamp + 60 * 60 * 24 * 2 >= time()) && $item->has_come != 2) { ?>
                                                 <div id="blockEdit_<?= $item->id ?>" data-id="<?= $item->id ?>">
-                                                    <?= Html::a('Изменить посещение', ['visit/update', 'id' => $item->id, 'card' => $model->id, 'card_number' => $model->number], ['class' => 'btn btn-info']) ?>
+<!--                                                    --><?//= Html::a('Изменить посещение', ['visit/update', 'id' => $item->id, 'card' => $model->id, 'card_number' => $model->number], ['class' => 'btn btn-info']) ?>
+                                                    <?= Html::a('Изменить посещение', ['visit/update', 'id' => $item->id], ['class' => 'btn btn-info']) ?>
+
                                                     <?php //если указан интервал посещения, то таймер не выводим ?>
                                                     <?php if (strtotime($item->next_visit_by) <= time()) { ?>
                                                         <?= Countdown::widget([
@@ -195,7 +197,7 @@ $visit_number = count($visits);
                                                 </div>
                                             <?php } elseif (Yii::$app->user->can('admin')) { ?>
                                                 <div>
-                                                    <?= Html::a('Изменить посещение', ['visit/update', 'id' => $item->id, 'card' => $model->id, 'card_number' => $model->number], ['class' => 'btn btn-info']) ?>
+                                                    <?= Html::a('Изменить посещение', ['visit/update', 'id' => $item->id], ['class' => 'btn btn-info']) ?>
                                                 </div>
                                             <?php } ?>
                                             <?php //кнопка «Проблема решена» доступна админу или тому, кто создал посещение?>

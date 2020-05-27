@@ -169,9 +169,9 @@ class CardController extends Controller
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionUpdate($id)
+    public function actionUpdate($number)
     {
-        $cardModel = $this->findModel($id);
+        $cardModel = Card::find()->where(['number' => $number])->one();
         if ($cardModel->load(Yii::$app->request->post()) && $cardModel->save()) {
             Yii::$app->session->setFlash('success', 'Изменения сохранены!');
         }
@@ -189,10 +189,10 @@ class CardController extends Controller
      * @throws \Throwable
      * @throws \yii\db\StaleObjectException
      */
-    public function actionDelete($id)
+    public function actionDelete($number)
     {
-        $visits = Visit::find()->where(['card_number' => $this->findModel($id)->number])->joinWith('photo')->all();
-
+        $cardModel = Card::find()->where(['number' => $number])->one();
+        $visits = Visit::find()->where(['card_number' => $cardModel->number])->joinWith('photo')->all();
         foreach ($visits as $visit) {
             foreach ($visit->photo as $item) {
                 $item->delete();
@@ -200,7 +200,8 @@ class CardController extends Controller
             $visit->delete();
         }
 
-        $this->findModel($id)->delete();
+
+        $cardModel->delete();
         Yii::$app->session->setFlash('success', 'Карта удалена!');
         return $this->redirect(['index']);
     }

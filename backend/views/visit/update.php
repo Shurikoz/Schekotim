@@ -12,7 +12,7 @@ $this->title = 'Редактирование посещения, карта №:
 <div class="visit-update">
 <div class="row">
     <div class="col-md-12">
-        <?= Html::a('Отмена', ['/card/view?id=' . $card->id], ['class' => 'btn btn-default']) ?>
+        <?= Html::a('Отмена', ['/card/view', 'number' => $model->card_number], ['class' => 'btn btn-default']) ?>
     </div>
 </div>
     <h1><?= Html::encode($this->title) ?></h1>

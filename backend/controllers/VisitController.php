@@ -234,7 +234,7 @@ class VisitController extends Controller
         $photoBefore = Photo::find()->where(['visit_id' => $model->id, 'made' => 'before'])->all();
         $photoAfter = Photo::find()->where(['visit_id' => $model->id, 'made' => 'after'])->all();
         $location = AddressPoint::find()->where(['id' => $addressPoint])->with('city')->one();
-        $podolog = Podolog::find()->where(['user_id' => Yii::$app->user->identity->id])->one();
+        $podolog = Podolog::find()->where(['id' => $model->podolog_id])->one();
         $card = Card::find()->where(['number' => $model->card_number])->one();
 
         $model->visit_time = date('H:m:i');

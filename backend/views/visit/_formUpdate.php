@@ -73,7 +73,7 @@ $card_id = (int)Yii::$app->request->get('card_number');
         </div>
     </div>
     <hr>
-    <p class="titleNormal">Рекомендовано посещение:</p>
+    <p class="titleNormal">Рекомендовано посещение</p>
     <br>
     <div class="row">
         <div class="col-md-3">

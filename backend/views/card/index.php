@@ -95,8 +95,8 @@ $this->title = 'Карты пациентов';
                                     'data-id' => $item->number
                                 ]) ?>
                                 <?php if (Yii::$app->user->can('admin')) { ?>
-                                    <?= Html::a('<span class="glyphicon glyphicon-pencil"></span>', ['card/update', 'id' => $item->id], ['class' => 'btn']) ?>
-                                    <?= Html::a('<span class="glyphicon glyphicon-trash"></span>', ['card/delete', 'id' => $item->id], [
+                                    <?= Html::a('<span class="glyphicon glyphicon-pencil"></span>', ['card/update', 'number' => $item->number], ['class' => 'btn']) ?>
+                                    <?= Html::a('<span class="glyphicon glyphicon-trash"></span>', ['card/delete', 'number' => $item->number], [
                                         'class' => 'btn',
                                         'data-method' => 'POST',
                                         'data-confirm' => 'Вы уверены, что хотите удалить карту?'

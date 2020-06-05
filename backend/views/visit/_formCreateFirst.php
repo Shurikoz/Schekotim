@@ -3,6 +3,7 @@
 use kartik\file\FileInput;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
+use yii\helpers\Url;
 use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
@@ -11,9 +12,24 @@ use yii\widgets\ActiveForm;
 
 $problemName = ArrayHelper::map($problem, 'id', 'name');
 array_unshift($problemName, '');
+
+//посчитаем возраст пациента по дате рождения
+$born = new DateTime($card->birthday); // дата рождения
+$age = $born->diff(new DateTime)->format('%y');
 ?>
-<br>
-<div class="visit-form">
+<!--<pre>-->
+<?//=print_r($card)?>
+<!--</pre>-->
+<hr>
+<div class="visit-form"><div class="row">
+        <div class="col-md-4">
+            <b>Пациент:</b> <?= $card->surname ?> <?= $card->name ?> <?= $card->middle_name ?></p>
+        </div>
+        <div class="col-md-4">
+            <b>Возраст:</b> <?= $age ?>
+        </div>
+    </div>
+    <hr>
     <div class="row">
         <div class="col-md-4">
             <b>Город:</b> <?= Yii::$app->user->identity->city ?>
@@ -94,40 +110,61 @@ array_unshift($problemName, '');
     <br>
     <div class="row">
         <div class="col-md-6">
+            <p><b>До манипуляций</b></p>
+            <br>
             <div class="box">
                 <?= $form->field($photoBefore, 'before[]')
                     ->widget(FileInput::classname(), [
                         'options' => [
                             'multiple' => true,
-                            'accept' => 'image/*'
+                            'accept' => 'image/*',
                         ],
                         'pluginOptions' => [
+                            'showUpload' => false,
                             'previewFileType' => 'image',
                             'allowedFileExtensions' => ['jpg', 'jpeg'],
-                            'showUpload' => false,
-                            'maxFileCount' => 5
-                        ]
-                    ])
-                    ->label('До обработки') ?>
+                            'maxFileCount' => 5,
+                            'uploadUrl' => Url::to(['']),
+                            'fileActionSettings' => [
+                                'showUpload' => false,
+                                'showZoom' => false,
 
+                            ],
+                            'showPreview' => true,
+                            'showRemove' => false,
+                            'showCaption' => false,
+                            'browseClass' => 'btn btn-primary btn-block',
+                        ]
+                    ])?>
             </div>
         </div>
         <div class="col-md-6">
+            <p><b>После манипуляций</b></p>
+            <br>
             <div class="box">
                 <?= $form->field($photoAfter, 'after[]')
                     ->widget(FileInput::classname(), [
                         'options' => [
                             'multiple' => true,
-                            'accept' => 'image/*'
+                            'accept' => 'image/*',
                         ],
                         'pluginOptions' => [
                             'previewFileType' => 'image',
                             'allowedFileExtensions' => ['jpg', 'jpeg'],
                             'showUpload' => false,
-                            'maxFileCount' => 5
+                            'maxFileCount' => 5,
+                            'uploadUrl' => Url::to(['']),
+                            'fileActionSettings' => [
+                                'showUpload' => false,
+                                'showZoom' => false,
+
+                            ],
+                            'showPreview' => true,
+                            'showRemove' => false,
+                            'showCaption' => false,
+                            'browseClass' => 'btn btn-primary btn-block',
                         ]
-                    ])
-                    ->label('После обработки') ?>
+                    ])?>
 
             </div>
         </div>

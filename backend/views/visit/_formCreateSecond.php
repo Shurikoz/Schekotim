@@ -11,10 +11,22 @@ use yii\widgets\ActiveForm;
 
 $problemName = ArrayHelper::map($problem, 'id', 'name');
 array_unshift($problemName, '');
-?>
-<br>
 
+//посчитаем возраст пациента по дате рождения
+$born = new DateTime($card->birthday); // дата рождения
+$age = $born->diff(new DateTime)->format('%y');
+?>
+<hr>
 <div class="visit-form">
+    <div class="row">
+        <div class="col-md-4">
+            <b>Пациент:</b> <?= $card->surname ?> <?= $card->name ?> <?= $card->middle_name ?></p>
+        </div>
+        <div class="col-md-4">
+            <b>Возраст:</b> <?= $age ?>
+        </div>
+    </div>
+    <hr>
     <div class="row">
         <div class="col-md-4">
             <b>Город:</b> <?= Yii::$app->user->identity->city ?>
@@ -57,11 +69,11 @@ array_unshift($problemName, '');
                     'value2' => date("m.d.y"),
                     'separator' => 'по',
                     'options' => [
-                        'placeholder' => 'с день-мес-год',
+                        'placeholder' => 'с день.мес.год',
                         'required' => true,
                     ],
                     'options2' => [
-                        'placeholder' => 'по день-мес-год',
+                        'placeholder' => 'по день.мес.год',
                         'required' => true,
                     ],
                     'pluginOptions' => [

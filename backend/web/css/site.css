@@ -138,7 +138,7 @@ a.desc:after {
 
 .navbar-inverse {
     border-width: 0;
-    background-color: #333;
+    background-color: #fff;
 }
 
 .active {
@@ -661,4 +661,26 @@ font-size: 22px;
 
 .form-checkbox {
     margin: 10px 0 0 5px;
+}
+
+.navbar-inverse .navbar-nav > li > a {
+    color: #636363;
+}
+
+.navbar-inverse .navbar-nav > li > a:hover, .navbar-inverse .navbar-nav > li > a:focus {
+    color: #7ba335;
+    background-color: transparent;
+}
+
+.navbar-inverse .btn-link {
+    color: #636363;
+}
+
+.navbar-inverse .btn-link:hover, .navbar-inverse .btn-link:focus {
+    color: #7ba335;
+}
+
+.navbar-inverse .navbar-nav > .active > a, .navbar-inverse .navbar-nav > .active > a:hover, .navbar-inverse .navbar-nav > .active > a:focus {
+    color: #7ba335;
+    background-color: #eef1f0;
 }

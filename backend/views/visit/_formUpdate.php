@@ -13,19 +13,37 @@ use yii\widgets\Pjax;
 
 $problemName = ArrayHelper::map($problem, 'id', 'name');
 array_unshift($problemName, '');
-$card_id = (int)Yii::$app->request->get('card_number');
+$card_id = (int)Yii::$app->request->get('number');
+
+//посчитаем возраст пациента по дате рождения
+$born = new DateTime($card->birthday); // дата рождения
+$age = $born->diff(new DateTime)->format('%y');
 ?>
-<br>
+<!--<pre>-->
+<?//=print_r($card)?>
+<!--</pre>-->
+
+
+<hr>
 <div class="visit-form">
     <div class="row">
         <div class="col-md-4">
-            <span class="cardInfo"><b>Город:</b> <?= $model->city ?></span>
+            <b>Пациент:</b> <?= $card->surname ?> <?= $card->name ?> <?= $card->middle_name ?></p>
         </div>
         <div class="col-md-4">
-            <span class="cardInfo"><b>Точка:</b> <?= $model->address_point ?></span>
+            <b>Возраст:</b> <?= $age ?>
+        </div>
+    </div>
+    <hr>
+    <div class="row">
+        <div class="col-md-4">
+            <b>Город:</b> <?= $model->city ?>
         </div>
         <div class="col-md-4">
-            <span class="cardInfo"><b>Подолог:</b> <?= $podolog->name ?></span>
+            <b>Точка:</b> <?= $model->address_point ?>
+        </div>
+        <div class="col-md-4">
+            <b>Подолог:</b> <?= $podolog->name ?>
         </div>
     </div>
     <hr>
@@ -46,6 +64,11 @@ $card_id = (int)Yii::$app->request->get('card_number');
         <div class="col-md-3">
             <div class="box">
                 <?= $form->field($model, 'has_come')->checkbox(['value' => '1', 'checked ' => true])->label(false); ?>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="box">
+                <?= $form->field($model, 'resolve')->checkbox(['value' => '1', 'checked ' => false])->label(false); ?>
             </div>
         </div>
     </div>
@@ -102,11 +125,11 @@ $card_id = (int)Yii::$app->request->get('card_number');
     <div id="photoForm">
         <div class="row">
             <div class="col-md-12">
-                <div class="titleNormal">Фотографии</div>
+                <div class="titleNormal">Фотографии работ (максимум по 5 фотографий)</div>
                 <br>
             </div>
             <div class="col-md-6">
-                <p><b>Фото до обработки</b></p>
+                <p><b>До манипуляций</b></p>
                 <?php if (count($photoBefore) < 5) { ?>
                     <div class="col-md-12">
                         <?= $form->field($addPhotoBefore, 'before[]')
@@ -119,7 +142,17 @@ $card_id = (int)Yii::$app->request->get('card_number');
                                     'previewFileType' => 'image',
                                     'allowedFileExtensions' => ['jpg', 'jpeg'],
                                     'showUpload' => false,
-                                    'maxFileCount' => 5 - count($photoBefore)
+                                    'maxFileCount' => 5 - count($photoBefore),
+                                    'uploadUrl' => Url::to(['']),
+                                    'fileActionSettings' => [
+                                        'showUpload' => false,
+                                        'showZoom' => false,
+
+                                    ],
+                                    'showPreview' => true,
+                                    'showRemove' => false,
+                                    'showCaption' => false,
+                                    'browseClass' => 'btn btn-primary btn-block',
                                 ]
                             ]) ?>
                     </div>
@@ -154,7 +187,7 @@ $card_id = (int)Yii::$app->request->get('card_number');
                 <?php } ?>
             </div>
             <div class="col-md-6">
-                <p><b>Фото после обработки</b></p>
+                <p><b>После манипуляций</b></p>
                 <?php if (count($photoAfter) < 5) { ?>
                     <div class="col-md-12">
                         <?= $form->field($addPhotoAfter, 'after[]')->widget(FileInput::classname(), [
@@ -166,7 +199,17 @@ $card_id = (int)Yii::$app->request->get('card_number');
                                 'previewFileType' => 'image',
                                 'allowedFileExtensions' => ['jpg', 'jpeg'],
                                 'showUpload' => false,
-                                'maxFileCount' => 5 - count($photoAfter)
+                                'maxFileCount' => 5 - count($photoAfter),
+                                'uploadUrl' => Url::to(['']),
+                                'fileActionSettings' => [
+                                    'showUpload' => false,
+                                    'showZoom' => false,
+
+                                ],
+                                'showPreview' => true,
+                                'showRemove' => false,
+                                'showCaption' => false,
+                                'browseClass' => 'btn btn-primary btn-block',
                             ]
                         ]) ?>
                     </div>

@@ -83,7 +83,7 @@ class Visit extends \yii\db\ActiveRecord
             'visit_time' => 'Время посещения',
             'visit_date' => 'Дата посещения',
             'has_come' => 'Пациент пришел',
-            'resolve' => 'Решена',
+            'resolve' => 'Проблема решена',
             'used_photo' => '',
             'description' => 'Комментарий',
             'edit' => 'Редактирование'

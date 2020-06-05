@@ -44,7 +44,6 @@ $this->params['breadcrumbs'][] = $this->title;
                                 },
                             ]
                         ],
-                        'image:image',
                         [
                             'label' => 'Картинка',
                             'format' => 'raw',

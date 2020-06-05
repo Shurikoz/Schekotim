@@ -1,8 +1,7 @@
 <?php
 
 use yii\helpers\Html;
-use backend\models\Photo;
-use rmrevin\yii\fontawesome\FAS;
+
 /* @var $this yii\web\View */
 /* @var $model backend\models\Visit */
 
@@ -12,13 +11,14 @@ $this->title = 'Редактирование посещения, карта №:
 <div class="visit-update">
 <div class="row">
     <div class="col-md-12">
-        <?= Html::a('Отмена', ['/card/view', 'number' => $model->card_number], ['class' => 'btn btn-default']) ?>
+        <?= Html::a('<span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span> Отмена', ['/card/view', 'number' => $model->card_number], ['class' => 'btn btn-default']) ?>
     </div>
 </div>
-    <h1><?= Html::encode($this->title) ?></h1>
+    <br>
+    <p class="titleNormal"><?= Html::encode($this->title) ?></p>
     <?= $this->render('_formUpdate', [
+        'card' => $card,
         'model' => $model,
-        'location' => $location,
         'podolog' => $podolog,
         'problem' => $problem,
         'photoBefore' => $photoBefore,

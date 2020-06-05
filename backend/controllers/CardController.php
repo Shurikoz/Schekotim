@@ -55,15 +55,14 @@ class CardController extends Controller
 
     /**
      * Displays a single Card model.
-     * @param integer $id
+     * @param $number
      * @return mixed
-     * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionView($number)
     {
         $model = Card::find()->where(['number' => $number])->one();
+
         $visits = Visit::find()->where(['card_number' => $number])->with(['photo', 'problem'])->all();
-        $location = AddressPoint::find()->where(['id' => $model->address_point])->with('city')->one();
 
         $addressPoint = Yii::$app->user->identity->address_point;
         $podologModel = Podolog::find()->where(['address_point' => $addressPoint])->all();
@@ -82,7 +81,6 @@ class CardController extends Controller
         return $this->render('view', [
             'model' => $model,
             'visits' => $visits,
-            'location' => $location,
             'podologModel' => $podologModel
         ]);
     }
@@ -197,13 +195,18 @@ class CardController extends Controller
             foreach ($visit->photo as $item) {
                 $item->delete();
             }
+            //удалим все фотографии посещения
+            $dir = Yii::getAlias('@webroot/upload/photo/') . $visit->id;
+            if (file_exists($dir)){
+                chmod($dir, 0777);
+                $this->delPhoto($dir);
+            }
             $visit->delete();
         }
 
-
         $cardModel->delete();
         Yii::$app->session->setFlash('success', 'Карта удалена!');
-        return $this->redirect(['index']);
+        return $this->redirect(['card/index']);
     }
 
     public function actionGetPodolog($id)
@@ -232,5 +235,22 @@ class CardController extends Controller
         throw new NotFoundHttpException('Запрашиваемая страница не существует.');
     }
 
+    /**
+     * функция для удаления фотографий посещения
+     * @param $dir
+     */
+    protected function delPhoto($dir)
+    {
+        $folders = ['/temp', '/before', '/after', '/thumbBefore', '/thumbAfter'];
+        foreach ($folders as $folder) {
+            if (file_exists($dir . $folder . '/')) {
+                foreach (glob($dir . $folder . '/*') as $file) {
+                    unlink($file);
+                }
+            }
+            rmdir($dir . $folder);
+        }
+        rmdir($dir);
+    }
 
 }

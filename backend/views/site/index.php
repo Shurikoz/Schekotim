@@ -12,7 +12,7 @@
 
 use yii\helpers\Html;
 
-$this->title = 'Панель учета';
+$this->title = 'Учет пациентов';
 
 $admin = Yii::$app->user->can('admin');
 $manager = Yii::$app->user->can('manager');
@@ -23,21 +23,15 @@ $user = Yii::$app->user->can('user');
 <div class="row">
     <div class="col-md-12">
         <div class="box">
-            <div class="site-index">
-                <div class="jumbotron">
-                    <h2>Система учета центра «Щекотливая тема»</h2>
-                    <h3>Внимание! После 2 часов бездействия происходит автоматический выход из аккаунта!</h3>
-                </div>
+            <div class="jumbotron">
+                <h2>Учет и ведение пациентов Центра подологии «Щекотливая тема»</h2>
+                <h3>Подразделение: <b><?=Yii::$app->user->identity->city?>, <?=Yii::$app->user->identity->address_point?></b></h3>
+                <p>Внимание! После 2 часов бездействия происходит автоматический выход из аккаунта!</p>
             </div>
         </div>
     </div>
 </div>
 <hr>
-<div class="row">
-    <div class="col-md-12">
-        <h3>Учет карт и посещений клиентов</h3>
-    </div>
-</div>
 <br>
 <div class="row">
     <?php if ($admin || $manager) { ?>

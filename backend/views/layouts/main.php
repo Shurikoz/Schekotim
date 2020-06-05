@@ -30,13 +30,12 @@ AppAsset::register($this);
     <?php
     NavBar::begin([
 //        'brandLabel' => Yii::$app->name,
-        'brandLabel' => '<img src="/images/logo.png" class="pull-left" style="margin-top: -5px;height: 30px;"/>',
+        'brandLabel' => '<img src="/images/logo.png" class="pull-left" style="margin-top: -7px;height: 36px;"/>',
         'brandUrl' => Yii::$app->homeUrl,
         'options' => [
             'class' => 'navbar-inverse navbar-fixed-top navbar-top-menu',
         ],
     ]);
-
 
     if (Yii::$app->user->isGuest) {
         $menuItems[] = [
@@ -91,9 +90,6 @@ AppAsset::register($this);
     ?>
 
     <div class="container">
-        <!--        --><? //= Breadcrumbs::widget([
-        //            'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
-        //        ]) ?>
         <?= Alert::widget() ?>
         <?= $content ?>
     </div>

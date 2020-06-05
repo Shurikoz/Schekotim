@@ -4,7 +4,7 @@ use yii\helpers\Html;
 
 /* @var $this yii\web\View */
 /* @var $model backend\models\Visit */
-$this->title = 'Новое посещение';
+$this->title = 'Новое посещение, карта №: ' . $card->number;
 
 ?>
 <div class="visit-create">
@@ -18,8 +18,8 @@ $this->title = 'Новое посещение';
     <p class="titleNormal"><?= Html::encode($this->title) ?></p>
 
     <?= $this->render('_formCreateSecond', [
+        'card' => $card,
         'model' => $model,
-        'location' => $location,
         'podolog' => $podolog,
         'problem' => $problem,
     ]) ?>

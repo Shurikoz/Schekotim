@@ -17,6 +17,10 @@ $this->title = 'Карта № ' . $model->number;
 
 $visit_number = count($visits);
 
+$admin = Yii::$app->user->can('admin');
+$user = Yii::$app->user->can('user');
+$manager = Yii::$app->user->can('manager');
+
 ?>
 
 <div class="card-view">
@@ -36,7 +40,7 @@ $visit_number = count($visits);
     </div>
     <div class="row cardView">
         <div class="col-md-6">
-            <div class="box" style="border: 1px solid grey">
+            <div class="box" style="border: 1px solid #7ba335">
                 <p class="titleCardName">
                     <b>ФИО:</b> <?= $model->surname ?> <?= $model->name ?> <?= $model->middle_name ?></p>
             </div>
@@ -67,10 +71,10 @@ $visit_number = count($visits);
         <caption class="c-table__title">
             Лист посещений
             <small>Всего посещений: <?= count($visits) ?></small>
-            <small>(одна проблема - одно посещение)</small>
+            <small>(Одно посещение - одна проблема)</small>
             <div class="pull-right">
-                <?php if (Yii::$app->user->can('admin') || Yii::$app->user->can('user')) { ?>
-                    <?= Html::a('<span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Создать новое посещение', ['visit/create-first', 'id' => $model->id, 'card_number' => $model->number], ['class' => 'btn btn-green']) ?>
+                <?php if ($admin || $user) { ?>
+                    <?= Html::a('<span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Создать новое посещение', ['visit/create-first', 'id' => $model->id, 'number' => $model->number], ['class' => 'btn btn-green']) ?>
                 <?php } ?>
             </div>
         </caption>
@@ -162,19 +166,19 @@ $visit_number = count($visits);
                     </tr>
                     <tr class="c-table__row visitInfoBlock hide hideBox">
                         <td colspan="10" class="c-table__visitInfoBlock">
-                            <?php if ($item->podolog->user_id == Yii::$app->user->id || Yii::$app->user->can('admin')) { ?>
+                            <?php if ($item->podolog->user_id == Yii::$app->user->id || $admin) { ?>
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="userStatus pull-right">
                                             <div>
-                                                <?= Html::a('<span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Создать будущее посещение', ['visit/create-second', 'id' => $item->id, 'card' => $model->id, 'card_number' => $model->number], ['class' => 'btn btn-green']) ?>
+                                                <?= Html::a('<span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Создать будущее посещение', ['visit/create-second', 'id' => $item->id, 'card' => $model->id, 'number' => $model->number], ['class' => 'btn btn-green']) ?>
                                             </div>
 
                                             <?php //проверка, если текущий пользователь является указанным в визите подологом, то он может редактировать этот визит
                                             if (($item->podolog->user_id == Yii::$app->user->id && $item->timestamp + 60 * 60 * 24 * 2 >= time()) && $item->has_come != 2) { ?>
                                                 <div id="blockEdit_<?= $item->id ?>" data-id="<?= $item->id ?>">
 <!--                                                    --><?//= Html::a('Изменить посещение', ['visit/update', 'id' => $item->id, 'card' => $model->id, 'card_number' => $model->number], ['class' => 'btn btn-info']) ?>
-                                                    <?= Html::a('Изменить посещение', ['visit/update', 'id' => $item->id], ['class' => 'btn btn-info']) ?>
+                                                    <?= Html::a('Изменить посещение', ['visit/update', 'id' => $item->id, 'number' => $model->number], ['class' => 'btn btn-info']) ?>
 
                                                     <?php //если указан интервал посещения, то таймер не выводим ?>
                                                     <?php if (strtotime($item->next_visit_by) <= time()) { ?>
@@ -195,30 +199,30 @@ $visit_number = count($visits);
                                                         ]) ?>
                                                     <?php } ?>
                                                 </div>
-                                            <?php } elseif (Yii::$app->user->can('admin')) { ?>
+                                            <?php } elseif ($admin) { ?>
                                                 <div>
                                                     <?= Html::a('Изменить посещение', ['visit/update', 'id' => $item->id], ['class' => 'btn btn-info']) ?>
                                                 </div>
                                             <?php } ?>
                                             <?php //кнопка «Проблема решена» доступна админу или тому, кто создал посещение?>
-                                            <?php if ($item->podolog->user_id == Yii::$app->user->id || Yii::$app->user->can('admin')) { ?>
+                                            <?php if ($item->podolog->user_id == Yii::$app->user->id || $admin) { ?>
                                                 <div>
                                                     <?php if ($item->visit_date != null && $item->problem_id != 0 && $item->has_come != 2) { ?>
                                                         <?php if ($item->resolve == 0) { ?>
-                                                            <?= Html::a('Проблема решена!', ['visit/completed', 'id' => $item->id, 'card' => $model->id, 'resolve' => true], [
+                                                            <?= Html::a('Проблема решена!', ['visit/completed', 'id' => $item->id, 'card' => $model->number, 'resolve' => true], [
                                                                 'class' => 'btn btn-green'
                                                             ]) ?>
                                                         <?php } else { ?>
-                                                            <?= Html::a('Снять отметку «Проблема решена»!', ['visit/completed', 'id' => $item->id, 'card' => $model->id, 'resolve' => false], [
+                                                            <?= Html::a('Снять отметку «Проблема решена»!', ['visit/completed', 'id' => $item->id, 'card' => $model->number, 'resolve' => false], [
                                                                 'class' => 'btn btn-default'
                                                             ]) ?>
                                                         <?php } ?>
                                                     <?php } ?>
                                                 </div>
                                             <?php } ?>
-                                            <?php if (Yii::$app->user->can('admin')) { ?>
+                                            <?php if ($admin) { ?>
                                                 <div>
-                                                    <?= Html::a('Удалить', ['visit/delete', 'id' => $item->id, 'card' => $model->id], [
+                                                    <?= Html::a('Удалить', ['visit/delete', 'id' => $item->id, 'card' => $model->number], [
                                                         'class' => 'btn btn-danger',
                                                         'data' => [
                                                             'confirm' => 'Вы уверены, что хотите удалить посещение?',
@@ -232,7 +236,7 @@ $visit_number = count($visits);
                                 </div>
                                 <hr>
                             <?php } ?>
-                            <?php if (Yii::$app->user->can('manager') || Yii::$app->user->can('admin')) { ?>
+                            <?php if ($manager || $admin || $user) { ?>
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="userStatus pull-right">
@@ -245,30 +249,32 @@ $visit_number = count($visits);
                                                     'title' => 'Откроет сгенерированный PDF файл  в новом окне'
                                                 ]); ?>
                                             </div>
-
                                         </div>
-                                        <?php
-                                        $form = ActiveForm::begin();
-                                        Modal::begin([
-                                            'header' => 'Изменить подолога',
-                                            'toggleButton' => [
-                                                'label' => 'Изменить подолога',
-                                                'class' => 'btn btn-primary userStatus pull-right',
-                                            ],
-                                            'footer' => Html::a('Сохранить', ['visit/set-podolog', 'id' => $item->id, 'card' => $model->id], [
-                                                'class' => 'btn btn-primary',
-                                                'data' => [
-                                                    'method' => 'post',
+                                        <?php if ($manager || $admin) { ?>
+                                            <?php
+                                            $form = ActiveForm::begin();
+                                            Modal::begin([
+                                                'header' => 'Изменить подолога',
+                                                'toggleButton' => [
+                                                    'label' => 'Изменить подолога',
+                                                    'class' => 'btn btn-primary userStatus pull-right',
                                                 ],
-                                            ]),
-                                        ]);
-                                        $podologList = ArrayHelper::map($podologModel, 'id', 'name');
-                                        echo $form->field($item, 'podolog_id')
-                                            ->dropDownList($podologList)
-                                            ->label('Подолог');
-                                        Modal::end();
-                                        ActiveForm::end();
-                                        ?>
+                                                'footer' => Html::a('Сохранить', ['visit/set-podolog', 'id' => $item->id, 'number' => $model->number], [
+                                                    'class' => 'btn btn-primary',
+                                                    'data' => [
+                                                        'method' => 'post',
+                                                    ],
+                                                ]),
+                                            ]);
+                                            $podologList = ArrayHelper::map($podologModel, 'id', 'name');
+                                            echo $form->field($item, 'podolog_id')
+                                                ->dropDownList($podologList)
+                                                ->label('Подолог');
+                                            Modal::end();
+                                            ActiveForm::end();
+                                            ?>
+                                        <?php } ?>
+
                                     </div>
                                 </div>
                                 <hr>

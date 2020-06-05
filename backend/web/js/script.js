@@ -139,9 +139,9 @@ $("#card-city").on('change', function () {
 //************************************************************************
 //функция открывать в новом окне
 $(document).on('click', '.linkNewWindow', function (e) {
-    var id = $(e.target).data('id');
+    var number = $(e.target).data('number');
     if ($('#openNewWindow').is(':checked')) {
-        window.open("/card/view?id=" + id);
+        window.open("/card/view?number=" + number);
         return false;
     }
 });

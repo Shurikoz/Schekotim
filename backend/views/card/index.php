@@ -92,7 +92,7 @@ $this->title = 'Карты пациентов';
                             <td class="c-table__cell cardBtn">
                                 <?= Html::a('<span class="glyphicon glyphicon-eye-open"></span>', ['card/view', 'number' => $item->number], [
                                     'class' => 'btn linkNewWindow',
-                                    'data-id' => $item->number
+                                    'data-number' => $item->number
                                 ]) ?>
                                 <?php if (Yii::$app->user->can('admin')) { ?>
                                     <?= Html::a('<span class="glyphicon glyphicon-pencil"></span>', ['card/update', 'number' => $item->number], ['class' => 'btn']) ?>

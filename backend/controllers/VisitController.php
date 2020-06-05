@@ -2,7 +2,6 @@
 
 namespace backend\controllers;
 
-use backend\models\AddressPoint;
 use backend\models\Card;
 use backend\models\Photo;
 use backend\models\Podolog;
@@ -356,11 +355,12 @@ class VisitController extends Controller
         $photo = Photo::findOne($id);
         $dirUrl = Yii::getAlias('@webroot' . $photo->url);
         $dirThumb = Yii::getAlias('@webroot' . $photo->thumbnail);
-        chmod($dirUrl, 0777);
-        chmod($dirThumb, 0777);
-        unlink($dirUrl);
-        unlink($dirThumb);
-        $photo->delete();
+        if ($photo->delete()) {
+            chmod($dirUrl, 0777);
+            chmod($dirThumb, 0777);
+            unlink($dirUrl);
+            unlink($dirThumb);
+        }
 
         return $this->renderAjax('/photo/photo', [
             'photoBefore' => $photoBefore,

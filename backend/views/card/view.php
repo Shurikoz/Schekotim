@@ -22,7 +22,6 @@ $user = Yii::$app->user->can('user');
 $manager = Yii::$app->user->can('manager');
 
 ?>
-
 <div class="card-view">
     <div class="row">
         <div class="col-md-12">
@@ -94,32 +93,54 @@ $manager = Yii::$app->user->can('manager');
         <tbody>
         <?php // TODO Исправить timeout?>
         <?php if (count($visits) != 0) { ?>
-            <?php foreach (array_reverse($visits) as $item) { ?>
-                    <?php
-                    // проверим указатель пришел ли пациент
-                    if ($item->has_come == 0) {
-                        $hasCome = 'c-table__row--wait';
-                        $picCome = '<span class="glyphicon glyphicon-hourglass"></span>';
-                    } elseif ($item->has_come == 1) {
-                        $hasCome = 'c-table__row--success';
-                        $picCome = '<span class="glyphicon glyphicon-ok"></span>';
-                    } else {
-                        $hasCome = 'c-table__row--danger';
-                        $picCome = '<span class="glyphicon glyphicon-remove"></span>';
-                    }
-                    // проверим решена проблема или нет
-                    if ($item->resolve != 0) {
-                        $picResolve = '<span class="glyphicon glyphicon-ok-circle"></span>';
-                    } else {
-                        $picResolve = '';
-                    }
+            <?php
+//            функции для подсчета количества фотографий в посещении до и после обработки
+            function countPhotoBefore($photo)
+            {
+                $before = 0;
+                foreach ($photo as $item) {
+                    $item->made == 'before' ? $before++ : '';
+                }
+                return $before;
+            }
 
-                    if ($item->photo == null) {
-                        $picCamera = '<span class="glyphicon glyphicon-camera"></span>';
-                    } else {
-                        $picCamera = '';
-                    }
-                    ?>
+            function countPhotoAfter($photo)
+            {
+                $after = 0;
+                foreach ($photo as $item) {
+                    $item->made == 'after' ? $after++ : '';
+                }
+                return $after;
+            }
+
+            ?>
+            <?php foreach (array_reverse($visits) as $item) { ?>
+                <?php
+                // проверим указатель пришел ли пациент
+                if ($item->has_come == 0) {
+                    $hasCome = 'c-table__row--wait';
+                    $picCome = '<span class="glyphicon glyphicon-hourglass"></span>';
+                } elseif ($item->has_come == 1) {
+                    $hasCome = 'c-table__row--success';
+                    $picCome = '<span class="glyphicon glyphicon-ok"></span>';
+                } else {
+                    $hasCome = 'c-table__row--danger';
+                    $picCome = '<span class="glyphicon glyphicon-remove"></span>';
+                }
+                // проверим решена проблема или нет
+                if ($item->resolve != 0) {
+                    $picResolve = '<span class="glyphicon glyphicon-ok-circle"></span>';
+                } else {
+                    $picResolve = '';
+                }
+
+                if ($item->photo == null || countPhotoBefore($item->photo) == 0 || countPhotoAfter($item->photo) == 0) {
+                    $picCamera = '<span class="glyphicon glyphicon-camera"></span>';
+                } else {
+                    $picCamera = '';
+                }
+                ?>
+
                 <tr class="c-table__row <?= $hasCome ?> visitBox">
                     <td class="c-table__cell">
                             <span><?= $item->id ?></span>
@@ -318,7 +339,9 @@ $manager = Yii::$app->user->can('manager');
                                         </div>
                                     </div>
                                 </div>
+
                                 <div class="col-md-6">
+
                                     <div class="box">
                                         <div class="col-md-12">
                                             <p class="titleMin"><b>Фото до обработки:</b></p>

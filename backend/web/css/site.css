@@ -139,6 +139,7 @@ a.desc:after {
 .navbar-inverse {
     border-width: 0;
     background-color: #fff;
+    border-bottom: 1px solid #7ba335;
 }
 
 .active {

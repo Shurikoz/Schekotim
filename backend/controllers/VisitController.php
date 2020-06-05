@@ -109,7 +109,6 @@ class VisitController extends Controller
                 Yii::$app->request->get('card_number'),
                 $model->visit_date
             );
-
             Yii::$app->session->setFlash('success', 'Данные сохранены!');
             return $this->redirect(['card/view', 'number' => Yii::$app->request->get('number')]);
         }
@@ -177,8 +176,6 @@ class VisitController extends Controller
         $addPhotoBefore = new Photo();
         $addPhotoAfter = new Photo();
 
-        $addressPoint = Yii::$app->user->identity->address_point;
-
         $photoBefore = Photo::find()->where(['visit_id' => $model->id, 'made' => 'before'])->all();
         $photoAfter = Photo::find()->where(['visit_id' => $model->id, 'made' => 'after'])->all();
         $podolog = Podolog::find()->where(['id' => $model->podolog_id])->one();
@@ -195,14 +192,12 @@ class VisitController extends Controller
 
             $addPhotoBefore->uploadBefore(
                 $model->id,
-                $model->address_point,
-                Yii::$app->request->get('card_number'),
+                Yii::$app->request->get('number'),
                 $model->visit_date
             );
             $addPhotoAfter->uploadAfter(
                 $model->id,
-                $model->address_point,
-                Yii::$app->request->get('card_number'),
+                Yii::$app->request->get('number'),
                 $model->visit_date
             );
 
@@ -358,7 +353,14 @@ class VisitController extends Controller
         $addPhotoBefore = new Photo();
         $addPhotoAfter = new Photo();
 
-        Photo::findOne($id)->delete();
+        $photo = Photo::findOne($id);
+        $dirUrl = Yii::getAlias('@webroot' . $photo->url);
+        $dirThumb = Yii::getAlias('@webroot' . $photo->thumbnail);
+        chmod($dirUrl, 0777);
+        chmod($dirThumb, 0777);
+        unlink($dirUrl);
+        unlink($dirThumb);
+        $photo->delete();
 
         return $this->renderAjax('/photo/photo', [
             'photoBefore' => $photoBefore,

@@ -69,12 +69,12 @@ class Photo extends ActiveRecord
      * Функция добавления до 5 фото "До обработки" при создании нового посещения
      * @param $model
      * @param $visitId
-     * @param $addressPoint
+     * @param $card
      * @param $cardNumber
      * @param $dateVisit
      * @return bool
      */
-    public function uploadBefore($visitId, $addressPoint, $cardNumber, $dateVisit)
+    public function uploadBefore($visitId, $cardNumber, $dateVisit)
     {
         if ($this->validate()) {
             $dir = 'upload/photo/' . $visitId;
@@ -89,14 +89,14 @@ class Photo extends ActiveRecord
 
                 //параметры текста для фото
                 $text = '
-    Точка: ' . $addressPoint . '
-    Пациент: ' . $cardNumber . '
+    Карта #: ' . $cardNumber . '
     Дата: ' . $dateVisit;
 
                 $fontFile = Yii::getAlias('@webroot/fonts/Phenomena-Regular.otf');
                 $start = [0, 0];
                 $fontOptions = [
                     'size'  => 30,    // Размер шрифта
+                    'font-weight' => 'bold',
                     'color' => '0b9341', // цвет шрифта
                 ];
 
@@ -150,7 +150,7 @@ class Photo extends ActiveRecord
      * @param $dateVisit
      * @return bool
      */
-    public function uploadAfter($visitId, $addressPoint, $cardNumber, $dateVisit)
+    public function uploadAfter($visitId, $cardNumber, $dateVisit)
     {
         if ($this->validate()) {
             $dir = 'upload/photo/' . $visitId;
@@ -165,8 +165,7 @@ class Photo extends ActiveRecord
 
                 //параметры текста для фото
                 $text = '
-    Точка: ' . $addressPoint . '
-    Пациент: ' . $cardNumber . '
+    Карта #: ' . $cardNumber . '
     Дата: ' . $dateVisit;
 
                 $fontFile = Yii::getAlias('@webroot/fonts/Phenomena-Regular.otf');

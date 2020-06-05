@@ -43,7 +43,7 @@ $age = $born->diff(new DateTime)->format('%y');
     </div>
     <hr>
     <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]); ?>
-    <?= $form->field($model, 'card_number')->hiddenInput(['value' => (int)Yii::$app->request->get('card_number')])->label(false); ?>
+    <?= $form->field($model, 'card_number')->hiddenInput(['value' => (int)Yii::$app->request->get('number')])->label(false); ?>
     <?= $form->field($model, 'city')->hiddenInput(['value' => Yii::$app->user->identity->city])->label(false); ?>
     <?= $form->field($model, 'address_point')->hiddenInput(['value' => Yii::$app->user->identity->address_point])->label(false); ?>
     <?= $form->field($model, 'podolog_id')->hiddenInput(['value' => $podolog->id])->label(false); ?>

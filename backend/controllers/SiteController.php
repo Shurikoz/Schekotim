@@ -89,6 +89,11 @@ class SiteController extends Controller
         return $this->goHome();
     }
 
+    public function actionFeedback()
+    {
+        return $this->render('feedback');
+    }
+
     /**
      * Requests password reset.
      *

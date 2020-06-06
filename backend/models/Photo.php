@@ -44,7 +44,7 @@ class Photo extends ActiveRecord
                 'checkExtensionByMimeType' => true,
                 'maxFiles' => 5,
                 'tooMany' => 'Вы можете загрузить не более 5 файлов'
-            ]
+            ],
         ];
     }
 
@@ -217,6 +217,10 @@ class Photo extends ActiveRecord
         }
     }
 
+    /**
+     * @param bool $extension
+     * @return string
+     */
     private function randomFileName($extension = false)
     {
         $extension = $extension ? '.' . $extension : '';
@@ -227,6 +231,10 @@ class Photo extends ActiveRecord
         return $file;
     }
 
+    /**
+     * @param $visitId
+     * @param $dir
+     */
     private function checkDir($visitId, $dir){
         if (!file_exists($dir)) {
             mkdir($dir, 0777, true);
@@ -244,9 +252,20 @@ class Photo extends ActiveRecord
         }
     }
 
+    /**
+     * @return \yii\db\ActiveQuery
+     */
     public function getVisit()
     {
         return $this->hasOne(Visit::className(), ['id' => 'visit_id']);
+    }
+
+    public function getFilter()
+    {
+        return [
+            '1' => 'Использованы',
+            '0' => 'Не использованы',
+        ];
     }
 
 }

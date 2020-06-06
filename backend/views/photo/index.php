@@ -12,17 +12,6 @@ use yii\widgets\LinkPager;
 $this->title = 'Фотографии работ';
 $count_visits = (isset($_GET['per-page'])) ? $_GET['per-page'] : 20;
 
-if (isset($_GET['VisitSearch']['used_photo'])){
-    $all = $_GET['VisitSearch']['used_photo'] == '' ? 'active' : '';
-    $usedPhoto1 = $_GET['VisitSearch']['used_photo'] == '1' ? 'active' : '';
-    $usedPhoto0 = $_GET['VisitSearch']['used_photo'] == '0' ? 'active' : '';
-} else {
-    $all = 'active';
-    $usedPhoto1 = '';
-    $usedPhoto0 = '';
-}
-
-
 ?>
 <div class="photo-index">
     <h1><?= Html::encode($this->title) ?></h1>
@@ -35,7 +24,7 @@ if (isset($_GET['VisitSearch']['used_photo'])){
                     'action' => ['index'],
                     'method' => 'get',
                 ]); ?>
-                <?= Html::button('Сбросить', ['class' => 'btn btn-default resetFormButton pull-right']) ?>
+                <?= Html::button('Сбросить фильтры', ['class' => 'btn btn-default resetFormButton pull-right']) ?>
                 <p class="titleNormal">Фильтр</p>
                 <hr>
                 <div class="row">
@@ -49,40 +38,13 @@ if (isset($_GET['VisitSearch']['used_photo'])){
                             <?= $form->field($searchModel, 'id')->textInput(['class' => 'autoSearchSubmit c-input'])->label('Номер посещения', ['class' => 'c-field__label']) ?>
                         </div>
                     </div>
-                    <div class="col-md-5">
-                        <div class="searchVisit">
-                            <?= Html::a('Все', Url::current(['VisitSearch[used_photo]' => '']), ['class' => 'btnSearchVisit ' . $all]) ?>
-                        </div>
-                        <div class="searchVisit">
-                            <?= Html::a('Использованы', Url::current(['VisitSearch[used_photo]' => '1']), ['class' => 'btnSearchVisit ' . $usedPhoto1]) ?>
-                        </div>
-                        <div class="searchVisit">
-                            <?= Html::a('Не использованы', Url::current(['VisitSearch[used_photo]' => '0']), ['class' => 'btnSearchVisit ' . $usedPhoto0]) ?>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
                     <div class="col-md-3">
                         <div class="c-field">
-
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-3">
-                        <div class="c-field">
-                            <?= $form->field($searchModel, 'anamnes')->textInput(['class' => 'autoSearchSubmit c-input'])->label('Анамнез', ['class' => 'c-field__label']) ?>
+                            <?= $form->field($searchModel, 'problem')->dropDownList($problem, ['prompt' => 'Все','class' => 'autoSearchSubmit c-input'])->label('Проблема', ['class' => 'c-field__label']) ?>
                         </div>
                     </div>
                     <div class="col-md-3">
-                        <div class="c-field">
-                            <?= $form->field($searchModel, 'manipulation')->textInput(['class' => 'autoSearchSubmit c-input'])->label('Манипуляции', ['class' => 'c-field__label']) ?>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="c-field">
-                            <?= $form->field($searchModel, 'recommendation')->textInput(['class' => 'autoSearchSubmit c-input'])->label('Рекомендации', ['class' => 'c-field__label']) ?>
-                        </div>
+                        <?= $form->field($searchModel, 'used_photo')->dropDownList($filter, ['prompt' => 'Все', 'class' => 'autoSearchSubmit c-input'])->label('Фильтр использованных фотографий', ['class' => 'c-field__label']) ?>
                     </div>
                 </div>
                 <?php ActiveForm::end(); ?>

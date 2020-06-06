@@ -11,6 +11,9 @@ use backend\models\Photo;
  */
 class PhotoSearch extends Photo
 {
+
+    public $used_photo;
+
     /**
      * {@inheritdoc}
      */
@@ -18,7 +21,8 @@ class PhotoSearch extends Photo
     {
         return [
             [['id', 'visit_id'], 'integer'],
-            [['url', 'thumbnail'], 'safe'],
+            [['url', 'thumbnail', 'used_photo'], 'safe'],
+
         ];
     }
 
@@ -64,7 +68,10 @@ class PhotoSearch extends Photo
 
         $query->andFilterWhere(['like', 'url', $this->url])
             ->andFilterWhere(['like', 'thumbnail', $this->thumbnail])
+            ->andFilterWhere(['like', 'used_photo', $this->used_photo])
             ->andFilterWhere(['like', 'used', $this->used]);
+
+
 
         return $dataProvider;
     }

@@ -3,6 +3,7 @@
 /* @var $this yii\web\View */
 /* @var $name string */
 /* @var $message string */
+
 /* @var $exception Exception */
 
 use yii\helpers\Html;
@@ -10,18 +11,18 @@ use yii\helpers\Html;
 $this->title = $name;
 ?>
 <div class="site-error">
-<!--    --><?//= Html::encode($this->title) ?>
+    <!--    --><? //= Html::encode($this->title) ?>
     <h1>Ошибка #404</h1>
-<h3>Страница не найдена</h3>
+    <h3>Страница не найдена</h3>
     <div class="alert alert-danger">
         <?= nl2br(Html::encode($message)) ?>
     </div>
 
     <p>
-        The above error occurred while the Web server was processing your request.
+        Вышеуказанная ошибка произошла, когда веб-сервер обрабатывал ваш запрос.
     </p>
     <p>
-        Please contact us if you think this is a server error. Thank you.
+        Пожалуйста, свяжитесь с администратором сервиса, если считаете, что это ошибка сервера.
     </p>
 
 </div>

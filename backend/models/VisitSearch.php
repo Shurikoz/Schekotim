@@ -11,6 +11,8 @@ use yii\data\ActiveDataProvider;
 class VisitSearch extends Visit
 {
 
+    public $problem;
+
     /**
      * {@inheritdoc}
      */
@@ -18,7 +20,7 @@ class VisitSearch extends Visit
     {
         return [
             [['id', 'card_number'], 'integer'],
-            [['city', 'address_point', 'anamnes', 'podolog_id', 'manipulation', 'recommendation', 'next_visit_from', 'next_visit_by', 'has_come', 'description', 'used_photo'], 'safe'],
+            [['city', 'address_point', 'anamnes', 'podolog_id', 'manipulation', 'recommendation', 'next_visit_from', 'next_visit_by', 'has_come', 'description', 'used_photo', 'problem'], 'safe'],
         ];
     }
 
@@ -40,7 +42,7 @@ class VisitSearch extends Visit
      */
     public function search($params)
     {
-        $query = Visit::find();
+        $query = Visit::find()->joinWith('problem');
 
         // add conditions that should always apply here
 
@@ -71,10 +73,14 @@ class VisitSearch extends Visit
 
         $query->andFilterWhere(['like', 'city', $this->city])
             ->andFilterWhere(['like', 'address_point', $this->address_point])
-            ->andFilterWhere(['like', 'anamnes', $this->anamnes])
             ->andFilterWhere(['like', 'podolog', $this->podolog_id])
-            ->andFilterWhere(['like', 'manipulation', $this->manipulation])
-            ->andFilterWhere(['like', 'recommendation', $this->recommendation])
+
+//            ->andFilterWhere(['like', 'anamnes', $this->anamnes])
+//            ->andFilterWhere(['like', 'manipulation', $this->manipulation])
+//            ->andFilterWhere(['like', 'recommendation', $this->recommendation])
+
+            ->andFilterWhere(['like', Problem::tableName() . '.id', $this->problem])
+
             ->andFilterWhere(['like', 'has_come', $this->has_come])
             ->andFilterWhere(['like', 'used_photo', $this->used_photo])
             ->andFilterWhere(['like', 'description', $this->description]);

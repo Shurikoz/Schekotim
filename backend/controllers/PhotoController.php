@@ -3,6 +3,7 @@
 namespace backend\controllers;
 
 use backend\models\Photo;
+use backend\models\Problem;
 use backend\models\Visit;
 use backend\models\VisitSearch;
 use Yii;
@@ -10,6 +11,7 @@ use yii\data\Pagination;
 use yii\filters\VerbFilter;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
+use yii\helpers\ArrayHelper;
 
 /**
  * PhotoVisitController implements the CRUD actions for PhotoVisit model.
@@ -41,10 +43,16 @@ class PhotoController extends Controller
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
         $pages = new Pagination(['totalCount' => $dataProvider->getTotalCount(), 'pageSizeLimit' => [1, 60], 'defaultPageSize' => 20]);
 
+        $filter = (new Photo())->getFilter();
+
+        $problem = ArrayHelper::map(Problem::find()->all(), 'id', 'name');
+
         return $this->render('index', [
             'pages' => $pages,
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'problem' => $problem,
+            'filter' => $filter,
         ]);
     }
 

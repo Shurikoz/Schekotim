@@ -9,6 +9,7 @@ use common\widgets\Alert;
 use yii\bootstrap\Nav;
 use yii\bootstrap\NavBar;
 use yii\helpers\Html;
+use yii\helpers\Url;
 
 AppAsset::register($this);
 ?>
@@ -98,7 +99,7 @@ AppAsset::register($this);
 <footer class="footer">
     <div class="container">
         <p class="pull-left">&copy; <?= Html::encode(Yii::$app->name) ?> <?= date('Y') ?></p>
-        <p class="pull-right">О проблемах в работе просим сообщить администратору</p>
+        <p class="pull-right">О проблемах в работе просим <?= Html::a('сообщить администратору', ['/feedback']) ?></p>
     </div>
 </footer>
 

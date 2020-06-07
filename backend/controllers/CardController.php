@@ -209,6 +209,10 @@ class CardController extends Controller
         return $this->redirect(['card/index']);
     }
 
+    /**
+     * @param $id
+     * @return array|bool|\yii\db\ActiveRecord[]
+     */
     public function actionGetPodolog($id)
     {
         \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
@@ -218,6 +222,20 @@ class CardController extends Controller
             return $podolog;
         }
         return false;
+    }
+
+    /**
+     * @param $s
+     * @param $n
+     * @param $mn
+     * @return array|bool|\yii\db\ActiveRecord[]
+     */
+    public function actionCheckFio($s, $n, $mn){
+        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        if (Yii::$app->request->isAjax) {
+            $fio = Card::find()->where(['surname' => $s, 'name' => $n, 'middle_name' => $mn])->all();
+                return $fio;
+        }
     }
 
     /**

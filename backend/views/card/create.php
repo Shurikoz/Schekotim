@@ -12,8 +12,6 @@ $this->title = 'Создание новой карты пациента';
 $this->params['breadcrumbs'][] = ['label' => 'Cards', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 
-//создадим массив для выпадающего списка подологов
-
 ?>
 <div class="card-create">
     <?= Html::button(FAS::icon('angle-left', ['class' => 'big', 'data-role' => 'arrow']) . '&nbsp Отмена', [

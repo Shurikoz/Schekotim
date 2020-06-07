@@ -334,6 +334,10 @@ font-size: 22px;
     color: #7ba335;
 }
 
+.glyphicon-exclamation-sign{
+    color: orange;
+}
+
 .c-table__cell--empty{
     text-align: center;
     padding: 10px;

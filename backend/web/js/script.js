@@ -55,8 +55,6 @@ $("#visit-problem_id").on('change', function () {
     });
 });
 //************************************************************************
-//функция для получения адресов точек в выбранном городе для создания нового пользователя
-
 //функция для формы создания пользователя
 $("#signupuser-city").on('change', function () {
     let element = "signupuser-address_point";
@@ -156,3 +154,41 @@ $('.infoHiddenBlockBtn').on('click',function(e){
     }
     $('.infoHiddenBlock' + a).slideToggle(300);
 });
+
+//************************************************************************
+//функция проверки существует ли пациент по введенным ФИО
+function checkFio() {
+    let s = $('#surname').val();
+    let n = $('#name').val();
+    let mn = $('#middle_name').val();
+    if (s.length > 0 && n.length > 0 && mn.length > 0){
+        // console.log(true);
+        $.ajax({
+            url: "/card/check-fio?s=" + s + "&n=" + n + "&mn=" + mn,
+            cache: false,
+            data: {},
+            method: "POST",
+            beforeSend: function () {
+                $("#checkFio").html('');
+            }
+        }).done(function (data) {
+            if (data != '') {
+                $("#checkFio").append('<b><span class="glyphicon glyphicon-exclamation-sign"></span> Найдены совпадения имён:</b><br>');
+                $.each(data, function(index, val) {
+                    let i = '<div style="margin-left: 15px; padding: 5px">';
+                    i += ' ' + data[index].surname + ' ' + data[index].name + ' ' + data[index].middle_name + ', ' + data[index].birthday + ', Карта #' + data[index].number + '; ';
+                    i += ' <a href="/card/view?number=' + data[index].number + '" target="_blank"> Открыть карту в новом окне</a>';
+                    i += '</div>';
+                    $("#checkFio").append(i);
+                });
+            } else {
+                 $("#checkFio").html('<span style="color: #7ba335">Совпадений имён не найдено</span>');
+             }
+        }).fail(function () {
+            $("#checkFio").html('<span style="color: #7ba335">Ошибка загрузки данных!</span>');
+        });
+
+
+
+    }
+}

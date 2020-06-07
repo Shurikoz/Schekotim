@@ -41,20 +41,26 @@ $cityList = ArrayHelper::map($cityModel, 'id', 'name');
     <div class="row">
         <div class="col-md-4">
             <div class="box">
-                <?= $form->field($cardModel, 'surname')->textInput(['maxlength' => true]) ?>
+                <?= $form->field($cardModel, 'surname')->textInput(['maxlength' => true, 'onchange' => 'checkFio()', 'id' => 'surname']) ?>
             </div>
         </div>
         <div class="col-md-4">
             <div class="box">
-                <?= $form->field($cardModel, 'name')->textInput(['maxlength' => true]) ?>
+                <?= $form->field($cardModel, 'name')->textInput(['maxlength' => true, 'onchange' => 'checkFio()', 'id' => 'name']) ?>
             </div>
         </div>
         <div class="col-md-4">
             <div class="box">
-                <?= $form->field($cardModel, 'middle_name')->textInput(['maxlength' => true]) ?>
+                <?= $form->field($cardModel, 'middle_name')->textInput(['maxlength' => true, 'onchange' => 'checkFio()', 'id' => 'middle_name']) ?>
             </div>
         </div>
     </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div id="checkFio"></div>
+        </div>
+    </div>
+    <br>
     <div class="row">
     <div class="col-md-4">
             <div class="box">

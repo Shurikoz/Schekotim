@@ -41,23 +41,18 @@ $cityList = ArrayHelper::map($cityModel, 'id', 'name');
     <div class="row">
         <div class="col-md-4">
             <div class="box">
-                <?= $form->field($cardModel, 'surname')->textInput(['maxlength' => true, 'onchange' => 'checkFio()', 'id' => 'surname']) ?>
+                <?= $form->field($cardModel, 'surname')->textInput(['maxlength' => true, 'id' => 'surname']) ?>
             </div>
         </div>
         <div class="col-md-4">
             <div class="box">
-                <?= $form->field($cardModel, 'name')->textInput(['maxlength' => true, 'onchange' => 'checkFio()', 'id' => 'name']) ?>
+                <?= $form->field($cardModel, 'name')->textInput(['maxlength' => true, 'onchange' => 'checkCard()', 'id' => 'name']) ?>
             </div>
         </div>
         <div class="col-md-4">
             <div class="box">
-                <?= $form->field($cardModel, 'middle_name')->textInput(['maxlength' => true, 'onchange' => 'checkFio()', 'id' => 'middle_name']) ?>
+                <?= $form->field($cardModel, 'middle_name')->textInput(['maxlength' => true, 'onchange' => 'checkCard()', 'id' => 'middle_name']) ?>
             </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-12">
-            <div id="checkFio"></div>
         </div>
     </div>
     <br>
@@ -72,7 +67,7 @@ $cityList = ArrayHelper::map($cityModel, 'id', 'name');
                         'todayHighlight' => true,
                         'endDate' => date('Ymd'),
                     ],
-                    'options' => ['placeholder' => 'дд.мм.гггг']
+                    'options' => ['placeholder' => 'дд.мм.гггг', 'onchange' => 'checkCard()', 'id' => 'birthday']
                 ]);
 
                 ?>
@@ -84,6 +79,11 @@ $cityList = ArrayHelper::map($cityModel, 'id', 'name');
                     ->widget(MaskedInput::className(), ['mask' => '+7 (999) 999 99 99'])
                     ->textInput(['placeholder' => $cardModel->getAttributeLabel('phone'), 'style' => 'width:150px']); ?>
             </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div id="checkCard"></div>
         </div>
     </div>
     <hr>

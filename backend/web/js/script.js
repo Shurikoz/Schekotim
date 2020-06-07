@@ -157,38 +157,38 @@ $('.infoHiddenBlockBtn').on('click',function(e){
 
 //************************************************************************
 //функция проверки существует ли пациент по введенным ФИО
-function checkFio() {
-    let s = $('#surname').val();
+function checkCard() {
+    let checkCard = $("#checkCard");
     let n = $('#name').val();
     let mn = $('#middle_name').val();
-    if (s.length > 0 && n.length > 0 && mn.length > 0){
+    let bd = $('#birthday').val();
+    if (bd.length > 0 && n.length > 0 && mn.length > 0){
         // console.log(true);
         $.ajax({
-            url: "/card/check-fio?s=" + s + "&n=" + n + "&mn=" + mn,
+            url: "/card/check-card?n=" + n + "&mn=" + mn + "&bd=" + bd,
             cache: false,
             data: {},
             method: "POST",
             beforeSend: function () {
-                $("#checkFio").html('');
+                checkCard.html('');
             }
         }).done(function (data) {
             if (data != '') {
-                $("#checkFio").append('<b><span class="glyphicon glyphicon-exclamation-sign"></span> Найдены совпадения имён:</b><br>');
+                checkCard.append('<hr><b><span class="glyphicon glyphicon-exclamation-sign"></span> Найдены совпадения имён:</b><br>');
                 $.each(data, function(index, val) {
                     let i = '<div style="margin-left: 15px; padding: 5px">';
-                    i += ' ' + data[index].surname + ' ' + data[index].name + ' ' + data[index].middle_name + ', ' + data[index].birthday + ', Карта #' + data[index].number + '; ';
+                    i += ' ' + data[index].surname + ' <b>' + data[index].name + ' ' + data[index].middle_name + ', ' + data[index].birthday + '</b>, Карта #' + data[index].number + '; ';
                     i += ' <a href="/card/view?number=' + data[index].number + '" target="_blank"> Открыть карту в новом окне</a>';
                     i += '</div>';
-                    $("#checkFio").append(i);
+                    checkCard.append(i);
                 });
             } else {
-                 $("#checkFio").html('<span style="color: #7ba335">Совпадений имён не найдено</span>');
+                checkCard.html('');
+                checkCard.html('<hr><span style="color: #7ba335">Совпадений имён не найдено</span>');
              }
         }).fail(function () {
-            $("#checkFio").html('<span style="color: #7ba335">Ошибка загрузки данных!</span>');
+            checkCard.html('');
+            checkCard.html('<hr><span style="color: #7ba335">Ошибка загрузки данных!</span>');
         });
-
-
-
     }
 }

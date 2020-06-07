@@ -230,11 +230,11 @@ class CardController extends Controller
      * @param $mn
      * @return array|bool|\yii\db\ActiveRecord[]
      */
-    public function actionCheckFio($s, $n, $mn){
+    public function actionCheckCard($n, $mn, $bd){
         \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
         if (Yii::$app->request->isAjax) {
-            $fio = Card::find()->where(['surname' => $s, 'name' => $n, 'middle_name' => $mn])->all();
-                return $fio;
+            $card = Card::find()->where(['name' => $n, 'middle_name' => $mn, 'birthday' => $bd])->all();
+                return $card;
         }
     }
 

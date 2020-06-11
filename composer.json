@@ -32,7 +32,8 @@
     "kartik-v/yii2-field-range": "*",
     "kartik-v/bootstrap-fileinput": "dev-master",
     "kartik-v/yii2-widget-fileinput": "dev-master",
-    "kartik-v/yii2-mpdf": "dev-master"
+    "kartik-v/yii2-mpdf": "dev-master",
+    "2amigos/yii2-ckeditor-widget": "^1.0@dev"
   },
   "require-dev": {
     "yiisoft/yii2-debug": "~2.1.0",

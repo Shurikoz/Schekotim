@@ -2,7 +2,7 @@
 
 use yii\helpers\Url;
 
-$this->title = 'Щекотливая тема';
+$this->title = 'Центр подологии Щекотливая тема';
 $header = 'Центр маникюра, педикюра и подологии';
 
 $this->registerMetaTag([

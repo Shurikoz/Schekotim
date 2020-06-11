@@ -9,7 +9,6 @@ use common\widgets\Alert;
 use yii\bootstrap\Nav;
 use yii\bootstrap\NavBar;
 use yii\helpers\Html;
-use yii\helpers\Url;
 
 AppAsset::register($this);
 ?>
@@ -55,24 +54,26 @@ AppAsset::register($this);
             'visible' => Yii::$app->user->can('admin') || Yii::$app->user->can('user') || Yii::$app->user->can('manager')
         ];
         $menuItems[] = [
-            'label' => 'Отзывы',
-            'url' => ['/review/index'],
-            'visible' => Yii::$app->user->can('admin')
-        ];
-        $menuItems[] = [
-            'label' => 'Галерея',
-            'url' => ['/gallery/index'],
-            'visible' => Yii::$app->user->can('admin')
-        ];
-        $menuItems[] = [
             'label' => 'Фото работ',
             'url' => ['/photo/index'],
             'visible' => Yii::$app->user->can('admin') || Yii::$app->user->can('smm'),
         ];
         $menuItems[] = [
-            'label' => 'Пользователи',
-            'url' => ['/admin/user/index'],
-            'visible' => Yii::$app->user->can('admin')
+            'label' => 'Сайт',
+            'visible' => Yii::$app->user->can('admin'),
+            'items' => [
+                ['label' => 'Отзывы', 'url' => '/review/index'],
+                ['label' => 'Галерея', 'url' => '/gallery/index'],
+                ['label' => 'Прайс-лист', 'url' => '/pages/price'],
+            ],
+        ];
+        $menuItems[] = [
+            'label' => 'Управление',
+            'visible' => Yii::$app->user->can('admin'),
+            'items' => [
+                ['label' => 'Пользователи', 'url' => '/admin/user/index'],
+                ['label' => 'Регистрация', 'url' => '/site/signup'],
+            ],
         ];
         $menuItems[] = '<li>'
             . Html::beginForm(['/site/logout'], 'post')

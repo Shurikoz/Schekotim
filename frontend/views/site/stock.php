@@ -21,24 +21,6 @@ $this->registerMetaTag([
     <div class="row">
         <div class="row">
             <div class="col-12 col-12-small">
-                <h3>Дарим 500 рублей!</h3>
-                <div class="row">
-                    <div class="col-2 col-12-small">
-                        <span class="image fit"><img src="images/stock/nail.jpg" alt=""/></span>
-                    </div>
-                    <div class="col-10 col-12-small">
-                        <p>
-                            Запишитесь на маникюр и педикюр с покрытием к нашим мастерам <b>до 30 апреля 2020</b>, и мы сделаем вам <b>укрепление и выравнивание ногтевых пластин</b> нашим уникальным биогелем
-                            <b>бесплатно</b>!
-                        </p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-12 col-12-small">
-                <hr class="major"/>
-            </div>
-
-            <div class="col-12 col-12-small">
                 <h3>Бесплатная консультация подолога</h3>
                 <div class="row">
                     <div class="col-2 col-12-small">
@@ -47,6 +29,7 @@ $this->registerMetaTag([
                     <div class="col-10 col-12-small">
                         <p><b>Каждую среду</b> наши подологи консультируют Вас бесплатно! <br />
                             Не забудьте записаться.</p>
+                        <p><b>Акция действует до 31.07.2020</b></p>
                     </div>
                 </div>
             </div>

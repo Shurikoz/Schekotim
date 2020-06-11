@@ -103,7 +103,7 @@ $cityList = ArrayHelper::map($cityModel, 'id', 'name');
                     <div class="col-md-12">
                         <div class="box">
                             <?= $form->field($cardModel, 'city')
-                                ->dropDownList($cityList)
+                                ->dropDownList($cityList, ['prompt' => 'Выберите город',])
                                 ->label('Город') ?>
                         </div>
                     </div>

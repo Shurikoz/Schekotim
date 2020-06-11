@@ -174,7 +174,7 @@ function checkCard() {
             }
         }).done(function (data) {
             if (data != '') {
-                checkCard.append('<hr><b><span class="glyphicon glyphicon-exclamation-sign"></span> Найдены совпадения имён:</b><br>');
+                checkCard.append('<hr><b><span class="glyphicon glyphicon-exclamation-sign"></span> Найдены совпадения:</b><br>');
                 $.each(data, function(index, val) {
                     let i = '<div style="margin-left: 15px; padding: 5px">';
                     i += ' ' + data[index].surname + ' <b>' + data[index].name + ' ' + data[index].middle_name + ', ' + data[index].birthday + '</b>, Карта #' + data[index].number + '; ';
@@ -184,7 +184,7 @@ function checkCard() {
                 });
             } else {
                 checkCard.html('');
-                checkCard.html('<hr><span style="color: #7ba335">Совпадений имён не найдено</span>');
+                checkCard.html('<hr><span style="color: #7ba335">Совпадений не найдено</span>');
              }
         }).fail(function () {
             checkCard.html('');

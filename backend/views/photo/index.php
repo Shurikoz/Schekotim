@@ -86,7 +86,7 @@ $count_visits = (isset($_GET['per-page'])) ? $_GET['per-page'] : 20;
                 <br>
                 <br>
                 <div class="row">
-                    <div class="col-md-3">
+                    <div class="col-md-2">
                         <div class="box">
                             <p><b>Номер карты:</b></p>
                             <p><?= $item->card_number ?></p>

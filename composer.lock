@@ -4,14 +4,73 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "91e655fa2c374f5180779effcd3ec6b6",
+    "content-hash": "ba8d0f6c3747a85c2dc5f30c6b84ce54",
     "packages": [
+        {
+            "name": "2amigos/yii2-ckeditor-widget",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/2amigos/yii2-ckeditor-widget.git",
+                "reference": "3eefd73b33b451e907a6a62c83c15c73849f8802"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/2amigos/yii2-ckeditor-widget/zipball/3eefd73b33b451e907a6a62c83c15c73849f8802",
+                "reference": "3eefd73b33b451e907a6a62c83c15c73849f8802",
+                "shasum": ""
+            },
+            "require": {
+                "ckeditor/ckeditor": "^4.7 || dev-full/4.11.x",
+                "sunhater/kcfinder": "*",
+                "yiisoft/yii2": "^2.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "4.*",
+                "roave/security-advisories": "dev-master"
+            },
+            "type": "yii2-extension",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "dosamigos\\ckeditor\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "2amigOS! Consulting Group",
+                    "email": "hola@2amigos.us",
+                    "homepage": "http://2amigos.us",
+                    "role": "Developer"
+                }
+            ],
+            "description": "CKEditor widget for Yii2.",
+            "homepage": "http://yiiwheels.com/extension/ckeditor-widget",
+            "keywords": [
+                "2amigos",
+                "CKEditor",
+                "extension",
+                "widget",
+                "yii",
+                "yii 2",
+                "yii2"
+            ],
+            "time": "2019-04-30T16:51:38+00:00"
+        },
         {
             "name": "bower-asset/bootstrap",
             "version": "v3.4.1",
             "source": {
                 "type": "git",
-                "url": "git@github.com:twbs/bootstrap.git",
+                "url": "https://github.com/twbs/bootstrap.git",
                 "reference": "68b0d231a13201eb14acd3dc84e51543d16e5f7e"
             },
             "dist": {
@@ -32,7 +91,7 @@
             "version": "3.3.11",
             "source": {
                 "type": "git",
-                "url": "https://github.com/RobinHerbots/Inputmask.git",
+                "url": "git@github.com:RobinHerbots/Inputmask.git",
                 "reference": "5e670ad62f50c738388d4dcec78d2888505ad77b"
             },
             "dist": {
@@ -185,6 +244,48 @@
                 "markdown-extra"
             ],
             "time": "2020-02-26T01:55:18+00:00"
+        },
+        {
+            "name": "ckeditor/ckeditor",
+            "version": "4.14.x-dev",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ckeditor/ckeditor4-releases.git",
+                "reference": "998e43cd6305bca24304b9538a682da123ac5b73"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ckeditor/ckeditor4-releases/zipball/998e43cd6305bca24304b9538a682da123ac5b73",
+                "reference": "998e43cd6305bca24304b9538a682da123ac5b73",
+                "shasum": ""
+            },
+            "type": "library",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-2.0+",
+                "LGPL-2.1+",
+                "MPL-1.1+"
+            ],
+            "authors": [
+                {
+                    "name": "CKSource",
+                    "homepage": "https://cksource.com"
+                }
+            ],
+            "description": "JavaScript WYSIWYG web text editor.",
+            "homepage": "https://ckeditor.com/ckeditor-4/",
+            "keywords": [
+                "CKEditor",
+                "ckeditor4",
+                "editor",
+                "fckeditor",
+                "html",
+                "javascript",
+                "richtext",
+                "text",
+                "wysiwyg"
+            ],
+            "time": "2020-03-04T13:19:40+00:00"
         },
         {
             "name": "doctrine/lexer",
@@ -462,12 +563,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/kartik-v/bootstrap-fileinput.git",
-                "reference": "32ca5679456680f00fee5c468c3ccd3d836955ae"
+                "reference": "349a2e3479a2dacdb7ebd4815c37d66e4473bd4d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/kartik-v/bootstrap-fileinput/zipball/32ca5679456680f00fee5c468c3ccd3d836955ae",
-                "reference": "32ca5679456680f00fee5c468c3ccd3d836955ae",
+                "url": "https://api.github.com/repos/kartik-v/bootstrap-fileinput/zipball/349a2e3479a2dacdb7ebd4815c37d66e4473bd4d",
+                "reference": "349a2e3479a2dacdb7ebd4815c37d66e4473bd4d",
                 "shasum": ""
             },
             "type": "library",
@@ -513,7 +614,7 @@
                     "type": "open_collective"
                 }
             ],
-            "time": "2020-06-03T14:27:33+00:00"
+            "time": "2020-06-11T04:43:05+00:00"
         },
         {
             "name": "kartik-v/yii2-field-range",
@@ -1332,6 +1433,61 @@
             "time": "2020-04-28T12:40:35+00:00"
         },
         {
+            "name": "sunhater/kcfinder",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/sunhater/kcfinder.git",
+                "reference": "b645d2a81e647d63780c238b130593e32b4d95a9"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/sunhater/kcfinder/zipball/b645d2a81e647d63780c238b130593e32b4d95a9",
+                "reference": "b645d2a81e647d63780c238b130593e32b4d95a9",
+                "shasum": ""
+            },
+            "require": {
+                "ext-gd": "*",
+                "php": ">=5.3.0"
+            },
+            "suggest": {
+                "ext-curl": "*",
+                "ext-exif": "*",
+                "ext-fileinfo": "*",
+                "ext-gmagick": "*",
+                "ext-http": "*",
+                "ext-imagick": "*",
+                "ext-sockets": "*",
+                "ext-zip": "*"
+            },
+            "type": "library",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-3.0+",
+                "LGPL-3.0+"
+            ],
+            "authors": [
+                {
+                    "name": "Pavel Tzonkov",
+                    "email": "sunhater@sunhater.com",
+                    "homepage": "http://sunhater.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "KCFinder web file manager",
+            "homepage": "http://kcfinder.sunhater.com",
+            "keywords": [
+                "explorer",
+                "file",
+                "file explorer",
+                "file manager",
+                "finder",
+                "kcfinder",
+                "manager"
+            ],
+            "time": "2014-08-24T00:00:00+00:00"
+        },
+        {
             "name": "swiftmailer/swiftmailer",
             "version": "v6.2.3",
             "source": {
@@ -1690,12 +1846,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/yiisoft/yii2-framework.git",
-                "reference": "9ab04d7f383344cb54421655063f8521ac854f04"
+                "reference": "0c846d5377b3166d6435e416d65e29452aa86804"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/yiisoft/yii2-framework/zipball/9ab04d7f383344cb54421655063f8521ac854f04",
-                "reference": "9ab04d7f383344cb54421655063f8521ac854f04",
+                "url": "https://api.github.com/repos/yiisoft/yii2-framework/zipball/0c846d5377b3166d6435e416d65e29452aa86804",
+                "reference": "0c846d5377b3166d6435e416d65e29452aa86804",
                 "shasum": ""
             },
             "require": {
@@ -1796,7 +1952,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2020-06-04T21:18:36+00:00"
+            "time": "2020-06-10T11:58:07+00:00"
         },
         {
             "name": "yiisoft/yii2-bootstrap",
@@ -2547,12 +2703,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/opis/closure.git",
-                "reference": "28ade8ad575381f3faf9cc9427d1d63b18f12061"
+                "reference": "1d0deef692f66dae5d70663caee2867d0971306b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/opis/closure/zipball/28ade8ad575381f3faf9cc9427d1d63b18f12061",
-                "reference": "28ade8ad575381f3faf9cc9427d1d63b18f12061",
+                "url": "https://api.github.com/repos/opis/closure/zipball/1d0deef692f66dae5d70663caee2867d0971306b",
+                "reference": "1d0deef692f66dae5d70663caee2867d0971306b",
                 "shasum": ""
             },
             "require": {
@@ -2600,7 +2756,7 @@
                 "serialization",
                 "serialize"
             ],
-            "time": "2020-05-26T10:47:20+00:00"
+            "time": "2020-06-07T11:41:29+00:00"
         },
         {
             "name": "phar-io/manifest",
@@ -4902,7 +5058,8 @@
         "kartik-v/yii2-widget-datepicker": 20,
         "kartik-v/bootstrap-fileinput": 20,
         "kartik-v/yii2-widget-fileinput": 20,
-        "kartik-v/yii2-mpdf": 20
+        "kartik-v/yii2-mpdf": 20,
+        "2amigos/yii2-ckeditor-widget": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,

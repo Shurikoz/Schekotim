@@ -14,6 +14,7 @@ use backend\models\PasswordResetRequestForm;
 use yii\base\InvalidArgumentException;
 use yii\web\BadRequestHttpException;
 use mdm\admin\models\form\Signup;
+use backend\models\Price;
 
 
 /**
@@ -89,9 +90,15 @@ class SiteController extends Controller
         return $this->goHome();
     }
 
+    /**
+     * @return string
+     */
     public function actionFeedback()
     {
-        return $this->render('feedback');
+        $model = Price::find()->one();
+        return $this->render('feedback', [
+            'model' => $model,
+        ]);
     }
 
     /**

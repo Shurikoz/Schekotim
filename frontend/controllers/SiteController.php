@@ -17,6 +17,7 @@ use yii\imagine\Image;
 use yii\web\BadRequestHttpException;
 use yii\web\Controller;
 use yii\web\UploadedFile;
+use backend\models\Price;
 
 
 /**
@@ -225,11 +226,10 @@ class SiteController extends Controller
      */
     public function actionUslugi()
     {
-        $this->view->registerMetaTag([
-            'name' => 'description',
-            'content' => '«Щекотливая тема» - Подология'
+        $model = Price::find()->one();
+        return $this->render('uslugi', [
+            'model' => $model,
         ]);
-        return $this->render('uslugi');
     }
 
     /**

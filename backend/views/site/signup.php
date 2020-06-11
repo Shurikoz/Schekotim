@@ -11,7 +11,6 @@ use yii\widgets\ActiveForm;
 
 $this->title = 'Регистрация нового пользователя';
 $cityList = ArrayHelper::map($city, 'id', 'name');
-array_unshift($cityList, '');
 
 $addressPpointList = [];
 array_unshift($addressPpointList, '');

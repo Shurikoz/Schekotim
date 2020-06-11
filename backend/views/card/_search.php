@@ -51,24 +51,22 @@ use kartik\date\DatePicker;
             </div>
             <hr>
             <div class="row">
-                <div class="col-md-4">
+                <div class="col-md-3">
                     <div class="c-field">
                         <?php echo $form->field($model, 'surname')->textInput(['class' => 'autoSearchSubmit c-input'])->label('Фамилия', ['class' => 'c-field__label']) ?>
                     </div>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-3">
                     <div class="c-field">
                         <?php echo $form->field($model, 'name')->textInput(['class' => 'autoSearchSubmit c-input'])->label('Имя', ['class' => 'c-field__label']) ?>
                     </div>
                 </div>
 
-                <div class="col-md-4">
+                <div class="col-md-3">
                     <div class="c-field">
                         <?php echo $form->field($model, 'middle_name')->textInput(['class' => 'autoSearchSubmit c-input'])->label('Отчество', ['class' => 'c-field__label']) ?>
                     </div>
                 </div>
-            </div>
-            <div class="row">
                 <div class="col-md-2">
                     <div class="c-field has-addon-left">
                         <?php echo $form->field($model, 'birthday')->widget(DatePicker::classname(), [
@@ -87,6 +85,7 @@ use kartik\date\DatePicker;
 
                     </div>
                 </div>
+
             </div>
             <?php ActiveForm::end(); ?>
         </div>

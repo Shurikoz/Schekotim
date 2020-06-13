@@ -70,7 +70,10 @@ class CardSearch extends Card
             'created_at' => $this->created_at,
         ]);
 
-        $query->andFilterWhere(['like', 'city', $this->city])
+//        ->andFilterWhere(['like', City::tableName() . '.id', $this->city])
+
+        $query->andFilterWhere(['like', 'city', $this->city ? City::findOne(['id' => $this->city])->name : ''])
+//            ->andFilterWhere(['like', 'city', $this->city])
             ->andFilterWhere(['like', 'address_point', $this->address_point])
             ->andFilterWhere(['like', 'name', $this->name])
             ->andFilterWhere(['like', 'surname', $this->surname])

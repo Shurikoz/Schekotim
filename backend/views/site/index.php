@@ -98,10 +98,14 @@ $user = Yii::$app->user->can('user');
                 <?= Html::a('Показать галерею сайта', ['gallery/index'], ['class' => 'btn btn-lg btn-primary center-block']) ?>
             </div>
         </div>
+        <div class="col-md-6">
+            <div class="box">
+                <h3 class="text-center">Прайс-лист</h3>
+                <br>
+                <?= Html::a('Редактировать прайс-лист', ['pages/price'], ['class' => 'btn btn-lg btn-primary center-block']) ?>
+            </div>
+        </div>
     </div>
-<?php } ?>
-
-<?php if ($admin) { ?>
     <hr>
     <div class="row">
         <div class="col-md-12">

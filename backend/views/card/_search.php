@@ -25,9 +25,6 @@ use kartik\date\DatePicker;
             </div>
             <p class="titleNormal">Фильтр</p>
             <hr>
-            <!--    --><? //= $form->field($model, 'id')->textInput(['class' => 'autoSearchSubmit']) ?>
-            <!---->
-            <!--    --><? //= $form->field($model, 'user_id')->textInput(['class' => 'autoSearchSubmit']) ?>
             <div class="row">
                 <div class="col-md-2">
                     <div class="c-field">
@@ -36,16 +33,12 @@ use kartik\date\DatePicker;
                 </div>
                 <div class="col-md-3">
                     <div class="c-field">
-                        <?= $form->field($model, 'city')->textInput(['class' => 'autoSearchSubmit c-input'])
-//                            ->dropDownList(['Москва' => 'Москва', 'Калининград' => 'Калининград', 'Химки' => 'Химки'], ['class' => 'autoSearchSubmit c-input'])
-                            ->label('Город', ['class' => 'c-field__label']) ?>
+                        <?= $form->field($model, 'city')->dropDownList($city, ['prompt' => 'Все', 'class' => 'autoSearchSubmit c-input'])->label('Город', ['class' => 'c-field__label']) ?>
                     </div>
                 </div>
                 <div class="col-md-3">
                     <div class="c-field">
-                        <?= $form->field($model, 'address_point')->textInput(['class' => 'autoSearchSubmit c-input'])
-//                            ->dropDownList(['Самуила Маршака 20' => 'Самуила Маршака 20', 'Кирова 7' => 'Кирова 7'], ['class' => 'autoSearchSubmit c-input'])
-                            ->label('Точка', ['class' => 'c-field__label']) ?>
+                        <?= $form->field($model, 'address_point')->dropDownList($addressPoint, ['prompt' => 'Все', 'class' => 'autoSearchSubmit c-input'])->label('Точка', ['class' => 'c-field__label']) ?>
                     </div>
                 </div>
             </div>

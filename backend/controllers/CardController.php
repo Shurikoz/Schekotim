@@ -13,6 +13,7 @@ use yii\data\Pagination;
 use yii\filters\VerbFilter;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
+use yii\helpers\ArrayHelper;
 
 /**
  * CardController implements the CRUD actions for Card model.
@@ -44,10 +45,13 @@ class CardController extends Controller
         $searchModel = new CardSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
         $pages = new Pagination(['totalCount' => $dataProvider->getTotalCount(), 'pageSizeLimit' => [1, 60], 'defaultPageSize' => 20]);
-
+        $city = ArrayHelper::map(City::find()->all(), 'id', 'name');
+        $addressPoint = ArrayHelper::map(AddressPoint::find()->where(['city_id' => Yii::$app->request->get("CardSearch")["city"]])->all(), 'address_point', 'address_point');
         return $this->render('index', [
             'pages' => $pages,
             'cards' => $cards,
+            'city' => $city,
+            'addressPoint' => $addressPoint,
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);

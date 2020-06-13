@@ -8,11 +8,15 @@ use yii\helpers\Html;
 <?php $form = ActiveForm::begin(['id' => 'price-form']); ?>
 
 <?= $form->field($model, 'text')->label('')->widget(CKEditor::className(), [
-    'options' => ['rows' => 6],
+    'options' => [
+        'rows' => 6,
+        ],
     'clientOptions' => [
         'fullPage' => true,
         'extraPlugins' => 'docprops',
         'allowedContent' => true,
+        'height' => 700,
+
     ],
     'preset' => 'full'
 ]) ?>

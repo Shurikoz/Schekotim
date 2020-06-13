@@ -18,9 +18,10 @@ $this->title = 'Карты пациентов';
 <div class="card-index">
     <div class="row">
         <div class="col-md-12">
-
             <?= $this->render('_search', [
                 'model' => $searchModel,
+                'city' => $city,
+                'addressPoint' => $addressPoint,
             ]) ?>
         </div>
     </div>

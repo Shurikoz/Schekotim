@@ -3,18 +3,16 @@ namespace backend\controllers;
 
 use backend\models\AddressPoint;
 use backend\models\City;
-use backend\models\SignupUser;
-use Yii;
-use yii\web\Controller;
-use yii\filters\VerbFilter;
-use yii\filters\AccessControl;
-use common\models\LoginForm;
-use backend\models\ResetPasswordForm;
 use backend\models\PasswordResetRequestForm;
+use backend\models\ResetPasswordForm;
+use backend\models\SignupUser;
+use backend\models\Support;
+use common\models\LoginForm;
+use Yii;
 use yii\base\InvalidArgumentException;
 use yii\web\BadRequestHttpException;
-use mdm\admin\models\form\Signup;
-use backend\models\Price;
+use yii\web\Controller;
+use yii\web\UploadedFile;
 
 
 /**
@@ -93,10 +91,25 @@ class SiteController extends Controller
     /**
      * @return string
      */
-    public function actionFeedback()
+    public function actionSupport()
     {
-        $model = Price::find()->one();
-        return $this->render('feedback', [
+        $post = Yii::$app->request->post();
+        $model = new Support();
+
+        if ($model->load($post)) {
+            $model->user_id = Yii::$app->user->identity->getId();
+            $model->date = date('d.m.Y');
+            $model->time = date('H:i');
+
+            if ($model->save()){
+                $model->file = UploadedFile::getInstance($model, 'file');
+                $model->upload($model);
+                Yii::$app->session->setFlash('success', 'Обращение зарегистрировано!');
+            } else {
+                Yii::$app->session->setFlash('danger', 'Ошибка отправки формы!');
+            }
+        }
+        return $this->render('support', [
             'model' => $model,
         ]);
     }

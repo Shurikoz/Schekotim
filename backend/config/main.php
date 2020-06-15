@@ -81,7 +81,7 @@ return [
             'showScriptName' => false,
             'baseUrl' => '',
             'rules' => [
-                '<action:(index|review|login|request-password-reset|reset-password|feedback)>' => 'site/<action>',
+                '<action:(index|review|login|request-password-reset|reset-password|support)>' => 'site/<action>',
                 '<action:(show|hide)>' => 'review/<action>',
             ],
 

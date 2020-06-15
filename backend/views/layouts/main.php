@@ -100,7 +100,10 @@ AppAsset::register($this);
 <footer class="footer">
     <div class="container">
         <p class="pull-left">&copy; <?= Html::encode(Yii::$app->name) ?> <?= date('Y') ?></p>
-        <p class="pull-right">О проблемах в работе просим <?= Html::a('сообщить администратору', ['/feedback']) ?></p>
+        <?php if (!Yii::$app->user->isGuest && !Yii::$app->user->can('admin')) {?>
+        <p class="pull-right">О проблемах в работе просим <?= Html::a('сообщить администратору', ['/support']) ?></p>
+        <?php } ?>
+
     </div>
 </footer>
 

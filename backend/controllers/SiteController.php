@@ -100,11 +100,13 @@ class SiteController extends Controller
             $model->user_id = Yii::$app->user->identity->getId();
             $model->date = date('d.m.Y');
             $model->time = date('H:i');
-
-            if ($model->save()){
+            if ($model->save()) {
                 $model->file = UploadedFile::getInstance($model, 'file');
-                $model->upload($model);
+                if ($model->file) {
+                    $model->upload($model);
+                }
                 Yii::$app->session->setFlash('success', 'Обращение зарегистрировано!');
+                $model = new Support();
             } else {
                 Yii::$app->session->setFlash('danger', 'Ошибка отправки формы!');
             }

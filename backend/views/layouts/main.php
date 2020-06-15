@@ -11,6 +11,12 @@ use yii\bootstrap\NavBar;
 use yii\helpers\Html;
 
 AppAsset::register($this);
+
+$admin = Yii::$app->user->can('admin');
+$manager = Yii::$app->user->can('manager');
+$smm = Yii::$app->user->can('smm');
+$user = Yii::$app->user->can('user');
+
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
@@ -51,16 +57,24 @@ AppAsset::register($this);
         $menuItems[] = [
             'label' => 'Картотека',
             'url' => ['/card/index'],
-            'visible' => Yii::$app->user->can('admin') || Yii::$app->user->can('user') || Yii::$app->user->can('manager')
+            'visible' => $user || $manager
         ];
         $menuItems[] = [
             'label' => 'Фото работ',
             'url' => ['/photo/index'],
-            'visible' => Yii::$app->user->can('admin') || Yii::$app->user->can('smm'),
+            'visible' => $smm,
+        ];
+        $menuItems[] = [
+            'label' => 'Система учета',
+            'visible' => $admin,
+            'items' => [
+                ['label' => 'Картотека', 'url' => '/card/index'],
+                ['label' => 'Фото работ', 'url' => '/photo/index'],
+            ],
         ];
         $menuItems[] = [
             'label' => 'Сайт',
-            'visible' => Yii::$app->user->can('admin'),
+            'visible' => $admin,
             'items' => [
                 ['label' => 'Отзывы', 'url' => '/review/index'],
                 ['label' => 'Галерея', 'url' => '/gallery/index'],
@@ -69,7 +83,7 @@ AppAsset::register($this);
         ];
         $menuItems[] = [
             'label' => 'Управление',
-            'visible' => Yii::$app->user->can('admin'),
+            'visible' => $admin,
             'items' => [
                 ['label' => 'Пользователи', 'url' => '/admin/user/index'],
                 ['label' => 'Регистрация', 'url' => '/site/signup'],
@@ -100,7 +114,7 @@ AppAsset::register($this);
 <footer class="footer">
     <div class="container">
         <p class="pull-left">&copy; <?= Html::encode(Yii::$app->name) ?> <?= date('Y') ?></p>
-        <?php if (!Yii::$app->user->isGuest && !Yii::$app->user->can('admin')) {?>
+        <?php if (!Yii::$app->user->isGuest && !$admin) {?>
         <p class="pull-right">О проблемах в работе просим <?= Html::a('сообщить администратору', ['/support']) ?></p>
         <?php } ?>
 

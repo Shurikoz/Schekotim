@@ -1,6 +1,7 @@
 <?php
 namespace backend\controllers;
 
+use backend\models\Support;
 use Yii;
 use yii\web\Controller;
 use backend\models\Price;
@@ -23,6 +24,17 @@ class PagesController extends Controller
             }
         }
         return $this->render('price', [
+            'model' => $model,
+        ]);
+    }
+
+    /**
+     * @return string
+     */
+    public function actionSupport()
+    {
+        $model = Support::find()->joinWith('user')->all();
+        return $this->render('support', [
             'model' => $model,
         ]);
     }

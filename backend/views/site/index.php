@@ -31,6 +31,24 @@ $user = Yii::$app->user->can('user');
         </div>
     </div>
 </div>
+<?php if ($admin) { ?>
+<hr>
+<br>
+<div class="row">
+    <div class="col-md-6">
+        <div class="box">
+            <h3 class="text-center">Служба поддержки</h3>
+            <br>
+            <?= Html::a('Обращения', ['pages/support'], ['class' => 'btn btn-lg btn-green center-block']) ?>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="box">
+            <p>Новых обращений: 0</p>
+        </div>
+    </div>
+</div>
+<?php } ?>
 <hr>
 <br>
 <div class="row">

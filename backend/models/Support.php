@@ -2,6 +2,7 @@
 
 namespace backend\models;
 
+use common\models\User;
 use yii\web\UploadedFile;
 /**
  * This is the model class for table "support".
@@ -37,6 +38,7 @@ class Support extends \yii\db\ActiveRecord
         return [
             [['title', 'text'], 'required'],
             [['title', 'text', 'file_url'], 'string'],
+            [['title'], 'string', 'max' => 64],
             [['user_id', 'viewed', 'result'], 'integer'],
             [['date', 'user_id', 'date', 'time'], 'safe'],
             [['file'], 'image',
@@ -75,7 +77,7 @@ class Support extends \yii\db\ActiveRecord
             $dir = 'upload/support/' . $model->id;
             $this->checkDir($dir);
             $this->file->saveAs($dir . '/' . $this->file->baseName . '.' . $this->file->extension);
-            $model->file_url = $dir . '/' . $this->file->baseName . '.' . $this->file->extension;
+            $model->file_url = '/' . $dir . '/' . $this->file->baseName . '.' . $this->file->extension;
             $model->save(false);
             return true;
         } else {
@@ -91,5 +93,11 @@ class Support extends \yii\db\ActiveRecord
             mkdir($dir, 0777, true);
         }
     }
+
+    public function getUser()
+    {
+        return $this->hasOne(User::className(), ['id' => 'user_id']);
+    }
+
 
 }

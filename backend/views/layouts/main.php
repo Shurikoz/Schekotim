@@ -119,7 +119,7 @@ $user = Yii::$app->user->can('user');
                     <p class="">О проблемах в работе просим <?= Html::a('сообщить администратору', ['/support']) ?></p>
                 </div>
                 <div class="col-md-4">
-                    <?= Html::a('<button type="button" class="btn btn-info pull-right">Справка</button>', ['/faq']) ?>
+                    <?= Html::a('<button type="button" class="btn btn-default pull-right">Справка</button>', ['/tutorial']) ?>
                 </div>
             </div>
             <hr>

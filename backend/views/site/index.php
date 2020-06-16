@@ -136,7 +136,7 @@ $user = Yii::$app->user->can('user');
             <div class="box">
                 <h3 class="text-center">Настройка прав доступа</h3>
                 <br>
-                <?= Html::a('Пользователи', ['admin/user/index'], ['class' => 'btn btn-lg btn-warning center-block']) ?>
+                <?= Html::a('Права доступа', ['admin/assignment'], ['class' => 'btn btn-lg btn-warning center-block']) ?>
             </div>
         </div>
         <div class="col-md-6">

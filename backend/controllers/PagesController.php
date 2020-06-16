@@ -42,8 +42,8 @@ class PagesController extends Controller
     /**
      * @return string
      */
-    public function actionFaq()
+    public function actionTutorial()
     {
-        return $this->render('faq');
+        return $this->render('tutorial');
     }
 }

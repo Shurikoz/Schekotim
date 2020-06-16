@@ -83,6 +83,7 @@ return [
             'rules' => [
                 '<action:(index|review|login|request-password-reset|reset-password|support)>' => 'site/<action>',
                 '<action:(show|hide)>' => 'review/<action>',
+                '<action:(faq)>' => 'pages/<action>',
             ],
 
         ],

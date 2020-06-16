@@ -38,4 +38,12 @@ class PagesController extends Controller
             'model' => $model,
         ]);
     }
+
+    /**
+     * @return string
+     */
+    public function actionFaq()
+    {
+        return $this->render('faq');
+    }
 }

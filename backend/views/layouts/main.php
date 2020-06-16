@@ -113,11 +113,23 @@ $user = Yii::$app->user->can('user');
 
 <footer class="footer">
     <div class="container">
-        <p class="pull-left">&copy; <?= Html::encode(Yii::$app->name) ?> <?= date('Y') ?></p>
-        <?php if (!Yii::$app->user->isGuest && !$admin) {?>
-        <p class="pull-right">О проблемах в работе просим <?= Html::a('сообщить администратору', ['/support']) ?></p>
+        <?php if (!Yii::$app->user->isGuest && !$admin) { ?>
+            <div class="row">
+                <div class="col-md-8">
+                    <p class="">О проблемах в работе просим <?= Html::a('сообщить администратору', ['/support']) ?></p>
+                </div>
+                <div class="col-md-4">
+                    <?= Html::a('<button type="button" class="btn btn-info pull-right">Справка</button>', ['/faq']) ?>
+                </div>
+            </div>
+            <hr>
         <?php } ?>
-
+        <div class="row">
+            <div class="col-md-12">
+                <p class="text-center">&copy; <?= Html::encode(Yii::$app->name) ?> <?= date('Y') ?></p>
+            </div>
+        </div>
+        <br>
     </div>
 </footer>
 

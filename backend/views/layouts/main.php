@@ -16,6 +16,7 @@ $admin = Yii::$app->user->can('admin');
 $manager = Yii::$app->user->can('manager');
 $smm = Yii::$app->user->can('smm');
 $user = Yii::$app->user->can('user');
+$leader = Yii::$app->user->can('leader');
 
 ?>
 <?php $this->beginPage() ?>
@@ -66,7 +67,7 @@ $user = Yii::$app->user->can('user');
         ];
         $menuItems[] = [
             'label' => 'Система учета',
-            'visible' => $admin,
+            'visible' => $admin || $leader,
             'items' => [
                 ['label' => 'Картотека', 'url' => '/card/index'],
                 ['label' => 'Фото работ', 'url' => '/photo/index'],
@@ -74,11 +75,10 @@ $user = Yii::$app->user->can('user');
         ];
         $menuItems[] = [
             'label' => 'Сайт',
-            'visible' => $admin,
             'items' => [
-                ['label' => 'Отзывы', 'url' => '/review/index'],
-                ['label' => 'Галерея', 'url' => '/gallery/index'],
-                ['label' => 'Прайс-лист', 'url' => '/pages/price'],
+                ['label' => 'Отзывы', 'visible' => $admin || $leader, 'url' => '/review/index'],
+                ['label' => 'Галерея', 'visible' => $admin, 'url' => '/gallery/index'],
+                ['label' => 'Прайс-лист', 'visible' => $admin || $leader, 'url' => '/pages/price'],
             ],
         ];
         $menuItems[] = [
@@ -87,6 +87,13 @@ $user = Yii::$app->user->can('user');
             'items' => [
                 ['label' => 'Пользователи', 'url' => '/admin/user/index'],
                 ['label' => 'Регистрация', 'url' => '/site/signup'],
+            ],
+        ];
+        $menuItems[] = [
+            'label' => 'Профиль',
+            'items' => [
+                ['label' => 'Уведомления', 'url' => '/profile/notification'],
+                ['label' => 'Настройки', 'url' => '/profile/settings'],
             ],
         ];
         $menuItems[] = '<li>'
@@ -116,7 +123,7 @@ $user = Yii::$app->user->can('user');
         <?php if (!Yii::$app->user->isGuest && !$admin) { ?>
             <div class="row">
                 <div class="col-md-8">
-                    <p class="">О проблемах в работе просим <?= Html::a('сообщить администратору', ['/support']) ?></p>
+                    <?= Html::a('<button type="button" class="btn btn-default">Служба поддержки</button>', ['/support']) ?>
                 </div>
                 <div class="col-md-4">
                     <?= Html::a('<button type="button" class="btn btn-default pull-right">Справка</button>', ['/tutorial']) ?>
@@ -125,14 +132,16 @@ $user = Yii::$app->user->can('user');
             <hr>
         <?php } ?>
         <div class="row">
-            <div class="col-md-12">
-                <p class="text-center">&copy; <?= Html::encode(Yii::$app->name) ?> <?= date('Y') ?></p>
+            <div class="col-md-6">
+                <p class="pull-left">&copy; <?= Html::encode(Yii::$app->name) ?> <?= date('Y') ?></p>
+            </div>
+            <div class="col-md-6">
+                <p class="pull-right"><?= Html::a('Политика конфиденциальности', ['/policy']) ?></p>
             </div>
         </div>
         <br>
     </div>
 </footer>
-
 <?php $this->endBody() ?>
 </body>
 </html>

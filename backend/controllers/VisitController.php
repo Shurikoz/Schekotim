@@ -57,10 +57,10 @@ class VisitController extends Controller
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionView()
+    public function actionMissed()
     {
         $model = Visit::find()->where(['has_come' => '2'])->all();
-        return $this->render('view', [
+        return $this->render('missed', [
             'model' => $model
         ]);
     }

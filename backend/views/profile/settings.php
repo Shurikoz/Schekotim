@@ -1,5 +1,3 @@
 <?php
 ?>
-<pre>
-    <?= print_r($model);?>
-</pre>
+123

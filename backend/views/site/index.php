@@ -18,6 +18,7 @@ $admin = Yii::$app->user->can('admin');
 $manager = Yii::$app->user->can('manager');
 $smm = Yii::$app->user->can('smm');
 $user = Yii::$app->user->can('user');
+$leader = Yii::$app->user->can('leader');
 
 ?>
 <div class="row">
@@ -31,28 +32,10 @@ $user = Yii::$app->user->can('user');
         </div>
     </div>
 </div>
-<?php if ($admin) { ?>
 <hr>
 <br>
 <div class="row">
-    <div class="col-md-6">
-        <div class="box">
-            <h3 class="text-center">Служба поддержки</h3>
-            <br>
-            <?= Html::a('Обращения', ['pages/support'], ['class' => 'btn btn-lg btn-green center-block']) ?>
-        </div>
-    </div>
-    <div class="col-md-6">
-        <div class="box">
-            <p>Новых обращений: 0</p>
-        </div>
-    </div>
-</div>
-<?php } ?>
-<hr>
-<br>
-<div class="row">
-    <?php if ($admin || $manager) { ?>
+    <?php if ($admin || $manager || $leader) { ?>
         <div class="col-md-6">
             <div class="box">
                 <h3 class="text-center">Создать карту пациента</h3>
@@ -62,7 +45,7 @@ $user = Yii::$app->user->can('user');
         </div>
     <?php } ?>
 
-    <?php if ($admin || $user || $manager) { ?>
+    <?php if ($admin || $user || $manager || $leader) { ?>
         <div class="col-md-6">
             <div class="box">
                 <h3 class="text-center">Просмотр карт пациентов</h3>
@@ -72,7 +55,7 @@ $user = Yii::$app->user->can('user');
         </div>
     <?php } ?>
 
-    <?php if ($admin || $smm) { ?>
+    <?php if ($admin || $smm || $leader) { ?>
         <div class="col-md-6">
             <div class="box">
                 <h3 class="text-center">Фото работ (из карт клиентов)</h3>
@@ -82,17 +65,16 @@ $user = Yii::$app->user->can('user');
         </div>
     <?php } ?>
 
-    <?php if ($admin || $manager) { ?>
+    <?php if ($admin || $manager || $leader) { ?>
         <div class="col-md-6">
             <div class="box">
                 <h3 class="text-center">Просмотр пропущенных посещений</h3>
                 <br>
-                <?= Html::a('Просмотр пропущенных посещений', ['visit/view'], ['class' => 'btn btn-lg btn-danger center-block']) ?>
+                <?= Html::a('Просмотр пропущенных посещений', ['visit/missed'], ['class' => 'btn btn-lg btn-danger center-block']) ?>
             </div>
         </div>
     <?php } ?>
 </div>
-
 <?php if ($admin) { ?>
     <hr>
     <div class="row">
@@ -144,6 +126,24 @@ $user = Yii::$app->user->can('user');
                 <h3 class="text-center">Создать нового пользователя</h3>
                 <br>
                 <?= Html::a('Создать', ['site/signup'], ['class' => 'btn btn-lg btn-warning center-block']) ?>
+            </div>
+        </div>
+    </div>
+<?php } ?>
+<?php if ($admin) { ?>
+    <hr>
+    <br>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="box">
+                <h3 class="text-center">Служба поддержки</h3>
+                <br>
+                <?= Html::a('Обращения', ['pages/support'], ['class' => 'btn btn-lg btn-green center-block']) ?>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="box">
+                <p>Новых обращений: 0</p>
             </div>
         </div>
     </div>

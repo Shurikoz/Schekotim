@@ -20,7 +20,6 @@ use yii\web\UploadedFile;
  */
 class SiteController extends Controller
 {
-
     /**
      * {@inheritdoc}
      */
@@ -116,6 +115,9 @@ class SiteController extends Controller
         ]);
     }
 
+    /**
+     * @return string
+     */
     public function actionPolicy()
     {
         return $this->render('policy');
@@ -190,6 +192,10 @@ class SiteController extends Controller
         ]);
     }
 
+    /**
+     * @param $id
+     * @return array|bool|\yii\db\ActiveRecord[]
+     */
     public function actionGetAddressPoint($id)
     {
         \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;

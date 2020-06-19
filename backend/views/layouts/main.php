@@ -66,19 +66,20 @@ $leader = Yii::$app->user->can('leader');
             'visible' => $smm,
         ];
         $menuItems[] = [
-            'label' => 'Система учета',
-            'visible' => $admin || $leader,
-            'items' => [
-                ['label' => 'Картотека', 'url' => '/card/index'],
-                ['label' => 'Фото работ', 'url' => '/photo/index'],
-            ],
-        ];
-        $menuItems[] = [
             'label' => 'Сайт',
             'items' => [
                 ['label' => 'Отзывы', 'visible' => $admin || $leader, 'url' => '/review/index'],
                 ['label' => 'Галерея', 'visible' => $admin, 'url' => '/gallery/index'],
                 ['label' => 'Прайс-лист', 'visible' => $admin || $leader, 'url' => '/pages/price'],
+            ],
+        ];
+        $menuItems[] = [
+            'label' => 'Система учета',
+            'visible' => $admin || $leader,
+            'items' => [
+                ['label' => 'Картотека', 'url' => '/card/index'],
+                ['label' => 'Фото работ', 'url' => '/photo/index'],
+                ['label' => 'Пользователи', 'url' => '/user/index'],
             ],
         ];
         $menuItems[] = [
@@ -92,8 +93,8 @@ $leader = Yii::$app->user->can('leader');
         $menuItems[] = [
             'label' => 'Профиль',
             'items' => [
-                ['label' => 'Уведомления', 'url' => '/profile/notification'],
-                ['label' => 'Настройки', 'url' => '/profile/settings'],
+                ['label' => 'Уведомления', 'url' => '/notification'],
+                ['label' => 'Настройки', 'url' => '/settings'],
             ],
         ];
         $menuItems[] = '<li>'
@@ -126,7 +127,9 @@ $leader = Yii::$app->user->can('leader');
                     <?= Html::a('<button type="button" class="btn btn-default">Служба поддержки</button>', ['/support']) ?>
                 </div>
                 <div class="col-md-4">
-                    <?= Html::a('<button type="button" class="btn btn-default pull-right">Справка</button>', ['/tutorial']) ?>
+                    <?php if (!$leader) { ?>
+                        <?= Html::a('<button type="button" class="btn btn-default pull-right">Справка</button>', ['/tutorial']) ?>
+                    <?php } ?>
                 </div>
             </div>
             <hr>

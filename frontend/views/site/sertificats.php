@@ -4,7 +4,7 @@ use yii\helpers\FileHelper;
 use yii\helpers\Html;
 
 //получим все сертификаты из папки certificates
-$files = FileHelper::findFiles('images/certificates');
+$files = FileHelper::findFiles('images/sertificates');
 shuffle($files);
 $this->title = 'Дипломы и сертификаты';
 $header = 'Дипломы и сертификаты';

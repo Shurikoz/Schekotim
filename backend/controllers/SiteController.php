@@ -20,6 +20,7 @@ use yii\web\UploadedFile;
  */
 class SiteController extends Controller
 {
+
     /**
      * {@inheritdoc}
      */
@@ -39,7 +40,13 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        return $this->render('index');
+        //для админа получим сообщения службы поддержки для вывода их количества
+        $result = Support::find()->where(['result' => 0])->count();
+        $viewed = Support::find()->where(['viewed' => 0])->count();
+        return $this->render('index', [
+            'result' => $result,
+            'viewed' => $viewed,
+        ]);
     }
 
     /**
@@ -202,6 +209,19 @@ class SiteController extends Controller
         if (Yii::$app->request->isAjax) {
             $addressPoint = AddressPoint::find()->where(['city_id' => $id])->all();
             return $addressPoint;
+        }
+        return false;
+    }
+
+    public function actionSupportMessageRead($id)
+    {
+        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        if (Yii::$app->request->isAjax) {
+            $message = Support::find()->where(['id' => $id])->one();
+            $message->viewed = 1;
+            if ($message->save()){
+                return true;
+            }
         }
         return false;
     }

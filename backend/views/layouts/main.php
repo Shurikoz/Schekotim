@@ -67,6 +67,7 @@ $leader = Yii::$app->user->can('leader');
         ];
         $menuItems[] = [
             'label' => 'Сайт',
+            'visible' => $admin || $leader,
             'items' => [
                 ['label' => 'Отзывы', 'visible' => $admin || $leader, 'url' => '/review/index'],
                 ['label' => 'Галерея', 'visible' => $admin, 'url' => '/gallery/index'],
@@ -86,8 +87,9 @@ $leader = Yii::$app->user->can('leader');
             'label' => 'Управление',
             'visible' => $admin,
             'items' => [
-                ['label' => 'Пользователи', 'url' => '/admin/user/index'],
                 ['label' => 'Регистрация', 'url' => '/site/signup'],
+                ['label' => 'RBAC', 'url' => '/admin/user/index'],
+                ['label' => 'Служба поддержки', 'url' => '/pages/support'],
             ],
         ];
         $menuItems[] = [
@@ -112,7 +114,6 @@ $leader = Yii::$app->user->can('leader');
     ]);
     NavBar::end();
     ?>
-
     <div class="container">
         <?= Alert::widget() ?>
         <?= $content ?>

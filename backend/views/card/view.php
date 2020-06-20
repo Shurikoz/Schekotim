@@ -141,52 +141,52 @@ $manager = Yii::$app->user->can('manager');
                 }
                 ?>
 
-                <tr class="c-table__row <?= $hasCome ?> visitBox">
+                <tr class="c-table__row <?= $hasCome ?> openBox">
                     <td class="c-table__cell">
-                            <span><?= $item->id ?></span>
-                        </td>
-                        <td class="c-table__cell">
-                            <span><?= $visit_number ?></span>
-                        </td>
-                        <td class="c-table__cell">
-                            <p><?= $item->city ?></p>
-                            <p><?= $item->address_point ?></p>
-                        </td>
-                        <td class="c-table__cell">
-                            <?php if ($item->problem_id == 0) { ?>
-                                <span class="text-red">Не указана</span>
-                            <?php } else { ?>
-                                <?= $item->problem->name ?>
-                            <?php } ?>
-                        </td>
-                        <td class="c-table__cell">
-                            <?= $item->podolog->name ?>
-                        </td>
-                        <td class="c-table__cell">
-                            <?php if ($item->next_visit_from != null && $item->next_visit_by != null && $item->has_come == 0) { ?>
-                                <p>с <?= Yii::$app->formatter->asDate($item->next_visit_from) ?></p>
-                                <p>до <?= Yii::$app->formatter->asDate($item->next_visit_by) ?></p>
-                            <?php } else if ($item->has_come == 1) { ?>
-                                <span> <?= Yii::$app->formatter->asDate($item->visit_date) ?></span>
-                            <?php } else if ($item->has_come == 2) { ?>
-                                <span>-</span>
-                            <?php } ?>
-                        </td>
-                        <td class="c-table__cell">
-                            <?php if ($item->visit_time != null &&  ($item->has_come == 0 || $item->has_come == 1)) { ?>
-                                <span><b><?= Yii::$app->formatter->asTime($item->visit_time) ?></b></span>
-                            <?php } else { ?>
-                                <span>-</span>
-                            <?php } ?>
-                        </td>
-                        <td class="c-table__cell">
-                            <?= $picCamera ?>
-                            <?= $picCome ?>
-                            <?= $picResolve ?>
-                        </td>
-                    </tr>
-                    <tr class="c-table__row visitInfoBlock hide hideBox">
-                        <td colspan="10" class="c-table__visitInfoBlock">
+                        <span><?= $item->id ?></span>
+                    </td>
+                    <td class="c-table__cell">
+                        <span><?= $visit_number ?></span>
+                    </td>
+                    <td class="c-table__cell">
+                        <p><?= $item->city ?></p>
+                        <p><?= $item->address_point ?></p>
+                    </td>
+                    <td class="c-table__cell">
+                        <?php if ($item->problem_id == 0) { ?>
+                            <span class="text-red">Не указана</span>
+                        <?php } else { ?>
+                            <?= $item->problem->name ?>
+                        <?php } ?>
+                    </td>
+                    <td class="c-table__cell">
+                        <?= $item->podolog->name ?>
+                    </td>
+                    <td class="c-table__cell">
+                        <?php if ($item->next_visit_from != null && $item->next_visit_by != null && $item->has_come == 0) { ?>
+                            <p>с <?= Yii::$app->formatter->asDate($item->next_visit_from) ?></p>
+                            <p>до <?= Yii::$app->formatter->asDate($item->next_visit_by) ?></p>
+                        <?php } else if ($item->has_come == 1) { ?>
+                            <span> <?= Yii::$app->formatter->asDate($item->visit_date) ?></span>
+                        <?php } else if ($item->has_come == 2) { ?>
+                            <span>-</span>
+                        <?php } ?>
+                    </td>
+                    <td class="c-table__cell">
+                        <?php if ($item->visit_time != null && ($item->has_come == 0 || $item->has_come == 1)) { ?>
+                            <span><b><?= Yii::$app->formatter->asTime($item->visit_time) ?></b></span>
+                        <?php } else { ?>
+                            <span>-</span>
+                        <?php } ?>
+                    </td>
+                    <td class="c-table__cell">
+                        <?= $picCamera ?>
+                        <?= $picCome ?>
+                        <?= $picResolve ?>
+                    </td>
+                </tr>
+                <tr class="c-table__row infoBlock hide hideBox">
+                        <td colspan="10" class="c-table__infoBlock">
                             <?php if ($item->podolog->user_id == Yii::$app->user->id || $admin) { ?>
                                 <div class="row">
                                     <div class="col-md-12">
@@ -379,8 +379,8 @@ $manager = Yii::$app->user->can('manager');
                                 </div>
                             </div>
                         </td>
-                    </tr>
-                    <?php $visit_number--; ?>
+                </tr>
+                <?php $visit_number--; ?>
             <?php } ?>
         <?php } else { ?>
             <tr class="c-table__row">

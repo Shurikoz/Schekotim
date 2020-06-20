@@ -14,6 +14,22 @@ label {
     font-weight: 400;
 }
 
+@font-face {
+    font-family: 'Phenomena';
+    src: url('../fonts/Phenomena-Regular.eot');
+    src: url('../fonts/Phenomena-Regular.eot?#iefix') format('embedded-opentype'),
+    url('../fonts/Phenomena-Regular.woff2') format('woff2'),
+    url('../fonts/Phenomena-Regular.woff') format('woff'),
+    url('../fonts/Phenomena-Regular.ttf') format('truetype'),
+    url('../fonts/Phenomena-Regular.svg#Phenomena-Regular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+.font-phenomena {
+    font-family: 'Phenomena', sans-serif;
+}
+
 .wrap {
     min-height: 100%;
     height: auto;
@@ -32,6 +48,12 @@ label {
     padding-top: 20px;
 }
 
+section:nth-last-child(1)::after{
+    content: url("../images/feather.png");
+    margin: 60px auto 0 auto;
+    display: table;
+}
+
 .jumbotron {
     text-align: center;
     background-color: transparent;
@@ -45,6 +67,19 @@ label {
 .not-set {
     color: #c55;
     font-style: italic;
+}
+
+.site-error h1{
+    font-size: 72px;
+    color: #009339;
+}
+
+.site-error h3{
+    font-size: 36px;
+}
+
+.site-error p{
+    font-size: 21px;
 }
 
 /* add sorting icons to gridview sort links */
@@ -276,7 +311,7 @@ a.desc:after {
     vertical-align: middle;
 }
 
-.c-table__visitInfoBlock{
+.c-table__infoBlock{
     padding: 15px;
 }
 
@@ -527,7 +562,7 @@ font-size: 22px;
     color: #333;
 }
 
-.visitInfoBlock{
+.infoBlock{
     margin-bottom: 30px;
     border-bottom: 2px dotted #7ba335;
     background-color: #eef1f0;
@@ -538,12 +573,16 @@ font-size: 22px;
     padding: 20px;
 }
 
-.visitBox{
+.openBox{
     cursor: pointer;
 }
 
-.c-table tr.visitInfoBlock:hover {
+.c-table tr.infoBlock:hover {
     background-color: #eef1f0;
+}
+
+.c-table tr.newMessage{
+    background-color: #ffdcc7;
 }
 
 .text-red{

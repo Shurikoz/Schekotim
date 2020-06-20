@@ -35,6 +35,7 @@ use yii\helpers\Html;
             </td>
             <td class="c-table__cell">
                 <h4><?= $item->username ?></h4>
+                <p><?= $item->email ?></p>
             </td>
             <td class="c-table__cell">
                 <?php $role = array_keys(Yii::$app->authManager->getRolesByUser($item->id))?>

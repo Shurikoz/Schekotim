@@ -15,7 +15,6 @@
 
 .font-phenomena {
     font-family: 'Phenomena', sans-serif;
-
 }
 
 /*
@@ -1883,7 +1882,7 @@ hr.major {
 /* Section/Article */
 
 section:nth-last-child(1)::after{
-    content: url("../images/uslugi/feather.png");
+    content: url("../images/feather.png");
     margin: 60px auto 0 auto;
     display: table;
 }

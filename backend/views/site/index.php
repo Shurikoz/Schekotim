@@ -137,13 +137,10 @@ $leader = Yii::$app->user->can('leader');
         <div class="col-md-6">
             <div class="box">
                 <h3 class="text-center">Служба поддержки</h3>
+                <p class="text-center">Новых обращений: <b><?=$viewed?></b></p>
+                <p class="text-center">Нерешенных обращений: <b><?= $result?></b></p>
                 <br>
                 <?= Html::a('Обращения', ['pages/support'], ['class' => 'btn btn-lg btn-green center-block']) ?>
-            </div>
-        </div>
-        <div class="col-md-6">
-            <div class="box">
-                <p>Новых обращений: 0</p>
             </div>
         </div>
     </div>

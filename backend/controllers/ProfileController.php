@@ -7,6 +7,9 @@
  */
 
 namespace backend\controllers;
+
+use Yii;
+use backend\models\ChangeUserPassword;
 use yii\web\Controller;
 
 
@@ -27,6 +30,16 @@ class ProfileController extends Controller
      */
     public function actionSettings()
     {
-        return $this->render('settings');
+
+        $model = new ChangeUserPassword();
+        if ($model->load(Yii::$app->getRequest()->post()) && $model->change()) {
+            Yii::$app->session->setFlash('success', 'Пароль удачно изменен!');
+            $model = new ChangeUserPassword();
+        }
+
+        return $this->render('settings', [
+            'model' => $model,
+        ]);
     }
+
 }

@@ -1,9 +1,7 @@
 <?php
-?>
-
-<?php
 
 use yii\web\YiiAsset;
+use yii\helpers\Html;
 
 /* @var $this yii\web\View */
 /* @var $model backend\models\Visit */
@@ -20,15 +18,14 @@ YiiAsset::register($this);
         <th class="c-table__cell c-table__cell--head">ID</th>
         <th class="c-table__cell c-table__cell--head">Пользователь</th>
         <th class="c-table__cell c-table__cell--head">Заголовок</th>
-        <th class="c-table__cell c-table__cell--head">Скриншот</th>
+        <th class="c-table__cell c-table__cell--head">Скриншот прблемы</th>
         <th class="c-table__cell c-table__cell--head">Дата / Время</th>
-        <th class="c-table__cell c-table__cell--head">Действия</th>
     </tr>
     </thead>
     <tbody>
     <?php if (count($model) != 0) { ?>
         <?php foreach (array_reverse($model) as $item) { ?>
-            <tr class="c-table__row">
+            <tr class="c-table__row openBox supportMessage <?= $item->viewed == 0 ? 'newMessage' : '' ?>" data-id="<?=$item->id?>">
                 <td class="c-table__cell">
                     <?= $item->id ?>
                 </td>
@@ -50,7 +47,13 @@ YiiAsset::register($this);
                     <br>
                     <?= $item->time ?>
                 </td>
-                <td class="c-table__cell cardBtn">
+            </tr>
+            <tr class="c-table__row infoBlock hide hideBox">
+                <td colspan="10" class="c-table__infoBlock">
+                    <div class="box">
+                        <p><b>Сообщение:</b></p>
+                        <p><?= $item->text?></p>
+                    </div>
                 </td>
             </tr>
         <?php } ?>

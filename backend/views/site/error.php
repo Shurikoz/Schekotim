@@ -10,19 +10,15 @@ use yii\helpers\Html;
 
 $this->title = $name;
 ?>
-<div class="site-error">
-    <!--    --><? //= Html::encode($this->title) ?>
-    <h1>Ошибка #404</h1>
-    <h3>Страница не найдена</h3>
-    <div class="alert alert-danger">
-        <?= nl2br(Html::encode($message)) ?>
+<section>
+    <div class="site-error text-center">
+        <div class="row">
+            <div class="col-md-12 font-phenomena">
+                <h1>Ошибка 404</h1>
+                <h3>Страница не найдена</h3>
+                <p>Возможно, такой страницы не существует или не выполнен <?= Html::a('вход в систему', ['/login']) ?>
+                    .</p>
+            </div>
+        </div>
     </div>
-
-    <p>
-        Вышеуказанная ошибка произошла, когда веб-сервер обрабатывал ваш запрос.
-    </p>
-    <p>
-        Пожалуйста, свяжитесь с администратором сервиса, если считаете, что это ошибка сервера.
-    </p>
-
-</div>
+</section>

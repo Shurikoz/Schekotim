@@ -18,15 +18,33 @@ $(".resetFormButton").click(function () {
 });
 //************************************************************************
 //функция для соткрытия/скрытия информации о визитах
-$(document).on('click', 'tr.visitBox', function (e) {
-    var a = $(e.target).closest('tr.visitBox');
+$(document).on('click', 'tr.openBox', function (e) {
+    var a = $(e.target).closest('tr.openBox');
     a.toggleClass('activeBox');
-    $('tr.visitBox').not(a).removeClass('activeBox');
+    $('tr.openBox').not(a).removeClass('activeBox');
 
-    var b = $(e.target).closest('tr.visitBox').next('tr');
+    var b = $(e.target).closest('tr.openBox').next('tr');
     b.toggleClass('hide');
-    $('tr.visitInfoBlock').not(b).addClass('hide');
+    $('tr.infoBlock').not(b).addClass('hide');
 });
+//************************************************************************
+//функция для отметки сообщения в службе поддержки как прочитанное
+$(document).on('click', 'tr.supportMessage', function () {
+    if(this.classList.contains('newMessage')){
+        let elem = $(this);
+        let id = $(this).data('id');
+        $.ajax({
+            url: "/site/support-message-read?id=" + id,
+            cache: false,
+            method: "POST",
+        }).done(function (data) {
+            if (data) {
+                elem.removeClass('newMessage');
+            }
+        })
+    }
+});
+
 //************************************************************************
 //функция для загрузки "рыбы" при заполнении полей в создании посещения (visit/create)
 $("#visit-problem_id").on('change', function () {

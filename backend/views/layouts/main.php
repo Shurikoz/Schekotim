@@ -122,15 +122,15 @@ $leader = Yii::$app->user->can('leader');
 
 <footer class="footer">
     <div class="container">
-        <?php if (!Yii::$app->user->isGuest && !$admin) { ?>
+        <?php if (!Yii::$app->user->isGuest) { ?>
             <div class="row">
                 <div class="col-md-8">
-                    <?= Html::a('<button type="button" class="btn btn-default">Служба поддержки</button>', ['/support']) ?>
+                    <?php if (!$admin) { ?>
+                        <?= Html::a('<button type="button" class="btn btn-default">Служба поддержки</button>', ['/support']) ?>
+                    <?php } ?>
                 </div>
                 <div class="col-md-4">
-                    <?php if (!$leader) { ?>
-                        <?= Html::a('<button type="button" class="btn btn-default pull-right">Справка</button>', ['/tutorial']) ?>
-                    <?php } ?>
+                    <?= Html::a('<button type="button" class="btn btn-default pull-right">Справка</button>', ['/tutorial']) ?>
                 </div>
             </div>
             <hr>

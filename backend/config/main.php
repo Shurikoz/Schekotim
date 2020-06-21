@@ -110,8 +110,7 @@ return [
             'site/login',
             'site/request-password-reset',
             'site/reset-password',
-            'site/feedback',
-//            'site/*'
+            'site/policy',
         ]
     ],
     'params' => $params,

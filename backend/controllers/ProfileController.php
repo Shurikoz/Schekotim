@@ -8,6 +8,7 @@
 
 namespace backend\controllers;
 
+use common\models\User;
 use Yii;
 use backend\models\ChangeUserPassword;
 use yii\web\Controller;
@@ -21,16 +22,28 @@ class ProfileController extends Controller
      */
     public function actionNotification()
     {
-        return $this->render('notifications');
+        $result = '123';
+        return $this->render('notifications', [
+            'result' => $result,
+        ]);
     }
-
+    /**
+     * @return string
+     */
+    public function actionNotif()
+    {
+        $result = rand(1, 99);
+        return $this->render('notifications', [
+            'result' => $result,
+        ]);
+    }
 
     /**
      * @return string
      */
     public function actionSettings()
     {
-
+        $user = User::findOne(Yii::$app->user->identity->getId());
         $model = new ChangeUserPassword();
         if ($model->load(Yii::$app->getRequest()->post()) && $model->change()) {
             Yii::$app->session->setFlash('success', 'Пароль удачно изменен!');
@@ -39,6 +52,7 @@ class ProfileController extends Controller
 
         return $this->render('settings', [
             'model' => $model,
+            'user' => $user
         ]);
     }
 

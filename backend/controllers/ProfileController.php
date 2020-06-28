@@ -17,33 +17,13 @@ use yii\web\Controller;
 class ProfileController extends Controller
 {
 
-    /**
-     * @return string
-     */
-    public function actionNotification()
-    {
-        $result = '123';
-        return $this->render('notifications', [
-            'result' => $result,
-        ]);
-    }
-    /**
-     * @return string
-     */
-    public function actionNotif()
-    {
-        $result = rand(1, 99);
-        return $this->render('notifications', [
-            'result' => $result,
-        ]);
-    }
-
-    /**
+     /**
      * @return string
      */
     public function actionSettings()
     {
-        $user = User::findOne(Yii::$app->user->identity->getId());
+        $user = User::find()->where(['id' => Yii::$app->user->identity->getId()])->with('city')->one();
+
         $model = new ChangeUserPassword();
         if ($model->load(Yii::$app->getRequest()->post()) && $model->change()) {
             Yii::$app->session->setFlash('success', 'Пароль удачно изменен!');

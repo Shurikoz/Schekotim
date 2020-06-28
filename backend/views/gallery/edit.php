@@ -7,6 +7,12 @@ use yii\bootstrap\ActiveForm;
 /* @var $model app\models\Gallery */
 /* @var $form ActiveForm */
 ?>
+<div class="row">
+    <div class="col-md-12">
+        <h3>Редактировать фото</h3>
+        <hr>
+    </div>
+</div>
 <div class="gallery-upload">
 
     <img width="180" src="<?= 'http://schekotim.ru/images/gallery/thumbnail/' . $model->filename; ?>"

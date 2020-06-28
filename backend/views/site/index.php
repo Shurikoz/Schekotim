@@ -7,7 +7,7 @@
  *  admin
  *	user
  *	smm
- *	Manager
+ *	administrator
  */
 
 use yii\helpers\Html;
@@ -15,9 +15,9 @@ use yii\helpers\Html;
 $this->title = 'Учет пациентов';
 
 $admin = Yii::$app->user->can('admin');
-$manager = Yii::$app->user->can('manager');
+$administrator = Yii::$app->user->can('administrator');
 $smm = Yii::$app->user->can('smm');
-$user = Yii::$app->user->can('user');
+$podolog = Yii::$app->user->can('podolog');
 $leader = Yii::$app->user->can('leader');
 
 ?>
@@ -35,22 +35,22 @@ $leader = Yii::$app->user->can('leader');
 <!--<hr>-->
 <!--<br>-->
 <div class="row">
-    <?php if ($admin || $manager || $leader) { ?>
+    <?php if ($admin || $administrator || $leader) { ?>
         <div class="col-md-6">
             <div class="box">
-                <h3 class="text-center">Создать карту пациента</h3>
+                <h3 class="text-center">Создание карты пациента</h3>
                 <br>
                 <?= Html::a('Создать карту', ['card/create'], ['class' => 'btn btn-lg btn-green center-block']) ?>
             </div>
         </div>
     <?php } ?>
 
-    <?php if ($admin || $user || $manager || $leader) { ?>
+    <?php if ($admin || $podolog || $administrator || $leader) { ?>
         <div class="col-md-6">
             <div class="box">
-                <h3 class="text-center">Просмотр карт пациентов</h3>
+                <h3 class="text-center">Карты пациентов</h3>
                 <br>
-                <?= Html::a('Все карты', ['card/index'], ['class' => 'btn btn-lg btn-info center-block']) ?>
+                <?= Html::a('Открыть', ['card/index'], ['class' => 'btn btn-lg btn-info center-block']) ?>
             </div>
         </div>
     <?php } ?>
@@ -65,7 +65,7 @@ $leader = Yii::$app->user->can('leader');
         </div>
     <?php } ?>
 
-    <?php if ($admin || $manager || $leader) { ?>
+    <?php if ($admin || $administrator || $leader) { ?>
         <div class="col-md-6">
             <div class="box">
                 <h3 class="text-center">Просмотр пропущенных посещений</h3>

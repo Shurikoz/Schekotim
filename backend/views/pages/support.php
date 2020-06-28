@@ -8,6 +8,12 @@ use yii\helpers\Html;
 
 YiiAsset::register($this);
 ?>
+<div class="row">
+    <div class="col-md-12">
+        <h3>Служба поддержки</h3>
+        <hr>
+    </div>
+</div>
 <table class="c-table">
     <caption class="c-table__title">
         Лист обращений в службу поддержки

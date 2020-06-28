@@ -18,6 +18,7 @@ $this->title = 'Новое посещение, карта №: ' . $card->number
     <p class="titleNormal"><?= Html::encode($this->title) ?></p>
 
     <?= $this->render('_formCreateSecond', [
+        'visit' => $visit,
         'card' => $card,
         'model' => $model,
         'podolog' => $podolog,

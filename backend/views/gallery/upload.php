@@ -7,6 +7,12 @@ use yii\bootstrap\ActiveForm;
 /* @var $model app\models\Gallery */
 /* @var $form ActiveForm */
 ?>
+<div class="row">
+    <div class="col-md-12">
+        <h3>Загрузка фото</h3>
+        <hr>
+    </div>
+</div>
 <div class="gallery-upload">
 
     <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]) ?>

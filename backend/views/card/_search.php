@@ -33,12 +33,12 @@ use kartik\date\DatePicker;
                 </div>
                 <div class="col-md-3">
                     <div class="c-field">
-                        <?= $form->field($model, 'city')->dropDownList($city, ['prompt' => 'Все', 'class' => 'autoSearchSubmit c-input'])->label('Город', ['class' => 'c-field__label']) ?>
+                        <?= $form->field($model, 'city_id')->dropDownList($city, ['prompt' => 'Все', 'class' => 'autoSearchSubmit c-input'])->label('Город', ['class' => 'c-field__label']) ?>
                     </div>
                 </div>
                 <div class="col-md-3">
                     <div class="c-field">
-                        <?= $form->field($model, 'address_point')->dropDownList($addressPoint, ['prompt' => 'Все', 'class' => 'autoSearchSubmit c-input'])->label('Точка', ['class' => 'c-field__label']) ?>
+                        <?= $form->field($model, 'address_point_id')->dropDownList($addressPoint, ['prompt' => 'Все', 'class' => 'autoSearchSubmit c-input'])->label('Точка', ['class' => 'c-field__label']) ?>
                     </div>
                 </div>
             </div>

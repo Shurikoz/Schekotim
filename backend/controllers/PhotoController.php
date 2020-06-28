@@ -3,6 +3,7 @@
 namespace backend\controllers;
 
 use backend\models\Photo;
+use backend\models\PhotoSearch;
 use backend\models\Problem;
 use backend\models\Visit;
 use backend\models\VisitSearch;
@@ -18,20 +19,6 @@ use yii\helpers\ArrayHelper;
  */
 class PhotoController extends Controller
 {
-//    /**
-//     * {@inheritdoc}
-//     */
-//    public function behaviors()
-//    {
-//        return [
-//            'verbs' => [
-//                'class' => VerbFilter::className(),
-//                'actions' => [
-//                    'delete' => ['POST'],
-//                ],
-//            ],
-//        ];
-//    }
 
     /**
      * Lists all PhotoVisit models.
@@ -39,7 +26,7 @@ class PhotoController extends Controller
      */
     public function actionIndex()
     {
-        $searchModel = new VisitSearch();
+        $searchModel = new PhotoSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
         $pages = new Pagination(['totalCount' => $dataProvider->getTotalCount(), 'pageSizeLimit' => [1, 60], 'defaultPageSize' => 20]);
 

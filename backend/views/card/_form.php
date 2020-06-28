@@ -9,6 +9,8 @@ use yii\widgets\MaskedInput;
 $podologList = ArrayHelper::map($podologModel, 'id', 'name');
 $cityList = ArrayHelper::map($cityModel, 'id', 'name');
 
+$admin = Yii::$app->user->can('admin');
+
 ?>
 <div class="row">
     <div class="col-md-12">
@@ -18,10 +20,12 @@ $cityList = ArrayHelper::map($cityModel, 'id', 'name');
 <hr>
 <div class="row">
     <div class="col-md-4">
-            <b>Город:</b> <?= Yii::$app->user->identity->city == 'admin' ? 'Укажите город' : Yii::$app->user->identity->city;?>
-        </div>
+        <b>Город:</b> <?= $user->city->name;?>
+
+    </div>
     <div class="col-md-4">
-            <b>Точка:</b> <?= Yii::$app->user->identity->address_point == 'admin' ? 'Укажите адрес точки' : Yii::$app->user->identity->address_point; ?>
+        <b>Точка:</b> <?= $user->address_point->address_point; ?>
+
     </div>
 </div>
 <hr>
@@ -34,9 +38,9 @@ $cityList = ArrayHelper::map($cityModel, 'id', 'name');
     <?php $form = ActiveForm::begin(); ?>
 
     <?= $form->field($cardModel, 'user_id')->hiddenInput(['value' => Yii::$app->user->id])->label(false); ?>
-    <?php if (!Yii::$app->user->can('admin')) { ?>
-        <?= $form->field($cardModel, 'city')->hiddenInput(['value' => Yii::$app->user->identity->city])->label(false); ?>
-        <?= $form->field($cardModel, 'address_point')->hiddenInput(['value' => Yii::$app->user->identity->address_point])->label(false); ?>
+    <?php if (!$admin) { ?>
+        <?= $form->field($cardModel, 'city_id')->hiddenInput(['value' => Yii::$app->user->identity->city_id])->label(false); ?>
+        <?= $form->field($cardModel, 'address_point_id')->hiddenInput(['value' => Yii::$app->user->identity->address_point_id])->label(false); ?>
     <?php } ?>
     <div class="row">
         <div class="col-md-4">
@@ -52,6 +56,20 @@ $cityList = ArrayHelper::map($cityModel, 'id', 'name');
         <div class="col-md-4">
             <div class="box">
                 <?= $form->field($cardModel, 'middle_name')->textInput(['maxlength' => true, 'onchange' => 'checkCard()', 'id' => 'middle_name']) ?>
+            </div>
+        </div>
+    </div>
+    <br>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="box">
+                <?= Html::checkbox('representative', false, ['label' => 'Представитель клиента', 'onchange' => 'cardRepresentative()']) ?>
+            </div>
+        </div>
+
+        <div class="col-md-4 representative hide">
+            <div class="box">
+                <?= $form->field($cardModel, 'representative', ['labelOptions' => ['class' => 'control-label']])->textarea()->label(''); ?>
             </div>
         </div>
     </div>
@@ -89,7 +107,7 @@ $cityList = ArrayHelper::map($cityModel, 'id', 'name');
     <hr>
     <div class="row">
 
-        <?php if (Yii::$app->user->can('admin')) { ?>
+        <?php if ($admin) { ?>
             <!--для администратора сделаем доступным отдельный ввод города, точки и специалиста
                 сначала выбираем город, затем адрес точки -->
             <div class="col-md-4">
@@ -102,9 +120,7 @@ $cityList = ArrayHelper::map($cityModel, 'id', 'name');
                 <div class="row">
                     <div class="col-md-12">
                         <div class="box">
-                            <?= $form->field($cardModel, 'city')
-                                ->dropDownList($cityList, ['prompt' => 'Выберите город',])
-                                ->label('Город') ?>
+                            <?= $form->field($cardModel, 'city')->dropDownList($cityList, ['prompt' => 'Выберите город',])->label('Город') ?>
                         </div>
                     </div>
                 </div>
@@ -120,15 +136,13 @@ $cityList = ArrayHelper::map($cityModel, 'id', 'name');
                     <div class="col-md-12">
                         <div class="box">
                             <!-- Получим список точек из AJAX запрса по выбранному городу -->
-                            <?= $form->field($cardModel, 'address_point')
-                                ->dropDownList([])
-                                ->label('Адрес точки <div id="errorData" class="" style="float: right"></div>') ?>
+                            <?= $form->field($cardModel, 'address_point')->dropDownList([])->label('Адрес точки <div id="errorData" class="" style="float: right"></div>') ?>
                         </div>
                     </div>
                 </div>
             </div>
         <?php } ?>
-        <?php if (!Yii::$app->user->can('admin')) { ?>
+        <?php if (!$admin) { ?>
             <div class="col-md-4">
                 <div class="row">
                     <div class="col-md-12">
@@ -152,7 +166,7 @@ $cityList = ArrayHelper::map($cityModel, 'id', 'name');
     <div class="row">
         <div class="col-md-12">
             <div class="form-group">
-                <?php if (!Yii::$app->user->can('admin')) { ?>
+                <?php if (!$admin) { ?>
                 <?= Html::submitButton('Сохранить', [
                     'class' => 'btn btn-lg btn-green pull-right',
                     'data' => [

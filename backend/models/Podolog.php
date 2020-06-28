@@ -48,4 +48,10 @@ class Podolog extends \yii\db\ActiveRecord
         return $this->hasMany(Visit::className(), ['podolog_id' => 'id']);
     }
 
+
+    public function getAddressPoint()
+    {
+        return $this->hasOne(AddressPoint::className(), ['id' => 'address_point_id']);
+    }
+
 }

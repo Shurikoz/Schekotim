@@ -184,12 +184,12 @@ a.desc:after {
 .box {
     border: 1px solid #e6eaee;
     border-radius: 4px;
-    background-color: #fff;
     margin-bottom: 1em;
     padding: 1.5em;
     background: #fff;
     display: inline-block;
     width: 100%;
+    box-shadow: 0.1em 0.1em 3px rgba(122,122,122,0.5);
 }
 
 .titleLarge {

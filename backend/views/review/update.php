@@ -5,10 +5,7 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model common\models\Review */
 
-$this->title = 'Update ReviewForm: ' . $model->name;
-$this->params['breadcrumbs'][] = ['label' => 'Отзывы', 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => $model->name, 'url' => ['view', 'id' => $model->id]];
-$this->params['breadcrumbs'][] = 'Update';
+$this->title = 'Редактировать отзыв: ' . $model->name;
 ?>
 <div class="review-update">
 

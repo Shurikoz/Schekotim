@@ -1,25 +1,33 @@
 <?php
-use dosamigos\ckeditor\CKEditor;
+
 use yii\bootstrap\ActiveForm;
 use yii\helpers\Html;
+use vova07\imperavi\Widget;
+
 ?>
-<h3>Прайс-лист</h3>
-
+<div class="row">
+    <div class="col-md-12">
+        <h3>Прайс-лист</h3>
+        <hr>
+    </div>
+</div>
 <?php $form = ActiveForm::begin(['id' => 'price-form']); ?>
-
-<?= $form->field($model, 'text')->label('')->widget(CKEditor::className(), [
-    'options' => [
-        'rows' => 6,
+<?= $form->field($model, 'text')->label('')->widget(Widget::className(), [
+    'settings' => [
+        'lang' => 'ru',
+        'minHeight' => 200,
+        'plugins' => [
+            'clips',
+            'fullscreen',
         ],
-    'clientOptions' => [
-        'fullPage' => true,
-        'extraPlugins' => 'docprops',
-        'allowedContent' => true,
-        'height' => 700,
-
+        'clips' => [
+            ['Lorem ipsum...', 'Lorem...'],
+            ['red', '<span class="label-red">red</span>'],
+            ['green', '<span class="label-green">green</span>'],
+            ['blue', '<span class="label-blue">blue</span>'],
+        ],
     ],
-    'preset' => 'full'
-]) ?>
+]); ?>
 <?= Html::submitButton('Сохранить', [
     'class' => 'btn btn-lg btn-green pull-right',
     'data' => [

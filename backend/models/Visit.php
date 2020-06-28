@@ -10,8 +10,8 @@ use Yii;
  * @property int $id
  * @property string $podolog_id
  * @property int $card_number
- * @property string $city
- * @property string $address_point
+ * @property string $city_id
+ * @property string $address_point_id
  * @property string $problem_id
  * @property string $anamnes
  * @property string $manipulation
@@ -54,7 +54,7 @@ class Visit extends \yii\db\ActiveRecord
         return [
             [['podolog_id', 'card_number', 'used_photo', 'edit', 'dermatolog', 'immunolog', 'ortoped', 'hirurg'], 'integer'],
             [['anamnes', 'manipulation', 'recommendation', 'description'], 'string'],
-            [['address_point', 'city', 'resolve', 'has_come', 'timestamp', 'next_visit_from', 'next_visit_by', 'visit_date', 'visit_time'], 'safe'],
+            [['address_point_id', 'city_id', 'resolve', 'has_come', 'timestamp', 'next_visit_from', 'next_visit_by', 'visit_date', 'visit_time'], 'safe'],
             ['problem_id', 'integer', 'min' => '1', 'tooSmall' => 'Проблема не выбрана!'],
         ];
     }
@@ -68,8 +68,8 @@ class Visit extends \yii\db\ActiveRecord
             'id' => 'Номер посещения',
             'user_id' => 'ID пользователя',
             'card_number' => 'Номер карты',
-            'city' => 'City ID',
-            'address_point' => 'Точка',
+            'city_id' => 'City ID',
+            'address_point_id' => 'Точка',
             'podolog_id' => 'Подолог',
             'anamnes' => 'Анамнез',
             'manipulation' => 'Манипуляции',
@@ -91,17 +91,17 @@ class Visit extends \yii\db\ActiveRecord
     }
 
 
-    public function beforeSave($insert)
-    {
-        if (parent::beforeSave($insert)) {
-            $next_visit_from = isset($_POST["Visit"]["next_visit_from"]) ? $_POST["Visit"]["next_visit_from"] : null;
-            $next_visit_by = isset($_POST["Visit"]["next_visit_by"]) ? $_POST["Visit"]["next_visit_by"] : null;
-            $this->next_visit_from = $next_visit_from == null ? null : date("Y-m-d", strtotime($next_visit_from));
-            $this->next_visit_by = $next_visit_by == null ? null : date("Y-m-d", strtotime($next_visit_by));
-            return true;
-        }
-        return false;
-    }
+//    public function beforeSave($insert)
+//    {
+//        if (parent::beforeSave($insert)) {
+//            $next_visit_from = isset($_POST["Visit"]["next_visit_from"]) ? $_POST["Visit"]["next_visit_from"] : null;
+//            $next_visit_by = isset($_POST["Visit"]["next_visit_by"]) ? $_POST["Visit"]["next_visit_by"] : null;
+//            $this->next_visit_from = $next_visit_from == null ? null : date("Y-m-d", strtotime($next_visit_from));
+//            $this->next_visit_by = $next_visit_by == null ? null : date("Y-m-d", strtotime($next_visit_by));
+//            return true;
+//        }
+//        return false;
+//    }
 
     public function getCard()
     {
@@ -123,4 +123,13 @@ class Visit extends \yii\db\ActiveRecord
         return $this->hasOne(Problem::className(), ['id' => 'problem_id']);
     }
 
+    public function getCity()
+    {
+        return $this->hasOne(City::className(), ['id' => 'city_id']);
+    }
+
+    public function getAddress_point()
+    {
+        return $this->hasOne(AddressPoint::className(), ['id' => 'address_point_id']);
+    }
 }

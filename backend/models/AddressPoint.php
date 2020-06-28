@@ -2,6 +2,7 @@
 
 namespace backend\models;
 
+use common\models\User;
 use Yii;
 
 /**
@@ -52,7 +53,18 @@ class AddressPoint extends \yii\db\ActiveRecord
 
     public function getVisit()
     {
-        return $this->hasMany(Visit::className(), ['address_point_id' => 'id']);
+        return $this->hasOne(Visit::className(), ['address_point_id' => 'id']);
     }
+
+    public function getUser()
+    {
+        return $this->hasMany(User::className(), ['address_point_id' => 'id']);
+    }
+
+    public function getCard()
+    {
+        return $this->hasMany(Card::className(), ['address_point_id' => 'id']);
+    }
+
 
 }

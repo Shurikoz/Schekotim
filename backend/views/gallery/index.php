@@ -4,13 +4,15 @@
 use yii\helpers\Html;
 
 ?>
+<div class="row">
+    <div class="col-md-12">
+        <h3>Галерея</h3>
+        <hr>
+    </div>
+</div>
 <div class="box">
 
-<h1>Галерея</h1>
-
-<p>
-    <?php echo Html::a('Загрузить фото', ['gallery/upload'], ['class' => 'btn btn-primary']) ?>
-</p>
+<p><?php echo Html::a('Загрузить фото', ['gallery/upload'], ['class' => 'btn btn-primary']) ?></p>
 
 <hr class="major"/>
 <h3>#подология</h3>

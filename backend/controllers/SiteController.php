@@ -5,7 +5,6 @@ use backend\models\AddressPoint;
 use backend\models\City;
 use backend\models\PasswordResetRequestForm;
 use backend\models\ResetPasswordForm;
-use backend\models\SignupUser;
 use backend\models\Support;
 use common\models\LoginForm;
 use Yii;
@@ -13,6 +12,7 @@ use yii\base\InvalidArgumentException;
 use yii\web\BadRequestHttpException;
 use yii\web\Controller;
 use yii\web\UploadedFile;
+use yii\helpers\ArrayHelper;
 
 
 /**
@@ -20,6 +20,8 @@ use yii\web\UploadedFile;
  */
 class SiteController extends Controller
 {
+
+    public $role;
 
     /**
      * {@inheritdoc}
@@ -176,26 +178,6 @@ class SiteController extends Controller
 
         return $this->render('resetPassword', [
             'model' => $model,
-        ]);
-    }
-
-    /**
-     * Signup new user
-     * @return string
-     */
-    public function actionSignup()
-    {
-        $model = new SignupUser();
-        $city = City::find()->all();
-        if ($model->load(Yii::$app->getRequest()->post())) {
-            if ($user = $model->signup()) {
-                Yii::$app->session->setFlash('success', 'Пользователь <b>' . $user->username . '</b> создан! Назначьте ему права доступа.');
-            }
-        }
-
-        return $this->render('signup', [
-            'model' => $model,
-            'city' => $city,
         ]);
     }
 

@@ -2,6 +2,7 @@
 
 namespace backend\models;
 
+use common\models\User;
 use Yii;
 
 /**
@@ -49,12 +50,18 @@ class City extends \yii\db\ActiveRecord
 
     public function getVisit()
     {
-        return $this->hasOne(Visit::className(), ['city_id' => 'id']);
+        return $this->hasMany(Visit::className(), ['city_id' => 'id']);
     }
 
-    public function getCity()
+    public function getCard()
     {
-        return $this->hasOne(City::className(), ['city' => 'id']);
+        return $this->hasMany(Card::className(), ['city_id' => 'id']);
+    }
+
+
+    public function getUser()
+    {
+        return $this->hasOne(User::className(), ['city_id' => 'id']);
     }
 
 }

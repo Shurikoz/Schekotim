@@ -3,7 +3,8 @@
 namespace frontend\controllers;
 
 use backend\models\Gallery;
-use common\models\LoginForm;
+use backend\models\Price;
+use backend\models\Stock;
 use frontend\components\NumericCaptcha;
 use frontend\models\ContactForm;
 use frontend\models\ReviewForm;
@@ -17,7 +18,6 @@ use yii\imagine\Image;
 use yii\web\BadRequestHttpException;
 use yii\web\Controller;
 use yii\web\UploadedFile;
-use backend\models\Price;
 
 
 /**
@@ -337,23 +337,9 @@ class SiteController extends Controller
                 );
 
                 if ($reviewRating == 1 || $reviewRating == 2) {
-                    $newReview->sendReviewClientPositiveNeutral(
-                        $reviewName,
-                        $reviewEmail,
-                        $reviewRating,
-                        $reviewBody,
-                        $reviewMobile,
-                        $filename
-                    );
+                    $newReview->sendReviewClientPositiveNeutral($reviewName, $reviewEmail, $reviewRating, $reviewBody, $reviewMobile, $filename);
                 } else {
-                    $newReview->sendReviewClientNegative(
-                        $reviewName,
-                        $reviewEmail,
-                        $reviewRating,
-                        $reviewBody,
-                        $reviewMobile,
-                        $filename
-                    );
+                    $newReview->sendReviewClientNegative($reviewName, $reviewEmail, $reviewRating, $reviewBody, $reviewMobile, $filename);
                 }
 
                 $newReview = new ReviewForm();
@@ -410,12 +396,15 @@ class SiteController extends Controller
      */
     public function actionStock()
     {
+        $model = Stock::find()->all();
         $this->view->registerMetaTag([
             'name' => 'description',
             'content' => '«Щекотливая тема» - Акции и скидки'
         ]);
 
-        return $this->render('stock');
+        return $this->render('stock' , [
+                'model' => $model
+            ]);
     }
 
 }

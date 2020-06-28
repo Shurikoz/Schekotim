@@ -84,7 +84,8 @@ return [
                 '<action:(index|review|login|request-password-reset|reset-password|support|policy)>' => 'site/<action>',
                 '<action:(show|hide)>' => 'review/<action>',
                 '<action:(tutorial)>' => 'pages/<action>',
-                '<action:(notification|settings)>' => 'profile/<action>',
+                '<action:(settings)>' => 'profile/<action>',
+                '<action:(notification)>' => 'notification/<action>',
             ],
 
         ],
@@ -108,9 +109,10 @@ return [
         'class' => 'mdm\admin\components\AccessControl',
         'allowActions' => [
             'site/login',
+            'site/logout',
             'site/request-password-reset',
             'site/reset-password',
-            'site/policy',
+            'site/policy'
         ]
     ],
     'params' => $params,

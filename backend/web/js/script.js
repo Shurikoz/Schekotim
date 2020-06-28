@@ -210,3 +210,11 @@ function checkCard() {
         });
     }
 }
+//функция скрытия/открытия инпута "Представитель клиента" при создании новой карты
+function cardRepresentative() {
+    $(".representative").toggleClass('hide');
+}
+//функция скрытия/открытия инпута "Назначение даты" при создании посещения
+function dateVisit() {
+    $(".dateVisit").toggleClass('hide');
+}

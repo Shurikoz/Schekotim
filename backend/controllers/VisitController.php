@@ -8,6 +8,7 @@ use backend\models\Podolog;
 use backend\models\Problem;
 use backend\models\Visit;
 use backend\models\VisitSearch;
+use common\models\User;
 use kartik\mpdf\Pdf;
 use Yii;
 use yii\filters\VerbFilter;
@@ -73,12 +74,17 @@ class VisitController extends Controller
      */
     public function actionCreateFirst()
     {
+        $post = Yii::$app->request->post();
+
+        $user = User::find()->where(['id' => Yii::$app->user->identity->getId()])->with('city', 'address_point')->one();
+
         $model = new Visit();
+        $secondVisit = new Visit();
+
         $photoBefore = new Photo();
         $photoAfter = new Photo();
 
         //получим id точки из аккаунта текущего пользователя
-        $addressPoint = Yii::$app->user->identity->address_point;
         $podolog = Podolog::find()->where(['user_id' => Yii::$app->user->identity->id])->one();
 
         $card = Card::find()->where(['number' => Yii::$app->request->get('number')])->one();
@@ -88,32 +94,49 @@ class VisitController extends Controller
         $model->has_come = 1;
         $model->edit = 1; //возможность редактирования - 1 можно, 0 запрещено
         $model->timestamp = time() + 60 * 60 * 24 * 2; // 2 суток на редактирование
-        $model->visit_time = date('H:i:s');
-        $model->visit_date = date('Y-m-d');
+        $model->visit_time = date('H:i');
+        $model->visit_date = date('d.m.Y');
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        if ($model->load($post) && $secondVisit->load($post)) {
+                if ($secondVisit->next_visit_from && $secondVisit->next_visit_by) {
+//                    $secondVisit->podolog_id = $model->podolog_id;
+//                    $secondVisit->card_number = $model->card_number;
+//                    $secondVisit->city_id = $model->city_id;
+//                    $secondVisit->address_point_id = $model->address_point_id;
+//                    $secondVisit->problem_id = $model->problem_id;
+//                    $secondVisit->has_come = 0;
+//                    $secondVisit->edit = 1;
+//                    $secondVisit->visit_time = null;
+//                    $secondVisit->visit_date = null;
+//                    $secondVisit->manipulation = null;
+//                    $secondVisit->recommendation = null;
+                    $secondVisit->timestamp = time();
+                }
 
-            $photoBefore->before = UploadedFile::getInstances($photoBefore, 'before');
-            $photoAfter->after = UploadedFile::getInstances($photoAfter, 'after');
+            $model->next_visit_from = null;
+            $model->next_visit_by = null;
 
-            $photoBefore->uploadBefore(
-                $model->id,
-                $model->address_point,
-                Yii::$app->request->get('card_number'),
-                $model->visit_date
-            );
-            $photoAfter->uploadAfter(
-                $model->id,
-                $model->address_point,
-                Yii::$app->request->get('card_number'),
-                $model->visit_date
-            );
-            Yii::$app->session->setFlash('success', 'Данные сохранены!');
-            return $this->redirect(['card/view', 'number' => Yii::$app->request->get('number')]);
+            if ($model->save()) {
+                if ($secondVisit->next_visit_from && $secondVisit->next_visit_by) {
+                        $secondVisit->save();
+                    }
+
+                $photoBefore->before = UploadedFile::getInstances($photoBefore, 'before');
+                $photoAfter->after = UploadedFile::getInstances($photoAfter, 'after');
+
+                $photoBefore->uploadBefore($model->id, Yii::$app->request->get('card_number'), $model->visit_date);
+                $photoAfter->uploadAfter($model->id, Yii::$app->request->get('card_number'), $model->visit_date);
+
+                Yii::$app->session->setFlash('success', 'Данные сохранены!');
+                return $this->redirect(['card/view', 'number' => Yii::$app->request->get('number')]);
+            }
+
         }
-        return $this->render('createFirst', [
+        return $this->render('create', [
+            'user' => $user,
             'card' => $card,
             'model' => $model,
+            'secondVisit' => $secondVisit,
             'photoBefore' => $photoBefore,
             'photoAfter' => $photoAfter,
             'podolog' => $podolog,
@@ -130,19 +153,17 @@ class VisitController extends Controller
      */
     public function actionCreateSecond($id, $card)
     {
-        $modelFirst = $this->findModel($id);
+        $visit = Visit::find()->where(['id' => $id])->with('city', 'address_point')->one();
 
         $model = new Visit();
-        $model->setAttributes($modelFirst->attributes);
+        $model->setAttributes($visit->attributes);
 
         $card = Card::find()->where(['number' => Yii::$app->request->get('number')])->one();
 
         //получим id точки из аккаунта текущего пользователя
-        $addressPoint = Yii::$app->user->identity->address_point;
         $podolog = Podolog::find()->where(['user_id' => Yii::$app->user->identity->id])->one();
 
         //присвоим некоторые стандартные значения
-        //для первого посещения
         $model->has_come = 0;
         $model->edit = 1; //возможность редактирования - 1 можно, 0 запрещено
         //$model->timestamp = time() + 60 * 60 * 24 * 2; // 2 суток на редактирование
@@ -155,6 +176,7 @@ class VisitController extends Controller
             return $this->redirect(['card/view', 'number' => Yii::$app->request->get('number')]);
         }
         return $this->render('createSecond', [
+            'visit' => $visit,
             'card' => $card,
             'model' => $model,
             'podolog' => $podolog,
@@ -171,7 +193,7 @@ class VisitController extends Controller
      */
     public function actionUpdate($id)
     {
-        $model = $this->findModel($id);
+        $model = Visit::find()->where(['id' => $id])->with('city', 'address_point')->one();
         $addPhotoBefore = new Photo();
         $addPhotoAfter = new Photo();
 
@@ -188,19 +210,10 @@ class VisitController extends Controller
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             $addPhotoBefore->before = UploadedFile::getInstances($addPhotoBefore, 'before');
             $addPhotoAfter->after = UploadedFile::getInstances($addPhotoAfter, 'after');
+            $addPhotoBefore->uploadBefore($model->id, Yii::$app->request->get('number'), $model->visit_date);
+            $addPhotoAfter->uploadAfter($model->id, Yii::$app->request->get('number'), $model->visit_date);
 
-            $addPhotoBefore->uploadBefore(
-                $model->id,
-                Yii::$app->request->get('number'),
-                $model->visit_date
-            );
-            $addPhotoAfter->uploadAfter(
-                $model->id,
-                Yii::$app->request->get('number'),
-                $model->visit_date
-            );
-
-            Yii::$app->session->setFlash('success', 'Данные сохранены!');
+            Yii::$app->session->setFlash('success', 'Данные визита <b>#' . $model->id . '</b> сохранены!');
 
             return $this->redirect(['card/view', 'number' => $card->number]);
         }
@@ -292,8 +305,11 @@ class VisitController extends Controller
 
         //удалим все фотографии посещения
         $dir = Yii::getAlias('@webroot/upload/photo/') . $id;
-        chmod($dir, 0777);
-        $this->delPhoto($dir);
+        if (is_dir($dir)) {
+            chmod($dir, 0777);
+            $this->delPhoto($dir);
+        }
+
 
         Yii::$app->session->setFlash('success', 'Посещение удалено!');
         return $this->redirect(['/card/view', 'number' => $card]);

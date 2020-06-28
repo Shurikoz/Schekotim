@@ -4,73 +4,14 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "978d2cef1227bd81514287a7a871b364",
+    "content-hash": "64da12574f8ff6618ad7eca18bade14e",
     "packages": [
-        {
-            "name": "2amigos/yii2-ckeditor-widget",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/2amigos/yii2-ckeditor-widget.git",
-                "reference": "3eefd73b33b451e907a6a62c83c15c73849f8802"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/2amigos/yii2-ckeditor-widget/zipball/3eefd73b33b451e907a6a62c83c15c73849f8802",
-                "reference": "3eefd73b33b451e907a6a62c83c15c73849f8802",
-                "shasum": ""
-            },
-            "require": {
-                "ckeditor/ckeditor": "^4.7 || dev-full/4.11.x",
-                "sunhater/kcfinder": "*",
-                "yiisoft/yii2": "^2.0"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "4.*",
-                "roave/security-advisories": "dev-master"
-            },
-            "type": "yii2-extension",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.0-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "dosamigos\\ckeditor\\": "src"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "BSD-3-Clause"
-            ],
-            "authors": [
-                {
-                    "name": "2amigOS! Consulting Group",
-                    "email": "hola@2amigos.us",
-                    "homepage": "http://2amigos.us",
-                    "role": "Developer"
-                }
-            ],
-            "description": "CKEditor widget for Yii2.",
-            "homepage": "http://yiiwheels.com/extension/ckeditor-widget",
-            "keywords": [
-                "2amigos",
-                "CKEditor",
-                "extension",
-                "widget",
-                "yii",
-                "yii 2",
-                "yii2"
-            ],
-            "time": "2019-04-30T16:51:38+00:00"
-        },
         {
             "name": "bower-asset/bootstrap",
             "version": "v3.4.1",
             "source": {
                 "type": "git",
-                "url": "https://github.com/twbs/bootstrap.git",
+                "url": "git@github.com:twbs/bootstrap.git",
                 "reference": "68b0d231a13201eb14acd3dc84e51543d16e5f7e"
             },
             "dist": {
@@ -91,7 +32,7 @@
             "version": "3.3.11",
             "source": {
                 "type": "git",
-                "url": "git@github.com:RobinHerbots/Inputmask.git",
+                "url": "https://github.com/RobinHerbots/Inputmask.git",
                 "reference": "5e670ad62f50c738388d4dcec78d2888505ad77b"
             },
             "dist": {
@@ -261,48 +202,6 @@
             "time": "2020-02-26T01:55:18+00:00"
         },
         {
-            "name": "ckeditor/ckeditor",
-            "version": "4.14.x-dev",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/ckeditor/ckeditor4-releases.git",
-                "reference": "998e43cd6305bca24304b9538a682da123ac5b73"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/ckeditor/ckeditor4-releases/zipball/998e43cd6305bca24304b9538a682da123ac5b73",
-                "reference": "998e43cd6305bca24304b9538a682da123ac5b73",
-                "shasum": ""
-            },
-            "type": "library",
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "GPL-2.0+",
-                "LGPL-2.1+",
-                "MPL-1.1+"
-            ],
-            "authors": [
-                {
-                    "name": "CKSource",
-                    "homepage": "https://cksource.com"
-                }
-            ],
-            "description": "JavaScript WYSIWYG web text editor.",
-            "homepage": "https://ckeditor.com/ckeditor-4/",
-            "keywords": [
-                "CKEditor",
-                "ckeditor4",
-                "editor",
-                "fckeditor",
-                "html",
-                "javascript",
-                "richtext",
-                "text",
-                "wysiwyg"
-            ],
-            "time": "2020-03-04T13:19:40+00:00"
-        },
-        {
             "name": "doctrine/lexer",
             "version": "1.0.x-dev",
             "source": {
@@ -368,12 +267,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/egulias/EmailValidator.git",
-                "reference": "2f38a470f9f179d8d8835256de58c300916e47ae"
+                "reference": "cfa3d44471c7f5bfb684ac2b0da7114283d78441"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/egulias/EmailValidator/zipball/2f38a470f9f179d8d8835256de58c300916e47ae",
-                "reference": "2f38a470f9f179d8d8835256de58c300916e47ae",
+                "url": "https://api.github.com/repos/egulias/EmailValidator/zipball/cfa3d44471c7f5bfb684ac2b0da7114283d78441",
+                "reference": "cfa3d44471c7f5bfb684ac2b0da7114283d78441",
                 "shasum": ""
             },
             "require": {
@@ -397,7 +296,7 @@
             },
             "autoload": {
                 "psr-4": {
-                    "Egulias\\EmailValidator\\": "EmailValidator"
+                    "Egulias\\EmailValidator\\": "src"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -418,7 +317,7 @@
                 "validation",
                 "validator"
             ],
-            "time": "2020-03-02T21:43:01+00:00"
+            "time": "2020-06-16T20:11:17+00:00"
         },
         {
             "name": "ezyang/htmlpurifier",
@@ -578,12 +477,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/kartik-v/bootstrap-fileinput.git",
-                "reference": "922d6dd608c3ac0f4c5c0023585a8c0a808d5f4a"
+                "reference": "39903fd08043f3c1564af4e7fa7e4da822c2bed3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/kartik-v/bootstrap-fileinput/zipball/922d6dd608c3ac0f4c5c0023585a8c0a808d5f4a",
-                "reference": "922d6dd608c3ac0f4c5c0023585a8c0a808d5f4a",
+                "url": "https://api.github.com/repos/kartik-v/bootstrap-fileinput/zipball/39903fd08043f3c1564af4e7fa7e4da822c2bed3",
+                "reference": "39903fd08043f3c1564af4e7fa7e4da822c2bed3",
                 "shasum": ""
             },
             "type": "library",
@@ -629,7 +528,7 @@
                     "type": "open_collective"
                 }
             ],
-            "time": "2020-06-15T07:04:05+00:00"
+            "time": "2020-06-25T17:44:15+00:00"
         },
         {
             "name": "kartik-v/yii2-field-range",
@@ -1023,12 +922,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/mdmsoft/yii2-admin.git",
-                "reference": "4b290353032b5c7039a3ab1686aa6d51a7c5c209"
+                "reference": "ae57d01deac781a756797ca58f914059159654c8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mdmsoft/yii2-admin/zipball/4b290353032b5c7039a3ab1686aa6d51a7c5c209",
-                "reference": "4b290353032b5c7039a3ab1686aa6d51a7c5c209",
+                "url": "https://api.github.com/repos/mdmsoft/yii2-admin/zipball/ae57d01deac781a756797ca58f914059159654c8",
+                "reference": "ae57d01deac781a756797ca58f914059159654c8",
                 "shasum": ""
             },
             "require": {
@@ -1073,7 +972,7 @@
                 "rbac",
                 "yii"
             ],
-            "time": "2020-05-01T04:48:16+00:00"
+            "time": "2020-06-05T09:47:02+00:00"
         },
         {
             "name": "mpdf/mpdf",
@@ -1448,61 +1347,6 @@
             "time": "2020-04-28T12:40:35+00:00"
         },
         {
-            "name": "sunhater/kcfinder",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/sunhater/kcfinder.git",
-                "reference": "b645d2a81e647d63780c238b130593e32b4d95a9"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/sunhater/kcfinder/zipball/b645d2a81e647d63780c238b130593e32b4d95a9",
-                "reference": "b645d2a81e647d63780c238b130593e32b4d95a9",
-                "shasum": ""
-            },
-            "require": {
-                "ext-gd": "*",
-                "php": ">=5.3.0"
-            },
-            "suggest": {
-                "ext-curl": "*",
-                "ext-exif": "*",
-                "ext-fileinfo": "*",
-                "ext-gmagick": "*",
-                "ext-http": "*",
-                "ext-imagick": "*",
-                "ext-sockets": "*",
-                "ext-zip": "*"
-            },
-            "type": "library",
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "GPL-3.0+",
-                "LGPL-3.0+"
-            ],
-            "authors": [
-                {
-                    "name": "Pavel Tzonkov",
-                    "email": "sunhater@sunhater.com",
-                    "homepage": "http://sunhater.com",
-                    "role": "Developer"
-                }
-            ],
-            "description": "KCFinder web file manager",
-            "homepage": "http://kcfinder.sunhater.com",
-            "keywords": [
-                "explorer",
-                "file",
-                "file explorer",
-                "file manager",
-                "finder",
-                "kcfinder",
-                "manager"
-            ],
-            "time": "2014-08-24T00:00:00+00:00"
-        },
-        {
             "name": "swiftmailer/swiftmailer",
             "version": "v6.2.3",
             "source": {
@@ -1872,6 +1716,61 @@
             "time": "2020-06-06T08:46:27+00:00"
         },
         {
+            "name": "vova07/yii2-imperavi-widget",
+            "version": "2.0.11",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/vova07/yii2-imperavi-widget.git",
+                "reference": "c4fe4a9f64a4c53d9686c80b8744e2c1366184e5"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/vova07/yii2-imperavi-widget/zipball/c4fe4a9f64a4c53d9686c80b8744e2c1366184e5",
+                "reference": "c4fe4a9f64a4c53d9686c80b8744e2c1366184e5",
+                "shasum": ""
+            },
+            "require": {
+                "yiisoft/yii2": "*"
+            },
+            "require-dev": {
+                "mikey179/vfsstream": "~1",
+                "phpunit/phpunit": "4.*",
+                "scrutinizer/ocular": "~1.1"
+            },
+            "type": "yii2-extension",
+            "autoload": {
+                "psr-4": {
+                    "vova07\\imperavi\\": "src",
+                    "vova07\\imperavi\\tests\\": "tests"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Crudu Vasile",
+                    "email": "bazillio07@yandex.ru",
+                    "homepage": "https://github.com/vova07",
+                    "role": "Developer"
+                }
+            ],
+            "description": "The imperavi redactor widget for Yii 2 framework.",
+            "homepage": "https://github.com/vova07/yii2-imperavi-widget",
+            "keywords": [
+                "Redactor",
+                "extension",
+                "imperavi",
+                "widget",
+                "wysiwyg",
+                "yii",
+                "yii 2",
+                "yii2"
+            ],
+            "time": "2019-03-26T11:39:06+00:00"
+        },
+        {
             "name": "wbraganca/yii2-videojs-widget",
             "version": "1.0.1",
             "source": {
@@ -1935,12 +1834,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/yiisoft/yii2-framework.git",
-                "reference": "11144223433602405d8d91da6f9607387383a014"
+                "reference": "16de696fa5f87091815d2c7cdd33685f1e012947"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/yiisoft/yii2-framework/zipball/11144223433602405d8d91da6f9607387383a014",
-                "reference": "11144223433602405d8d91da6f9607387383a014",
+                "url": "https://api.github.com/repos/yiisoft/yii2-framework/zipball/16de696fa5f87091815d2c7cdd33685f1e012947",
+                "reference": "16de696fa5f87091815d2c7cdd33685f1e012947",
                 "shasum": ""
             },
             "require": {
@@ -2041,7 +1940,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2020-06-16T08:33:27+00:00"
+            "time": "2020-06-25T20:33:22+00:00"
         },
         {
             "name": "yiisoft/yii2-bootstrap",
@@ -2112,12 +2011,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/yiisoft/yii2-composer.git",
-                "reference": "a42a0d69e1a0799f7db0d0e907db2bbeb437230c"
+                "reference": "c372400aa6b6f2c52a82764496b37eb50d6e479f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/yiisoft/yii2-composer/zipball/a42a0d69e1a0799f7db0d0e907db2bbeb437230c",
-                "reference": "a42a0d69e1a0799f7db0d0e907db2bbeb437230c",
+                "url": "https://api.github.com/repos/yiisoft/yii2-composer/zipball/c372400aa6b6f2c52a82764496b37eb50d6e479f",
+                "reference": "c372400aa6b6f2c52a82764496b37eb50d6e479f",
                 "shasum": ""
             },
             "require": {
@@ -2173,7 +2072,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2020-04-20T18:48:05+00:00"
+            "time": "2020-06-24T00:04:19+00:00"
         },
         {
             "name": "yiisoft/yii2-httpclient",
@@ -2792,12 +2691,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/opis/closure.git",
-                "reference": "1d0deef692f66dae5d70663caee2867d0971306b"
+                "reference": "dec9fc5ecfca93f45cd6121f8e6f14457dff372c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/opis/closure/zipball/1d0deef692f66dae5d70663caee2867d0971306b",
-                "reference": "1d0deef692f66dae5d70663caee2867d0971306b",
+                "url": "https://api.github.com/repos/opis/closure/zipball/dec9fc5ecfca93f45cd6121f8e6f14457dff372c",
+                "reference": "dec9fc5ecfca93f45cd6121f8e6f14457dff372c",
                 "shasum": ""
             },
             "require": {
@@ -2845,7 +2744,7 @@
                 "serialization",
                 "serialize"
             ],
-            "time": "2020-06-07T11:41:29+00:00"
+            "time": "2020-06-17T14:59:55+00:00"
         },
         {
             "name": "phar-io/manifest",
@@ -4320,12 +4219,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/console.git",
-                "reference": "bfe29ead7e7b1cc9ce74c6a40d06ad1f96fced13"
+                "reference": "b4adbbd0b8bdc11363015789be9911ba38d6f02a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/console/zipball/bfe29ead7e7b1cc9ce74c6a40d06ad1f96fced13",
-                "reference": "bfe29ead7e7b1cc9ce74c6a40d06ad1f96fced13",
+                "url": "https://api.github.com/repos/symfony/console/zipball/b4adbbd0b8bdc11363015789be9911ba38d6f02a",
+                "reference": "b4adbbd0b8bdc11363015789be9911ba38d6f02a",
                 "shasum": ""
             },
             "require": {
@@ -4398,7 +4297,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2020-05-30T18:58:05+00:00"
+            "time": "2020-06-23T12:31:34+00:00"
         },
         {
             "name": "symfony/css-selector",
@@ -4925,16 +4824,16 @@
         },
         {
             "name": "webmozart/assert",
-            "version": "1.8.0",
+            "version": "1.9.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/webmozart/assert.git",
-                "reference": "ab2cb0b3b559010b75981b1bdce728da3ee90ad6"
+                "reference": "9dc4f203e36f2b486149058bade43c851dd97451"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/webmozart/assert/zipball/ab2cb0b3b559010b75981b1bdce728da3ee90ad6",
-                "reference": "ab2cb0b3b559010b75981b1bdce728da3ee90ad6",
+                "url": "https://api.github.com/repos/webmozart/assert/zipball/9dc4f203e36f2b486149058bade43c851dd97451",
+                "reference": "9dc4f203e36f2b486149058bade43c851dd97451",
                 "shasum": ""
             },
             "require": {
@@ -4942,6 +4841,7 @@
                 "symfony/polyfill-ctype": "^1.8"
             },
             "conflict": {
+                "phpstan/phpstan": "<0.12.20",
                 "vimeo/psalm": "<3.9.1"
             },
             "require-dev": {
@@ -4969,7 +4869,7 @@
                 "check",
                 "validate"
             ],
-            "time": "2020-04-18T12:12:48+00:00"
+            "time": "2020-06-16T10:16:42+00:00"
         },
         {
             "name": "yiisoft/yii2-debug",
@@ -5151,8 +5051,7 @@
         "kartik-v/yii2-widget-datepicker": 20,
         "kartik-v/bootstrap-fileinput": 20,
         "kartik-v/yii2-widget-fileinput": 20,
-        "kartik-v/yii2-mpdf": 20,
-        "2amigos/yii2-ckeditor-widget": 20
+        "kartik-v/yii2-mpdf": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,

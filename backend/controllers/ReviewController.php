@@ -37,11 +37,13 @@ class ReviewController extends Controller
      */
     public function actionIndex()
     {
+        $model = ReviewForm::find()->all();
         $searchModel = new ReviewSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
         $dataProvider->sort = ['defaultOrder' => ['id' => SORT_DESC]];
 
         return $this->render('index', [
+            'model' => $model,
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);

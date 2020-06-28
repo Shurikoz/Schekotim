@@ -1,10 +1,9 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: 4pok
- * Date: 17.06.2020
- * Time: 13:39
- */
+
+use rmrevin\yii\fontawesome\FAS;
+use yii\helpers\Html;
+use yii\widgets\ActiveForm;
+
 ?>
 <div class="row">
     <div class="col-md-12">
@@ -15,6 +14,31 @@
 </div>
 <div class="row">
     <div class="col-md-12">
-        <h3>Пользователь: <?= $model->username ?></h3>
+        <h3>Радактирование ползователя: <?= $user->username ?></h3>
+        <hr>
     </div>
 </div>
+<?php $form = ActiveForm::begin(); ?>
+<div class="row">
+    <div class="col-md-3">
+        <!--        --><? //= $form->field($user, 'username')->textInput(['class' => 'c-input'])->label('Логин'); ?>
+        <?= $form->field($user, 'email')->textInput(['class' => 'c-input'])->label('Email'); ?>
+    </div>
+    <div class="col-md-3">
+        <?= $form->field($user, 'city_id')->dropDownList($city, ['prompt' => 'Выберите город', 'class' => 'c-input', 'options' => [$user->city_id => ["Selected" => true]]])->label('Город') ?>
+        <?= $form->field($user, 'address_point_id')->dropDownList($addressPoint, ['prompt' => 'Выберите точку', 'class' => 'c-input'])->label('Точка'); ?>
+    </div>
+    <div class="col-md-3">
+        <?//= $form->field($user, 'email')->dropDownList($allRoles, ['prompt' => '-', 'class' => 'c-input', 'options' => [$userRole => ["Selected" => true]]])->label('Роль'); ?>
+        <?= Html::label('Роль пользователя', 'role') ?>
+        <?= Html::dropDownList('role', 'null', $allRoles, ['prompt' => '-', 'class' => 'c-input', 'options' => [$userRole => ["Selected" => true]]]); ?>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="form-group">
+            <?= Html::submitButton('Сохранить', ['class' => 'btn btn-success']) ?>
+        </div>
+    </div>
+</div>
+<?php ActiveForm::end(); ?>

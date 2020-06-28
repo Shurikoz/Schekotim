@@ -1,8 +1,8 @@
 <?php
-$manager = Yii::$app->user->can('manager');
+$administrator = Yii::$app->user->can('administrator');
 $admin = Yii::$app->user->can('admin');
 $smm = Yii::$app->user->can('smm');
-$user = Yii::$app->user->can('user');
+$podolog = Yii::$app->user->can('podolog');
 $leader = Yii::$app->user->can('leader');
 ?>
 <div class="row">
@@ -13,7 +13,7 @@ $leader = Yii::$app->user->can('leader');
 </div>
 <div class="panel-group" id="accordion">
 
-    <?php if ($user) { ?>
+    <?php if ($podolog) { ?>
         <?= $this->render('tutorial/user') ?>
     <?php } ?>
 
@@ -21,8 +21,8 @@ $leader = Yii::$app->user->can('leader');
         <?= $this->render('tutorial/smm') ?>
     <?php } ?>
 
-    <?php if ($manager) { ?>
-        <?= $this->render('tutorial/manager') ?>
+    <?php if ($administrator) { ?>
+        <?= $this->render('tutorial/administrator') ?>
     <?php } ?>
 
     <?php if ($leader || $admin) { ?>
@@ -30,7 +30,7 @@ $leader = Yii::$app->user->can('leader');
         <?= $this->render('tutorial/user') ?>
         <hr>
         <h4>Менеджер</h4>
-        <?= $this->render('tutorial/manager') ?>
+        <?= $this->render('tutorial/administrator') ?>
         <hr>
         <h4>SMM</h4>
         <?= $this->render('tutorial/smm') ?>

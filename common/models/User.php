@@ -1,6 +1,8 @@
 <?php
 namespace common\models;
 
+use backend\models\AddressPoint;
+use backend\models\City;
 use Yii;
 use yii\base\NotSupportedException;
 use yii\behaviors\TimestampBehavior;
@@ -19,6 +21,8 @@ use yii\web\IdentityInterface;
  * @property integer $status
  * @property integer $created_at
  * @property integer $updated_at
+ * @property integer $city_id
+ * @property integer $address_point_id
  * @property string $password write-only password
  */
 class User extends ActiveRecord implements IdentityInterface
@@ -54,6 +58,7 @@ class User extends ActiveRecord implements IdentityInterface
         return [
             ['status', 'default', 'value' => self::STATUS_ACTIVE],
             ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_DELETED]],
+            ['email', 'email']
         ];
     }
 
@@ -188,6 +193,13 @@ class User extends ActiveRecord implements IdentityInterface
         $this->password_reset_token = null;
     }
 
+    public function getCity()
+    {
+        return $this->hasOne(City::className(), ['id' => 'city_id']);
+    }
 
-
+    public function getAddress_point()
+    {
+        return $this->hasOne(AddressPoint::className(), ['id' => 'address_point_id']);
+    }
 }

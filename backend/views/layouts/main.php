@@ -13,9 +13,9 @@ use yii\helpers\Html;
 AppAsset::register($this);
 
 $admin = Yii::$app->user->can('admin');
-$manager = Yii::$app->user->can('manager');
+$administrator = Yii::$app->user->can('administrator');
 $smm = Yii::$app->user->can('smm');
-$user = Yii::$app->user->can('user');
+$podolog = Yii::$app->user->can('podolog');
 $leader = Yii::$app->user->can('leader');
 
 ?>
@@ -56,9 +56,15 @@ $leader = Yii::$app->user->can('leader');
             'url' => ['/']
         ];
         $menuItems[] = [
+            'label' => 'Задачи',
+            'url' => ['/task/index'],
+            'visible' => $admin || $administrator || $smm || $podolog || $leader
+
+        ];
+        $menuItems[] = [
             'label' => 'Картотека',
             'url' => ['/card/index'],
-            'visible' => $user || $manager
+            'visible' => $podolog || $administrator
         ];
         $menuItems[] = [
             'label' => 'Фото работ',
@@ -69,9 +75,11 @@ $leader = Yii::$app->user->can('leader');
             'label' => 'Сайт',
             'visible' => $admin || $leader,
             'items' => [
-                ['label' => 'Отзывы', 'visible' => $admin || $leader, 'url' => '/review/index'],
-                ['label' => 'Галерея', 'visible' => $admin, 'url' => '/gallery/index'],
                 ['label' => 'Прайс-лист', 'visible' => $admin || $leader, 'url' => '/pages/price'],
+                ['label' => 'Акции и скидки', 'visible' => $admin || $leader, 'url' => '/stock/index'],
+                ['label' => 'Галерея', 'visible' => $admin, 'url' => '/gallery/index'],
+                ['label' => 'Отзывы', 'visible' => $admin || $leader, 'url' => '/review/index'],
+
             ],
         ];
         $menuItems[] = [
@@ -87,13 +95,14 @@ $leader = Yii::$app->user->can('leader');
             'label' => 'Управление',
             'visible' => $admin,
             'items' => [
-                ['label' => 'Регистрация', 'url' => '/site/signup'],
+                ['label' => 'Регистрация', 'url' => '/user/signup'],
                 ['label' => 'RBAC', 'url' => '/admin/user/index'],
                 ['label' => 'Служба поддержки', 'url' => '/pages/support'],
             ],
         ];
         $menuItems[] = [
             'label' => 'Профиль',
+            'visible' => $admin || $administrator || $smm || $podolog || $leader,
             'items' => [
                 ['label' => 'Уведомления', 'url' => '/notification'],
                 ['label' => 'Настройки', 'url' => '/settings'],

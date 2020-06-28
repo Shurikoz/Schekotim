@@ -14,7 +14,19 @@ $count_orders = (isset($_GET['per-page'])) ? $_GET['per-page'] : 20;
 
 $this->title = 'Карты пациентов';
 
+$admin = Yii::$app->user->can('admin');
+$administrator = Yii::$app->user->can('administrator');
+$smm = Yii::$app->user->can('smm');
+$podolog = Yii::$app->user->can('podolog');
+$leader = Yii::$app->user->can('leader');
+
 ?>
+<div class="row">
+    <div class="col-md-12">
+        <h3>Карты пациентов</h3>
+        <hr>
+    </div>
+</div>
 <div class="card-index">
     <div class="row">
         <div class="col-md-12">
@@ -52,12 +64,10 @@ $this->title = 'Карты пациентов';
                 <caption class="c-table__title">
                     <?= Html::encode($this->title) ?>
                     <small>Найдено карт: <?= $dataProvider->getTotalCount() ?></small>
-
-                    <?php if (Yii::$app->user->can('admin') || Yii::$app->user->can('manager')) { ?>
+                    <?php if ($admin || $administrator || $leader) { ?>
                         <?= Html::a('Создать карту', ['card/create'], ['style' => 'float:right;', 'class' => 'btn btn-md btn-green center-block']) ?>
                     <?php } ?>
                 </caption>
-
                 <thead class="c-table__head c-table__head--slim">
                 <tr class="c-table__row">
                     <th class="c-table__cell c-table__cell--head">№</th>
@@ -70,7 +80,6 @@ $this->title = 'Карты пациентов';
                 </tr>
                 </thead>
                 <tbody>
-
                 <?php // TODO Исправить timeout?>
                 <?php Pjax::begin(['timeout' => 5000]); ?>
 
@@ -79,23 +88,20 @@ $this->title = 'Карты пациентов';
                         <tr class="c-table__row">
                             <td class="c-table__cell"><b><?= $item->number ?></b></td>
                             <td class="c-table__cell">
-                                <p><?= $item->city ?></p>
-                                <p><?= $item->address_point?></p>
+                                <p><?= $item->city->name ?></p>
+                                <p><?= $item->address_point->address_point?></p>
                             </td>
-
                             <td class="c-table__cell">
                                 <p><b><?= $item->surname ?> <?= $item->name ?> <?= $item->middle_name ?></b></p>
                                 <p>Г.р.: <?= Yii::$app->formatter->asDate($item->birthday) ?></p>
                             </td>
-
                             <td class="c-table__cell"><span class="visitMarker"><?= count($item->visit) ?></span></td>
-
                             <td class="c-table__cell cardBtn">
                                 <?= Html::a('<span class="glyphicon glyphicon-eye-open"></span>', ['card/view', 'number' => $item->number], [
                                     'class' => 'btn linkNewWindow',
                                     'data-number' => $item->number
                                 ]) ?>
-                                <?php if (Yii::$app->user->can('admin')) { ?>
+                                <?php if ($admin || $leader) { ?>
                                     <?= Html::a('<span class="glyphicon glyphicon-pencil"></span>', ['card/update', 'number' => $item->number], ['class' => 'btn']) ?>
                                     <?= Html::a('<span class="glyphicon glyphicon-trash"></span>', ['card/delete', 'number' => $item->number], [
                                         'class' => 'btn',
@@ -108,10 +114,9 @@ $this->title = 'Карты пациентов';
                     <?php } ?>
                 <?php } else { ?>
                     <tr class="c-table__row">
-                        <td colspan="10" class="c-table__cell--empty">Ничего не найдено :(</td>
+                        <td colspan="10" class="c-table__cell--empty">Ничего не найдено</td>
                     </tr>
                 <?php } ?>
-
                 <?php Pjax::end(); ?>
                 </tbody>
             </table>

@@ -29,10 +29,10 @@ $age = $born->diff(new DateTime)->format('%y');
     <hr>
     <div class="row">
         <div class="col-md-4">
-            <b>Город:</b> <?= Yii::$app->user->identity->city ?>
+            <b>Город:</b> <?= $visit->city->name ?>
         </div>
         <div class="col-md-4">
-            <b>Точка:</b> <?= Yii::$app->user->identity->address_point ?>
+            <b>Точка:</b> <?= $visit->address_point->address_point ?>
         </div>
         <div class="col-md-4">
             <b>Подолог:</b> <?= $podolog->name ?>
@@ -42,8 +42,8 @@ $age = $born->diff(new DateTime)->format('%y');
     <?php $form = ActiveForm::begin(); ?>
 
     <?= $form->field($model, 'card_number')->hiddenInput(['value' => (int)Yii::$app->request->get('number')])->label(false); ?>
-    <?= $form->field($model, 'city')->hiddenInput(['value' => Yii::$app->user->identity->city])->label(false); ?>
-    <?= $form->field($model, 'address_point')->hiddenInput(['value' => Yii::$app->user->identity->address_point])->label(false); ?>
+    <?= $form->field($model, 'city_id')->hiddenInput(['value' => Yii::$app->user->identity->city_id])->label(false); ?>
+    <?= $form->field($model, 'address_point_id')->hiddenInput(['value' => Yii::$app->user->identity->address_point_id])->label(false); ?>
     <?= $form->field($model, 'podolog_id')->hiddenInput(['value' => $podolog->id])->label(false); ?>
 
     <div class="row">

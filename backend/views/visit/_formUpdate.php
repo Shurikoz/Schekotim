@@ -37,10 +37,10 @@ $age = $born->diff(new DateTime)->format('%y');
     <hr>
     <div class="row">
         <div class="col-md-4">
-            <b>Город:</b> <?= $model->city ?>
+            <b>Город:</b> <?= $model->city->name ?>
         </div>
         <div class="col-md-4">
-            <b>Точка:</b> <?= $model->address_point ?>
+            <b>Точка:</b> <?= $model->address_point->address_point ?>
         </div>
         <div class="col-md-4">
             <b>Подолог:</b> <?= $podolog->name ?>
@@ -49,8 +49,8 @@ $age = $born->diff(new DateTime)->format('%y');
     <hr>
     <?php $form = ActiveForm::begin(['id' => 'formUpdate']); ?>
     <?= $form->field($model, 'card_number')->hiddenInput(['value' => $card_id])->label(false); ?>
-    <?= $form->field($model, 'city')->hiddenInput(['value' => $model->city])->label(false); ?>
-    <?= $form->field($model, 'address_point')->hiddenInput(['value' => $model->address_point])->label(false); ?>
+    <?= $form->field($model, 'city_id')->hiddenInput(['value' => $model->city_id])->label(false); ?>
+    <?= $form->field($model, 'address_point_id')->hiddenInput(['value' => $model->address_point_id])->label(false); ?>
     <?= $form->field($model, 'podolog_id')->hiddenInput(['value' => $podolog->id])->label(false); ?>
     <div class="row">
         <div class="col-md-4">

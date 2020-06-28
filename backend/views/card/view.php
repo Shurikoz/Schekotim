@@ -18,8 +18,10 @@ $this->title = 'Карта № ' . $model->number;
 $visit_number = count($visits);
 
 $admin = Yii::$app->user->can('admin');
-$user = Yii::$app->user->can('user');
-$manager = Yii::$app->user->can('manager');
+$administrator = Yii::$app->user->can('administrator');
+$smm = Yii::$app->user->can('smm');
+$podolog = Yii::$app->user->can('podolog');
+$leader = Yii::$app->user->can('leader');
 
 ?>
 <div class="card-view">
@@ -61,7 +63,7 @@ $manager = Yii::$app->user->can('manager');
         </div>
         <div class="col-md-6">
             <div class="box">
-                <b>Место создания: </b><?= $model->city ?>, <?= $model->address_point ?>
+                <b>Место создания: </b><?= $model->city->name ?>, <?= $model->address_point->address_point ?>
             </div>
         </div>
     </div>
@@ -72,7 +74,7 @@ $manager = Yii::$app->user->can('manager');
             <small>Всего посещений: <?= count($visits) ?></small>
             <small>(Одно посещение - одна проблема)</small>
             <div class="pull-right">
-                <?php if ($admin || $user) { ?>
+                <?php if ($admin || $podolog) { ?>
                     <?= Html::a('<span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Создать новое посещение', ['visit/create-first', 'id' => $model->id, 'number' => $model->number], ['class' => 'btn btn-green']) ?>
                 <?php } ?>
             </div>
@@ -149,8 +151,8 @@ $manager = Yii::$app->user->can('manager');
                         <span><?= $visit_number ?></span>
                     </td>
                     <td class="c-table__cell">
-                        <p><?= $item->city ?></p>
-                        <p><?= $item->address_point ?></p>
+                        <p><?= $item->city->name ?></p>
+                        <p><?= $item->address_point->address_point ?></p>
                     </td>
                     <td class="c-table__cell">
                         <?php if ($item->problem_id == 0) { ?>
@@ -187,20 +189,18 @@ $manager = Yii::$app->user->can('manager');
                 </tr>
                 <tr class="c-table__row infoBlock hide hideBox">
                         <td colspan="10" class="c-table__infoBlock">
-                            <?php if ($item->podolog->user_id == Yii::$app->user->id || $admin) { ?>
+                            <?php if ($item->podolog->user_id == Yii::$app->user->id || $admin || $leader) { ?>
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="userStatus pull-right">
-                                            <div>
-                                                <?= Html::a('<span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Создать будущее посещение', ['visit/create-second', 'id' => $item->id, 'card' => $model->id, 'number' => $model->number], ['class' => 'btn btn-green']) ?>
-                                            </div>
+<!--                                            <div>-->
+<!--                                                --><?//= Html::a('<span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Создать будущее посещение', ['visit/create-second', 'id' => $item->id, 'card' => $model->id, 'number' => $model->number], ['class' => 'btn btn-green']) ?>
+<!--                                            </div>-->
 
                                             <?php //проверка, если текущий пользователь является указанным в визите подологом, то он может редактировать этот визит
-                                            if (($item->podolog->user_id == Yii::$app->user->id && $item->timestamp + 60 * 60 * 24 * 2 >= time()) && $item->has_come != 2) { ?>
+                                            if (($item->podolog->user_id == Yii::$app->user->id && $item->timestamp + 60 * 60 * 24 * 2 >= time()) && $item->has_come != 2 && $item->resolve != 1) { ?>
                                                 <div id="blockEdit_<?= $item->id ?>" data-id="<?= $item->id ?>">
-<!--                                                    --><?//= Html::a('Изменить посещение', ['visit/update', 'id' => $item->id, 'card' => $model->id, 'card_number' => $model->number], ['class' => 'btn btn-info']) ?>
                                                     <?= Html::a('Изменить посещение', ['visit/update', 'id' => $item->id, 'number' => $model->number], ['class' => 'btn btn-info']) ?>
-
                                                     <?php //если указан интервал посещения, то таймер не выводим ?>
                                                     <?php if (strtotime($item->next_visit_by) <= time()) { ?>
                                                         <?= Countdown::widget([
@@ -220,28 +220,34 @@ $manager = Yii::$app->user->can('manager');
                                                         ]) ?>
                                                     <?php } ?>
                                                 </div>
-                                            <?php } elseif ($admin) { ?>
+                                            <?php } elseif ($admin || $leader) { ?>
                                                 <div>
                                                     <?= Html::a('Изменить посещение', ['visit/update', 'id' => $item->id], ['class' => 'btn btn-info']) ?>
                                                 </div>
                                             <?php } ?>
                                             <?php //кнопка «Проблема решена» доступна админу или тому, кто создал посещение?>
-                                            <?php if ($item->podolog->user_id == Yii::$app->user->id || $admin) { ?>
-                                                <div>
-                                                    <?php if ($item->visit_date != null && $item->problem_id != 0 && $item->has_come != 2) { ?>
+                                            <?php if ($item->podolog->user_id == Yii::$app->user->id || $admin || $leader) { ?>
+                                                <?php if ($item->visit_date != null && $item->problem_id != 0 && $item->has_come != 2) { ?>
+                                                    <div>
                                                         <?php if ($item->resolve == 0) { ?>
                                                             <?= Html::a('Проблема решена!', ['visit/completed', 'id' => $item->id, 'card' => $model->number, 'resolve' => true], [
-                                                                'class' => 'btn btn-green'
+                                                                'class' => 'btn btn-green',
+                                                                'data' => [
+                                                                'confirm' => 'Отметить проблему решенной?',
+                                                                'method' => 'post',
+                                                            ],
                                                             ]) ?>
                                                         <?php } else { ?>
-                                                            <?= Html::a('Снять отметку «Проблема решена»!', ['visit/completed', 'id' => $item->id, 'card' => $model->number, 'resolve' => false], [
-                                                                'class' => 'btn btn-default'
-                                                            ]) ?>
+                                                            <?php if ($admin || $leader) { ?>
+                                                                <?= Html::a('Снять отметку «Проблема решена»!', ['visit/completed', 'id' => $item->id, 'card' => $model->number, 'resolve' => false], [
+                                                                    'class' => 'btn btn-default'
+                                                                ]) ?>
+                                                            <?php } ?>
                                                         <?php } ?>
-                                                    <?php } ?>
-                                                </div>
+                                                    </div>
+                                                <?php } ?>
                                             <?php } ?>
-                                            <?php if ($admin) { ?>
+                                            <?php if ($admin || $leader) { ?>
                                                 <div>
                                                     <?= Html::a('Удалить', ['visit/delete', 'id' => $item->id, 'card' => $model->number], [
                                                         'class' => 'btn btn-danger',
@@ -257,7 +263,7 @@ $manager = Yii::$app->user->can('manager');
                                 </div>
                                 <hr>
                             <?php } ?>
-                            <?php if ($manager || $admin || $user) { ?>
+                            <?php if ($administrator || $admin || $podolog || $leader) { ?>
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="userStatus pull-right">
@@ -267,11 +273,11 @@ $manager = Yii::$app->user->can('manager');
                                                     'class' => 'btn btn-warning',
                                                     'target' => '_blank',
                                                     'data-toggle' => 'tooltip',
-                                                    'title' => 'Откроет сгенерированный PDF файл  в новом окне'
+                                                    'title' => 'Откроет сгенерированный PDF файл в новом окне'
                                                 ]); ?>
                                             </div>
                                         </div>
-                                        <?php if ($manager || $admin) { ?>
+                                        <?php if ($administrator || $admin || $leader) { ?>
                                             <?php
                                             $form = ActiveForm::begin();
                                             Modal::begin([

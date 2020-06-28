@@ -28,7 +28,7 @@ class SignupUser extends Signup
         return [
             ['username', 'filter', 'filter' => 'trim'],
             ['username', 'required'],
-            ['username', 'unique', 'targetClass' => $class, 'message' => 'This username has already been taken.'],
+            ['username', 'unique', 'targetClass' => $class, 'message' => 'Это имя уже занято.'],
             ['username', 'string', 'min' => 2, 'max' => 255],
             ['username', 'match', 'pattern' => '/^([a-zA-Z0-9]+)$/u', 'message' => 'Разрешено вводить только латинские символы'],
 
@@ -36,7 +36,7 @@ class SignupUser extends Signup
             ['email', 'filter', 'filter' => 'trim'],
             ['email', 'required'],
             ['email', 'email'],
-            ['email', 'unique', 'targetClass' => $class, 'message' => 'This email address has already been taken.'],
+            ['email', 'unique', 'targetClass' => $class, 'message' => 'Этот email уже используется другим пользователем.'],
 
             ['password', 'required'],
             ['password', 'string', 'min' => 6],
@@ -50,6 +50,15 @@ class SignupUser extends Signup
             [['city', 'address_point'], 'required'],
             ['address_point', 'integer', 'min' => '1', 'tooSmall' => 'Точка не выбрана!'],
 
+        ];
+    }
+    /**
+     * {@inheritdoc}
+     */
+    public function attributeLabels()
+    {
+        return [
+            'city' => 'Город',
         ];
     }
     /**

@@ -33,10 +33,12 @@ use yii\helpers\Html;
     <div class="col-md-4">
         <h4>Информация о пользователе</h4>
         <hr>
-        <p><b>Email:</b> <?= $user->email?></p>
-        <br>
-        <p><b>Город:</b> <?= $user->city?></p>
-        <br>
-        <p><b>Точка:</b> <?= $user->address_point?></p>
+        <div class="box">
+            <p><b>Email:</b> <?= $user->email ?></p>
+            <br>
+            <p><b>Город:</b> <?= $user->city->name ?></p>
+            <br>
+            <p><b>Точка:</b> <?= $user->address_point->address_point ?></p>
+        </div>
     </div>
 </div>

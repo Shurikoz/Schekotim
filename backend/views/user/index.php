@@ -7,6 +7,8 @@
 use yii\helpers\Html;
 
 \yii\web\YiiAsset::register($this);
+$admin = Yii::$app->user->can('admin');
+
 ?>
 <div class="row">
     <div class="col-md-12">
@@ -16,10 +18,9 @@ use yii\helpers\Html;
 </div>
 <div class="row">
     <div class="col-md-12">
-        <?= Html::a('Регистрация нового пользователя', ['/user/signup'], ['class' => 'btn btn-success pull-right']) ?>
+        <?= Html::a('Регистрация нового пользователя', ['/user/signup'], ['class' => 'btn btn-green pull-right']) ?>
     </div>
 </div>
-<hr>
 <br>
 
 <div class="row">
@@ -45,6 +46,7 @@ use yii\helpers\Html;
                     </td>
                     <td class="c-table__cell">
                         <h4><?= $item->username ?></h4>
+                        <p><?= $item->name ?></p>
                         <p><?= $item->email ?></p>
                     </td>
                     <td class="c-table__cell">
@@ -83,6 +85,12 @@ use yii\helpers\Html;
 
                                 ]) ?>
                             <?php } ?>
+                        <?php } ?>
+                        <?php if ($admin) { ?>
+                        <?= Html::a('<span class="glyphicon glyphicon-trash" title="Разблокировать"></span>', ['user/delete', 'id' => $item->id], [
+                            'class' => 'btn',
+                            'data-confirm' => 'Удалить пользователя?'
+                        ]) ?>
                         <?php } ?>
                     </td>
                 </tr>

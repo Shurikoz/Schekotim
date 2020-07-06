@@ -13,6 +13,7 @@ use yii\imagine\Image;
  * @property int $visit_id
  * @property string $url
  * @property string $thumbnail
+ * @property string $original
  * @property string $files
  */
 class Photo extends ActiveRecord
@@ -37,7 +38,7 @@ class Photo extends ActiveRecord
     {
         return [
             [['visit_id'], 'integer'],
-            [['url', 'thumbnail'], 'string'],
+            [['url', 'thumbnail', 'original'], 'string'],
 
             [['before', 'after'], 'image',
                 'extensions' => ['jpg', 'jpeg'],
@@ -87,6 +88,9 @@ class Photo extends ActiveRecord
                 //изображение в папке temp
                 $tempImage = Yii::getAlias($dir . '/temp/' . $fileName);
 
+                //сохраним оригинал
+                copy($tempImage, $dir . '/originalBefore/' . $fileName);
+
                 //параметры текста для фото
                 $text = '
     Карта #: ' . $cardNumber . '
@@ -127,6 +131,7 @@ class Photo extends ActiveRecord
                 $model->visit_id = $visitId;
                 $model->url = '/' . $dir . '/before/' . $fileName;
                 $model->thumbnail = '/' . $dir . '/thumbBefore/' . $fileName;
+                $model->original = '/' . $dir . '/originalBefore/' . $fileName;
                 $model->made = 'before';
                 $model->save(false);
             }
@@ -162,6 +167,9 @@ class Photo extends ActiveRecord
 
                 //изображение в папке temp
                 $tempImage = Yii::getAlias($dir . '/temp/' . $fileName);
+
+                //сохраним оригинал
+                copy($tempImage, $dir . '/originalAfter/' . $fileName);
 
                 //параметры текста для фото
                 $text = '
@@ -202,6 +210,7 @@ class Photo extends ActiveRecord
                 $model->visit_id = $visitId;
                 $model->url = '/' . $dir . '/after/' . $fileName;
                 $model->thumbnail = '/' . $dir . '/thumbAfter/' . $fileName;
+                $model->original = '/' . $dir . '/originalAfter/' . $fileName;
                 $model->made = 'after';
                 $model->save(false);
             }
@@ -239,6 +248,8 @@ class Photo extends ActiveRecord
         if (!file_exists($dir)) {
             mkdir($dir, 0777, true);
             mkdir($dir . '/temp', 0777, true);
+            mkdir($dir . '/originalBefore', 0777, true);
+            mkdir($dir . '/originalAfter', 0777, true);
             mkdir($dir . '/before', 0777, true);
             mkdir($dir . '/after', 0777, true);
             mkdir($dir . '/thumbBefore', 0777, true);

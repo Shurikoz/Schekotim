@@ -19,10 +19,6 @@ $card_id = (int)Yii::$app->request->get('number');
 $born = new DateTime($card->birthday); // дата рождения
 $age = $born->diff(new DateTime)->format('%y');
 ?>
-<!--<pre>-->
-<?//=print_r($card)?>
-<!--</pre>-->
-
 
 <hr>
 <div class="visit-form">
@@ -63,7 +59,7 @@ $age = $born->diff(new DateTime)->format('%y');
         </div>
         <div class="col-md-3">
             <div class="box">
-                <?= $form->field($model, 'has_come')->checkbox(['value' => '1', 'checked ' => true])->label(false); ?>
+                <?= $form->field($model, 'has_come')->checkbox(['value' => '1', 'checked ' => false])->label(false); ?>
             </div>
         </div>
         <div class="col-md-3">

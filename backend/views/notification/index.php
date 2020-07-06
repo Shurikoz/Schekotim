@@ -3,12 +3,9 @@
 use yii\helpers\Html;
 use yii\widgets\Pjax;
 
+$this->title = 'Уведомления';
+
 ?>
-    <ul class="nav nav-tabs nav-justified">
-        <li class="active"><a href="#">Меню 1</a></li>
-        <li><a href="#">Меню 2</a></li>
-        <li><a href="#">Меню 3</a></li>
-    </ul>
 <div class="row">
     <div class="col-md-12">
         <h3>Уведомления</h3>
@@ -23,5 +20,4 @@ use yii\widgets\Pjax;
 </div>
 <br>
 <?= $result ?>
-
 <?php Pjax::end(); ?>

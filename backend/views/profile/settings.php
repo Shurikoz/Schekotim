@@ -34,6 +34,9 @@ use yii\helpers\Html;
         <h4>Информация о пользователе</h4>
         <hr>
         <div class="box">
+            <?php $role = array_keys(Yii::$app->authManager->getRolesByUser(Yii::$app->user->id))?>
+            <p><b>Роль:</b> <?= Yii::$app->authManager->getRole($role)->description;?></p>
+            <br>
             <p><b>Email:</b> <?= $user->email ?></p>
             <br>
             <p><b>Город:</b> <?= $user->city->name ?></p>

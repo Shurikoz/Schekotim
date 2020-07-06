@@ -112,7 +112,7 @@ $leader = Yii::$app->user->can('leader');
             . Html::beginForm(['/site/logout'], 'post')
             . Html::submitButton(
                 'Выход (' . Yii::$app->user->identity->username . ')',
-                ['class' => 'btn btn-link logout']
+                ['class' => 'logout']
             )
             . Html::endForm()
             . '</li>';

@@ -133,12 +133,16 @@ class PhotoController extends Controller
      * @return \yii\console\Response|\yii\web\Response
      * @throws NotFoundHttpException
      */
-    public function actionDownload($id) {
+    public function actionDownload($id, $type) {
         $image = Photo::findOne(['id' => $id]);
         if ($image === null) {
             throw new NotFoundHttpException('Фото не найдено');
         }
-        return Yii::$app->response->sendFile(Yii::getAlias('@backend/web' . $image->url));
+        if ($type == 'processed'){
+            return Yii::$app->response->sendFile(Yii::getAlias('@backend/web' . $image->url));
+        } elseif ($type == 'original'){
+            return Yii::$app->response->sendFile(Yii::getAlias('@backend/web' . $image->original));
+        }
     }
 
 }

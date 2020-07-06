@@ -143,7 +143,6 @@ class SiteController extends Controller
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
             if ($model->sendEmail()) {
                 Yii::$app->session->setFlash('success', 'Проверьте свою электронную почту для дальнейших инструкций!');
-
                 return $this->goHome();
             } else {
                 Yii::$app->session->setFlash('error', 'К сожалению, мы не можем сбросить пароль для указанного адреса электронной почты!');
@@ -171,7 +170,7 @@ class SiteController extends Controller
         }
 
         if ($model->load(Yii::$app->request->post()) && $model->validate() && $model->resetPassword()) {
-            Yii::$app->session->setFlash('success', 'Новый пароль сохранен!');
+            Yii::$app->session->setFlash('success', 'Новый пароль сохранен! Используйте его для входа в систему.');
 
             return $this->goHome();
         }

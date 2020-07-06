@@ -282,6 +282,7 @@ class SiteController extends Controller
      * Displays review page.
      *
      * @return mixed
+     * @throws \yii\base\InvalidConfigException
      */
     public function actionReview()
     {
@@ -320,8 +321,8 @@ class SiteController extends Controller
                 $reviewMobile = $newReview->mobile;
 
                 //создание ссылок на публикацию / изменение нового оставленного отзыва
-                $linkPublic = 'http://admin.schekotim.ru/review/show?id=' . $newReview->id;
-                $linkEdit = 'http://admin.schekotim.ru/review/update?id=' . $newReview->id;
+                $linkPublic = 'http://lk.schekotim.ru/review/show?id=' . $newReview->id;
+                $linkEdit = 'http://lk.schekotim.ru/review/update?id=' . $newReview->id;
 
                 $newReview->sendNotificationReview(
                     Yii::$app->params['notificationReviewMail'],

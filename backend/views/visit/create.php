@@ -67,7 +67,7 @@ $age = $born->diff(new DateTime)->format('%y');
             </div>
             <div class="col-md-4">
                 <div class="box">
-                    <?= Html::checkbox('secondVisit', false, ['label' => 'Назначить повторное посещение', 'onchange' => 'dateVisit()']) ?>
+                    <?= Html::checkbox('secondVisit', false, ['label' => 'Назначить повторное посещение', 'onchange' => 'dateVisitCreate()']) ?>
                 </div>
             </div>
             <div class="col-md-4 dateVisit hide">
@@ -218,7 +218,7 @@ $age = $born->diff(new DateTime)->format('%y');
         </div>
         <hr>
         <div class="form-group pull-right">
-            <?= Html::submitButton('Сохранить', ['class' => 'btn btn-success']) ?>
+            <?= Html::submitButton('Сохранить', ['class' => 'btn btn-green']) ?>
         </div>
         <?php ActiveForm::end(); ?>
     </div>

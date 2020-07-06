@@ -168,8 +168,8 @@ $count_visits = (isset($_GET['per-page'])) ? $_GET['per-page'] : 20;
                                             <div class="photo" style="float: left; margin:0 0 20px 20px">
                                                 <?= Html::a('<img src="' . $photo->thumbnail . '">', $photo->url, ['target' => '_blank']) ?>
                                                 <br>
-                                                <?= Html::a('<span class="glyphicon glyphicon-download-alt"></span> Скачать', ['photo/download', 'id' => $photo->id]) ?>
-                                                <?php ?>
+                                                <?= Html::a('<span class="glyphicon glyphicon-download-alt"></span> Обработанное', ['photo/download', 'id' => $photo->id, 'type' => 'processed']) ?>                                                <br>
+                                                <?= Html::a('<span class="glyphicon glyphicon-download-alt"></span> Оригинал', ['photo/download', 'id' => $photo->id, 'type' => 'original']) ?>
                                             </div>
                                         <?php } ?>
                                     <?php } ?>
@@ -183,8 +183,8 @@ $count_visits = (isset($_GET['per-page'])) ? $_GET['per-page'] : 20;
                                             <div class="photo" style="float: left; margin:0 0 20px 20px">
                                                 <?= Html::a('<img src="' . $photo->thumbnail . '">', $photo->url, ['target' => '_blank']) ?>
                                                 <br>
-                                                <?= Html::a('<span class="glyphicon glyphicon-download-alt"></span> Скачать', ['photo/download', 'id' => $photo->id]) ?>
-                                                <?php ?>
+                                                <?= Html::a('<span class="glyphicon glyphicon-download-alt"></span> Обработанное', ['photo/download', 'id' => $photo->id, 'type' => 'processed']) ?>                                                <br>
+                                                <?= Html::a('<span class="glyphicon glyphicon-download-alt"></span> Оригинал', ['photo/download', 'id' => $photo->id, 'type' => 'original']) ?>
                                             </div>
                                         <?php } ?>
                                     <?php } ?>

@@ -3,6 +3,7 @@
 namespace backend\controllers;
 
 use backend\models\Card;
+use backend\models\Logs;
 use backend\models\Photo;
 use backend\models\Podolog;
 use backend\models\Problem;
@@ -60,8 +61,20 @@ class VisitController extends Controller
      */
     public function actionMissed()
     {
-        $model = Visit::find()->where(['has_come' => '2'])->all();
+        //has_come: 0 - ожидание, 1 - пришел, 2 - не пришел
+        $model = Visit::find()->where(['has_come' => '2'])->with('card', 'city', 'address_point')->all();
         return $this->render('missed', [
+            'model' => $model
+        ]);
+    }
+
+    /**
+     * @return string
+     */
+    public function actionPlanned()
+    {
+        $model = Visit::find()->where(['planned' => '1'])->with('card', 'city', 'address_point')->all();
+        return $this->render('planned', [
             'model' => $model
         ]);
     }
@@ -72,7 +85,7 @@ class VisitController extends Controller
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreateFirst()
+    public function actionCreate()
     {
         $post = Yii::$app->request->post();
 
@@ -89,28 +102,19 @@ class VisitController extends Controller
 
         $card = Card::find()->where(['number' => Yii::$app->request->get('number')])->one();
 
-        //присвоим некоторые стандартные значения
-        //для первого посещения
+        //присвоим некоторые стандартные значения для первого посещения
+        //has_come: 0 - ожидание, 1 - пришел, 2 - не пришел
         $model->has_come = 1;
         $model->edit = 1; //возможность редактирования - 1 можно, 0 запрещено
         $model->timestamp = time() + 60 * 60 * 24 * 2; // 2 суток на редактирование
         $model->visit_time = date('H:i');
         $model->visit_date = date('d.m.Y');
 
+
         if ($model->load($post) && $secondVisit->load($post)) {
                 if ($secondVisit->next_visit_from && $secondVisit->next_visit_by) {
-//                    $secondVisit->podolog_id = $model->podolog_id;
-//                    $secondVisit->card_number = $model->card_number;
-//                    $secondVisit->city_id = $model->city_id;
-//                    $secondVisit->address_point_id = $model->address_point_id;
-//                    $secondVisit->problem_id = $model->problem_id;
-//                    $secondVisit->has_come = 0;
-//                    $secondVisit->edit = 1;
-//                    $secondVisit->visit_time = null;
-//                    $secondVisit->visit_date = null;
-//                    $secondVisit->manipulation = null;
-//                    $secondVisit->recommendation = null;
                     $secondVisit->timestamp = time();
+                    $secondVisit->planned = 1;
                 }
 
             $model->next_visit_from = null;
@@ -144,45 +148,45 @@ class VisitController extends Controller
         ]);
     }
 
-    /**
-     * создание нового будущего посещения на основе выбранного
-     * Creates a new Visit model.
-     * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return mixed
-     * @throws NotFoundHttpException
-     */
-    public function actionCreateSecond($id, $card)
-    {
-        $visit = Visit::find()->where(['id' => $id])->with('city', 'address_point')->one();
-
-        $model = new Visit();
-        $model->setAttributes($visit->attributes);
-
-        $card = Card::find()->where(['number' => Yii::$app->request->get('number')])->one();
-
-        //получим id точки из аккаунта текущего пользователя
-        $podolog = Podolog::find()->where(['user_id' => Yii::$app->user->identity->id])->one();
-
-        //присвоим некоторые стандартные значения
-        $model->has_come = 0;
-        $model->edit = 1; //возможность редактирования - 1 можно, 0 запрещено
-        //$model->timestamp = time() + 60 * 60 * 24 * 2; // 2 суток на редактирование
-        $model->visit_time = null;
-        $model->visit_date = null;
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-//            print_r($modelSecond);die;
-            Yii::$app->session->setFlash('success', 'Данные сохранены!');
-            return $this->redirect(['card/view', 'number' => Yii::$app->request->get('number')]);
-        }
-        return $this->render('createSecond', [
-            'visit' => $visit,
-            'card' => $card,
-            'model' => $model,
-            'podolog' => $podolog,
-            'problem' => $this->findProblem(),
-        ]);
-    }
+//    /**
+//     * создание нового будущего посещения на основе выбранного
+//     * Creates a new Visit model.
+//     * If creation is successful, the browser will be redirected to the 'view' page.
+//     * @return mixed
+//     * @throws NotFoundHttpException
+//     */
+//    public function actionCreateSecond($id, $card)
+//    {
+//        $visit = Visit::find()->where(['id' => $id])->with('city', 'address_point')->one();
+//
+//        $model = new Visit();
+//        $model->setAttributes($visit->attributes);
+//
+//        $card = Card::find()->where(['number' => Yii::$app->request->get('number')])->one();
+//
+//        //получим id точки из аккаунта текущего пользователя
+//        $podolog = Podolog::find()->where(['user_id' => Yii::$app->user->identity->id])->one();
+//
+//        //присвоим некоторые стандартные значения
+//        $model->has_come = 0;
+//        $model->edit = 1; //возможность редактирования - 1 можно, 0 запрещено
+//        //$model->timestamp = time() + 60 * 60 * 24 * 2; // 2 суток на редактирование
+//        $model->visit_time = null;
+//        $model->visit_date = null;
+//
+//        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+////            print_r($modelSecond);die;
+//            Yii::$app->session->setFlash('success', 'Данные сохранены!');
+//            return $this->redirect(['card/view', 'number' => Yii::$app->request->get('number')]);
+//        }
+//        return $this->render('createSecond', [
+//            'visit' => $visit,
+//            'card' => $card,
+//            'model' => $model,
+//            'podolog' => $podolog,
+//            'problem' => $this->findProblem(),
+//        ]);
+//    }
 
     /**
      * Updates an existing Visit model.
@@ -193,33 +197,50 @@ class VisitController extends Controller
      */
     public function actionUpdate($id)
     {
+        $post = Yii::$app->request->post();
+
         $model = Visit::find()->where(['id' => $id])->with('city', 'address_point')->one();
         $addPhotoBefore = new Photo();
         $addPhotoAfter = new Photo();
+        $secondVisit = new Visit();
 
         $photoBefore = Photo::find()->where(['visit_id' => $model->id, 'made' => 'before'])->all();
         $photoAfter = Photo::find()->where(['visit_id' => $model->id, 'made' => 'after'])->all();
         $podolog = Podolog::find()->where(['id' => $model->podolog_id])->one();
         $card = Card::find()->where(['number' => $model->card_number])->one();
 
-        $model->visit_time = date('H:i');
-        $model->visit_date = date('Y-m-d');
+            if ($model->load($post) && $secondVisit->load($post)) {
+                if ($secondVisit->next_visit_from && $secondVisit->next_visit_by) {
+                    $secondVisit->timestamp = time();
+                    $secondVisit->planned = 1;
+                }
 
-        $model->card_number = $card->number;
+                $model->visit_time = date('H:i');
+                $model->visit_date = date('d.m.Y');
+                $model->card_number = $card->number;
+                $model->planned = 0;
+                $model->next_visit_from = null;
+                $model->next_visit_by = null;
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            $addPhotoBefore->before = UploadedFile::getInstances($addPhotoBefore, 'before');
-            $addPhotoAfter->after = UploadedFile::getInstances($addPhotoAfter, 'after');
-            $addPhotoBefore->uploadBefore($model->id, Yii::$app->request->get('number'), $model->visit_date);
-            $addPhotoAfter->uploadAfter($model->id, Yii::$app->request->get('number'), $model->visit_date);
+            if ($model->save()) {
+                if ($secondVisit->next_visit_from && $secondVisit->next_visit_by) {
+                    $secondVisit->has_come = 0;
+                    $secondVisit->save();
+                }
 
-            Yii::$app->session->setFlash('success', 'Данные визита <b>#' . $model->id . '</b> сохранены!');
+                $addPhotoBefore->before = UploadedFile::getInstances($addPhotoBefore, 'before');
+                $addPhotoAfter->after = UploadedFile::getInstances($addPhotoAfter, 'after');
+                $addPhotoBefore->uploadBefore($model->id, Yii::$app->request->get('number'), $model->visit_date);
+                $addPhotoAfter->uploadAfter($model->id, Yii::$app->request->get('number'), $model->visit_date);
+                Yii::$app->session->setFlash('success', 'Данные визита <b>#' . $model->id . '</b> сохранены!');
+                return $this->redirect(['card/view', 'number' => $card->number]);
+            }
 
-            return $this->redirect(['card/view', 'number' => $card->number]);
         }
         return $this->render('update', [
             'card' => $card,
             'model' => $model,
+            'secondVisit' => $secondVisit,
             'podolog' => $podolog,
             'problem' => $this->findProblem(),
             'photoBefore' => $photoBefore,
@@ -466,6 +487,116 @@ class VisitController extends Controller
         ]);
         // return the pdf output as per the destination setting
         return $pdf->render();
+    }
+
+    /**
+     * поставить отметку
+     * клиент оповещен о запланированном посещении
+     */
+    public function actionContacted($id)
+    {
+        $visit = $this->findModel($id);
+        $visit->contacted = 1;
+        if ($visit->save()) {
+            $model = Visit::find()->where(['planned' => '1'])->with('card', 'city', 'address_point')->all();
+            Yii::$app->session->setFlash('success', 'Клинент уведомлен о посещении (# ' . $id . ')!');
+            return $this->render('planned', [
+                'model' => $model
+            ]);
+        }
+        return false;
+    }
+
+    /**
+     * поставить отметку
+     * клиент записан на посещение
+     */
+    public function actionRecorded($id)
+    {
+        $visit = $this->findModel($id);
+        $visit->recorded = 1;
+        if ($visit->save()) {
+            $model = Visit::find()->where(['planned' => '1'])->with('card', 'city', 'address_point')->all();
+            Yii::$app->session->setFlash('success', 'Клинент записан на посещение (# ' . $id . ')!');
+            return $this->render('planned', [
+                'model' => $model
+            ]);
+        }
+        return false;
+    }
+
+    /**
+     * поставить отметку
+     * клиент отказался от записи
+     */
+    public function actionCancel($id)
+    {
+        $visit = $this->findModel($id);
+        $visit->cancel = 1;
+        if ($visit->save()) {
+            $model = Visit::find()->where(['planned' => '1'])->with('card', 'city', 'address_point')->all();
+            Yii::$app->session->setFlash('warning', 'Клинент отказался от записи (# ' . $id . ')!');
+            return $this->render('planned', [
+                'model' => $model
+            ]);
+        }
+        return false;
+    }
+
+    /**
+     * снять отметку
+     * клиент оповещен о запланированном посещении
+     */
+    public function actionContactedUnmark($id)
+    {
+        $visit = $this->findModel($id);
+        $visit->contacted = 0;
+        if ($visit->save()) {
+            $model = Visit::find()->where(['planned' => '1'])->with('card', 'city', 'address_point')->all();
+            Yii::$app->session->setFlash('success', 'Отметка "Клинент уведомлен о посещении (# ' . $id . ')" снята!');
+            return $this->render('planned', [
+                'model' => $model
+            ]);
+        }
+        return false;
+    }
+
+    /**
+     * снять отметку
+     * клиент записан на посещение
+     */
+    public function actionRecordedUnmark($id)
+    {
+        $visit = $this->findModel($id);
+        $visit->recorded = 0;
+        $visit->cancel = 0;
+        if ($visit->save()) {
+            $model = Visit::find()->where(['planned' => '1'])->with('card', 'city', 'address_point')->all();
+            Yii::$app->session->setFlash('success', 'Отметка "Клинент записан на посещение (# ' . $id . ')" снята!');
+            return $this->render('planned', [
+                'model' => $model
+            ]);
+        }
+        return false;
+    }
+
+    /**
+     * снять отметку
+     * клиент отказался от записи
+     */
+    public function actionCancelUnmark($id)
+    {
+        $visit = $this->findModel($id);
+        $visit->cancel = 0;
+        $visit->recorded = 0;
+        if ($visit->save()) {
+            $model = Visit::find()->where(['planned' => '1'])->with('card', 'city', 'address_point')->all();
+            Yii::$app->session->setFlash('warning', 'Отметка "Клинент отказался от записи (# ' . $id . ')" снята!');
+            return $this->render('planned', [
+                'model' => $model
+            ]);
+        }
+        return false;
     }
 
     /**

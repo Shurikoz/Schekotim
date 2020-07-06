@@ -11,7 +11,7 @@ use yii\helpers\Html;
 </div>
 <div class="row">
     <div class="col-md-12">
-        <?= Html::a('Создать новую акцию', ['create'], ['class' => 'btn btn-success pull-right']) ?>
+        <?= Html::a('Создать новую акцию', ['create'], ['class' => 'btn btn-green pull-right']) ?>
     </div>
 </div>
 <hr>

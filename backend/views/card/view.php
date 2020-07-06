@@ -39,7 +39,7 @@ $leader = Yii::$app->user->can('leader');
     <div class="box">
         <span class="cardHeader"><b><?= Html::encode($this->title) ?></b></span>
     </div>
-    <div class="row cardView">
+    <div class="row">
         <div class="col-md-6">
             <div class="box" style="border: 1px solid #7ba335">
                 <p class="titleCardName">
@@ -51,6 +51,17 @@ $leader = Yii::$app->user->can('leader');
                 <p class="titleCardName"><b>Телефон:</b> <?= $model->phone ?> </p>
             </div>
         </div>
+    </div>
+    <?php if ($model->representative) {?>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="box">
+                <p><b>Представитель клиента:</b> <br> <?= $model->representative ?> </p>
+            </div>
+        </div>
+    </div>
+    <?php } ?>
+    <div class="row">
         <div class="col-md-3">
             <div class="box">
                 <b>Дата рождения: </b><?= Yii::$app->formatter->asDate($model->birthday) ?>
@@ -75,7 +86,7 @@ $leader = Yii::$app->user->can('leader');
             <small>(Одно посещение - одна проблема)</small>
             <div class="pull-right">
                 <?php if ($admin || $podolog) { ?>
-                    <?= Html::a('<span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Создать новое посещение', ['visit/create-first', 'id' => $model->id, 'number' => $model->number], ['class' => 'btn btn-green']) ?>
+                    <?= Html::a('<span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Создать новое посещение', ['visit/create', 'id' => $model->id, 'number' => $model->number], ['class' => 'btn btn-green']) ?>
                 <?php } ?>
             </div>
         </caption>
@@ -198,7 +209,7 @@ $leader = Yii::$app->user->can('leader');
 <!--                                            </div>-->
 
                                             <?php //проверка, если текущий пользователь является указанным в визите подологом, то он может редактировать этот визит
-                                            if (($item->podolog->user_id == Yii::$app->user->id && $item->timestamp + 60 * 60 * 24 * 2 >= time()) && $item->has_come != 2 && $item->resolve != 1) { ?>
+                                            if ((($item->podolog->user_id == Yii::$app->user->id && $item->timestamp + 60 * 60 * 24 * 2 >= time()) && $item->has_come != 2 && $item->resolve != 1) || $item->next_visit_by != null && strtotime($item->next_visit_by) >= time()) { ?>
                                                 <div id="blockEdit_<?= $item->id ?>" data-id="<?= $item->id ?>">
                                                     <?= Html::a('Изменить посещение', ['visit/update', 'id' => $item->id, 'number' => $model->number], ['class' => 'btn btn-info']) ?>
                                                     <?php //если указан интервал посещения, то таймер не выводим ?>
@@ -222,7 +233,7 @@ $leader = Yii::$app->user->can('leader');
                                                 </div>
                                             <?php } elseif ($admin || $leader) { ?>
                                                 <div>
-                                                    <?= Html::a('Изменить посещение', ['visit/update', 'id' => $item->id], ['class' => 'btn btn-info']) ?>
+                                                    <?= Html::a('Изменить посещение', ['visit/update', 'id' => $item->id, 'number' => $model->number], ['class' => 'btn btn-info']) ?>
                                                 </div>
                                             <?php } ?>
                                             <?php //кнопка «Проблема решена» доступна админу или тому, кто создал посещение?>

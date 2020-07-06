@@ -2,7 +2,7 @@
 
 namespace backend\models;
 
-use Yii;
+use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "podolog".
@@ -11,7 +11,7 @@ use Yii;
  * @property int $address_point
  * @property string $name
  */
-class Podolog extends \yii\db\ActiveRecord
+class Podolog extends ActiveRecord
 {
     /**
      * {@inheritdoc}
@@ -27,7 +27,6 @@ class Podolog extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name'], 'required'],
             [['name'], 'string'],
         ];
     }

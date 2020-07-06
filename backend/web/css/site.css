@@ -48,6 +48,9 @@ label {
     padding-top: 20px;
 }
 
+.btn {
+    box-shadow: 0.1em 0.1em 3px rgba(0, 0, 0, 0.5);
+}
 section:nth-last-child(1)::after{
     content: url("../images/feather.png");
     margin: 60px auto 0 auto;
@@ -147,6 +150,7 @@ a.desc:after {
 .nav li > form > button.logout {
     padding: 15px;
     border: none;
+    background-color: white;
 }
 
 @media(max-width:767px) {
@@ -161,6 +165,7 @@ a.desc:after {
 .nav > li > form > button.logout:focus,
 .nav > li > form > button.logout:hover {
     text-decoration: none;
+    color: #7ba335;
 }
 
 .nav > li > form > button.logout:focus {
@@ -302,7 +307,7 @@ a.desc:after {
 }
 
 .c-table__cell {
-    padding: 15px 0 15px 30px;
+    padding: 15px 0 15px 20px;
     color: #333;
     font-size: 1.3rem;
     font-weight: 500;
@@ -322,7 +327,7 @@ a.desc:after {
 }
 
 .c-table__head--slim .c-table__cell {
-    padding: 10px 0 10px 30px;
+    padding: 10px 0 10px 20px;
 }
 
 .c-table__row--danger,
@@ -338,7 +343,11 @@ a.desc:after {
 .glyphicon-hourglass,
 .glyphicon-ok,
 .glyphicon-ok-circle,
-.glyphicon-camera{
+.glyphicon-camera,
+.glyphicon-earphone,
+.glyphicon-floppy-saved,
+.glyphicon-floppy-remove
+{
 font-size: 22px;
 }
 
@@ -365,11 +374,14 @@ font-size: 22px;
 
 .glyphicon-ok,
 .glyphicon-ok-circle,
-.glyphicon-new-window{
+.glyphicon-new-window,
+.glyphicon-earphone,
+.glyphicon-floppy-saved{
     color: #7ba335;
 }
 
-.glyphicon-exclamation-sign{
+.glyphicon-exclamation-sign,
+.glyphicon-floppy-remove{
     color: orange;
 }
 

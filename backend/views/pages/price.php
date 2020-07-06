@@ -29,7 +29,7 @@ use vova07\imperavi\Widget;
     ],
 ]); ?>
 <?= Html::submitButton('Сохранить', [
-    'class' => 'btn btn-lg btn-green pull-right',
+    'class' => 'btn btn-green pull-right',
     'data' => [
         'confirm' => 'Сохранить прайс-лист?',
         'method' => 'post',

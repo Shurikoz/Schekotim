@@ -1,19 +1,21 @@
 <?php
 
 use yii\helpers\Html;
-use yii\widgets\DetailView;
+use rmrevin\yii\fontawesome\FAS;
 
 /* @var $this yii\web\View */
 /* @var $model backend\models\Visit */
 
 \yii\web\YiiAsset::register($this);
 ?>
-<!--<div class="visit-view">-->
-<!--<pre>-->
-<!--    --><?php //print_r($model);?>
-<!--    </pre>-->
-<!--</div>-->
-
+<div class="row">
+    <div class="col-md-12">
+        <div class="pull-left">
+            <?= Html::a(FAS::icon('angle-left', ['class' => 'big', 'data-role' => 'arrow']) . '&nbsp Назад', ['/'], ['class' => 'btn btn-default']) ?>
+        </div>
+    </div>
+</div>
+<hr>
 <table class="c-table">
     <caption class="c-table__title">
         Лист пропущенных посещений
@@ -21,7 +23,7 @@ use yii\widgets\DetailView;
     </caption>
     <thead class="c-table__head c-table__head--slim">
     <tr class="c-table__row">
-        <th class="c-table__cell c-table__cell--head">ID</th>
+        <th class="c-table__cell c-table__cell--head">ФИО</th>
         <th class="c-table__cell c-table__cell--head">Город / Точка</th>
         <th class="c-table__cell c-table__cell--head">Проблема</th>
         <th class="c-table__cell c-table__cell--head">Подолог</th>
@@ -38,23 +40,22 @@ use yii\widgets\DetailView;
             <?php
             // проверим указатель пришел ли пациент
             if ($item->has_come == 0) {
-                $hasCome = 'c-table__row--wait';
                 $picCome = '<span class="glyphicon glyphicon-hourglass"></span>';
             } elseif ($item->has_come == 1) {
-                $hasCome = 'c-table__row--success';
                 $picCome = '<span class="glyphicon glyphicon-ok"></span>';
             } else {
-                $hasCome = 'c-table__row--danger';
                 $picCome = '<span class="glyphicon glyphicon-remove"></span>';
             }
             ?>
-            <tr class="c-table__row <?= $hasCome ?> ">
+            <tr class="c-table__row">
                 <td class="c-table__cell">
-                    <span><?= $item->id ?></span>
+                    <p><?= $item->card->surname?></p>
+                    <p><?= $item->card->name?></p>
+                    <p><?= $item->card->middle_name?></p>
                 </td>
                 <td class="c-table__cell">
-                    <p><?= $item->city ?></p>
-                    <p><?= $item->address_point ?></p>
+                    <p><?= $item->city->name ?></p>
+                    <p><?= $item->address_point->address_point?></p>
                 </td>
                 <td class="c-table__cell">
                     <?php if ($item->problem_id == 0) { ?>

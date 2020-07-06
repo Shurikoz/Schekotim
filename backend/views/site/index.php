@@ -38,9 +38,7 @@ $leader = Yii::$app->user->can('leader');
     <?php if ($admin || $administrator || $leader) { ?>
         <div class="col-md-6">
             <div class="box">
-                <h3 class="text-center">Создание карты пациента</h3>
-                <br>
-                <?= Html::a('Создать карту', ['card/create'], ['class' => 'btn btn-lg btn-green center-block']) ?>
+                <?= Html::a('Создать карту клиента', ['card/create'], ['class' => 'btn btn-lg btn-green center-block']) ?>
             </div>
         </div>
     <?php } ?>
@@ -48,9 +46,7 @@ $leader = Yii::$app->user->can('leader');
     <?php if ($admin || $podolog || $administrator || $leader) { ?>
         <div class="col-md-6">
             <div class="box">
-                <h3 class="text-center">Карты пациентов</h3>
-                <br>
-                <?= Html::a('Открыть', ['card/index'], ['class' => 'btn btn-lg btn-info center-block']) ?>
+                <?= Html::a('Карты клиентов', ['card/index'], ['class' => 'btn btn-lg btn-info center-block']) ?>
             </div>
         </div>
     <?php } ?>
@@ -58,9 +54,7 @@ $leader = Yii::$app->user->can('leader');
     <?php if ($admin || $smm || $leader) { ?>
         <div class="col-md-6">
             <div class="box">
-                <h3 class="text-center">Фото работ (из карт клиентов)</h3>
-                <br>
-                <?= Html::a('Показать фото работ', ['photo/index'], ['class' => 'btn btn-lg btn-info center-block']) ?>
+                <?= Html::a('Фото работ (из карт клиентов)', ['photo/index'], ['class' => 'btn btn-lg btn-info center-block']) ?>
             </div>
         </div>
     <?php } ?>
@@ -68,9 +62,12 @@ $leader = Yii::$app->user->can('leader');
     <?php if ($admin || $administrator || $leader) { ?>
         <div class="col-md-6">
             <div class="box">
-                <h3 class="text-center">Просмотр пропущенных посещений</h3>
-                <br>
-                <?= Html::a('Просмотр пропущенных посещений', ['visit/missed'], ['class' => 'btn btn-lg btn-danger center-block']) ?>
+                <?= Html::a('Пропущенные посещения', ['visit/missed'], ['class' => 'btn btn-lg btn-danger center-block']) ?>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="box">
+                <?= Html::a('Запланированные посещения', ['visit/planned'], ['class' => 'btn btn-lg btn-warning center-block']) ?>
             </div>
         </div>
     <?php } ?>
@@ -86,23 +83,17 @@ $leader = Yii::$app->user->can('leader');
     <div class="row">
         <div class="col-md-6">
             <div class="box">
-                <h3 class="text-center">Отзывы</h3>
-                <br>
-                <?= Html::a('Показать все отзывы', ['review/index'], ['class' => 'btn btn-lg btn-primary center-block']) ?>
+                <?= Html::a('Отзывы', ['review/index'], ['class' => 'btn btn-lg btn-primary center-block']) ?>
             </div>
         </div>
         <div class="col-md-6">
             <div class="box">
-                <h3 class="text-center">Галерея</h3>
-                <br>
-                <?= Html::a('Показать галерею сайта', ['gallery/index'], ['class' => 'btn btn-lg btn-primary center-block']) ?>
+                <?= Html::a('Галерея сайта', ['gallery/index'], ['class' => 'btn btn-lg btn-primary center-block']) ?>
             </div>
         </div>
         <div class="col-md-6">
             <div class="box">
-                <h3 class="text-center">Прайс-лист</h3>
-                <br>
-                <?= Html::a('Редактировать прайс-лист', ['pages/price'], ['class' => 'btn btn-lg btn-primary center-block']) ?>
+                <?= Html::a('Прайс-лист', ['pages/price'], ['class' => 'btn btn-lg btn-primary center-block']) ?>
             </div>
         </div>
     </div>
@@ -116,16 +107,12 @@ $leader = Yii::$app->user->can('leader');
     <div class="row">
         <div class="col-md-6">
             <div class="box">
-                <h3 class="text-center">Настройка прав доступа</h3>
-                <br>
-                <?= Html::a('Права доступа', ['admin/assignment'], ['class' => 'btn btn-lg btn-warning center-block']) ?>
+                <?= Html::a('Настройка прав доступа', ['admin/assignment'], ['class' => 'btn btn-lg btn-warning center-block']) ?>
             </div>
         </div>
         <div class="col-md-6">
             <div class="box">
-                <h3 class="text-center">Создать нового пользователя</h3>
-                <br>
-                <?= Html::a('Создать', ['site/signup'], ['class' => 'btn btn-lg btn-warning center-block']) ?>
+                <?= Html::a('Создать нового пользователя', ['user/signup'], ['class' => 'btn btn-lg btn-warning center-block']) ?>
             </div>
         </div>
     </div>
@@ -136,11 +123,13 @@ $leader = Yii::$app->user->can('leader');
     <div class="row">
         <div class="col-md-6">
             <div class="box">
-                <h3 class="text-center">Служба поддержки</h3>
-                <p class="text-center">Новых обращений: <b><?=$viewed?></b></p>
-                <p class="text-center">Нерешенных обращений: <b><?= $result?></b></p>
-                <br>
                 <?= Html::a('Обращения', ['pages/support'], ['class' => 'btn btn-lg btn-green center-block']) ?>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="box">
+                <p>Новых обращений: <b><?= $viewed ?></b></p>
+                <p>Нерешенных обращений: <b><?= $result ?></b></p>
             </div>
         </div>
     </div>

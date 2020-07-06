@@ -76,7 +76,7 @@ class ReviewForm extends ActiveRecord
                     $email1,
                     $email2
                 ])
-                ->setFrom(['marketing@schekotim.ru' => 'Добавлен новый отзыв'])
+                ->setFrom([Yii::$app->params['adminEmail'] => 'Добавлен новый отзыв'])
                 ->setSubject('Новый отзыв на сайте!')
                 ->attach($image)
                 ->send();
@@ -95,7 +95,7 @@ class ReviewForm extends ActiveRecord
                     $email1,
                     $email2
                 ])
-                ->setFrom(['marketing@schekotim.ru' => 'Добавлен новый отзыв'])
+                ->setFrom([Yii::$app->params['adminEmail'] => 'Добавлен новый отзыв'])
                 ->setSubject('Новый отзыв на сайте!')
                 ->send();
         }
@@ -123,7 +123,7 @@ class ReviewForm extends ActiveRecord
                 'filename' => $filename,
                 'image' => true
             ])
-                ->setFrom(['marketing@schekotim.ru' => 'Спасибо за оставленнный отзыв!'])
+                ->setFrom([Yii::$app->params['adminEmail'] => 'Спасибо за оставленнный отзыв!'])
                 ->setTo($reviewEmail)
                 ->setSubject('Вы оставили отзыв на сайте "Щекотливая тема"')
                 ->attach($image)
@@ -137,7 +137,7 @@ class ReviewForm extends ActiveRecord
                 'reviewMobile' => $reviewMobile,
                 'image' => false
             ])
-                ->setFrom(['marketing@schekotim.ru' => 'Спасибо за оставленнный отзыв!'])
+                ->setFrom([Yii::$app->params['adminEmail'] => 'Спасибо за оставленнный отзыв!'])
                 ->setTo($reviewEmail)
                 ->setSubject('Вы оставили отзыв на сайте "Щекотливая тема"')
                 ->send();
@@ -166,7 +166,7 @@ class ReviewForm extends ActiveRecord
             'image' => true
         ])
             ->setTo($reviewEmail)
-            ->setFrom(['marketing@schekotim.ru' => 'Спасибо за оставленнный отзыв!'])
+            ->setFrom([Yii::$app->params['adminEmail'] => 'Спасибо за оставленнный отзыв!'])
             ->setSubject('Вы оставили отзыв на сайте "Щекотливая тема"')
             ->attach($image)
             ->send();
@@ -180,7 +180,7 @@ class ReviewForm extends ActiveRecord
                 'image' => false
             ])
                 ->setTo($reviewEmail)
-                ->setFrom(['marketing@schekotim.ru' => 'Спасибо за оставленнный отзыв!'])
+                ->setFrom([Yii::$app->params['adminEmail'] => 'Спасибо за оставленнный отзыв!'])
                 ->setSubject('Вы оставили отзыв на сайте "Щекотливая тема"')
                 ->send();
         }

@@ -1,15 +1,17 @@
 <?php
 
+use kartik\date\DatePicker;
 use rmrevin\yii\fontawesome\FAS;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
-use kartik\date\DatePicker;
 use yii\widgets\MaskedInput;
 
 $this->title = 'Создание новой карты пациента';
 
 $podologList = ArrayHelper::map($podologModel, 'id', 'name');
+array_unshift($podologList, "Выберите подолога");
+
 $cityList = ArrayHelper::map($cityModel, 'id', 'name');
 
 $admin = Yii::$app->user->can('admin');
@@ -46,15 +48,15 @@ $admin = Yii::$app->user->can('admin');
     </div>
     <div class="card-form">
         <?php $form = ActiveForm::begin(); ?>
-        <?php //TODO убрать блок ?>
-        <div class="row">
-            <div class="col-md-4">
-                <div class="box">
-                    <?= $form->field($cardModel, 'number')->textInput() ?>
-                </div>
-            </div>
-        </div>
-        <?php //TODO убрать блок ?>
+<!--        --><?php ////TODO убрать блок ?>
+<!--        <div class="row">-->
+<!--            <div class="col-md-4">-->
+<!--                <div class="box">-->
+<!--                    --><?//= $form->field($cardModel, 'number')->textInput() ?>
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--        --><?php ////TODO убрать блок ?>
 
         <?= $form->field($cardModel, 'user_id')->hiddenInput(['value' => Yii::$app->user->id])->label(false); ?>
         <?php if (!$admin) { ?>
@@ -175,6 +177,9 @@ $admin = Yii::$app->user->can('admin');
                                 <?= $form->field($visitModel, 'podolog_id')
                                     ->dropDownList($podologList)
                                     ->label('Подолог') ?>
+
+
+
                             </div>
                         </div>
                     </div>
@@ -185,22 +190,13 @@ $admin = Yii::$app->user->can('admin');
         <div class="row">
             <div class="col-md-12">
                 <div class="form-group">
-                    <?php if (!$admin) { ?>
-                        <?= Html::submitButton('Сохранить', [
-                            'class' => 'btn btn-lg btn-green pull-right',
+                    <?= Html::submitButton('Сохранить', [
+                            'class' => 'btn btn-green pull-right',
                             'data' => [
                                 'confirm' => 'Вы уверены что все заполнено верно? Дальнейшие изменения возможны только модератором!',
                                 'method' => 'post',
                             ]
                         ]) ?>
-                    <?php } else {?>
-                        <?= Html::submitButton('Сохранить', [
-                            'class' => 'btn btn-lg btn-green pull-right',
-                            'data' => [
-                                'method' => 'post',
-                            ]
-                        ]) ?>
-                    <?php } ?>
                 </div>
             </div>
         </div>

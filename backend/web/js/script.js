@@ -215,6 +215,25 @@ function cardRepresentative() {
     $(".representative").toggleClass('hide');
 }
 //функция скрытия/открытия инпута "Назначение даты" при создании посещения
-function dateVisit() {
+function dateVisitCreate() {
     $(".dateVisit").toggleClass('hide');
+}
+function dateVisitUpdate() {
+    if ($('#visit-resolve').is(':checked')){
+        $(".dateVisit").addClass('hide');
+        $("#secondVisit").prop('checked', false);
+    } else if ($('#secondVisit').is(':checked')) {
+        $(".dateVisit").removeClass('hide');
+    } else {
+        $(".dateVisit").addClass('hide');
+    }
+
+}
+function visitResolve() {
+    if ($("#visit-resolve").prop("checked")){
+        $("#visit-next_visit_from").val('');
+        $("#visit-next_visit_by").val('');
+        $("#secondVisit").prop('checked', false);
+        $(".dateVisit").addClass('hide');
+    }
 }

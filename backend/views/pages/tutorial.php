@@ -14,7 +14,7 @@ $leader = Yii::$app->user->can('leader');
 <div class="panel-group" id="accordion">
 
     <?php if ($podolog) { ?>
-        <?= $this->render('tutorial/user') ?>
+        <?= $this->render('tutorial/podolog') ?>
     <?php } ?>
 
     <?php if ($smm) { ?>
@@ -27,7 +27,7 @@ $leader = Yii::$app->user->can('leader');
 
     <?php if ($leader || $admin) { ?>
         <h4>Подолог</h4>
-        <?= $this->render('tutorial/user') ?>
+        <?= $this->render('tutorial/podolog') ?>
         <hr>
         <h4>Менеджер</h4>
         <?= $this->render('tutorial/administrator') ?>

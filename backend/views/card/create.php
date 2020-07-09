@@ -18,10 +18,7 @@ $admin = Yii::$app->user->can('admin');
 
 ?>
 <div class="card-create">
-    <?= Html::button(FAS::icon('angle-left', ['class' => 'big', 'data-role' => 'arrow']) . '&nbsp Отмена', [
-        'class' => 'btn btn-default',
-        'onclick' => 'history.back();'
-    ]) ?>
+    <?= Html::a(FAS::icon('angle-left', ['class' => 'big', 'data-role' => 'arrow']) . '&nbsp Отмена', ['card/index'], ['class' => 'btn btn-default']) ?>
     <br>
     <br>
     <div class="row">
@@ -48,15 +45,18 @@ $admin = Yii::$app->user->can('admin');
     </div>
     <div class="card-form">
         <?php $form = ActiveForm::begin(); ?>
-<!--        --><?php ////TODO убрать блок ?>
-<!--        <div class="row">-->
-<!--            <div class="col-md-4">-->
-<!--                <div class="box">-->
-<!--                    --><?//= $form->field($cardModel, 'number')->textInput() ?>
-<!--                </div>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--        --><?php ////TODO убрать блок ?>
+        <?php //TODO убрать блок ?>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="box">
+                    <?= $form->field($cardModel, 'number')->textInput() ?>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <p>Номер последней введенной карты: <b><?= $card->number ?></b></p>
+            </div>
+        </div>
+        <?php //TODO убрать блок ?>
 
         <?= $form->field($cardModel, 'user_id')->hiddenInput(['value' => Yii::$app->user->id])->label(false); ?>
         <?php if (!$admin) { ?>
@@ -177,9 +177,6 @@ $admin = Yii::$app->user->can('admin');
                                 <?= $form->field($visitModel, 'podolog_id')
                                     ->dropDownList($podologList)
                                     ->label('Подолог') ?>
-
-
-
                             </div>
                         </div>
                     </div>

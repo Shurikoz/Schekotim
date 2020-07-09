@@ -2,9 +2,13 @@
 
 use rmrevin\yii\fontawesome\FAS;
 use yii\helpers\Html;
+use yii\helpers\Url;
+use yii\widgets\LinkPager;
 
 $admin = Yii::$app->user->can('admin');
 $leader = Yii::$app->user->can('leader');
+
+$count_items = (isset($_GET['per-page'])) ? $_GET['per-page'] : 20;
 
 \yii\web\YiiAsset::register($this);
 ?>
@@ -16,10 +20,28 @@ $leader = Yii::$app->user->can('leader');
     </div>
 </div>
 <hr>
+<div class="row">
+    <div class="col-md-12">
+        <div class="pull-left cardsOnPage">
+            <span>Карт на странице:</span>
+            <?= Html::a(20, Url::current(['per-page' => 20]), ['class' => ($count_items == 20) ? 'active' : '']) ?>
+            <?= Html::a(40, Url::current(['per-page' => 40]), ['class' => ($count_items == 40) ? 'active' : '']) ?>
+            <?= Html::a(60, Url::current(['per-page' => 60]), ['class' => ($count_items == 60) ? 'active' : '']) ?>
+        </div>
+        <div class="pull-right perPage">
+            <?= LinkPager::widget([
+                'pagination' => $pages,
+                'maxButtonCount' => 5,
+                'firstPageLabel' => true,
+                'lastPageLabel' => true,
+            ]); ?>
+        </div>
+    </div>
+</div>
 <table class="c-table">
     <caption class="c-table__title">
         Лист запланированных посещений
-        <small>Всего пропущенных посещений: <?= count($model) ?></small>
+        <small>Всего запланированных посещений: <?= count($model) ?></small>
     </caption>
     <thead class="c-table__head c-table__head--slim">
     <tr class="c-table__row">
@@ -35,8 +57,8 @@ $leader = Yii::$app->user->can('leader');
     </thead>
     <tbody>
     <?php // TODO Исправить timeout?>
-    <?php if (count($model) != 0) { ?>
-        <?php foreach (array_reverse($model) as $item) { ?>
+    <?php if ($dataProvider->getTotalCount() != 0) { ?>
+        <?php foreach ($dataProvider->getModels() as $item) { ?>
             <tr class="c-table__row openBox">
                 <td class="c-table__cell">
                     <p><?= $item->id ?></p>
@@ -151,14 +173,28 @@ $leader = Yii::$app->user->can('leader');
     <?php } ?>
     </tbody>
 </table>
+<div class="row">
+    <div class="col-md-12">
+        <div class="pull-right">
+            <?= LinkPager::widget([
+                'pagination' => $pages,
+                'maxButtonCount' => 5,
+                'firstPageLabel' => true,
+                'lastPageLabel' => true,
+            ]); ?>
+        </div>
+    </div>
+</div>
+
 <br>
-<div class="pull-right">
-<!--    <p><span class="glyphicon glyphicon-remove"></span> - пациент не пришел в указанное время</p>-->
-    <p><span class="glyphicon glyphicon-hourglass"></span> - ожидание посещения</p>
-    <p><span class="glyphicon glyphicon-earphone"></span> - связались с клиентом</p>
-    <p><span class="glyphicon glyphicon-floppy-saved"></span> - записали клиента</p>
-    <p><span class="glyphicon glyphicon-floppy-remove"></span> - отказ от записи</p>
-
-
-
+<div class="row">
+    <div class="col-md-12">
+        <div class="pull-right">
+            <!--    <p><span class="glyphicon glyphicon-remove"></span> - пациент не пришел в указанное время</p>-->
+            <p><span class="glyphicon glyphicon-hourglass"></span> - ожидание посещения</p>
+            <p><span class="glyphicon glyphicon-earphone"></span> - связались с клиентом</p>
+            <p><span class="glyphicon glyphicon-floppy-saved"></span> - записали клиента</p>
+            <p><span class="glyphicon glyphicon-floppy-remove"></span> - отказ от записи</p>
+        </div>
+    </div>
 </div>

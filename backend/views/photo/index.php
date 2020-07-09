@@ -4,15 +4,18 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\ActiveForm;
 use yii\widgets\LinkPager;
+use newerton\fancybox3\FancyBox;
 
 /* @var $this yii\web\View */
 /* @var $searchModel backend\models\VisitSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
 $this->title = 'Фотографии работ';
-$count_visits = (isset($_GET['per-page'])) ? $_GET['per-page'] : 20;
+$count_visits = (isset($_GET['per-page'])) ? $_GET['per-page'] : 10;
 
 ?>
+<?= FancyBox::widget();?>
+
 <div class="row">
     <div class="col-md-12">
         <h3><?= Html::encode($this->title) ?></h3>
@@ -56,9 +59,9 @@ $count_visits = (isset($_GET['per-page'])) ? $_GET['per-page'] : 20;
         <br>
         <div class="pull-left visitsOnPage">
             <span>Посещений на странице:</span>
+            <?= Html::a(10, Url::current(['per-page' => 10]), ['class' => ($count_visits == 10) ? 'active' : '']) ?>
             <?= Html::a(20, Url::current(['per-page' => 20]), ['class' => ($count_visits == 20) ? 'active' : '']) ?>
             <?= Html::a(40, Url::current(['per-page' => 40]), ['class' => ($count_visits == 40) ? 'active' : '']) ?>
-            <?= Html::a(60, Url::current(['per-page' => 60]), ['class' => ($count_visits == 60) ? 'active' : '']) ?>
         </div>
         <div class="pull-right perPage">
             <?= LinkPager::widget([
@@ -166,7 +169,7 @@ $count_visits = (isset($_GET['per-page'])) ? $_GET['per-page'] : 20;
                                     <?php foreach ($item->photo as $photo) { ?>
                                         <?php if ($photo->made == 'before') { ?>
                                             <div class="photo" style="float: left; margin:0 0 20px 20px">
-                                                <?= Html::a('<img src="' . $photo->thumbnail . '">', $photo->url, ['target' => '_blank']) ?>
+                                                <?= Html::a(Html::img($photo->thumbnail), $photo->url, ['data-fancybox' => true]);?>
                                                 <br>
                                                 <?= Html::a('<span class="glyphicon glyphicon-download-alt"></span> Обработанное', ['photo/download', 'id' => $photo->id, 'type' => 'processed']) ?>                                                <br>
                                                 <?= Html::a('<span class="glyphicon glyphicon-download-alt"></span> Оригинал', ['photo/download', 'id' => $photo->id, 'type' => 'original']) ?>
@@ -181,13 +184,97 @@ $count_visits = (isset($_GET['per-page'])) ? $_GET['per-page'] : 20;
                                     <?php foreach ($item->photo as $photo) { ?>
                                         <?php if ($photo->made == 'after') { ?>
                                             <div class="photo" style="float: left; margin:0 0 20px 20px">
-                                                <?= Html::a('<img src="' . $photo->thumbnail . '">', $photo->url, ['target' => '_blank']) ?>
+                                                <?= Html::a(Html::img($photo->thumbnail), $photo->url, ['data-fancybox' => true]);?>
                                                 <br>
                                                 <?= Html::a('<span class="glyphicon glyphicon-download-alt"></span> Обработанное', ['photo/download', 'id' => $photo->id, 'type' => 'processed']) ?>                                                <br>
                                                 <?= Html::a('<span class="glyphicon glyphicon-download-alt"></span> Оригинал', ['photo/download', 'id' => $photo->id, 'type' => 'original']) ?>
                                             </div>
                                         <?php } ?>
                                     <?php } ?>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <hr style="margin: 35px 0;border: 2px solid #7ba335;">
+                        </div>
+                    </div>
+                <?php } else { ?>
+                    <div class="blockCard <?= $item->used_photo == 1 ? 'usingCard' : '' ?>">
+                        <div class="row">
+                            <div class="col-md-2">
+                                <div class="box">
+                                    <p><b>Номер карты:</b></p>
+                                    <p><?= $item->card_number ?></p>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="box">
+                                    <p><b>Номер посещения:</b></p>
+                                    <p><?= $item->id ?></p>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="box">
+                                    <p><b>Проблема:</b></p>
+                                    <?php if ($item->problem_id == '0') { ?>
+                                        <span class="text-red">Не указана</span>
+                                    <?php } else { ?>
+                                        <p><?= $item->problem->name ?></p>
+                                    <?php } ?>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <?= Html::button('Показать информацию <span class="glyphicon glyphicon-arrow-down"></span>', [
+                                    'class' => 'btn btn-default infoHiddenBlockBtn',
+                                    'style' => 'margin: 3px;',
+                                    'data' => ['id' => $item->id]
+                                ]) ?>
+                            </div>
+                        </div>
+                        <div class="infoHiddenBlock<?= $item->id ?>" hidden>
+                            <br>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="box">
+                                        <p><b>Анамнез:</b></p>
+                                        <br>
+                                        <p><?= $item->anamnes == null ? 'Не заполнено' : nl2br($item->manipulation) ?></p>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="box">
+                                        <p><b>Манипуляции:</b></p>
+                                        <br>
+                                        <p><?= $item->manipulation == null ? 'Не заполнено' : nl2br($item->manipulation) ?></p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="box">
+                                        <p><b>Рекомендации:</b></p>
+                                        <br>
+                                        <p><?= $item->recommendation == null ? 'Не заполнено' : nl2br($item->recommendation) ?></p>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="box">
+                                        <p><b>Комментарий:</b></p>
+                                        <br>
+                                        <p><?= $item->description == null ? 'Не заполнено' : nl2br($item->description) ?></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="box">
+                                    <p style="color: red" align="center">Фотографии не добавлены!</p>
                                 </div>
                             </div>
                         </div>

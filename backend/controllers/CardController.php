@@ -68,9 +68,12 @@ class CardController extends Controller
     public function actionView($number)
     {
         $searchModel = new VisitSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams, $number);
 
         $model = Card::find()->where(['number' => $number])->with('city', 'address_point')->one();
         $visits = Visit::find()->where(['card_number' => $number])->with(['photo', 'problem', 'city'])->all();
+
+        $pages = new Pagination(['totalCount' => $dataProvider->getTotalCount(), 'pageSizeLimit' => [1, 60], 'defaultPageSize' => 20]);
 
         $podologModel = Podolog::find()->where(['address_point_id' => Yii::$app->user->identity->address_point_id])->all();
 
@@ -79,9 +82,11 @@ class CardController extends Controller
         $check->checkVisit($visits);
 
         return $this->render('view', [
+            'pages' => $pages,
             'model' => $model,
             'visits' => $visits,
-            'podologModel' => $podologModel
+            'podologModel' => $podologModel,
+            'dataProvider' => $dataProvider,
         ]);
     }
 
@@ -107,18 +112,23 @@ class CardController extends Controller
 
         $cardModel = new Card();
 
-        //TODO раскоментировать <<
-        //найдем последнюю запись, возьмем из нее номер карты
-        $card = Card::find()->orderBy(['id' => SORT_DESC])->one();
+//        //TODO раскоментировать <<
+//        //найдем последнюю запись, возьмем из нее номер карты
+//        $card = Card::find()->orderBy(['id' => SORT_DESC])->one();
+//
+//        //добавим этот номер карты в нашу модель, прибавив 1
+//        //сделаем проверку на случай, если карт еще нет
+//        if ($card != null) {
+//            $cardModel->number = (int)$card->number + 1;
+//        } else {
+//            $cardModel->number = 1;
+//        }
+//        //TODO раскоментировать >>
+//        //TODO удалить <<
+        $card = Card::find()->orderBy(['number' => SORT_DESC])->one();
+//        //TODO удалить >>
 
-        //добавим этот номер карты в нашу модель, прибавив 1
-        //сделаем проверку на случай, если карт еще нет
-        if ($card != null) {
-            $cardModel->number = (int)$card->number + 1;
-        } else {
-            $cardModel->number = 1;
-        }
-        //TODO раскоментировать >>
+
 
         $cardModel->created_at = date('Y-m-d');
 
@@ -126,14 +136,14 @@ class CardController extends Controller
 
         if (!Yii::$app->user->can('admin')) {
             // 0 - ожидает посещения, 1 - пришел, 2 - не пришел
+            $visitModel->number = 1;
             $visitModel->has_come = '1';
             $visitModel->timestamp = time() + 60 * 60 * 24 * 2; // 2 суток на редактирование
-            $visitModel->next_visit_from = date('d.m.Y');
             $visitModel->visit_time = date("H:i");
             $visitModel->city_id = $user->city_id;
             $visitModel->address_point_id = $user->address_point_id;
             $visitModel->visit_time = date('H:i');
-            $visitModel->visit_date = date('d.m.Y');
+            $visitModel->visit_date = time();
 
             if ($cardModel->load($post) && $visitModel->load($post)) {
                 $visitModel->card_number = $cardModel->number;
@@ -157,6 +167,9 @@ class CardController extends Controller
 
         }
         return $this->render('create', [
+            //TODO удалить <<
+            'card' => $card,
+            //TODO удалить >>
             'user' => $user,
             'cardModel' => $cardModel,
             'visitModel' => $visitModel,
@@ -174,12 +187,22 @@ class CardController extends Controller
      */
     public function actionUpdate($number)
     {
+        $user = User::find()->where(['id' => Yii::$app->user->identity->getId()])->with('city', 'address_point')->one();
+
+//        //TODO удалить <<
+        $card = Card::find()->orderBy(['number' => SORT_DESC])->one();
+//        //TODO удалить >>
+
         $cardModel = Card::find()->where(['number' => $number])->one();
         if ($cardModel->load(Yii::$app->request->post()) && $cardModel->save()) {
             Yii::$app->session->setFlash('success', 'Изменения сохранены!');
         }
         return $this->render('update', [
-            'cardModel' => $cardModel
+            'cardModel' => $cardModel,
+            //TODO удалить <<
+            'card' => $card,
+            //TODO удалить >>
+            'user' => $user,
         ]);
     }
 
@@ -264,7 +287,7 @@ class CardController extends Controller
      */
     protected function delPhoto($dir)
     {
-        $folders = ['/temp', '/before', '/after', '/thumbBefore', '/thumbAfter'];
+        $folders = ['/temp', '/before', '/after', '/thumbBefore', '/thumbAfter', '/originalBefore', '/originalAfter'];
         foreach ($folders as $folder) {
             if (file_exists($dir . $folder . '/')) {
                 foreach (glob($dir . $folder . '/*') as $file) {

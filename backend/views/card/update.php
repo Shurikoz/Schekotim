@@ -4,19 +4,29 @@ use yii\helpers\Html;
 use kartik\date\DatePicker;
 use yii\widgets\ActiveForm;
 use yii\widgets\MaskedInput;
+use rmrevin\yii\fontawesome\FAS;
 
 $this->title = 'Редактирование карты №: ' . $cardModel->number;
 
 ?>
 <div class="card-update">
-    <h1><?= Html::encode($this->title) ?></h1>
+    <?= Html::a(FAS::icon('angle-left', ['class' => 'big', 'data-role' => 'arrow']) . '&nbsp Отмена', ['card/index'], ['class' => 'btn btn-default']) ?>
+    <br>
+    <br>
+    <div class="row">
+        <div class="col-md-12">
+            <p class="titleNormal"><?= Html::encode($this->title) ?></p>
+        </div>
+    </div>
     <hr>
     <div class="row">
         <div class="col-md-4">
-            <b>Город:</b> <?= Yii::$app->user->identity->city ?>
+            <b>Город:</b> <?= $user->city->name;?>
+
         </div>
         <div class="col-md-4">
-            <b>Точка:</b> <?= Yii::$app->user->identity->address_point ?>
+            <b>Точка:</b> <?= $user->address_point->address_point; ?>
+
         </div>
     </div>
     <hr>
@@ -27,28 +37,51 @@ $this->title = 'Редактирование карты №: ' . $cardModel->num
     </div>
     <div class="card-form">
         <?php $form = ActiveForm::begin(); ?>
-
-        <?= $form->field($cardModel, 'user_id')->hiddenInput(['value' => Yii::$app->user->id])->label(false); ?>
-        <?= $form->field($cardModel, 'city')->hiddenInput(['value' => Yii::$app->user->identity->city])->label(false); ?>
-        <?= $form->field($cardModel, 'address_point')->hiddenInput(['value' => Yii::$app->user->identity->address_point])->label(false); ?>
-
+        <?php //TODO убрать блок ?>
         <div class="row">
             <div class="col-md-4">
                 <div class="box">
-                    <?= $form->field($cardModel, 'surname')->textInput(['maxlength' => true]) ?>
+                    <?= $form->field($cardModel, 'number')->textInput() ?>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <p>Номер последней введенной карты: <b><?= $card->number ?></b></p>
+            </div>
+        </div>
+        <?php //TODO убрать блок ?>
+
+        <?= $form->field($cardModel, 'user_id')->hiddenInput(['value' => Yii::$app->user->id])->label(false); ?>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="box">
+                    <?= $form->field($cardModel, 'surname')->textInput(['maxlength' => true, 'id' => 'surname']) ?>
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="box">
-                    <?= $form->field($cardModel, 'name')->textInput(['maxlength' => true]) ?>
+                    <?= $form->field($cardModel, 'name')->textInput(['maxlength' => true, 'onchange' => 'checkCard()', 'id' => 'name']) ?>
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="box">
-                    <?= $form->field($cardModel, 'middle_name')->textInput(['maxlength' => true]) ?>
+                    <?= $form->field($cardModel, 'middle_name')->textInput(['maxlength' => true, 'onchange' => 'checkCard()', 'id' => 'middle_name']) ?>
                 </div>
             </div>
         </div>
+        <br>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="box">
+                    <?= Html::checkbox('representative', $cardModel->representative != null ? true : false, ['label' => 'Представитель клиента', 'onchange' => 'cardRepresentative()']) ?>
+                </div>
+            </div>
+            <div class="col-md-4 representative <?= $cardModel->representative != null ? '' : 'hide' ?>">
+                <div class="box">
+                    <?= $form->field($cardModel, 'representative', ['labelOptions' => ['class' => 'control-label']])->textarea()->label(''); ?>
+                </div>
+            </div>
+        </div>
+        <br>
         <div class="row">
             <div class="col-md-4">
                 <div class="box">
@@ -60,8 +93,9 @@ $this->title = 'Редактирование карты №: ' . $cardModel->num
                             'todayHighlight' => true,
                             'endDate' => date('Ymd'),
                         ],
-                        'options' => ['placeholder' => 'дд.мм.гггг']
+                        'options' => ['placeholder' => 'дд.мм.гггг', 'onchange' => 'checkCard()', 'id' => 'birthday']
                     ]);
+
                     ?>
                 </div>
             </div>
@@ -73,12 +107,16 @@ $this->title = 'Редактирование карты №: ' . $cardModel->num
                 </div>
             </div>
         </div>
-        <hr>
+        <div class="row">
+            <div class="col-md-12">
+                <div id="checkCard"></div>
+            </div>
+        </div>
         <div class="row">
             <div class="col-md-12">
                 <div class="form-group">
                     <?= Html::submitButton('Сохранить', [
-                        'class' => 'btn btn-lg btn-green pull-right',
+                        'class' => 'btn btn-green pull-right',
                         'data' => [
                             'method' => 'post',
                         ]
@@ -89,5 +127,5 @@ $this->title = 'Редактирование карты №: ' . $cardModel->num
         <?php ActiveForm::end(); ?>
     </div>
 
-
 </div>
+

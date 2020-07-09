@@ -2,6 +2,7 @@
 
 namespace backend\models;
 
+use common\models\User;
 use Yii;
 
 /**
@@ -9,9 +10,11 @@ use Yii;
  *
  * @property int $id
  * @property int $user_id
+ * @property int $object
+ * @property int $object_id
  * @property int $operation
  * @property string $time
- * @property string $text
+ * @property string $changes
  */
 class Logs extends \yii\db\ActiveRecord
 {
@@ -30,8 +33,8 @@ class Logs extends \yii\db\ActiveRecord
     {
         return [
             [['user_id'], 'integer'],
-            [['text'], 'string'],
-            [['time', 'operation'], 'string', 'max' => 255],
+            [['changes'], 'string'],
+            [['time', 'operation', 'object', 'object_id'], 'string', 'max' => 255],
         ];
     }
 
@@ -44,7 +47,13 @@ class Logs extends \yii\db\ActiveRecord
             'id' => 'ID',
             'user_id' => 'User ID',
             'time' => 'Time',
-            'text' => 'Text',
+            'changes' => 'Text',
         ];
     }
+
+    public function getUser()
+    {
+        return $this->hasOne(User::className(), ['id' => 'user_id']);
+    }
+
 }

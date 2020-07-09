@@ -6,6 +6,7 @@ use backend\models\City;
 use backend\models\PasswordResetRequestForm;
 use backend\models\ResetPasswordForm;
 use backend\models\Support;
+use backend\models\Visit;
 use common\models\LoginForm;
 use Yii;
 use yii\base\InvalidArgumentException;
@@ -114,6 +115,7 @@ class SiteController extends Controller
                     $model->upload($model);
                 }
                 Yii::$app->session->setFlash('success', 'Обращение зарегистрировано!');
+                $model->sendEmail($model->title, $model->text);
                 $model = new Support();
             } else {
                 Yii::$app->session->setFlash('danger', 'Ошибка отправки формы!');

@@ -28,7 +28,7 @@ class PhotoController extends Controller
     {
         $searchModel = new PhotoSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-        $pages = new Pagination(['totalCount' => $dataProvider->getTotalCount(), 'pageSizeLimit' => [1, 60], 'defaultPageSize' => 20]);
+        $pages = new Pagination(['totalCount' => $dataProvider->getTotalCount(), 'pageSizeLimit' => [1, 40], 'defaultPageSize' => 10]);
 
         $filter = (new Photo())->getFilter();
 

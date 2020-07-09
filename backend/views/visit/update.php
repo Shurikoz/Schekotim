@@ -37,6 +37,9 @@ $age = $born->diff(new DateTime)->format('%y');
             <div class="col-md-4">
                 <b>Возраст:</b> <?= $age ?>
             </div>
+            <div class="col-md-4">
+                <b>Дата посещения:</b> <?= date('d.m.Y H:i', $model->visit_date)?>
+            </div>
         </div>
         <hr>
         <div class="row">
@@ -166,7 +169,7 @@ $age = $born->diff(new DateTime)->format('%y');
             </div>
         </div>
         <hr>
-        <?php Pjax::begin(['timeout' => 5000, 'id' => 'photoEdit', 'enablePushState' => false]); ?>
+        <?php Pjax::begin(['timeout' => 30000, 'id' => 'photoEdit', 'enablePushState' => false]); ?>
         <div id="photoForm">
             <div class="row">
                 <div class="col-md-12">
@@ -185,7 +188,7 @@ $age = $born->diff(new DateTime)->format('%y');
                                     ],
                                     'pluginOptions' => [
                                         'previewFileType' => 'image',
-                                        'allowedFileExtensions' => ['jpg', 'jpeg'],
+                                        'allowedFileExtensions' => ['jpg', 'jpeg', 'JPG', 'JPEG', 'png', 'PNG'],
                                         'showUpload' => false,
                                         'maxFileCount' => 5 - count($photoBefore),
                                         'uploadUrl' => Url::to(['']),
@@ -242,7 +245,7 @@ $age = $born->diff(new DateTime)->format('%y');
                                 ],
                                 'pluginOptions' => [
                                     'previewFileType' => 'image',
-                                    'allowedFileExtensions' => ['jpg', 'jpeg'],
+                                    'allowedFileExtensions' => ['jpg', 'jpeg', 'JPG', 'JPEG', 'png', 'PNG'],
                                     'showUpload' => false,
                                     'maxFileCount' => 5 - count($photoAfter),
                                     'uploadUrl' => Url::to(['']),

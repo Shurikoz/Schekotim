@@ -2,12 +2,11 @@
 
 namespace backend\models;
 
-use Yii;
-
 /**
  * This is the model class for table "problem".
  *
  * @property int $id
+ * @property int $number
  * @property string $name
  * @property string $anamnes
  * @property string $manipulation
@@ -32,7 +31,7 @@ class Problem extends \yii\db\ActiveRecord
         return [
             [['name'], 'required'],
             [['name'], 'string'],
-            [['anamnes', 'manipulation', 'recommendation'], 'safe'],
+            [['number', 'anamnes', 'manipulation', 'recommendation'], 'safe'],
         ];
     }
 
@@ -44,7 +43,20 @@ class Problem extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'name' => 'Проблема',
+            'anamnes' => 'Анамнез',
+            'manipulation' => 'Манипуляции',
+            'recommendation' => 'Рекомендации',
+            'number' => 'Номер',
         ];
+    }
+
+    /**
+     * @return int
+     */
+    public function count(){
+        $model = Problem::find()->all();
+        $count = count($model);
+        return $count;
     }
 
     public function getVisit()

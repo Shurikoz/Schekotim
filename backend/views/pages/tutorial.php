@@ -29,10 +29,10 @@ $leader = Yii::$app->user->can('leader');
         <h4>Подолог</h4>
         <?= $this->render('tutorial/podolog') ?>
         <hr>
-        <h4>Менеджер</h4>
+        <h4>Администратор центра</h4>
         <?= $this->render('tutorial/administrator') ?>
         <hr>
-        <h4>SMM</h4>
+        <h4>SMM-специалист</h4>
         <?= $this->render('tutorial/smm') ?>
     <?php } ?>
 

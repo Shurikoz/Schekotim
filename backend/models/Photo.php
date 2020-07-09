@@ -41,7 +41,7 @@ class Photo extends ActiveRecord
             [['url', 'thumbnail', 'original'], 'string'],
 
             [['before', 'after'], 'image',
-                'extensions' => ['jpg', 'jpeg'],
+                'extensions' => ['jpg', 'jpeg', 'JPG', 'JPEG', 'png', 'PNG'],
                 'checkExtensionByMimeType' => true,
                 'maxFiles' => 5,
                 'tooMany' => 'Вы можете загрузить не более 5 файлов'
@@ -91,40 +91,21 @@ class Photo extends ActiveRecord
                 //сохраним оригинал
                 copy($tempImage, $dir . '/originalBefore/' . $fileName);
 
-                //параметры текста для фото
-                $text = '
-    Карта #: ' . $cardNumber . '
-    Дата: ' . $dateVisit;
+                Image::autorotate($tempImage)->save($tempImage);
 
-                $fontFile = Yii::getAlias('@webroot/fonts/Phenomena-Regular.otf');
-                $start = [0, 0];
-                $fontOptions = [
-                    'size'  => 30,    // Размер шрифта
-                    'font-weight' => 'bold',
-                    'color' => '0b9341', // цвет шрифта
-                ];
-
-                //параметры логотипа
-                $watermark = Yii::getAlias('@webroot/images/logoImage.png');
-                $size = getimagesize($tempImage); // Определяем размер картинки
-                $imageWidth = $size[0]; // Ширина картинки
-                $imageHeight = $size[1]; // Высота картинки
-                $watermarkPositionLeft = $imageWidth - 386; // Новая позиция watermark по оси X (горизонтально)
-                $watermarkPositionTop = $imageHeight - 113; // Новая позиция watermark по оси Y (вертикально)
+                Image::resize($tempImage, 1080, 1080)
+                    ->save($tempImage, ['quality' => 100]);
 
                 //создадим миниатюру
-                $thumb = $dir . '/thumbBefore/' . $fileName;
-                Image::thumbnail($tempImage, 120, 120)
-                    ->save(Yii::getAlias($thumb), ['quality' => 100]);
+                $thumb = Yii::getAlias($dir . '/thumbBefore/' . $fileName);
+                Image::thumbnail($tempImage, 120, 120)->save($thumb, ['quality' => 100]);
 
                 //наложим логотип
-                Image::watermark($tempImage, $watermark, [$watermarkPositionLeft, $watermarkPositionTop])
-                    ->save($tempImage, ['quality' => 100]);
+                $this->setLogo($tempImage);
 
                 //наложим текст
                 $url = $dir . '/before/' . $fileName;
-                Image::text($tempImage, $text, $fontFile, $start, $fontOptions)
-                    ->save(Yii::getAlias($url), ['quality' => 100]);
+                $this->setText($tempImage, $url, $cardNumber, $dateVisit);
 
                 //сохраним в бд
                 $model = new Photo();
@@ -171,39 +152,21 @@ class Photo extends ActiveRecord
                 //сохраним оригинал
                 copy($tempImage, $dir . '/originalAfter/' . $fileName);
 
-                //параметры текста для фото
-                $text = '
-    Карта #: ' . $cardNumber . '
-    Дата: ' . $dateVisit;
+                Image::autorotate($tempImage)->save($tempImage);
 
-                $fontFile = Yii::getAlias('@webroot/fonts/Phenomena-Regular.otf');
-                $start = [0, 0];
-                $fontOptions = [
-                    'size'  => 30,    // Размер шрифта
-                    'color' => '0b9341', // цвет шрифта
-                ];
-
-                //параметры логотипа
-                $watermark = Yii::getAlias('@webroot/images/logoImage.png');
-                $size = getimagesize($tempImage); // Определяем размер картинки
-                $imageWidth = $size[0]; // Ширина картинки
-                $imageHeight = $size[1]; // Высота картинки
-                $watermarkPositionLeft = $imageWidth - 386; // Новая позиция watermark по оси X (горизонтально)
-                $watermarkPositionTop = $imageHeight - 113; // Новая позиция watermark по оси Y (вертикально)
+                Image::resize($tempImage, 1080, 1080)
+                    ->save($tempImage, ['quality' => 100]);
 
                 //создадим миниатюру
-                $thumb = $dir . '/thumbAfter/' . $fileName;
-                Image::thumbnail($tempImage, 120, 120)
-                    ->save(Yii::getAlias($thumb), ['quality' => 100]);
+                $thumb = Yii::getAlias($dir . '/thumbAfter/' . $fileName);
+                Image::thumbnail($tempImage, 120, 120)->save($thumb, ['quality' => 100]);
 
                 //наложим логотип
-                Image::watermark($tempImage, $watermark, [$watermarkPositionLeft, $watermarkPositionTop])
-                    ->save($tempImage, ['quality' => 100]);
+                $this->setLogo($tempImage);
 
                 //наложим текст
                 $url = $dir . '/after/' . $fileName;
-                Image::text($tempImage, $text, $fontFile, $start, $fontOptions)
-                    ->save(Yii::getAlias($url), ['quality' => 100]);
+                $this->setText($tempImage, $url, $cardNumber, $dateVisit);
 
                 //сохраним в бд
                 $model = new Photo();
@@ -240,6 +203,44 @@ class Photo extends ActiveRecord
         return $file;
     }
 
+    /**
+     * @param $tempImage
+     * @return \Imagine\Image\ImageInterface
+     */
+    private function setLogo($tempImage)
+    {
+        $watermark = Yii::getAlias('@webroot/images/logoImage.png');
+        $size = getimagesize($tempImage); // Определяем размер картинки
+        $imageWidth = $size[0]; // Ширина картинки
+        $imageHeight = $size[1]; // Высота картинки
+        $watermarkPositionLeft = $imageWidth - 386; // Новая позиция watermark по оси X (горизонтально)
+        $watermarkPositionTop = $imageHeight - 85; // Новая позиция watermark по оси Y (вертикально)
+        //наложим логотип
+        return Image::watermark($tempImage, $watermark, [$watermarkPositionLeft, $watermarkPositionTop])
+            ->save($tempImage, ['quality' => 100]);
+    }
+
+    /**
+     * @param $tempImage
+     * @param $url
+     * @param $cardNumber
+     * @param $dateVisit
+     * @return \Imagine\Image\ImageInterface
+     */
+    private function setText($tempImage, $url, $cardNumber, $dateVisit)
+    {
+        //параметры текста для фото
+        $text = '#: ' . $cardNumber . ',  ' . $dateVisit;
+
+        $fontFile = Yii::getAlias('@webroot/fonts/Phenomena-Regular.otf');
+        $start = [40, 1020];
+        $fontOptions = [
+            'size'  => 34,    // Размер шрифта
+            'color' => '0b9341', // цвет шрифта
+        ];
+        return Image::text($tempImage, $text, $fontFile, $start, $fontOptions)
+            ->save(Yii::getAlias($url), ['quality' => 100]);
+    }
     /**
      * @param $visitId
      * @param $dir

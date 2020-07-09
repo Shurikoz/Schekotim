@@ -10,7 +10,7 @@ use common\widgets\Alert;
 /* @var $searchModel backend\models\CardSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$count_orders = (isset($_GET['per-page'])) ? $_GET['per-page'] : 20;
+$count_cards = (isset($_GET['per-page'])) ? $_GET['per-page'] : 20;
 
 $this->title = 'Карты пациентов';
 
@@ -41,14 +41,16 @@ $leader = Yii::$app->user->can('leader');
         <div class="col-md-12">
             <div class="pull-left cardsOnPage">
                 <span>Карт на странице:</span>
-                <?= Html::a(20, Url::current(['per-page' => 20]), ['class' => ($count_orders == 20) ? 'active' : '']) ?>
-                <?= Html::a(40, Url::current(['per-page' => 40]), ['class' => ($count_orders == 40) ? 'active' : '']) ?>
-                <?= Html::a(60, Url::current(['per-page' => 60]), ['class' => ($count_orders == 60) ? 'active' : '']) ?>
+                <?= Html::a(20, Url::current(['per-page' => 20]), ['class' => ($count_cards == 20) ? 'active' : '']) ?>
+                <?= Html::a(40, Url::current(['per-page' => 40]), ['class' => ($count_cards == 40) ? 'active' : '']) ?>
+                <?= Html::a(60, Url::current(['per-page' => 60]), ['class' => ($count_cards == 60) ? 'active' : '']) ?>
             </div>
             <div class="pull-right perPage">
                 <?= LinkPager::widget([
                     'pagination' => $pages,
                     'maxButtonCount' => 5,
+                    'firstPageLabel' => true,
+                    'lastPageLabel' => true,
                 ]); ?>
             </div>
         </div>
@@ -124,10 +126,10 @@ $leader = Yii::$app->user->can('leader');
                 <?= LinkPager::widget([
                     'pagination' => $pages,
                     'maxButtonCount' => 5,
+                    'firstPageLabel' => true,
+                    'lastPageLabel' => true,
                 ]); ?>
-
             </div>
-
         </div>
     </div>
 </div>

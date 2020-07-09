@@ -50,7 +50,8 @@ class PhotoSearch extends Visit
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
             'pagination' => [
-                'pageSizeLimit' => [1, 60],
+                'pageSizeLimit' => [1, 40],
+                'defaultPageSize' => 10,
             ],
             'sort' => ['defaultOrder' => ['id' => SORT_DESC]]// Отсортируем по убыванию
         ]);
@@ -75,13 +76,7 @@ class PhotoSearch extends Visit
         $query->andFilterWhere(['like', 'city', $this->city])
             ->andFilterWhere(['like', 'address_point', $this->address_point])
             ->andFilterWhere(['like', 'podolog', $this->podolog_id])
-
-//            ->andFilterWhere(['like', 'anamnes', $this->anamnes])
-//            ->andFilterWhere(['like', 'manipulation', $this->manipulation])
-//            ->andFilterWhere(['like', 'recommendation', $this->recommendation])
-
             ->andFilterWhere(['like', Problem::tableName() . '.id', $this->problem])
-
             ->andFilterWhere(['like', 'has_come', $this->has_come])
             ->andFilterWhere(['like', 'used_photo', $this->used_photo])
             ->andFilterWhere(['like', 'description', $this->description]);

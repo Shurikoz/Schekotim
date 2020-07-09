@@ -19,7 +19,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="row">
         <div class="col-lg-offset-4 col-lg-4 text-center">
             <?php $form = ActiveForm::begin(['id' => 'login-form']); ?>
-
+            <br>
             <?= $form->field($model, 'username')->textInput() ?>
 
             <?= $form->field($model, 'password')->passwordInput() ?>

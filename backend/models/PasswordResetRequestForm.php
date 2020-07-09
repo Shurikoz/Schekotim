@@ -42,7 +42,7 @@ class PasswordResetRequestForm extends Model
 
     }
 
-        /**
+    /**
      * Sends an email with a link, for resetting the password.
      *
      * @return bool whether the email was send

@@ -6,7 +6,10 @@ use russ666\widgets\Countdown;
 use yii\bootstrap\Modal;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
+use yii\helpers\Url;
 use yii\widgets\ActiveForm;
+use yii\widgets\LinkPager;
+use newerton\fancybox3\FancyBox;
 
 /* @var $this yii\web\View */
 /* @var $model backend\models\Card */
@@ -15,7 +18,11 @@ $this->title = 'Карта № ' . $model->number;
 
 \yii\web\YiiAsset::register($this);
 
-$visit_number = count($visits);
+$count_visits = (isset($_GET['per-page'])) ? $_GET['per-page'] : 20;
+
+//посчитаем возраст пациента по дате рождения
+$born = new DateTime($model->birthday); // дата рождения
+$age = $born->diff(new DateTime)->format('%y');
 
 $admin = Yii::$app->user->can('admin');
 $administrator = Yii::$app->user->can('administrator');
@@ -24,6 +31,8 @@ $podolog = Yii::$app->user->can('podolog');
 $leader = Yii::$app->user->can('leader');
 
 ?>
+<?= FancyBox::widget();?>
+
 <div class="card-view">
     <div class="row">
         <div class="col-md-12">
@@ -67,14 +76,35 @@ $leader = Yii::$app->user->can('leader');
                 <b>Дата рождения: </b><?= Yii::$app->formatter->asDate($model->birthday) ?>
             </div>
         </div>
+        <div class="col-md-2">
+            <div class="box">
+                <b>Возраст: </b><?= $age ?>
+            </div>
+        </div>
         <div class="col-md-3">
             <div class="box">
                 <b>Дата создания: </b><?= Yii::$app->formatter->asDate($model->created_at) ?>
             </div>
         </div>
-        <div class="col-md-6">
+        <div class="col-md-4">
             <div class="box">
-                <b>Место создания: </b><?= $model->city->name ?>, <?= $model->address_point->address_point ?>
+                <?= $model->city->name ?>, <?= $model->address_point->address_point ?>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="pull-left cardsOnPage">
+                <span>Карт на странице:</span>
+                <?= Html::a(20, Url::current(['per-page' => 20]), ['class' => ($count_visits == 20) ? 'active' : '']) ?>
+                <?= Html::a(40, Url::current(['per-page' => 40]), ['class' => ($count_visits == 40) ? 'active' : '']) ?>
+                <?= Html::a(60, Url::current(['per-page' => 60]), ['class' => ($count_visits == 60) ? 'active' : '']) ?>
+            </div>
+            <div class="pull-right perPage">
+                <?= LinkPager::widget([
+                    'pagination' => $pages,
+                    'maxButtonCount' => 5,
+                ]); ?>
             </div>
         </div>
     </div>
@@ -82,10 +112,10 @@ $leader = Yii::$app->user->can('leader');
         <?= Alert::widget() ?>
         <caption class="c-table__title">
             Лист посещений
-            <small>Всего посещений: <?= count($visits) ?></small>
+            <small>Всего посещений: <?= $dataProvider->getTotalCount() ?></small>
             <small>(Одно посещение - одна проблема)</small>
             <div class="pull-right">
-                <?php if ($admin || $podolog) { ?>
+                <?php if ($admin || $podolog || $leader) { ?>
                     <?= Html::a('<span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Создать новое посещение', ['visit/create', 'id' => $model->id, 'number' => $model->number], ['class' => 'btn btn-green']) ?>
                 <?php } ?>
             </div>
@@ -93,7 +123,7 @@ $leader = Yii::$app->user->can('leader');
         <thead class="c-table__head c-table__head--slim">
         <tr class="c-table__row">
             <th class="c-table__cell c-table__cell--head">ID</th>
-            <th class="c-table__cell c-table__cell--head">Визит №</th>
+            <th class="c-table__cell c-table__cell--head">№</th>
             <th class="c-table__cell c-table__cell--head">Город / Точка</th>
             <th class="c-table__cell c-table__cell--head">Проблема</th>
             <th class="c-table__cell c-table__cell--head">Подолог</th>
@@ -105,7 +135,7 @@ $leader = Yii::$app->user->can('leader');
 
         <tbody>
         <?php // TODO Исправить timeout?>
-        <?php if (count($visits) != 0) { ?>
+        <?php if ($dataProvider->getTotalCount() != 0) { ?>
             <?php
 //            функции для подсчета количества фотографий в посещении до и после обработки
             function countPhotoBefore($photo)
@@ -127,7 +157,7 @@ $leader = Yii::$app->user->can('leader');
             }
 
             ?>
-            <?php foreach (array_reverse($visits) as $item) { ?>
+            <?php foreach ($dataProvider->getModels() as $item) { ?>
                 <?php
                 // проверим указатель пришел ли пациент
                 if ($item->has_come == 0) {
@@ -156,10 +186,10 @@ $leader = Yii::$app->user->can('leader');
 
                 <tr class="c-table__row <?= $hasCome ?> openBox">
                     <td class="c-table__cell">
-                        <span><?= $item->id ?></span>
+                        <span> <?= $item->id ?></span>
                     </td>
                     <td class="c-table__cell">
-                        <span><?= $visit_number ?></span>
+                        <span><?= $item->number ?></span>
                     </td>
                     <td class="c-table__cell">
                         <p><?= $item->city->name ?></p>
@@ -177,17 +207,17 @@ $leader = Yii::$app->user->can('leader');
                     </td>
                     <td class="c-table__cell">
                         <?php if ($item->next_visit_from != null && $item->next_visit_by != null && $item->has_come == 0) { ?>
-                            <p>с <?= Yii::$app->formatter->asDate($item->next_visit_from) ?></p>
-                            <p>до <?= Yii::$app->formatter->asDate($item->next_visit_by) ?></p>
+                            <p>с <?= date('d.m.Y', $item->next_visit_from) ?></p>
+                            <p>до <?= date('d.m.Y', $item->next_visit_by) ?></p>
                         <?php } else if ($item->has_come == 1) { ?>
-                            <span> <?= Yii::$app->formatter->asDate($item->visit_date) ?></span>
-                        <?php } else if ($item->has_come == 2) { ?>
+                            <span> <?= date('d.m.Y', $item->visit_date)?></span>
+                        <?php } else if ($item->has_come == 2 || $item->has_come == null) { ?>
                             <span>-</span>
                         <?php } ?>
                     </td>
                     <td class="c-table__cell">
                         <?php if ($item->visit_time != null && ($item->has_come == 0 || $item->has_come == 1)) { ?>
-                            <span><b><?= Yii::$app->formatter->asTime($item->visit_time) ?></b></span>
+                            <span><b><?= date('H:i', $item->visit_date) ?></b></span>
                         <?php } else { ?>
                             <span>-</span>
                         <?php } ?>
@@ -204,16 +234,17 @@ $leader = Yii::$app->user->can('leader');
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="userStatus pull-right">
-<!--                                            <div>-->
-<!--                                                --><?//= Html::a('<span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Создать будущее посещение', ['visit/create-second', 'id' => $item->id, 'card' => $model->id, 'number' => $model->number], ['class' => 'btn btn-green']) ?>
-<!--                                            </div>-->
-
+                                            <?php if ($item->next_visit_from == null && $item->next_visit_by == null) { ?>
+                                                <div>
+                                                    <?= Html::a('Создать копию', ['visit/copy', 'id' => $item->id, 'number' => $model->number], ['class' => 'btn btn-primary']) ?>
+                                                </div>
+                                            <?php } ?>
                                             <?php //проверка, если текущий пользователь является указанным в визите подологом, то он может редактировать этот визит
                                             if ((($item->podolog->user_id == Yii::$app->user->id && $item->timestamp + 60 * 60 * 24 * 2 >= time()) && $item->has_come != 2 && $item->resolve != 1) || $item->next_visit_by != null && strtotime($item->next_visit_by) >= time()) { ?>
                                                 <div id="blockEdit_<?= $item->id ?>" data-id="<?= $item->id ?>">
                                                     <?= Html::a('Изменить посещение', ['visit/update', 'id' => $item->id, 'number' => $model->number], ['class' => 'btn btn-info']) ?>
                                                     <?php //если указан интервал посещения, то таймер не выводим ?>
-                                                    <?php if (strtotime($item->next_visit_by) <= time()) { ?>
+                                                    <?php if ($item->next_visit_by <= time()) { ?>
                                                         <?= Countdown::widget([
                                                             'id' => 'timer_' . $item->id,
                                                             'datetime' => date('Y-m-d H:i:s O', time() + ($item->timestamp - time())),
@@ -235,6 +266,11 @@ $leader = Yii::$app->user->can('leader');
                                                 <div>
                                                     <?= Html::a('Изменить посещение', ['visit/update', 'id' => $item->id, 'number' => $model->number], ['class' => 'btn btn-info']) ?>
                                                 </div>
+                                                <?php if ($item->has_come != 2 && $item->resolve != 1 && $item->timestamp < time()) { ?>
+                                                    <div>
+                                                        <?= Html::a('+ 24 часа', ['visit/edit24h', 'id' => $item->id, 'number' => $model->number], ['class' => 'btn btn-warning']) ?>
+                                                    </div>
+                                                <?php } ?>
                                             <?php } ?>
                                             <?php //кнопка «Проблема решена» доступна админу или тому, кто создал посещение?>
                                             <?php if ($item->podolog->user_id == Yii::$app->user->id || $admin || $leader) { ?>
@@ -323,7 +359,7 @@ $leader = Yii::$app->user->can('leader');
                                         <div class="col-md-12">
                                             <p><b>Анамнез:</b></p>
                                             <br>
-                                            <p><?= $item->anamnes == null ? '<span class="text-red">Не заполнено</span>' : nl2br($item->manipulation) ?></p>
+                                            <p><?= $item->anamnes == null ? '<span class="text-red">Не заполнено</span>' : nl2br($item->anamnes) ?></p>
                                         </div>
                                     </div>
                                     <div class="box">
@@ -366,7 +402,7 @@ $leader = Yii::$app->user->can('leader');
                                                 <?php foreach ($item->photo as $photo) { ?>
                                                     <?php if ($photo->made == 'before') { ?>
                                                         <div style="float: left; margin: 0 0 20px 20px;">
-                                                            <?= Html::a('<img src="' . $photo->thumbnail . '">', $photo->url, ['target' => '_blank']) ?>
+                                                            <?= Html::a(Html::img($photo->thumbnail), $photo->url, ['data-fancybox' => true]);?>
                                                         </div>
                                                     <?php } ?>
                                                 <?php } ?>
@@ -383,9 +419,8 @@ $leader = Yii::$app->user->can('leader');
                                                 <?php foreach ($item->photo as $photo) { ?>
                                                     <?php if ($photo->made == 'after') { ?>
                                                         <div style="float: left; margin: 0 0 20px 20px;">
-                                                            <?= Html::a('<img src="' . $photo->thumbnail . '">', $photo->url, ['target' => '_blank']) ?>
+                                                            <?= Html::a(Html::img($photo->thumbnail), $photo->url, ['data-fancybox' => true]);?>
                                                         </div>
-
                                                     <?php } ?>
                                                 <?php } ?>
                                             <?php } else { ?>
@@ -397,7 +432,6 @@ $leader = Yii::$app->user->can('leader');
                             </div>
                         </td>
                 </tr>
-                <?php $visit_number--; ?>
             <?php } ?>
         <?php } else { ?>
             <tr class="c-table__row">
@@ -406,12 +440,22 @@ $leader = Yii::$app->user->can('leader');
         <?php } ?>
         </tbody>
     </table>
-    <br>
     <div class="pull-right">
-        <p><span class="glyphicon glyphicon-hourglass"></span> - ожидание посещения</p>
-        <p><span class="glyphicon glyphicon-ok"></span> - посещение зафиксировано</p>
-        <p><span class="glyphicon glyphicon-remove"></span> - пациент не пришел в указанное время</p>
-        <p><span class="glyphicon glyphicon-ok-circle"></span> - проблема решена</p>
-        <p><span class="glyphicon glyphicon-camera"></span> - не добавлены фотографии</p>
+        <?= LinkPager::widget([
+            'pagination' => $pages,
+            'maxButtonCount' => 5,
+        ]); ?>
+    </div>
+    <br>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="pull-right">
+            <p><span class="glyphicon glyphicon-hourglass"></span> - ожидание посещения</p>
+            <p><span class="glyphicon glyphicon-ok"></span> - посещение зафиксировано</p>
+            <p><span class="glyphicon glyphicon-remove"></span> - пациент не пришел в указанное время</p>
+            <p><span class="glyphicon glyphicon-ok-circle"></span> - проблема решена</p>
+            <p><span class="glyphicon glyphicon-camera"></span> - не добавлены фотографии</p>
+        </div>
     </div>
 </div>

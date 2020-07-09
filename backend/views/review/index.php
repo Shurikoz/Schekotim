@@ -20,8 +20,6 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="row">
     <div class="col-md-12">
         <div class="review-index">
-            <!--                <p>--><? //= Html::a('Добавить отзыв', ['create'], ['class' => 'btn btn-success'])
-            ?><!--</p>-->
             <div class="box">
                 <table class="c-table">
                     <caption class="c-table__title">

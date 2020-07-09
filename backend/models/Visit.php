@@ -3,10 +3,12 @@
 namespace backend\models;
 
 use Yii;
+
 /**
  * This is the model class for table "visit".
  *
  * @property int $id
+ * @property int $number
  * @property string $podolog_id
  * @property int $card_number
  * @property string $city_id
@@ -52,7 +54,7 @@ class Visit extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['card_number', 'used_photo', 'edit', 'dermatolog', 'immunolog', 'ortoped', 'hirurg', 'planned'], 'integer'],
+            [['card_number', 'used_photo', 'edit', 'dermatolog', 'immunolog', 'ortoped', 'hirurg', 'planned', 'number'], 'integer'],
             [['anamnes', 'manipulation', 'recommendation', 'description'], 'string'],
             [['address_point_id', 'city_id', 'resolve', 'has_come', 'timestamp', 'next_visit_from', 'next_visit_by', 'visit_date', 'visit_time'], 'safe'],
             ['problem_id', 'integer', 'min' => '1', 'tooSmall' => 'Проблема не выбрана!'],
@@ -66,7 +68,8 @@ class Visit extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => 'Номер посещения',
+            'id' => 'Id посещения',
+            'number' => 'Номер посещения',
             'user_id' => 'ID пользователя',
             'card_number' => 'Номер карты',
             'city_id' => 'City ID',
@@ -104,20 +107,6 @@ class Visit extends \yii\db\ActiveRecord
 //        return false;
 //    }
 
-    public function checkVisit($visits)
-    {
-        foreach ($visits as $visit) {
-            if ($visit->next_visit_from != null && $visit->next_visit_by != null){
-                if (strtotime($visit->next_visit_by) < time()) {
-                    $visit->planned = 0;
-                    $visit->has_come = 2;
-                    $visit->visit_date = null;
-                    $visit->visit_time = null;
-                    $visit->save();
-                }
-            }
-        }
-    }
 
     /**
      * @param $insert
@@ -126,15 +115,33 @@ class Visit extends \yii\db\ActiveRecord
      */
     public function afterSave($insert, $changedAttributes)
     {
+        $podolog = Podolog::find()->where(['id' => $this->attributes['podolog_id']])->one();
         $operation = $insert ? 'create' : 'update';
-//            var_dump($changedAttributes);die;
-            $log = new Logs();
-            $log->time = time();
-            $log->operation = $operation;
-            $log->text = json_encode($this->attributes, JSON_UNESCAPED_UNICODE);
-            $log->user_id = Yii::$app->user->identity->getId();
-            $log->save(false);
+        $log = new Logs();
+        $log->time = time();
+        $log->operation = $operation;
+        $log->changes = json_encode($this->attributes, JSON_UNESCAPED_UNICODE);
+        $log->user_id = $podolog->user_id;
+        $log->object = 'visit';
+        $log->object_id = $this->id;
+        $log->save(false);
         parent::afterSave($insert, $changedAttributes);
+    }
+
+    public function checkVisit($visits)
+    {
+        foreach ($visits as $visit) {
+            if ($visit->next_visit_from != null && $visit->next_visit_by != null){
+//                if (strtotime($visit->next_visit_by) < time()) {
+                if ($visit->next_visit_by < time()) {
+                    $visit->planned = 0;
+                    $visit->has_come = 2;
+                    $visit->visit_date = null;
+                    $visit->visit_time = null;
+                    $visit->save();
+                }
+            }
+        }
     }
 
     public function getCard()

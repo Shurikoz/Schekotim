@@ -3,6 +3,7 @@ namespace common\models;
 
 use backend\models\AddressPoint;
 use backend\models\City;
+use backend\models\Logs;
 use Yii;
 use yii\base\NotSupportedException;
 use yii\behaviors\TimestampBehavior;
@@ -195,6 +196,7 @@ class User extends ActiveRecord implements IdentityInterface
         $this->password_reset_token = null;
     }
 
+
     public function getCity()
     {
         return $this->hasOne(City::className(), ['id' => 'city_id']);
@@ -204,4 +206,10 @@ class User extends ActiveRecord implements IdentityInterface
     {
         return $this->hasOne(AddressPoint::className(), ['id' => 'address_point_id']);
     }
+
+    public function getLogs()
+    {
+        return $this->hasMany(Logs::className(), ['user_id' => 'id']);
+    }
+
 }

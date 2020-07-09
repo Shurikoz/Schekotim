@@ -18,6 +18,12 @@ array_unshift($problemName, '');
 $born = new DateTime($card->birthday); // дата рождения
 $age = $born->diff(new DateTime)->format('%y');
 
+$podologList = ArrayHelper::map($podologModel, 'id', 'name');
+array_unshift($podologList, "Выберите подолога");
+
+$admin = Yii::$app->user->can('admin');
+$leader = Yii::$app->user->can('leader');
+
 ?>
 <div class="visit-create">
 
@@ -40,6 +46,7 @@ $age = $born->diff(new DateTime)->format('%y');
             </div>
         </div>
         <hr>
+        <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]); ?>
         <div class="row">
             <div class="col-md-4">
                 <b>Город:</b> <?= $user->city->name ?>
@@ -48,15 +55,21 @@ $age = $born->diff(new DateTime)->format('%y');
                 <b>Точка:</b> <?= $user->address_point->address_point ?>
             </div>
             <div class="col-md-4">
-                <b>Подолог:</b> <?= $podolog->name ?>
+                <?php if ($leader || $admin) { ?>
+                    <?= $form->field($model, 'podolog_id')->dropDownList($podologList)->label('<b>Подолог</b>') ?>
+                <?php } else { ?>
+                    <b>Подолог:</b> <?= $podolog->name ?>
+                <?php } ?>
             </div>
         </div>
         <hr>
-        <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]); ?>
         <?= $form->field($model, 'card_number')->hiddenInput(['value' => (int)Yii::$app->request->get('number')])->label(false); ?>
         <?= $form->field($model, 'city_id')->hiddenInput(['value' => Yii::$app->user->identity->city_id])->label(false); ?>
         <?= $form->field($model, 'address_point_id')->hiddenInput(['value' => Yii::$app->user->identity->address_point_id])->label(false); ?>
-        <?= $form->field($model, 'podolog_id')->hiddenInput(['value' => $podolog->id])->label(false); ?>
+        <?php if (!$leader && !$admin) { ?>
+            <?= $form->field($model, 'podolog_id')->hiddenInput(['value' => $podolog->id])->label(false); ?>
+        <?php } ?>
+
         <div class="row">
             <div class="col-md-4">
                 <div class="box">
@@ -78,11 +91,12 @@ $age = $born->diff(new DateTime)->format('%y');
                         'model' => $secondVisit,
                         'name' => 'next_visit_from',
                         'attribute' => 'next_visit_from',
-                        'value' => date("m.d.y"),
+                        'value' => time(),
                         'type' => DatePicker::TYPE_RANGE,
                         'name2' => 'next_visit_by',
                         'attribute2' => 'next_visit_by',
-                        'value2' => date("m.d.y"),
+//                        'value2' => date("m.d.Y"),
+                        'value2' => time(),
                         'separator' => 'по',
                         'options' => [
                             'placeholder' => 'с день.мес.год',
@@ -152,7 +166,6 @@ $age = $born->diff(new DateTime)->format('%y');
             </div>
         </div>
         <hr>
-
         <p class="titleNormal">Фотографии работ (максимум по 5 фотографий)</p>
         <br>
         <div class="row">

@@ -8,14 +8,9 @@ use yii\data\ActiveDataProvider;
 /**
  * VisitSearch represents the model behind the search form of `backend\models\Visit`.
  */
-class VisitSearch extends Visit
+class VisitPlansSearch extends Visit
 {
 
-    public $problem;
-
-    /**
-     * {@inheritdoc}
-     */
     public function rules()
     {
         return [
@@ -40,18 +35,18 @@ class VisitSearch extends Visit
      *
      * @return ActiveDataProvider
      */
-    public function search($params, $number)
+    public function search($params)
     {
-        $query = Visit::find()->where(['card_number' => $number])->with('photo', 'problem', 'city');
+        $query = Visit::find()->where(['planned' => '1'])->with('card', 'city', 'address_point');
 
         // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
             'pagination' => [
-                'pageSizeLimit' => [1, 40],
+                'pageSizeLimit' => [1, 60],
             ],
-            'sort' => ['defaultOrder' => ['number' => SORT_DESC]]// Отсортируем по убыванию
+            'sort' => ['defaultOrder' => ['next_visit_from' => SORT_ASC]]// Отсортируем по убыванию
         ]);
 
         $this->load($params);
@@ -64,20 +59,10 @@ class VisitSearch extends Visit
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'id' => $this->id,
-            'card_number' => $this->card_number,
-            'next_visit_from' => $this->next_visit_from,
-            'next_visit_by' => $this->next_visit_by,
-            'used_photo' => $this->used_photo
+            'id' => $this->id
         ]);
 
-        $query->andFilterWhere(['like', 'city', $this->city])
-            ->andFilterWhere(['like', 'address_point', $this->address_point])
-            ->andFilterWhere(['like', 'podolog', $this->podolog_id])
-            ->andFilterWhere(['like', Problem::tableName() . '.id', $this->problem])
-            ->andFilterWhere(['like', 'has_come', $this->has_come])
-            ->andFilterWhere(['like', 'used_photo', $this->used_photo])
-            ->andFilterWhere(['like', 'description', $this->description]);
+        $query->andFilterWhere(['like', 'number', $this->number]);
         return $dataProvider;
     }
 }

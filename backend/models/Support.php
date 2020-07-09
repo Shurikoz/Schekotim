@@ -3,7 +3,7 @@
 namespace backend\models;
 
 use common\models\User;
-use yii\web\UploadedFile;
+use Yii;
 /**
  * This is the model class for table "support".
  *
@@ -92,6 +92,26 @@ class Support extends \yii\db\ActiveRecord
         if (!file_exists($dir)) {
             mkdir($dir, 0777, true);
         }
+    }
+
+    /**
+     * Sends an email with a link, for resetting the password.
+     *
+     * @param $title
+     * @param $text
+     * @return bool whether the email was send
+     */
+    public function sendEmail($title, $text)
+    {
+        return Yii::$app->mailer
+            ->compose(
+                ['html' => 'supportNotification-html', 'text' => 'supportNotification-text'],
+                ['title' => $title, 'text' => $text,]
+            )
+            ->setFrom([Yii::$app->params['supportEmail'] => Yii::$app->name])
+            ->setTo(Yii::$app->params['feedbackEmail'])
+            ->setSubject('Запрос службы поддержки')
+            ->send();
     }
 
     public function getUser()

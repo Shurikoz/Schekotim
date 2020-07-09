@@ -36,7 +36,7 @@ class Card extends \yii\db\ActiveRecord
     {
         return [
             ['phone', 'match', 'pattern' => '/^\+7\s\([0-9]{3}\)\s[0-9]{3}\s[0-9]{2}\s[0-9]{2}$/', 'message' => 'Неправильно указан номер'],
-            [['name', 'surname', 'middle_name'], 'match', 'pattern' => '/^([а-яА-ЯЁё]+)$/u', 'message' => 'Разрешено вводить только кириллические символы'],
+            [['name', 'surname', 'middle_name'], 'match', 'pattern' => '/^([а-яА-ЯЁё\-\s]+)$/u', 'message' => 'Разрешено вводить только кириллические символы, пробелы и знак "-"'],
             [['user_id', 'number'], 'integer'],
             [['city_id', 'address_point_id', 'name', 'surname', 'middle_name', 'number', 'phone', 'user_id', 'birthday'], 'required'],
             [['created_at', 'representative'], 'safe'],
@@ -44,15 +44,25 @@ class Card extends \yii\db\ActiveRecord
             [['number'], 'unique'],
         ];
     }
-//
-//    public function beforeSave($insert)
-//    {
-//        if (parent::beforeSave($insert)) {
-//            $this->birthday = isset($_POST["Card"]["birthday"]) ? $_POST["Card"]["birthday"] : null;
-//            return true;
-//        }
-//        return false;
-//    }
+
+    /**
+     * @param $insert
+     * @param $changedAttributes
+     * @return bool
+     */
+    public function afterSave($insert, $changedAttributes)
+    {
+        $operation = $insert ? 'create' : 'update';
+        $log = new Logs();
+        $log->time = time();
+        $log->operation = $operation;
+        $log->changes = json_encode($this->attributes, JSON_UNESCAPED_UNICODE);
+        $log->user_id = Yii::$app->user->identity->getId();
+        $log->object = 'card';
+        $log->object_id = $this->id;
+        $log->save(false);
+        parent::afterSave($insert, $changedAttributes);
+    }
 
     /**
      * {@inheritdoc}

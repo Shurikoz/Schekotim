@@ -362,6 +362,7 @@ font-size: 22px;
 
 .c-table__row--wait {
     border-left-color: #a9a9a9;
+    background-color: beige;
 }
 
 .glyphicon-hourglass {
@@ -605,19 +606,46 @@ font-size: 22px;
     color: #7ba335;
 }
 
-.datepicker-dropdown {
+.datepicker-dropdown,
+.datetimepicker-dropdown {
     padding: 1.25rem;
 }
 
 .datepicker table tr td,
-.datepicker table tr th {
+.datepicker table tr th,
+.datetimepicker table tr td,
+.datetimepicker table tr th{
     text-align: center;
     width: 2.5rem;
     height: 2.5rem;
-    border-radius: .25rem;
+    border-radius: .4rem;
     border: none;
     padding: 12px;
     font-size: 16px;
+}
+
+.datetimepicker .datetimepicker-hours span,
+.datetimepicker .datetimepicker-minutes span{
+    height: 45px;
+    line-height: 45px;
+}
+.datetimepicker table tr td.active, .datetimepicker table tr td.active:hover, .datetimepicker table tr td.active.disabled, .datetimepicker table tr td.active.disabled:hover,
+.datetimepicker table tr td span.active, .datetimepicker table tr td span.active:hover, .datetimepicker table tr td span.active.disabled, .datetimepicker table tr td span.active.disabled:hover{
+    background-image: linear-gradient(to bottom, #7ba335, #7ba335);
+}
+
+.datetimepicker-days table tbody tr:hover,
+.datetimepicker-hours table tbody tr:hover,
+.datetimepicker-minutes table tbody tr:hover,
+.datetimepicker-days table thead tr:hover,
+.datetimepicker-hours table thead tr:hover,
+.datetimepicker-minutes table thead tr:hover {
+    background-color: transparent;
+}
+
+div.datetimepicker-hours table,
+div.datetimepicker-minutes table{
+    width: 100% !important;
 }
 
 .userStatus div {
@@ -749,4 +777,13 @@ font-size: 22px;
 .navbar-inverse .navbar-nav > .open > a, .navbar-inverse .navbar-nav > .open > a:hover, .navbar-inverse .navbar-nav > .open > a:focus {
     color: #7ba335;
     background-color: #eef1f0;
+}
+
+.form-modal {
+    float: left;
+    margin: 0 4px;
+}
+
+.form-modal .modal-custom{
+    width: 355px;
 }

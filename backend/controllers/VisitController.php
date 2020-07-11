@@ -7,7 +7,7 @@ use backend\models\Photo;
 use backend\models\Podolog;
 use backend\models\Problem;
 use backend\models\Visit;
-use backend\models\VisitPlansSearch;
+use backend\models\VisitPlannedSearch;
 use backend\models\VisitSearch;
 use common\models\User;
 use kartik\mpdf\Pdf;
@@ -62,9 +62,11 @@ class VisitController extends Controller
      */
     public function actionMissed()
     {
+        $searchModel = new VisitSearch();
         //has_come: 0 - ожидание, 1 - пришел, 2 - не пришел
         $model = Visit::find()->where(['has_come' => '2'])->with('card', 'city', 'address_point')->all();
         return $this->render('missed', [
+            'searchModel' => $searchModel,
             'model' => $model
         ]);
     }
@@ -74,14 +76,16 @@ class VisitController extends Controller
      */
     public function actionPlanned()
     {
-        $searchModel = new VisitPlansSearch();
+        $searchModel = new VisitPlannedSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
         $pages = new Pagination(['totalCount' => $dataProvider->getTotalCount(), 'pageSizeLimit' => [1, 60], 'defaultPageSize' => 20]);
+
         $model = Visit::find()->where(['planned' => '1'])->orderBy(['next_visit_by' => SORT_DESC])->with('card', 'city', 'address_point')->all();
 
         return $this->render('planned', [
             'pages' => $pages,
             'model' => $model,
+            'searchModel' => $searchModel,
             'dataProvider' => $dataProvider
         ]);
     }
@@ -526,51 +530,9 @@ class VisitController extends Controller
         $visit = $this->findModel($id);
         $visit->contacted = 1;
         if ($visit->save()) {
-            $model = Visit::find()->where(['planned' => '1'])->with('card', 'city', 'address_point')->all();
-            Yii::$app->session->setFlash('success', 'Клинент уведомлен о посещении (# ' . $id . ')!');
-            return $this->render('planned', [
-                'model' => $model
-            ]);
+            Yii::$app->session->setFlash('success', 'Клинент уведомлен о посещении!');
         }
-        return false;
-    }
-
-    /**
-     * поставить отметку
-     * клиент записан на посещение
-     * @throws NotFoundHttpException
-     */
-    public function actionRecorded($id)
-    {
-        $visit = $this->findModel($id);
-        $visit->recorded = 1;
-        if ($visit->save()) {
-            $model = Visit::find()->where(['planned' => '1'])->with('card', 'city', 'address_point')->all();
-            Yii::$app->session->setFlash('success', 'Клинент записан на посещение (# ' . $id . ')!');
-            return $this->render('planned', [
-                'model' => $model
-            ]);
-        }
-        return false;
-    }
-
-    /**
-     * поставить отметку
-     * клиент отказался от записи
-     * @throws NotFoundHttpException
-     */
-    public function actionCancel($id)
-    {
-        $visit = $this->findModel($id);
-        $visit->cancel = 1;
-        if ($visit->save()) {
-            $model = Visit::find()->where(['planned' => '1'])->with('card', 'city', 'address_point')->all();
-            Yii::$app->session->setFlash('warning', 'Клинент отказался от записи (# ' . $id . ')!');
-            return $this->render('planned', [
-                'model' => $model
-            ]);
-        }
-        return false;
+        return $this->actionPlanned();
     }
 
     /**
@@ -578,19 +540,84 @@ class VisitController extends Controller
      * клиент оповещен о запланированном посещении
      * @throws NotFoundHttpException
      */
-    public function actionContactedUnmark($id)
+    public function actionContactUnmark($id)
     {
         $visit = $this->findModel($id);
         $visit->contacted = 0;
         if ($visit->save()) {
-            $model = Visit::find()->where(['planned' => '1'])->with('card', 'city', 'address_point')->all();
-            Yii::$app->session->setFlash('success', 'Отметка "Клинент уведомлен о посещении (# ' . $id . ')" снята!');
-            return $this->render('planned', [
-                'model' => $model
-            ]);
+            Yii::$app->session->setFlash('success', 'Отметка "Клинент уведомлен о посещении" снята!');
+
         }
-        return false;
+        return $this->actionPlanned();
     }
+
+    /**
+     * запись клиента на посещение
+     * @throws NotFoundHttpException
+     */
+    public function actionRecord($id)
+    {
+        $post = Yii::$app->request->post();
+        $visit = $this->findModel($id);
+        if ($visit->load($post)) {
+            $visit->visit_date = strtotime($post["Visit"]["visit_date"]);
+            $visit->timestamp = strtotime($post["Visit"]["visit_date"]);
+            $visit->recorded = 1;
+            $visit->contacted = 0;
+        }
+        if ($visit->save()) {
+            Yii::$app->session->setFlash('success', 'Клинент записан!');
+        }
+        return $this->actionPlanned();
+    }
+
+    /**
+     * снять отметку
+     * клиент записан на посещение
+     * @throws NotFoundHttpException
+     */
+    public function actionRecordUnmark($id)
+    {
+        $visit = $this->findModel($id);
+        $visit->visit_date = null;
+        $visit->recorded = 0;
+        if ($visit->save()) {
+            Yii::$app->session->setFlash('warning', 'Запись клиента снята!');
+        }
+        return $this->actionPlanned();
+    }
+
+    /**
+     * клиент отказался от записи
+     * @throws NotFoundHttpException
+     */
+    public function actionCancel($id)
+    {
+        $visit = $this->findModel($id);
+        $visit->cancel = 1;
+        $visit->contacted = 0;
+
+        if ($visit->save()) {
+            Yii::$app->session->setFlash('warning', 'Клинент отказался от записи!');
+        }
+        return $this->actionPlanned();
+    }
+
+    /**
+     * снять отметку
+     * клиент отказался от записи
+     * @throws NotFoundHttpException
+     */
+    public function actionCancelUnmark($id)
+    {
+        $visit = $this->findModel($id);
+        $visit->cancel = 0;
+        if ($visit->save()) {
+            Yii::$app->session->setFlash('warning', 'Отметка "Клинент отказался от записи снята!');
+        }
+        return $this->actionPlanned();
+    }
+
 
     /**
      * @param $id
@@ -610,45 +637,6 @@ class VisitController extends Controller
         return $this->redirect(['card/view', 'number' => $card->number]);
     }
 
-    /**
-     * снять отметку
-     * клиент записан на посещение
-     * @throws NotFoundHttpException
-     */
-    public function actionRecordedUnmark($id)
-    {
-        $visit = $this->findModel($id);
-        $visit->recorded = 0;
-        $visit->cancel = 0;
-        if ($visit->save()) {
-            $model = Visit::find()->where(['planned' => '1'])->with('card', 'city', 'address_point')->all();
-            Yii::$app->session->setFlash('success', 'Отметка "Клинент записан на посещение (# ' . $id . ')" снята!');
-            return $this->render('planned', [
-                'model' => $model
-            ]);
-        }
-        return false;
-    }
-
-    /**
-     * снять отметку
-     * клиент отказался от записи
-     * @throws NotFoundHttpException
-     */
-    public function actionCancelUnmark($id)
-    {
-        $visit = $this->findModel($id);
-        $visit->cancel = 0;
-        $visit->recorded = 0;
-        if ($visit->save()) {
-            $model = Visit::find()->where(['planned' => '1'])->with('card', 'city', 'address_point')->all();
-            Yii::$app->session->setFlash('warning', 'Отметка "Клинент отказался от записи (# ' . $id . ')" снята!');
-            return $this->render('planned', [
-                'model' => $model
-            ]);
-        }
-        return false;
-    }
 
     /**
      * функция для удаления фотографий посещения

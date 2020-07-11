@@ -1,6 +1,7 @@
 <?php
 
 use common\widgets\Alert;
+use newerton\fancybox3\FancyBox;
 use rmrevin\yii\fontawesome\FAS;
 use russ666\widgets\Countdown;
 use yii\bootstrap\Modal;
@@ -9,7 +10,6 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\ActiveForm;
 use yii\widgets\LinkPager;
-use newerton\fancybox3\FancyBox;
 
 /* @var $this yii\web\View */
 /* @var $model backend\models\Card */
@@ -32,7 +32,6 @@ $leader = Yii::$app->user->can('leader');
 
 ?>
 <?= FancyBox::widget();?>
-
 <div class="card-view">
     <div class="row">
         <div class="col-md-12">
@@ -122,14 +121,13 @@ $leader = Yii::$app->user->can('leader');
         </caption>
         <thead class="c-table__head c-table__head--slim">
         <tr class="c-table__row">
-            <th class="c-table__cell c-table__cell--head">ID</th>
-            <th class="c-table__cell c-table__cell--head">№</th>
-            <th class="c-table__cell c-table__cell--head">Город / Точка</th>
-            <th class="c-table__cell c-table__cell--head">Проблема</th>
-            <th class="c-table__cell c-table__cell--head">Подолог</th>
-            <th class="c-table__cell c-table__cell--head">Дата визита</th>
-            <th class="c-table__cell c-table__cell--head">Время</th>
-            <th class="c-table__cell c-table__cell--head">Отметки</th>
+            <th class="c-table__cell c-table__cell--head" width="5%">ID</th>
+            <th class="c-table__cell c-table__cell--head" width="5%">№</th>
+            <th class="c-table__cell c-table__cell--head" width="20%">Город / Точка</th>
+            <th class="c-table__cell c-table__cell--head" width="20%">Проблема</th>
+            <th class="c-table__cell c-table__cell--head" width="15%">Подолог</th>
+            <th class="c-table__cell c-table__cell--head" width="15%">Дата визита</th>
+            <th class="c-table__cell c-table__cell--head" width="20%" style="text-align: center">Отметки</th>
         </tr>
         </thead>
 
@@ -162,6 +160,7 @@ $leader = Yii::$app->user->can('leader');
                 // проверим указатель пришел ли пациент
                 if ($item->has_come == 0) {
                     $hasCome = 'c-table__row--wait';
+                    //иконка часы - запланированное посещение
                     $picCome = '<span class="glyphicon glyphicon-hourglass"></span>';
                 } elseif ($item->has_come == 1) {
                     $hasCome = 'c-table__row--success';
@@ -206,26 +205,20 @@ $leader = Yii::$app->user->can('leader');
                         <?= $item->podolog->name ?>
                     </td>
                     <td class="c-table__cell">
-                        <?php if ($item->next_visit_from != null && $item->next_visit_by != null && $item->has_come == 0) { ?>
+                        <?php if (($item->next_visit_from != null && $item->next_visit_by != null) && $item->has_come == 0 && $item->visit_date == null) { ?>
                             <p>с <?= date('d.m.Y', $item->next_visit_from) ?></p>
                             <p>до <?= date('d.m.Y', $item->next_visit_by) ?></p>
-                        <?php } else if ($item->has_come == 1) { ?>
-                            <span> <?= date('d.m.Y', $item->visit_date)?></span>
+                        <?php } else if ($item->visit_date != null) { ?>
+                            <span> <?= date('d.m.Y <b>H:i</b>', $item->visit_date)?></span>
                         <?php } else if ($item->has_come == 2 || $item->has_come == null) { ?>
                             <span>-</span>
                         <?php } ?>
                     </td>
-                    <td class="c-table__cell">
-                        <?php if ($item->visit_time != null && ($item->has_come == 0 || $item->has_come == 1)) { ?>
-                            <span><b><?= date('H:i', $item->visit_date) ?></b></span>
-                        <?php } else { ?>
-                            <span>-</span>
-                        <?php } ?>
-                    </td>
-                    <td class="c-table__cell">
-                        <?= $picCamera ?>
+                    <td class="c-table__cell" style="text-align: center">
                         <?= $picCome ?>
                         <?= $picResolve ?>
+                        <?= $item->recorded == 1 ? '<span class="glyphicon glyphicon-floppy-saved"></span>' : '' ?>
+                        <?= $picCamera ?>
                     </td>
                 </tr>
                 <tr class="c-table__row infoBlock hide hideBox">
@@ -240,11 +233,13 @@ $leader = Yii::$app->user->can('leader');
                                                 </div>
                                             <?php } ?>
                                             <?php //проверка, если текущий пользователь является указанным в визите подологом, то он может редактировать этот визит
+
                                             if ((($item->podolog->user_id == Yii::$app->user->id && $item->timestamp + 60 * 60 * 24 * 2 >= time()) && $item->has_come != 2 && $item->resolve != 1) || $item->next_visit_by != null && strtotime($item->next_visit_by) >= time()) { ?>
+
                                                 <div id="blockEdit_<?= $item->id ?>" data-id="<?= $item->id ?>">
                                                     <?= Html::a('Изменить посещение', ['visit/update', 'id' => $item->id, 'number' => $model->number], ['class' => 'btn btn-info']) ?>
                                                     <?php //если указан интервал посещения, то таймер не выводим ?>
-                                                    <?php if ($item->next_visit_by <= time()) { ?>
+                                                    <?php if ($item->next_visit_by <= time() || $item->timestamp >= time()) { ?>
                                                         <?= Countdown::widget([
                                                             'id' => 'timer_' . $item->id,
                                                             'datetime' => date('Y-m-d H:i:s O', time() + ($item->timestamp - time())),
@@ -253,7 +248,6 @@ $leader = Yii::$app->user->can('leader');
                                                             'events' => [
                                                                 'finish' => 'function(){
                                                                 $(\'#blockEdit_\' + $(this).parent().attr("data-id")).remove();
-                                                                
                                                                 }',
                                                             ],
                                                             'options' => [
@@ -452,9 +446,10 @@ $leader = Yii::$app->user->can('leader');
     <div class="col-md-12">
         <div class="pull-right">
             <p><span class="glyphicon glyphicon-hourglass"></span> - ожидание посещения</p>
-            <p><span class="glyphicon glyphicon-ok"></span> - посещение зафиксировано</p>
-            <p><span class="glyphicon glyphicon-remove"></span> - пациент не пришел в указанное время</p>
             <p><span class="glyphicon glyphicon-ok-circle"></span> - проблема решена</p>
+            <p><span class="glyphicon glyphicon-floppy-saved"></span> - клиент записан на прием</p>
+            <p><span class="glyphicon glyphicon-ok"></span> - пациент пришел</p>
+            <p><span class="glyphicon glyphicon-remove"></span> - пациент не пришел в указанное время</p>
             <p><span class="glyphicon glyphicon-camera"></span> - не добавлены фотографии</p>
         </div>
     </div>

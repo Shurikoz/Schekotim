@@ -69,12 +69,9 @@ class CardController extends Controller
     {
         $searchModel = new VisitSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams, $number);
-
         $model = Card::find()->where(['number' => $number])->with('city', 'address_point')->one();
         $visits = Visit::find()->where(['card_number' => $number])->with(['photo', 'problem', 'city'])->all();
-
         $pages = new Pagination(['totalCount' => $dataProvider->getTotalCount(), 'pageSizeLimit' => [1, 60], 'defaultPageSize' => 20]);
-
         $podologModel = Podolog::find()->where(['address_point_id' => Yii::$app->user->identity->address_point_id])->all();
 
         //пройдемся по посещениям, если пациент не пришел до указанного времени, сделаем отметку

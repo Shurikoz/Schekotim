@@ -16,6 +16,13 @@ use rmrevin\yii\fontawesome\FAS;
     </div>
 </div>
 <hr>
+<!--<div class="row">-->
+<!--    <div class="col-md-12">-->
+<!--        --><?//= $this->render('_search', [
+//            'model' => $searchModel,
+//        ]) ?>
+<!--    </div>-->
+<!--</div>-->
 <table class="c-table">
     <caption class="c-table__title">
         Лист пропущенных посещений
@@ -23,6 +30,7 @@ use rmrevin\yii\fontawesome\FAS;
     </caption>
     <thead class="c-table__head c-table__head--slim">
     <tr class="c-table__row">
+        <th class="c-table__cell c-table__cell--head">Карта</th>
         <th class="c-table__cell c-table__cell--head">ФИО</th>
         <th class="c-table__cell c-table__cell--head">Город / Точка</th>
         <th class="c-table__cell c-table__cell--head">Проблема</th>
@@ -48,6 +56,9 @@ use rmrevin\yii\fontawesome\FAS;
             }
             ?>
             <tr class="c-table__row">
+                <td class="c-table__cell">
+                    <p><?= $item->card_number ?></p>
+                </td>
                 <td class="c-table__cell">
                     <p><?= $item->card->surname?></p>
                     <p><?= $item->card->name?></p>

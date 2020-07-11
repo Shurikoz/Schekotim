@@ -103,8 +103,10 @@ $leader = Yii::$app->user->can('leader');
                                     'class' => 'btn linkNewWindow',
                                     'data-number' => $item->number
                                 ]) ?>
-                                <?php if ($admin || $leader) { ?>
+                                <?php if ($admin || $leader || $administrator) { ?>
                                     <?= Html::a('<span class="glyphicon glyphicon-pencil"></span>', ['card/update', 'number' => $item->number], ['class' => 'btn']) ?>
+                                <?php } ?>
+                                <?php if ($admin || $leader) { ?>
                                     <?= Html::a('<span class="glyphicon glyphicon-trash"></span>', ['card/delete', 'number' => $item->number], [
                                         'class' => 'btn',
                                         'data-method' => 'POST',

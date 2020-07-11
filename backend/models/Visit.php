@@ -1,7 +1,6 @@
 <?php
 
 namespace backend\models;
-
 use Yii;
 
 /**
@@ -27,11 +26,14 @@ use Yii;
  * @property string $used_photo
  * @property string $description
  * @property string $timestamp
+ * @property string $cancel
  * @property string $edit
  * @property string $dermatolog
  * @property string $immunolog
  * @property string $ortoped
  * @property string $hirurg
+ * @property string $recorded
+ * @property string $contacted
  *
  */
 
@@ -56,7 +58,7 @@ class Visit extends \yii\db\ActiveRecord
         return [
             [['card_number', 'used_photo', 'edit', 'dermatolog', 'immunolog', 'ortoped', 'hirurg', 'planned', 'number'], 'integer'],
             [['anamnes', 'manipulation', 'recommendation', 'description'], 'string'],
-            [['address_point_id', 'city_id', 'resolve', 'has_come', 'timestamp', 'next_visit_from', 'next_visit_by', 'visit_date', 'visit_time'], 'safe'],
+            [['address_point_id', 'city_id', 'resolve', 'has_come', 'timestamp', 'next_visit_from', 'next_visit_by', 'visit_date', 'visit_time', 'call_time'], 'safe'],
             ['problem_id', 'integer', 'min' => '1', 'tooSmall' => 'Проблема не выбрана!'],
             ['podolog_id', 'integer', 'min' => '1', 'tooSmall' => 'Подолог не выбран!'],
         ];
@@ -95,19 +97,6 @@ class Visit extends \yii\db\ActiveRecord
         ];
     }
 
-//    public function beforeSave($insert)
-//    {
-//        if (parent::beforeSave($insert)) {
-//            $next_visit_from = isset($_POST["Visit"]["next_visit_from"]) ? $_POST["Visit"]["next_visit_from"] : null;
-//            $next_visit_by = isset($_POST["Visit"]["next_visit_by"]) ? $_POST["Visit"]["next_visit_by"] : null;
-//            $this->next_visit_from = $next_visit_from == null ? null : date("Y-m-d", strtotime($next_visit_from));
-//            $this->next_visit_by = $next_visit_by == null ? null : date("Y-m-d", strtotime($next_visit_by));
-//            return true;
-//        }
-//        return false;
-//    }
-
-
     /**
      * @param $insert
      * @param $changedAttributes
@@ -121,7 +110,8 @@ class Visit extends \yii\db\ActiveRecord
         $log->time = time();
         $log->operation = $operation;
         $log->changes = json_encode($this->attributes, JSON_UNESCAPED_UNICODE);
-        $log->user_id = $podolog->user_id;
+//        $log->user_id = $podolog->user_id;
+        $log->user_id = Yii::$app->user->identity->getId();
         $log->object = 'visit';
         $log->object_id = $this->id;
         $log->save(false);
@@ -131,15 +121,14 @@ class Visit extends \yii\db\ActiveRecord
     public function checkVisit($visits)
     {
         foreach ($visits as $visit) {
-            if ($visit->next_visit_from != null && $visit->next_visit_by != null){
-//                if (strtotime($visit->next_visit_by) < time()) {
-                if ($visit->next_visit_by < time()) {
-                    $visit->planned = 0;
-                    $visit->has_come = 2;
-                    $visit->visit_date = null;
-                    $visit->visit_time = null;
-                    $visit->save();
-                }
+            if ($visit->recorded == 0 && $visit->next_visit_from != null && $visit->next_visit_by != null && $visit->next_visit_by < time()) {
+                $visit->has_come = 2; //клиент не пришел
+                $visit->planned = 0;
+                $visit->save();
+            } elseif ($visit->recorded == 1 && $visit->visit_date + 60 * 60 * 11 < time()) {
+                $visit->has_come = 2; //клиент не пришел
+                $visit->planned = 0;
+                $visit->save();
             }
         }
     }

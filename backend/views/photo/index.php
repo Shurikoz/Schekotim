@@ -41,7 +41,7 @@ $count_visits = (isset($_GET['per-page'])) ? $_GET['per-page'] : 10;
                     </div>
                     <div class="col-md-2">
                         <div class="c-field">
-                            <?= $form->field($searchModel, 'id')->textInput(['class' => 'autoSearchSubmit c-input'])->label('Номер посещения', ['class' => 'c-field__label']) ?>
+                            <?= $form->field($searchModel, 'number')->textInput(['class' => 'autoSearchSubmit c-input'])->label('Номер посещения', ['class' => 'c-field__label']) ?>
                         </div>
                     </div>
                     <div class="col-md-3">
@@ -50,7 +50,9 @@ $count_visits = (isset($_GET['per-page'])) ? $_GET['per-page'] : 10;
                         </div>
                     </div>
                     <div class="col-md-3">
-                        <?= $form->field($searchModel, 'used_photo')->dropDownList($filter, ['prompt' => 'Все', 'class' => 'autoSearchSubmit c-input'])->label('Фильтр использованных фотографий', ['class' => 'c-field__label']) ?>
+                        <div class="c-field">
+                            <?= $form->field($searchModel, 'used_photo')->dropDownList($filter, ['prompt' => 'Все', 'class' => 'autoSearchSubmit c-input'])->label('Фильтр использованных фотографий', ['class' => 'c-field__label']) ?>
+                        </div>
                     </div>
                 </div>
                 <?php ActiveForm::end(); ?>
@@ -103,7 +105,7 @@ $count_visits = (isset($_GET['per-page'])) ? $_GET['per-page'] : 10;
                             <div class="col-md-3">
                                 <div class="box">
                                     <p><b>Номер посещения:</b></p>
-                                    <p><?= $item->id ?></p>
+                                    <p><?= $item->number ?></p>
                                 </div>
                             </div>
                             <div class="col-md-3">
@@ -212,7 +214,7 @@ $count_visits = (isset($_GET['per-page'])) ? $_GET['per-page'] : 10;
                             <div class="col-md-3">
                                 <div class="box">
                                     <p><b>Номер посещения:</b></p>
-                                    <p><?= $item->id ?></p>
+                                    <p><?= $item->number ?></p>
                                 </div>
                             </div>
                             <div class="col-md-3">

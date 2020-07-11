@@ -1,8 +1,12 @@
 <?php
 
+use common\widgets\Alert;
+use kartik\datetime\DateTimePicker;
 use rmrevin\yii\fontawesome\FAS;
+use yii\bootstrap\Modal;
 use yii\helpers\Html;
 use yii\helpers\Url;
+use yii\widgets\ActiveForm;
 use yii\widgets\LinkPager;
 
 $admin = Yii::$app->user->can('admin');
@@ -22,6 +26,15 @@ $count_items = (isset($_GET['per-page'])) ? $_GET['per-page'] : 20;
 <hr>
 <div class="row">
     <div class="col-md-12">
+        <?= $this->render('_search', [
+            'model' => $searchModel,
+        ]) ?>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <?= Alert::widget() ?>
         <div class="pull-left cardsOnPage">
             <span>Карт на странице:</span>
             <?= Html::a(20, Url::current(['per-page' => 20]), ['class' => ($count_items == 20) ? 'active' : '']) ?>
@@ -45,13 +58,12 @@ $count_items = (isset($_GET['per-page'])) ? $_GET['per-page'] : 20;
     </caption>
     <thead class="c-table__head c-table__head--slim">
     <tr class="c-table__row">
-        <th class="c-table__cell c-table__cell--head">ID</th>
+        <th class="c-table__cell c-table__cell--head">Карта</th>
         <th class="c-table__cell c-table__cell--head">ФИО</th>
         <th class="c-table__cell c-table__cell--head">Город / Точка</th>
         <th class="c-table__cell c-table__cell--head">Проблема</th>
         <th class="c-table__cell c-table__cell--head">Подолог</th>
         <th class="c-table__cell c-table__cell--head">Дата визита</th>
-        <th class="c-table__cell c-table__cell--head">Время</th>
         <th class="c-table__cell c-table__cell--head">Отметки</th>
     </tr>
     </thead>
@@ -61,7 +73,7 @@ $count_items = (isset($_GET['per-page'])) ? $_GET['per-page'] : 20;
         <?php foreach ($dataProvider->getModels() as $item) { ?>
             <tr class="c-table__row openBox">
                 <td class="c-table__cell">
-                    <p><?= $item->id ?></p>
+                    <p><?= $item->card_number ?></p>
                 </td>
                 <td class="c-table__cell">
                     <p><?= $item->card->surname ?></p>
@@ -84,19 +96,12 @@ $count_items = (isset($_GET['per-page'])) ? $_GET['per-page'] : 20;
                     <?= $item->podolog->name ?>
                 </td>
                 <td class="c-table__cell">
-                    <?php if ($item->next_visit_from != null && $item->next_visit_by != null && $item->has_come == 0) { ?>
-                        <p>с <?= Yii::$app->formatter->asDate($item->next_visit_from) ?></p>
-                        <p>до <?= Yii::$app->formatter->asDate($item->next_visit_by) ?></p>
-                    <?php } else if ($item->has_come == 1) { ?>
-                        <span> <?= Yii::$app->formatter->asDate($item->visit_date) ?></span>
+                    <?php if ($item->next_visit_from != null && $item->next_visit_by != null && $item->has_come == 0 && $item->recorded == 0) { ?>
+                        <p>с <?= date('d.m.Y', $item->next_visit_from) ?></p>
+                        <p>до <?= date('d.m.Y', $item->next_visit_by) ?></p>
+                    <?php } else if ($item->recorded == 1) { ?>
+                        <span> <?= date('d.m.Y <b>H:i</b>', $item->visit_date) ?></span>
                     <?php } else if ($item->has_come == 2) { ?>
-                        <span>-</span>
-                    <?php } ?>
-                </td>
-                <td class="c-table__cell">
-                    <?php if ($item->visit_time != null) { ?>
-                        <span><b><?= Yii::$app->formatter->asTime($item->visit_time) ?></b></span>
-                    <?php } else { ?>
                         <span>-</span>
                     <?php } ?>
                 </td>
@@ -112,24 +117,70 @@ $count_items = (isset($_GET['per-page'])) ? $_GET['per-page'] : 20;
                     <div class="row">
                         <div class="col-md-12">
                             <div class="pull-right">
-                                <?php if ($item->contacted == 0) { ?>
-                                    <?= Html::a('Связались с клиентом', ['visit/contacted', 'id' => $item->id], [
-                                        'class' => 'btn btn-green linkNewWindow',
-                                    ]) ?>
+                                <?php if ($item->cancel == 0) { ?>
+                                    <div class="form-modal">
+                                        <?php
+                                        $form = ActiveForm::begin();
+                                        Modal::begin([
+                                            'header' => 'Указать время записи',
+                                            'size' => 'modal-custom',
+                                            'toggleButton' => [
+                                                'label' => 'Связались, назначить время',
+                                                'class' => 'btn btn-green',
+                                            ],
+                                            'footer' => Html::a('Сохранить', ['visit/record', 'id' => $item->id], [
+                                                'class' => 'btn btn-green',
+                                                'data' => [
+                                                    'method' => 'post',
+                                                ],
+                                            ]),
+                                        ]);
+                                        $item->visit_date = date('d.m.Y H:i', $item->visit_date);
+                                        echo DateTimePicker::widget([
+                                            'options' => ['id' => 'visit_date_' . $item->id],
+                                            'model' => $item,
+                                            'attribute' => 'visit_date',
+                                            'type' => DateTimePicker::TYPE_INLINE,
+                                            'pluginOptions' => [
+                                                'startDate' => date('d.m.Y H:i'),
+                                                'autoclose' => true,
+                                                'todayHighlight' => true,
+                                                'format' => 'dd.mm.yyyy H:i',
+                                                'minuteStep' => 10,
+                                                'hoursDisabled' => '0,1,2,3,4,5,6,7,8,9,21,22,23'
+                                            ],
+                                        ]);
+                                        Modal::end();
+                                        ActiveForm::end();
+                                        ?>
+                                    </div>
                                 <?php } ?>
 
                                 <?php if ($item->recorded == 0 && $item->cancel == 0) { ?>
-                                    <?= Html::a('Записали клиента', ['visit/recorded', 'id' => $item->id], [
-                                        'class' => 'btn btn-green linkNewWindow',
+                                    <?= Html::a('Связались, время не назначено', ['visit/contacted', 'id' => $item->id], [
+                                        'class' => 'btn btn-info ',
+                                    ]) ?>
+                                <?php } ?>
+                                <?php if ($item->contacted == 1 && $item->recorded == 0 && $item->cancel == 0) { ?>
+                                    <?= Html::a('Снять отметку "Связались с клиентом"', ['visit/contact-unmark', 'id' => $item->id], [
+                                        'class' => 'btn btn-default linkNewWindow',
                                     ]) ?>
                                 <?php } ?>
 
                                 <?php if ($item->cancel == 0 && $item->recorded == 0) { ?>
                                     <?= Html::a('Отказ от записи', ['visit/cancel', 'id' => $item->id], [
-                                        'class' => 'btn btn-warning linkNewWindow',
+                                        'class' => 'btn btn-warning ',
+                                    ]) ?>
+                                <?php } elseif ($item->cancel == 1) { ?>
+                                    <?= Html::a('Снять отметку "Отказ от записи"', ['visit/cancel-unmark', 'id' => $item->id], [
+                                        'class' => 'btn btn-default linkNewWindow',
                                     ]) ?>
                                 <?php } ?>
-
+                                <?php if ($item->recorded == 1) { ?>
+                                    <?= Html::a('Снять запись', ['visit/record-unmark', 'id' => $item->id], [
+                                        'class' => 'btn btn-default linkNewWindow',
+                                    ]) ?>
+                                <?php } ?>
                                 <?= Html::a('<span class="glyphicon glyphicon-new-window"></span> Открыть карту пациента', ['card/view', 'number' => $item->card_number], [
                                     'target' => '_blank',
                                     'class' => 'btn btn-default linkNewWindow',
@@ -137,32 +188,6 @@ $count_items = (isset($_GET['per-page'])) ? $_GET['per-page'] : 20;
                             </div>
                         </div>
                     </div>
-                    <?php if ($admin || $leader) { ?>
-                        <br>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="pull-right">
-                                    <?php if ($item->contacted == 1) { ?>
-                                        <?= Html::a('Снять отметку "Связались с клиентом"', ['visit/contacted-unmark', 'id' => $item->id], [
-                                            'class' => 'btn btn-default linkNewWindow',
-                                        ]) ?>
-                                    <?php } ?>
-
-                                    <?php if ($item->recorded == 1) { ?>
-                                        <?= Html::a('Снять отметку "Записали клиента"', ['visit/recorded-unmark', 'id' => $item->id], [
-                                            'class' => 'btn btn-default linkNewWindow',
-                                        ]) ?>
-                                    <?php } ?>
-
-                                    <?php if ($item->cancel == 1) { ?>
-                                        <?= Html::a('Снять отметку "Отказ от записи"', ['visit/cancel-unmark', 'id' => $item->id], [
-                                            'class' => 'btn btn-default linkNewWindow',
-                                        ]) ?>
-                                    <?php } ?>
-                                </div>
-                            </div>
-                        </div>
-                    <?php } ?>
                 </td>
             </tr>
         <?php } ?>

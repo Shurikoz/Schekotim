@@ -19,7 +19,6 @@ use Yii;
  * @property string $next_visit_from
  * @property string $next_visit_by
  * @property string $planned
- * @property string $visit_time
  * @property string $visit_date
  * @property string $has_come
  * @property string $resolve
@@ -34,7 +33,7 @@ use Yii;
  * @property string $hirurg
  * @property string $recorded
  * @property string $contacted
- *
+ * @property string $has_second_visit
  */
 
 
@@ -42,6 +41,7 @@ use Yii;
 
 class Visit extends \yii\db\ActiveRecord
 {
+
     /**
      * {@inheritdoc}
      */
@@ -56,9 +56,9 @@ class Visit extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['card_number', 'used_photo', 'edit', 'dermatolog', 'immunolog', 'ortoped', 'hirurg', 'planned', 'number'], 'integer'],
+            [['card_number', 'used_photo', 'edit', 'dermatolog', 'immunolog', 'ortoped', 'hirurg', 'planned', 'visit_date', 'number', 'has_second_visit'], 'integer'],
             [['anamnes', 'manipulation', 'recommendation', 'description'], 'string'],
-            [['address_point_id', 'city_id', 'resolve', 'has_come', 'timestamp', 'next_visit_from', 'next_visit_by', 'visit_date', 'visit_time', 'call_time'], 'safe'],
+            [['address_point_id', 'city_id', 'resolve', 'has_come', 'timestamp', 'next_visit_from', 'next_visit_by', 'call_time'], 'safe'],
             ['problem_id', 'integer', 'min' => '1', 'tooSmall' => 'Проблема не выбрана!'],
             ['podolog_id', 'integer', 'min' => '1', 'tooSmall' => 'Подолог не выбран!'],
         ];
@@ -86,7 +86,6 @@ class Visit extends \yii\db\ActiveRecord
             'hirurg' => 'Хирург',
             'next_visit_from' => 'Следующий визит с',
             'next_visit_by' => 'Следующий визит по',
-            'visit_time' => 'Время посещения',
             'visit_date' => 'Дата посещения',
             'has_come' => 'Пациент пришел',
             'resolve' => 'Проблема решена',
@@ -104,7 +103,7 @@ class Visit extends \yii\db\ActiveRecord
      */
     public function afterSave($insert, $changedAttributes)
     {
-        $podolog = Podolog::find()->where(['id' => $this->attributes['podolog_id']])->one();
+//        $podolog = Podolog::find()->where(['id' => $this->attributes['podolog_id']])->one();
         $operation = $insert ? 'create' : 'update';
         $log = new Logs();
         $log->time = time();
@@ -121,11 +120,11 @@ class Visit extends \yii\db\ActiveRecord
     public function checkVisit($visits)
     {
         foreach ($visits as $visit) {
-            if ($visit->recorded == 0 && $visit->next_visit_from != null && $visit->next_visit_by != null && $visit->next_visit_by < time()) {
+            if ($visit->recorded == 0 && $visit->next_visit_from != null && $visit->next_visit_by != null && $visit->next_visit_by < time() && $visit->has_come != 2) {
                 $visit->has_come = 2; //клиент не пришел
                 $visit->planned = 0;
                 $visit->save();
-            } elseif ($visit->recorded == 1 && $visit->visit_date + 60 * 60 * 11 < time()) {
+            } elseif ($visit->recorded == 1 && $visit->visit_date + 60 * 60 * 24 * 2 < time() && $visit->has_come != 2) {
                 $visit->has_come = 2; //клиент не пришел
                 $visit->planned = 0;
                 $visit->save();

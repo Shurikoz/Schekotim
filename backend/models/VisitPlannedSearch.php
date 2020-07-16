@@ -93,7 +93,6 @@ class VisitPlannedSearch extends Visit
             ->andFilterWhere(['like', 'next_visit_from', $this->next_visit_from])
             ->andFilterWhere(['like', 'next_visit_by', $this->next_visit_by])
             ->andFilterWhere(['like', 'visit_date', $this->visit_date])
-            ->andFilterWhere(['like', 'visit_time', $this->visit_time])
             ->andFilterWhere(['like', 'description', $this->description])
             ->andFilterWhere(['like', 'timestamp', $this->timestamp])
             ->andFilterWhere(['like', Card::tableName() . '.surname', $this->surname])

@@ -80,14 +80,22 @@ class VisitController extends Controller
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
         $pages = new Pagination(['totalCount' => $dataProvider->getTotalCount(), 'pageSizeLimit' => [1, 60], 'defaultPageSize' => 20]);
 
-        $model = Visit::find()->where(['planned' => '1'])->orderBy(['next_visit_by' => SORT_DESC])->with('card', 'city', 'address_point')->all();
-
         return $this->render('planned', [
             'pages' => $pages,
-            'model' => $model,
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider
         ]);
+    }
+
+    public function actionNophotos(){
+        $visit = Visit::find()->with('photo', 'card')->all();
+        $photo = Photo::find()->all();
+
+        return $this->render('nophotos', [
+            'visit' => $visit,
+            'photo' => $photo,
+        ]);
+
     }
 
     /**
@@ -122,7 +130,6 @@ class VisitController extends Controller
         $model->has_come = 1;
         $model->edit = 1; //возможность редактирования - 1 можно, 0 запрещено
         $model->timestamp = time() + 60 * 60 * 24 * 2; // 2 суток на редактирование
-        $model->visit_time = date('H:i');
         $model->visit_date = time();
 
         if ($visit != null) {
@@ -135,7 +142,7 @@ class VisitController extends Controller
                 if ($secondVisit->next_visit_from && $secondVisit->next_visit_by) {
                     $secondVisit->next_visit_from = strtotime($secondVisit->next_visit_from);
                     $secondVisit->next_visit_by = strtotime($secondVisit->next_visit_by);
-                    $secondVisit->timestamp = time();
+                    $secondVisit->timestamp = time() + 60 * 60 * 24 * 2;
                     $secondVisit->planned = 1;
                 }
 
@@ -147,7 +154,9 @@ class VisitController extends Controller
                     $second = Visit::find()->where(['card_number' => $cardNumber])->orderBy(['number' => SORT_DESC])->one();
                     $secondVisit->number = (int)$second->number + 1;
                     $secondVisit->save();
-                    }
+                    $model->has_second_visit = $secondVisit->id;
+                    $model->save();
+                }
 
                 $photoBefore->before = UploadedFile::getInstances($photoBefore, 'before');
                 $photoAfter->after = UploadedFile::getInstances($photoAfter, 'after');
@@ -199,8 +208,6 @@ class VisitController extends Controller
             if ($model->load($post) && $secondVisit->load($post)) {
                 if ($secondVisit->next_visit_from && $secondVisit->next_visit_by) {
                     $secondVisit->number = (int)$lastVisit->number + 1;
-//                    $secondVisit->next_visit_from = strtotime($secondVisit->next_visit_from) + 10800;
-//                    $secondVisit->next_visit_by = strtotime($secondVisit->next_visit_by) + 86400;
                     $secondVisit->next_visit_from = strtotime($secondVisit->next_visit_from);
                     $secondVisit->next_visit_by = strtotime($secondVisit->next_visit_by);
                     $secondVisit->timestamp = time();
@@ -209,7 +216,6 @@ class VisitController extends Controller
                     $secondVisit->save();
                 }
 
-                $model->visit_time = date('H:i');
                 $model->visit_date = time();
                 $model->card_number = $card->number;
                 $model->planned = 0;
@@ -217,6 +223,8 @@ class VisitController extends Controller
                 $model->next_visit_by = null;
 
             if ($model->save()) {
+                $model->has_second_visit = $secondVisit->id;
+                $model->save();
                 $addPhotoBefore->before = UploadedFile::getInstances($addPhotoBefore, 'before');
                 $addPhotoAfter->after = UploadedFile::getInstances($addPhotoAfter, 'after');
                 $addPhotoBefore->uploadBefore($model->id, Yii::$app->request->get('number'), date('d.m.Y', $model->visit_date));
@@ -260,7 +268,6 @@ class VisitController extends Controller
         if ($copyVisit->load($post)) {
             $copyVisit->number = (int)$lastVisit->number + 1;
             $copyVisit->timestamp = time() + 60 * 60 * 24 * 2; // 2 суток на редактирование
-            $copyVisit->visit_time = date('H:i');
             $copyVisit->visit_date = time();
             $copyVisit->card_number = $card->number;
             $copyVisit->planned = 0;
@@ -567,6 +574,8 @@ class VisitController extends Controller
         }
         if ($visit->save()) {
             Yii::$app->session->setFlash('success', 'Клинент записан!');
+        } else {
+            Yii::$app->session->setFlash('danger', 'Не выбрано время записи!');
         }
         return $this->actionPlanned();
     }
@@ -618,7 +627,6 @@ class VisitController extends Controller
         return $this->actionPlanned();
     }
 
-
     /**
      * @param $id
      * @param $number
@@ -636,7 +644,6 @@ class VisitController extends Controller
         }
         return $this->redirect(['card/view', 'number' => $card->number]);
     }
-
 
     /**
      * функция для удаления фотографий посещения

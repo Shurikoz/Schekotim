@@ -76,7 +76,7 @@ class CardController extends Controller
 
         //пройдемся по посещениям, если пациент не пришел до указанного времени, сделаем отметку
         $check = new Visit();
-        $check->checkVisit($visits);
+//        $check->checkVisit($visits);
 
         return $this->render('view', [
             'pages' => $pages,
@@ -136,10 +136,8 @@ class CardController extends Controller
             $visitModel->number = 1;
             $visitModel->has_come = '1';
             $visitModel->timestamp = time() + 60 * 60 * 24 * 2; // 2 суток на редактирование
-            $visitModel->visit_time = date("H:i");
             $visitModel->city_id = $user->city_id;
             $visitModel->address_point_id = $user->address_point_id;
-            $visitModel->visit_time = date('H:i');
             $visitModel->visit_date = time();
 
             if ($cardModel->load($post) && $visitModel->load($post)) {

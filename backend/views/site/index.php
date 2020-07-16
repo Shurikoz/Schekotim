@@ -37,6 +37,7 @@ $leader = Yii::$app->user->can('leader');
 </div>
     <hr>
     <br>
+
 <?php if ($admin) { ?>
     <div class="row">
         <div class="col-md-6">
@@ -90,6 +91,13 @@ $leader = Yii::$app->user->can('leader');
             </div>
         </div>
     <?php } ?>
+    <?php if ($admin || $administrator || $leader) { ?>
+        <div class="col-md-6">
+            <div class="box">
+                <?= Html::a('Посещения без фото', ['visit/nophotos'], ['class' => 'btn btn-lg btn-default center-block']) ?>
+            </div>
+        </div>
+    <?php } ?>
 </div>
 <?php if ($admin || $leader) { ?>
     <hr>
@@ -102,52 +110,6 @@ $leader = Yii::$app->user->can('leader');
         <div class="col-md-6">
             <div class="box">
                 <?= Html::a('Шаблоны для подологов', ['problem/index'], ['class' => 'btn btn-lg btn-info center-block']) ?>
-            </div>
-        </div>
-    </div>
-<?php } ?>
-
-<?php if ($admin) { ?>
-    <hr>
-    <div class="row">
-        <div class="col-md-12">
-            <h3>Управление сайтом</h3>
-        </div>
-    </div>
-    <br>
-    <div class="row">
-        <div class="col-md-6">
-            <div class="box">
-                <?= Html::a('Отзывы', ['review/index'], ['class' => 'btn btn-lg btn-primary center-block']) ?>
-            </div>
-        </div>
-        <div class="col-md-6">
-            <div class="box">
-                <?= Html::a('Галерея сайта', ['gallery/index'], ['class' => 'btn btn-lg btn-primary center-block']) ?>
-            </div>
-        </div>
-        <div class="col-md-6">
-            <div class="box">
-                <?= Html::a('Прайс-лист', ['pages/price'], ['class' => 'btn btn-lg btn-primary center-block']) ?>
-            </div>
-        </div>
-    </div>
-    <hr>
-    <div class="row">
-        <div class="col-md-12">
-            <h3>Управление пользователями</h3>
-        </div>
-    </div>
-    <br>
-    <div class="row">
-        <div class="col-md-6">
-            <div class="box">
-                <?= Html::a('Настройка прав доступа', ['admin/assignment'], ['class' => 'btn btn-lg btn-warning center-block']) ?>
-            </div>
-        </div>
-        <div class="col-md-6">
-            <div class="box">
-                <?= Html::a('Создать нового пользователя', ['user/signup'], ['class' => 'btn btn-lg btn-warning center-block']) ?>
             </div>
         </div>
     </div>

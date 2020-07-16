@@ -348,7 +348,7 @@ a.desc:after {
 .glyphicon-floppy-saved,
 .glyphicon-floppy-remove
 {
-font-size: 22px;
+font-size: 18px;
 }
 
 .c-table__row--danger {
@@ -714,8 +714,8 @@ div.datetimepicker-minutes table{
 
 .cardBtn .btn {
     border: 1px solid;
-    font-size: 16px;
-    padding: 7px 10px 3px 10px;
+    font-size: 14px;
+    padding: 5px 8px 3px 8px;
     color: #7ba335;
 }
 .cardBtn .btn:hover{

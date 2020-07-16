@@ -54,7 +54,7 @@ $count_items = (isset($_GET['per-page'])) ? $_GET['per-page'] : 20;
 <table class="c-table">
     <caption class="c-table__title">
         Лист запланированных посещений
-        <small>Всего запланированных посещений: <?= count($model) ?></small>
+        <small>Всего запланированных посещений: <?= $dataProvider->getTotalCount() ?></small>
     </caption>
     <thead class="c-table__head c-table__head--slim">
     <tr class="c-table__row">
@@ -120,7 +120,7 @@ $count_items = (isset($_GET['per-page'])) ? $_GET['per-page'] : 20;
                                 <?php if ($item->cancel == 0) { ?>
                                     <div class="form-modal">
                                         <?php
-                                        $form = ActiveForm::begin();
+                                        $form = ActiveForm::begin(['options' => ['method' => 'post']]);
                                         Modal::begin([
                                             'header' => 'Указать время записи',
                                             'size' => 'modal-custom',
@@ -135,19 +135,24 @@ $count_items = (isset($_GET['per-page'])) ? $_GET['per-page'] : 20;
                                                 ],
                                             ]),
                                         ]);
+                                        $visit_date = $item->visit_date;
                                         $item->visit_date = date('d.m.Y H:i', $item->visit_date);
                                         echo DateTimePicker::widget([
-                                            'options' => ['id' => 'visit_date_' . $item->id],
                                             'model' => $item,
                                             'attribute' => 'visit_date',
                                             'type' => DateTimePicker::TYPE_INLINE,
+                                            'options' => [
+                                                'id' => 'visit_date_' . $item->id,
+                                                'value' => $visit_date < 1 ? 'ДАТА И ВРЕМЯ' : $item->visit_date
+                                            ],
                                             'pluginOptions' => [
                                                 'startDate' => date('d.m.Y H:i'),
                                                 'autoclose' => true,
                                                 'todayHighlight' => true,
                                                 'format' => 'dd.mm.yyyy H:i',
                                                 'minuteStep' => 10,
-                                                'hoursDisabled' => '0,1,2,3,4,5,6,7,8,9,21,22,23'
+                                                'hoursDisabled' => '0,1,2,3,4,5,6,7,8,9,21,22,23',
+                                                'minTime' => 0
                                             ],
                                         ]);
                                         Modal::end();

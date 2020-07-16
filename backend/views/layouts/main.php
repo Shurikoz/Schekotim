@@ -55,12 +55,12 @@ $leader = Yii::$app->user->can('leader');
             'label' => 'Главная',
             'url' => ['/']
         ];
-        $menuItems[] = [
-            'label' => 'Задачи',
-            'url' => ['/task/index'],
-            'visible' => $admin || $administrator || $smm || $podolog || $leader
-
-        ];
+//        $menuItems[] = [
+//            'label' => 'Задачи',
+//            'url' => ['/task/index'],
+//            'visible' => $admin || $administrator || $smm || $podolog || $leader
+//
+//        ];
         $menuItems[] = [
             'label' => 'Картотека',
             'url' => ['/card/index'],
@@ -86,8 +86,10 @@ $leader = Yii::$app->user->can('leader');
             'label' => 'Система учета',
             'visible' => $admin || $leader,
             'items' => [
-                ['label' => 'Картотека', 'url' => '/card/index'],
+                ['label' => 'Карты', 'url' => '/card/index'],
                 ['label' => 'Фото работ', 'url' => '/photo/index'],
+                ['label' => 'Пропущенные посещения', 'url' => '/visit/missed'],
+                ['label' => 'Запланированные посещения', 'url' => '/visit/planned'],
                 ['label' => 'Пользователи', 'url' => '/user/index'],
             ],
         ];
@@ -95,7 +97,6 @@ $leader = Yii::$app->user->can('leader');
             'label' => 'Управление',
             'visible' => $admin,
             'items' => [
-                ['label' => 'Регистрация', 'url' => '/user/signup'],
                 ['label' => 'RBAC', 'url' => '/admin/user/index'],
                 ['label' => 'Служба поддержки', 'url' => '/pages/support'],
             ],
@@ -104,7 +105,7 @@ $leader = Yii::$app->user->can('leader');
             'label' => 'Профиль',
             'visible' => $admin || $administrator || $smm || $podolog || $leader,
             'items' => [
-                ['label' => 'Уведомления', 'url' => '/notification'],
+//                ['label' => 'Уведомления', 'url' => '/notification'],
                 ['label' => 'Настройки', 'url' => '/settings'],
             ],
         ];

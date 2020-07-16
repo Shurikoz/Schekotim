@@ -45,8 +45,6 @@ use yii\widgets\ActiveForm;
 
     <?php // echo $form->field($model, 'visit_date') ?>
 
-    <?php // echo $form->field($model, 'visit_time') ?>
-
     <?php // echo $form->field($model, 'has_come') ?>
 
     <?php // echo $form->field($model, 'resolve') ?>

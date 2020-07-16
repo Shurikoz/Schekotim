@@ -20,7 +20,7 @@ class Problem extends \yii\db\ActiveRecord
      */
     public static function tableName()
     {
-        return 'problem';
+        return 'problem_podolog';
     }
 
     /**

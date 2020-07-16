@@ -14,12 +14,12 @@
         </div>
         <div style="width: 49%;float: left;">
         <span>
-            <?php if ($visit->visit_time != null && $visit->visit_date != null) { ?>
+            <?php if ($visit->visit_date != null) { ?>
                 <p>Дата посещения:</p>
-                <span><?= Yii::$app->formatter->asDate($visit->visit_date) ?> <?= Yii::$app->formatter->asTime($visit->visit_time) ?></span>
+                 <span><?= date('d.m.Y', $visit->visit_date) ?></span>
             <?php } else if ($visit->next_visit_from != null && $visit->next_visit_by != null){ ?>
                 <p>Повторное посещение:</p>
-                <span>c <?= date('d.m.Y', $visit->next_visit_from) ?> </span><br>
+                <span>c <?= date('d.m.Y', $visit->next_visit_from) ?></span><br>
                 <span>по <?= date('d.m.Y', $visit->next_visit_by) ?></span>
             <?php } ?>
         </span>

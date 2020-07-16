@@ -22,7 +22,6 @@ class Photo extends ActiveRecord
     public $before;
     public $after;
 
-
     /**
      * {@inheritdoc}
      */
@@ -278,6 +277,34 @@ class Photo extends ActiveRecord
             '1' => 'Использованы',
             '0' => 'Не использованы',
         ];
+    }
+
+    /**
+     * функции для подсчета количества фотографий в посещении до и после обработки
+     * @param $photo
+     * @return int
+     */
+    public static function countPhotoBefore($photo)
+    {
+        $before = 0;
+        foreach ($photo as $item) {
+            $item->made == 'before' ? $before++ : '';
+        }
+        return $before;
+    }
+
+    /**
+     * функции для подсчета количества фотографий в посещении до и после обработки
+     * @param $photo
+     * @return int
+     */
+    public static function countPhotoAfter($photo)
+    {
+        $after = 0;
+        foreach ($photo as $item) {
+            $item->made == 'after' ? $after++ : '';
+        }
+        return $after;
     }
 
 }

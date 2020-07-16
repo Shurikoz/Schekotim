@@ -1,12 +1,13 @@
 <?php
 
+use kartik\date\DatePicker;
 use kartik\file\FileInput;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\ActiveForm;
-use kartik\date\DatePicker;
 use yii\widgets\Pjax;
+
 /* @var $this yii\web\View */
 /* @var $model backend\models\Visit */
 
@@ -68,44 +69,49 @@ $age = $born->diff(new DateTime)->format('%y');
                     <div id="errorData" style="color:red"></div>
                 </div>
             </div>
-            <div class="col-md-4">
-                <div class="box">
-                    <?= Html::checkbox('secondVisit', false, ['label' => 'Назначить повторное посещение', 'id' => 'secondVisit', 'onchange' => 'dateVisitUpdate()']) ?>
+            <?php if ($model->has_second_visit == 0) { ?>
+                <div class="col-md-4">
+                    <div class="box">
+                        <?= Html::checkbox('secondVisit', false, ['label' => 'Назначить повторное посещение', 'id' => 'secondVisit', 'onchange' => 'dateVisitUpdate()']) ?>
+                    </div>
                 </div>
-            </div>
-            <div class="col-md-4 dateVisit hide">
-                <div class="box">
-                    <?php
-                    echo '<p><label class="control-label">Назначение даты</label></p>';
-                    echo DatePicker::widget([
-                        'model' => $secondVisit,
-                        'name' => 'next_visit_from',
-                        'attribute' => 'next_visit_from',
-                        'value' => date("m.d.y"),
-                        'type' => DatePicker::TYPE_RANGE,
-                        'name2' => 'next_visit_by',
-                        'attribute2' => 'next_visit_by',
-                        'value2' => date("m.d.y"),
-                        'separator' => 'по',
-                        'options' => [
-                            'placeholder' => 'с день.мес.год',
-                            'required' => false,
-                        ],
-                        'options2' => [
-                            'placeholder' => 'по день.мес.год',
-                            'required' => false,
-                        ],
-                        'pluginOptions' => [
-                            'autoclose' => false,
-                            'format' => 'dd.mm.yyyy',
-                            'todayHighlight' => true,
-                            'startDate' => date('Ymd'),
-                        ]
-                    ]);
-                    ?>
+                <div class="col-md-4 dateVisit hide">
+                    <div class="box">
+                        <?php
+                        echo '<p><label class="control-label">Назначение даты</label></p>';
+                        echo DatePicker::widget([
+                            'model' => $secondVisit,
+                            'name' => 'next_visit_from',
+                            'attribute' => 'next_visit_from',
+                            'value' => date("m.d.y"),
+                            'type' => DatePicker::TYPE_RANGE,
+                            'name2' => 'next_visit_by',
+                            'attribute2' => 'next_visit_by',
+                            'value2' => date("m.d.y"),
+                            'separator' => 'по',
+                            'options' => [
+                                'placeholder' => 'с день.мес.год',
+                                'required' => false,
+                            ],
+                            'options2' => [
+                                'placeholder' => 'по день.мес.год',
+                                'required' => false,
+                            ],
+                            'pluginOptions' => [
+                                'autoclose' => false,
+                                'format' => 'dd.mm.yyyy',
+                                'todayHighlight' => true,
+                                'startDate' => date('Ymd'),
+                            ]
+                        ]);
+                        ?>
+                    </div>
                 </div>
-            </div>
-
+            <?php } else { ?>
+                <div class="col-md-5">
+                    <p>На основе этого посещения запланировано новое: ID #<?= $model->has_second_visit ?></p>
+                </div>
+            <?php } ?>
         </div>
         <div class="row">
 
@@ -169,7 +175,7 @@ $age = $born->diff(new DateTime)->format('%y');
             </div>
         </div>
         <hr>
-        <?php Pjax::begin(['timeout' => 30000, 'id' => 'photoEdit', 'enablePushState' => false]); ?>
+        <?php Pjax::begin(['timeout' => 120000, 'id' => 'photoEdit', 'enablePushState' => false]); ?>
         <div id="photoForm">
             <div class="row">
                 <div class="col-md-12">

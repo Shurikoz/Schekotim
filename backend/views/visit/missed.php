@@ -36,7 +36,6 @@ use rmrevin\yii\fontawesome\FAS;
         <th class="c-table__cell c-table__cell--head">Проблема</th>
         <th class="c-table__cell c-table__cell--head">Подолог</th>
         <th class="c-table__cell c-table__cell--head">Дата визита</th>
-        <th class="c-table__cell c-table__cell--head">Время</th>
         <th class="c-table__cell c-table__cell--head">Отметки</th>
         <th class="c-table__cell c-table__cell--head">Действия</th>
     </tr>
@@ -79,20 +78,11 @@ use rmrevin\yii\fontawesome\FAS;
                     <?= $item->podolog->name ?>
                 </td>
                 <td class="c-table__cell">
-                    <?php if ($item->next_visit_from != null && $item->next_visit_by != null && $item->has_come == 0) { ?>
-                        <p>с <?= Yii::$app->formatter->asDate($item->next_visit_from) ?></p>
-                        <p>до <?= Yii::$app->formatter->asDate($item->next_visit_by) ?></p>
-                    <?php } else if ($item->has_come == 1) { ?>
-                        <span> <?= Yii::$app->formatter->asDate($item->visit_date) ?></span>
-                    <?php } else if ($item->has_come == 2) { ?>
-                        <span>-</span>
-                    <?php } ?>
-                </td>
-                <td class="c-table__cell">
-                    <?php if ($item->visit_time != null) { ?>
-                        <span><b><?= Yii::$app->formatter->asTime($item->visit_time) ?></b></span>
-                    <?php } else { ?>
-                        <span>-</span>
+                    <?php if (($item->next_visit_from != null && $item->next_visit_by != null && $item->has_come == 0 && $item->visit_date == null) || ($item->has_come == 2 && $item->next_visit_from != null && $item->next_visit_by != null)) { ?>
+                        <p>с <?= date('d.m.Y', $item->next_visit_from) ?></p>
+                        <p>до <?= date('d.m.Y', $item->next_visit_by) ?></p>
+                    <?php } else if ($item->visit_date != null) { ?>
+                        <span> <?= date('d.m.Y <b>H:i</b>', $item->visit_date)?></span>
                     <?php } ?>
                 </td>
                 <td class="c-table__cell">

@@ -3,7 +3,7 @@
 use yii\grid\GridView;
 use yii\helpers\Html;
 
-$this->title = 'Шаблоны для подолога';
+$this->title = 'Шаблоны для специалистов';
 
 ?>
 
@@ -30,6 +30,7 @@ $this->title = 'Шаблоны для подолога';
                     'anamnes:ntext',
                     'manipulation:ntext',
                     'recommendation:ntext',
+                    'diagnosis:ntext',
                     ['class' => 'yii\grid\ActionColumn',
                         'template' => '{up}{down}',
                         'buttons' => [

@@ -84,6 +84,29 @@ use yii\widgets\ActiveForm;
             ]); ?>
         </div>
     </div>
+    <div class="row">
+        <div class="col-md-12">
+            <?= $form->field($model, 'diagnosis')->widget(Widget::className(), [
+                'settings' => [
+                    'lang' => 'ru',
+                    'minHeight' => 200,
+                    'paragraphize' => false,
+                    'pastePlainText'  => true,
+                    'shortcodes' => false,
+                    'plugins' => [
+                        'clips',
+                        'fullscreen',
+                    ],
+                    'clips' => [
+                        ['Lorem ipsum...', 'Lorem...'],
+                        ['red', '<span class="label-red">red</span>'],
+                        ['green', '<span class="label-green">green</span>'],
+                        ['blue', '<span class="label-blue">blue</span>'],
+                    ],
+                ],
+            ]); ?>
+        </div>
+    </div>
     <hr>
     <div class="row">
         <div class="col-md-12">

@@ -67,8 +67,10 @@ class ProblemController extends Controller
     public function actionCreate()
     {
         $model = new Problem();
-
+        $problem = Problem::find()->orderBy(['number' => SORT_DESC])->one();
+        $model->number = (int)$problem->number + 1;
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+
             Yii::$app->session->setFlash('success', 'Шаблон' . $model->name . ' создан!');
 
             $searchModel = new ProblemSearch();

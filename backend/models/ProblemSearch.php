@@ -17,7 +17,7 @@ class ProblemSearch extends Problem
     {
         return [
             [['id'], 'integer'],
-            [['name', 'anamnes', 'manipulation', 'recommendation'], 'safe'],
+            [['name', 'anamnes', 'manipulation', 'recommendation', 'diagnosis'], 'safe'],
         ];
     }
 
@@ -66,7 +66,8 @@ class ProblemSearch extends Problem
         $query->andFilterWhere(['like', 'name', $this->name])
             ->andFilterWhere(['like', 'anamnes', $this->anamnes])
             ->andFilterWhere(['like', 'manipulation', $this->manipulation])
-            ->andFilterWhere(['like', 'recommendation', $this->recommendation]);
+            ->andFilterWhere(['like', 'recommendation', $this->recommendation])
+            ->andFilterWhere(['like', 'diagnosis', $this->recommendation]);
 
         return $dataProvider;
     }

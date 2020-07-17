@@ -11,6 +11,7 @@ namespace backend\models;
  * @property string $anamnes
  * @property string $manipulation
  * @property string $recommendation
+ * @property string $diagnosis
  */
 
 class Problem extends \yii\db\ActiveRecord
@@ -20,7 +21,7 @@ class Problem extends \yii\db\ActiveRecord
      */
     public static function tableName()
     {
-        return 'problem_podolog';
+        return 'problem';
     }
 
     /**
@@ -31,7 +32,7 @@ class Problem extends \yii\db\ActiveRecord
         return [
             [['name'], 'required'],
             [['name'], 'string'],
-            [['number', 'anamnes', 'manipulation', 'recommendation'], 'safe'],
+            [['number', 'anamnes', 'manipulation', 'recommendation', 'diagnosis'], 'safe'],
         ];
     }
 
@@ -46,6 +47,7 @@ class Problem extends \yii\db\ActiveRecord
             'anamnes' => 'Анамнез',
             'manipulation' => 'Манипуляции',
             'recommendation' => 'Рекомендации',
+            'diagnosis' => 'Диагноз',
             'number' => 'Номер',
         ];
     }

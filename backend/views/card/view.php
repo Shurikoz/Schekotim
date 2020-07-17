@@ -5,15 +5,9 @@ use common\widgets\Alert;
 use newerton\fancybox3\FancyBox;
 use rmrevin\yii\fontawesome\FAS;
 use russ666\widgets\Countdown;
-use yii\bootstrap\Modal;
-use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\helpers\Url;
-use yii\widgets\ActiveForm;
 use yii\widgets\LinkPager;
-
-/* @var $this yii\web\View */
-/* @var $model backend\models\Card */
 
 $this->title = 'Карта № ' . $model->number;
 
@@ -134,7 +128,7 @@ $leader = Yii::$app->user->can('leader');
             <th class="c-table__cell c-table__cell--head" width="5%">№</th>
             <th class="c-table__cell c-table__cell--head" width="20%">Город / Точка</th>
             <th class="c-table__cell c-table__cell--head" width="20%">Проблема</th>
-            <th class="c-table__cell c-table__cell--head" width="15%">Подолог</th>
+            <th class="c-table__cell c-table__cell--head" width="15%">Специалист</th>
             <th class="c-table__cell c-table__cell--head" width="15%">Дата визита</th>
             <th class="c-table__cell c-table__cell--head" width="20%" style="text-align: center">Отметки</th>
         </tr>
@@ -198,6 +192,8 @@ $leader = Yii::$app->user->can('leader');
                             <p>до <?= date('d.m.Y', $item->next_visit_by) ?></p>
                         <?php } else if ($item->visit_date != null) { ?>
                             <span> <?= date('d.m.Y <b>H:i</b>', $item->visit_date)?></span>
+                        <?php } else if ($item->visit_date == null) { ?>
+                            <span>-</span>
                         <?php } ?>
                     </td>
                     <td class="c-table__cell" style="text-align: center">
@@ -205,6 +201,8 @@ $leader = Yii::$app->user->can('leader');
                         <?= $picResolve ?>
                         <?= $item->recorded == 1 ? '<span class="glyphicon glyphicon-floppy-saved"></span>' : '' ?>
                         <?= $picCamera ?>
+                        <?= $item->not_in_time == 1 && ($administrator || $admin || $leader || $administrator) ? '<span class="glyphicon glyphicon-alert"></span>' : '' ?>
+
                     </td>
                 </tr>
                 <tr class="c-table__row infoBlock hide hideBox">
@@ -213,12 +211,12 @@ $leader = Yii::$app->user->can('leader');
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="userStatus pull-right">
-                                            <?php if ($item->next_visit_from == null && $item->next_visit_by == null) { ?>
+                                            <?php if ($item->next_visit_from == null && $item->next_visit_by == null && $item->visit_date != null ) { ?>
                                                 <div>
                                                     <?= Html::a('Создать копию', ['visit/copy', 'id' => $item->id, 'number' => $model->number], ['class' => 'btn btn-primary']) ?>
                                                 </div>
                                             <?php } ?>
-                                            <?php if ((($item->podolog->user_id == Yii::$app->user->id && $item->timestamp + 60 * 60 * 24 * 2 >= time()) && $item->has_come != 2 && $item->resolve != 1) || $item->next_visit_by != null && $item->next_visit_by >= time()) { ?>
+                                            <?php if ($item->has_come != 2 && ((($item->podolog->user_id == Yii::$app->user->id && $item->timestamp + 60 * 60 * 24 * 2 >= time()) && $item->resolve != 1) || $item->next_visit_by != null && $item->next_visit_by >= time())) { ?>
                                                 <div id="blockEdit_<?= $item->id ?>" data-id="<?= $item->id ?>">
                                                     <?= Html::a('Изменить посещение', ['visit/update', 'id' => $item->id, 'number' => $model->number], ['class' => 'btn btn-info']) ?>
                                                     <?php //если указан интервал посещения, то таймер не выводим ?>
@@ -238,17 +236,11 @@ $leader = Yii::$app->user->can('leader');
                                                             ]
                                                         ]) ?>
                                                     <?php } ?>
-
                                                 </div>
                                             <?php } elseif ($admin || $leader) { ?>
                                                 <div>
                                                     <?= Html::a('Изменить посещение', ['visit/update', 'id' => $item->id, 'number' => $model->number], ['class' => 'btn btn-info']) ?>
                                                 </div>
-                                                <?php if ($item->has_come != 2 && $item->resolve != 1 && $item->timestamp < time()) { ?>
-                                                    <div>
-                                                        <?= Html::a('+ 24 часа', ['visit/edit24h', 'id' => $item->id, 'number' => $model->number], ['class' => 'btn btn-warning']) ?>
-                                                    </div>
-                                                <?php } ?>
                                             <?php } ?>
                                             <?php //кнопка «Проблема решена» доступна админу или тому, кто создал посещение?>
                                             <?php if ($item->podolog->user_id == Yii::$app->user->id || $admin || $leader) { ?>
@@ -286,50 +278,99 @@ $leader = Yii::$app->user->can('leader');
                                         </div>
                                     </div>
                                 </div>
-                                <hr>
                             <?php } ?>
                             <?php if ($administrator || $admin || $podolog || $leader) { ?>
                                 <div class="row">
                                     <div class="col-md-12">
-                                        <div class="userStatus pull-right">
-                                            <div>
-                                                <?php
-                                                echo Html::a('Распечатать рекомендации', ['/visit/print-pdf', 'id' => $item->id, 'card_id' => $model->id], [
+                                        <div class="pull-right">
+<!--                                            --><?php //if ($administrator || $admin || $leader) { ?>
+<!--                                                --><?php //if ($item->has_come != 1) { ?>
+<!--                                                    <div class="form-modal">-->
+<!---->
+<!--                                                        --><?php
+//                                                        $form = ActiveForm::begin();
+//                                                        Modal::begin([
+//                                                            'header' => 'Изменить подолога',
+//                                                            'toggleButton' => [
+//                                                                'label' => 'Изменить подолога',
+//                                                                'class' => 'btn btn-primary userStatus pull-right',
+//                                                            ],
+//                                                            'footer' => Html::a('Сохранить', ['visit/set-podolog', 'id' => $item->id, 'number' => $model->number], [
+//                                                                'class' => 'btn btn-primary',
+//                                                                'data' => [
+//                                                                    'method' => 'post',
+//                                                                ],
+//                                                            ]),
+//                                                        ]);
+//                                                        $podologList = ArrayHelper::map($podologModel, 'id', 'name');
+//                                                        echo $form->field($item, 'podolog_id')
+//                                                            ->dropDownList($podologList)
+//                                                            ->label('Подолог');
+//                                                        Modal::end();
+//                                                        ActiveForm::end();
+//                                                        ?>
+<!--                                                    </div>-->
+<!--                                                    <div class="form-modal">-->
+<!--                                                        --><?php
+//                                                        $form = ActiveForm::begin([
+//                                                            'method' => 'post',
+//                                                        ]);
+//                                                        Modal::begin([
+//                                                            'header' => 'Указать время записи',
+//                                                            'size' => 'modal-custom',
+//                                                            'toggleButton' => [
+//                                                                'label' => 'Назначить время посещения',
+//                                                                'class' => 'btn btn-green',
+//                                                            ],
+//                                                            'footer' => Html::a('Сохранить', ['visit/record', 'id' => $item->id, 'page' => 'view', 'number' => $model->number], [
+//                                                                'class' => 'btn btn-green',
+//                                                                'data' => [
+//                                                                    'method' => 'post',
+//                                                                ],
+//                                                            ]),
+//                                                        ]);
+//                                                        echo DateTimePicker::widget([
+//                                                            'model' => $item,
+//                                                            'attribute' => 'visit_date',
+//                                                            'type' => DateTimePicker::TYPE_INLINE,
+//                                                            'options' => [
+//                                                                'id' => 'visit_date_' . $item->id,
+//                                                                'value' => $item->visit_date < 1 ? 'ДАТА И ВРЕМЯ ПОСЕЩЕНИЯ' : date('d.m.Y H:i', $item->visit_date)
+//                                                            ],
+//                                                            'pluginOptions' => [
+//                                                                'startDate' => date('d.m.Y H:i'),
+//                                                                'autoclose' => true,
+//                                                                'todayHighlight' => true,
+//                                                                'format' => 'dd.mm.yyyy H:i',
+//                                                                'minuteStep' => 10,
+//                                                                'hoursDisabled' => '0,1,2,3,4,5,6,7,8,9,21,22,23',
+//                                                                'minTime' => 0
+//                                                            ],
+//                                                        ]);
+//                                                        Modal::end();
+//                                                        ActiveForm::end();
+//                                                        ?>
+<!--                                                    </div>-->
+<!--                                                    --><?php //if ($item->recorded == 1) { ?>
+<!--                                                        --><?//= Html::a('Снять запись', ['visit/record-unmark', 'id' => $item->id], [
+//                                                            'class' => 'btn btn-default linkNewWindow',
+//                                                        ]) ?>
+<!--                                                    --><?php //} ?>
+<!--                                                --><?php //} ?>
+<!--                                            --><?php //} ?>
+                                            <?php if ($item->has_come == 1) { ?>
+                                                <br>
+                                                <?= Html::a('Распечатать рекомендации', ['/visit/print-pdf', 'id' => $item->id, 'card_id' => $model->id], [
                                                     'class' => 'btn btn-warning',
                                                     'target' => '_blank',
                                                     'data-toggle' => 'tooltip',
                                                     'title' => 'Откроет сгенерированный PDF файл в новом окне'
                                                 ]); ?>
-                                            </div>
+                                            <?php } ?>
                                         </div>
-                                        <?php if ($administrator || $admin || $leader) { ?>
-                                            <?php
-                                            $form = ActiveForm::begin();
-                                            Modal::begin([
-                                                'header' => 'Изменить подолога',
-                                                'toggleButton' => [
-                                                    'label' => 'Изменить подолога',
-                                                    'class' => 'btn btn-primary userStatus pull-right',
-                                                ],
-                                                'footer' => Html::a('Сохранить', ['visit/set-podolog', 'id' => $item->id, 'number' => $model->number], [
-                                                    'class' => 'btn btn-primary',
-                                                    'data' => [
-                                                        'method' => 'post',
-                                                    ],
-                                                ]),
-                                            ]);
-                                            $podologList = ArrayHelper::map($podologModel, 'id', 'name');
-                                            echo $form->field($item, 'podolog_id')
-                                                ->dropDownList($podologList)
-                                                ->label('Подолог');
-                                            Modal::end();
-                                            ActiveForm::end();
-                                            ?>
-                                        <?php } ?>
-
                                     </div>
                                 </div>
-                                <hr>
+                                <br>
                             <?php } ?>
                             <div class="row">
                                 <div class="col-md-6">
@@ -389,7 +430,6 @@ $leader = Yii::$app->user->can('leader');
                                             <?php } ?>
                                         </div>
                                     </div>
-                                    <hr>
                                     <div class="box">
                                         <div class="col-md-12">
                                             <p class="titleMin"><b>Фото после обработки:</b></p>
@@ -432,9 +472,11 @@ $leader = Yii::$app->user->can('leader');
             <p><span class="glyphicon glyphicon-hourglass"></span> - ожидание посещения</p>
             <p><span class="glyphicon glyphicon-ok-circle"></span> - проблема решена</p>
             <p><span class="glyphicon glyphicon-floppy-saved"></span> - клиент записан на прием</p>
-            <p><span class="glyphicon glyphicon-ok"></span> - пациент пришел</p>
-            <p><span class="glyphicon glyphicon-remove"></span> - пациент не пришел в указанное время</p>
+            <p><span class="glyphicon glyphicon-ok"></span> - клиент пришел</p>
+            <p><span class="glyphicon glyphicon-remove"></span> - клиент не пришел в указанное время</p>
             <p><span class="glyphicon glyphicon-camera"></span> - не добавлены фотографии</p>
+            <?= $administrator || $admin || $leader ? '<p><span class="glyphicon glyphicon-alert"></span> - клиент не уложился в сроки</p>' : '' ?>
+
         </div>
     </div>
 </div>

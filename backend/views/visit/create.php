@@ -6,9 +6,10 @@ use yii\helpers\ArrayHelper;
 use yii\helpers\Url;
 use yii\widgets\ActiveForm;
 use kartik\date\DatePicker;
+use nirvana\showloading\ShowLoadingAsset;
 
-/* @var $this yii\web\View */
-/* @var $model backend\models\Visit */
+ShowLoadingAsset::register($this);
+
 $this->title = 'Новое посещение, карта №: ' . $card->number;
 
 $problemName = ArrayHelper::map($problem, 'id', 'name');
@@ -25,8 +26,7 @@ $admin = Yii::$app->user->can('admin');
 $leader = Yii::$app->user->can('leader');
 
 ?>
-<div class="visit-create">
-
+<div id="visit-create">
     <div class="row">
         <div class="col-md-12">
             <?= Html::button('<span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span> Отмена', [
@@ -231,10 +231,8 @@ $leader = Yii::$app->user->can('leader');
         </div>
         <hr>
         <div class="form-group pull-right">
-            <?= Html::submitButton('Сохранить', ['class' => 'btn btn-green']) ?>
+            <?= Html::submitButton('Сохранить', ['class' => 'btn btn-green', 'id' => 'saveBtn']) ?>
         </div>
         <?php ActiveForm::end(); ?>
     </div>
-
-
 </div>

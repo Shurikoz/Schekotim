@@ -346,7 +346,8 @@ a.desc:after {
 .glyphicon-camera,
 .glyphicon-earphone,
 .glyphicon-floppy-saved,
-.glyphicon-floppy-remove
+.glyphicon-floppy-remove,
+.glyphicon-alert
 {
 font-size: 18px;
 }
@@ -382,7 +383,8 @@ font-size: 18px;
 }
 
 .glyphicon-exclamation-sign,
-.glyphicon-floppy-remove{
+.glyphicon-floppy-remove,
+.glyphicon-alert{
     color: orange;
 }
 
@@ -395,7 +397,14 @@ font-size: 18px;
     font-size: 16px;
 }
 
-
+.text-center{
+    text-align: center;
+}
+.planned-call-time {
+    position: relative;
+    top: -4px;
+    margin-left: 6px;
+}
 .c-dropdown {
     display: inline-block;
     position: relative;
@@ -786,4 +795,13 @@ div.datetimepicker-minutes table{
 
 .form-modal .modal-custom{
     width: 355px;
+}
+
+#loading-indicator-visit-update,
+#loading-indicator-visit-create,
+#loading-indicator-visit-copy{
+    position: fixed !important;
+    z-index: 5001 !important;
+    left: 49% !important;
+    top: 49% !important;
 }

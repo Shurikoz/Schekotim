@@ -33,7 +33,9 @@ use Yii;
  * @property string $hirurg
  * @property string $recorded
  * @property string $contacted
+ * @property string $comment
  * @property string $has_second_visit
+ * @property string $not_in_time
  */
 
 
@@ -56,11 +58,12 @@ class Visit extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['card_number', 'used_photo', 'edit', 'dermatolog', 'immunolog', 'ortoped', 'hirurg', 'planned', 'visit_date', 'number', 'has_second_visit'], 'integer'],
+            [['card_number', 'used_photo', 'edit', 'dermatolog', 'immunolog', 'ortoped', 'hirurg', 'planned', 'visit_date', 'number', 'has_second_visit', 'not_in_time'], 'integer'],
             [['anamnes', 'manipulation', 'recommendation', 'description'], 'string'],
             [['address_point_id', 'city_id', 'resolve', 'has_come', 'timestamp', 'next_visit_from', 'next_visit_by', 'call_time'], 'safe'],
             ['problem_id', 'integer', 'min' => '1', 'tooSmall' => 'Проблема не выбрана!'],
             ['podolog_id', 'integer', 'min' => '1', 'tooSmall' => 'Подолог не выбран!'],
+            [['comment'], 'string', 'max' => 300],
         ];
     }
 
@@ -92,7 +95,8 @@ class Visit extends \yii\db\ActiveRecord
             'used_photo' => '',
             'description' => 'Комментарий',
             'edit' => 'Редактирование',
-            'planned' => 'Запланированное посещение'
+            'planned' => 'Запланированное посещение',
+            'comment' => 'Коментарий'
         ];
     }
 
@@ -120,16 +124,25 @@ class Visit extends \yii\db\ActiveRecord
     public function checkVisit($visits)
     {
         foreach ($visits as $visit) {
-            if ($visit->recorded == 0 && $visit->next_visit_from != null && $visit->next_visit_by != null && $visit->next_visit_by < time() && $visit->has_come != 2) {
+            //клиент пришел не вовремя
+            if ($visit->next_visit_from != null && $visit->next_visit_by != null) {
+                if (($visit->visit_date > $visit->next_visit_by) || ($visit->visit_date == null && $visit->next_visit_by + 60 * 60 * 11 < time())) {
+                    $visit->not_in_time = 1;
+                    $visit->save();
+                }
+            }
+
+            if ($visit->next_visit_from != null && $visit->next_visit_by != null && $visit->next_visit_by + 60 * 60 * 11 < time() && $visit->has_come == 0 && $visit->recorded == 0 && $visit->has_come != 2) {
                 $visit->has_come = 2; //клиент не пришел
                 $visit->planned = 0;
                 $visit->save();
-            } elseif ($visit->recorded == 1 && $visit->visit_date + 60 * 60 * 24 * 2 < time() && $visit->has_come != 2) {
+            } elseif ($visit->recorded == 1 && $visit->visit_date != 0 && $visit->visit_date + 60 * 60 * 11 < time() && $visit->has_come == 0 && $visit->has_come != 2) {
                 $visit->has_come = 2; //клиент не пришел
                 $visit->planned = 0;
                 $visit->save();
             }
         }
+
     }
 
     public function getCard()

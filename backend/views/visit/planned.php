@@ -14,6 +14,8 @@ $leader = Yii::$app->user->can('leader');
 
 $count_items = (isset($_GET['per-page'])) ? $_GET['per-page'] : 20;
 
+$this->title = 'Лист запланированных посещений';
+
 \yii\web\YiiAsset::register($this);
 ?>
 <div class="row">
@@ -64,7 +66,7 @@ $count_items = (isset($_GET['per-page'])) ? $_GET['per-page'] : 20;
         <th class="c-table__cell c-table__cell--head">Проблема</th>
         <th class="c-table__cell c-table__cell--head">Подолог</th>
         <th class="c-table__cell c-table__cell--head">Дата визита</th>
-        <th class="c-table__cell c-table__cell--head">Отметки</th>
+        <th class="c-table__cell c-table__cell--head text-center">Отметки</th>
     </tr>
     </thead>
     <tbody>
@@ -105,11 +107,13 @@ $count_items = (isset($_GET['per-page'])) ? $_GET['per-page'] : 20;
                         <span>-</span>
                     <?php } ?>
                 </td>
-                <td class="c-table__cell">
-                    <?= $item->contacted == 1 ? '<span class="glyphicon glyphicon-earphone"></span>' : '' ?>
+                <td class="c-table__cell text-center">
                     <?= $item->recorded == 1 ? '<span class="glyphicon glyphicon-floppy-saved"></span>' : '' ?>
                     <?= $item->cancel == 1 ? '<span class="glyphicon glyphicon-floppy-remove"></span>' : '' ?>
                     <span class="glyphicon glyphicon-hourglass" title="ожидание посещения"></span>
+                    <?= $item->not_in_time == 1 && ($administrator || $admin || $leader || $administrator) ? '<span class="glyphicon glyphicon-alert"></span>' : '' ?>
+                    <br>
+                    <?= $item->contacted != 0 && $item->recorded == 0 ? '<span class="glyphicon glyphicon-earphone"></span><span class="planned-call-time">' . date('d.m.Y H:i', $item->contacted) . '</span>' : '' ?>
                 </td>
             </tr>
             <tr class="c-table__row infoBlock hide hideBox">
@@ -119,8 +123,9 @@ $count_items = (isset($_GET['per-page'])) ? $_GET['per-page'] : 20;
                             <div class="pull-right">
                                 <?php if ($item->cancel == 0) { ?>
                                     <div class="form-modal">
-                                        <?php
-                                        $form = ActiveForm::begin(['options' => ['method' => 'post']]);
+                                        <?php $form = ActiveForm::begin([
+                                            'method' => 'post',
+                                        ]);
                                         Modal::begin([
                                             'header' => 'Указать время записи',
                                             'size' => 'modal-custom',
@@ -135,15 +140,13 @@ $count_items = (isset($_GET['per-page'])) ? $_GET['per-page'] : 20;
                                                 ],
                                             ]),
                                         ]);
-                                        $visit_date = $item->visit_date;
-                                        $item->visit_date = date('d.m.Y H:i', $item->visit_date);
                                         echo DateTimePicker::widget([
                                             'model' => $item,
                                             'attribute' => 'visit_date',
                                             'type' => DateTimePicker::TYPE_INLINE,
                                             'options' => [
                                                 'id' => 'visit_date_' . $item->id,
-                                                'value' => $visit_date < 1 ? 'ДАТА И ВРЕМЯ' : $item->visit_date
+                                                'value' => $item->visit_date < 1 ? 'ДАТА И ВРЕМЯ ПОСЕЩЕНИЯ' : date('d.m.Y H:i', $item->visit_date)
                                             ],
                                             'pluginOptions' => [
                                                 'startDate' => date('d.m.Y H:i'),
@@ -161,12 +164,55 @@ $count_items = (isset($_GET['per-page'])) ? $_GET['per-page'] : 20;
                                     </div>
                                 <?php } ?>
 
-                                <?php if ($item->recorded == 0 && $item->cancel == 0) { ?>
-                                    <?= Html::a('Связались, время не назначено', ['visit/contacted', 'id' => $item->id], [
-                                        'class' => 'btn btn-info ',
-                                    ]) ?>
+                                <?php if ($item->recorded == 0 && $item->cancel == 0 && $item->contacted == 0) { ?>
+                                    <div class="form-modal">
+                                        <?php $form = ActiveForm::begin([
+                                            'method' => 'post',
+                                        ]);
+                                        Modal::begin([
+                                            'header' => 'Указать время повторного звонка',
+                                            'size' => 'modal-custom',
+                                            'toggleButton' => [
+                                                'label' => 'Связались, перезвонить',
+                                                'class' => 'btn btn-info',
+                                            ],
+                                            'footer' => Html::a('Сохранить', ['visit/contacted', 'id' => $item->id], [
+                                                'class' => 'btn btn-green',
+                                                'data' => [
+                                                    'method' => 'post',
+                                                ],
+                                            ]),
+                                        ]);
+
+                                        echo DateTimePicker::widget([
+                                            'model' => $item,
+                                            'attribute' => 'contacted',
+                                            'type' => DateTimePicker::TYPE_INLINE,
+                                            'options' => [
+                                                'id' => 'contacted_' . $item->id,
+                                                'value' => $item->contacted == 0 ? 'ДАТА И ВРЕМЯ ЗВОНКА' : date('d.m.Y H:i', $item->visit_date)
+                                            ],
+                                            'pluginOptions' => [
+                                                'startDate' => date('d.m.Y H:i'),
+                                                'autoclose' => true,
+                                                'todayHighlight' => true,
+                                                'format' => 'dd.mm.yyyy H:i',
+                                                'minuteStep' => 10,
+                                                'hoursDisabled' => '0,1,2,3,4,5,6,7,8,9,21,22,23',
+                                                'minTime' => 0
+                                            ],
+                                        ]);
+                                        echo '<br>';
+
+                                        echo $form->field($item, 'comment')->textarea();
+
+                                        Modal::end();
+                                        ActiveForm::end();
+                                        ?>
+                                    </div>
                                 <?php } ?>
-                                <?php if ($item->contacted == 1 && $item->recorded == 0 && $item->cancel == 0) { ?>
+
+                                <?php if ($item->contacted != 0 && $item->recorded == 0 && $item->cancel == 0) { ?>
                                     <?= Html::a('Снять отметку "Связались с клиентом"', ['visit/contact-unmark', 'id' => $item->id], [
                                         'class' => 'btn btn-default linkNewWindow',
                                     ]) ?>
@@ -193,6 +239,17 @@ $count_items = (isset($_GET['per-page'])) ? $_GET['per-page'] : 20;
                             </div>
                         </div>
                     </div>
+                    <?php if ($item->comment) { ?>
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="box">
+                                <p><b>Коментарий:</b></p>
+                                <p><?= $item->comment?></p>
+                            </div>
+                        </div>
+                    </div>
+                    <?php } ?>
                 </td>
             </tr>
         <?php } ?>
@@ -225,6 +282,8 @@ $count_items = (isset($_GET['per-page'])) ? $_GET['per-page'] : 20;
             <p><span class="glyphicon glyphicon-earphone"></span> - связались с клиентом</p>
             <p><span class="glyphicon glyphicon-floppy-saved"></span> - записали клиента</p>
             <p><span class="glyphicon glyphicon-floppy-remove"></span> - отказ от записи</p>
+            <p><span class="glyphicon glyphicon-alert"></span> - клиент не уложился в сроки</p>
+
         </div>
     </div>
 </div>

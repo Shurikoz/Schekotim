@@ -7,8 +7,9 @@ use yii\helpers\Url;
 use yii\widgets\ActiveForm;
 use kartik\date\DatePicker;
 use yii\widgets\Pjax;
-/* @var $this yii\web\View */
-/* @var $model backend\models\Visit */
+use nirvana\showloading\ShowLoadingAsset;
+
+ShowLoadingAsset::register($this);
 
 $this->title = 'Создание копии посещения, карта №: ' . $model->card_number;
 
@@ -20,7 +21,7 @@ $card_id = (int)Yii::$app->request->get('number');
 $born = new DateTime($card->birthday); // дата рождения
 $age = $born->diff(new DateTime)->format('%y');
 ?>
-<div class="visit-copy">
+<div id="visit-copy">
     <div class="row">
         <div class="col-md-12">
             <?= Html::a('<span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span> Отмена', ['/card/view', 'number' => $model->card_number], ['class' => 'btn btn-default']) ?>
@@ -132,7 +133,8 @@ $age = $born->diff(new DateTime)->format('%y');
         </div>
         <hr>
         <div class="form-group pull-right">
-            <?= Html::submitButton('Сохранить копию', ['class' => 'btn btn-green']) ?>
+            <?= Html::submitButton('Сохранить копию', ['class' => 'btn btn-green', 'id' => 'saveBtn']) ?>
+
         </div>
         <?php ActiveForm::end(); ?>
     </div>

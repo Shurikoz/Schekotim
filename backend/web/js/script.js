@@ -237,3 +237,13 @@ function visitResolve() {
         $(".dateVisit").addClass('hide');
     }
 }
+
+$('#saveBtn').on('click',function(){
+    $(this).attr('disabled', true);
+    $("div").is("#visit-create") ? $('#visit-create').showLoading() : '';
+    $("div").is("#visit-update") ? $('#visit-update').showLoading() : '';
+    $("div").is("#visit-copy") ? $('#visit-copy').showLoading() : '';
+
+});
+
+

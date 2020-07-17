@@ -76,7 +76,7 @@ class CardController extends Controller
 
         //пройдемся по посещениям, если пациент не пришел до указанного времени, сделаем отметку
         $check = new Visit();
-//        $check->checkVisit($visits);
+        $check->checkVisit($visits);
 
         return $this->render('view', [
             'pages' => $pages,

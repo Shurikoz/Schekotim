@@ -34,6 +34,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'anamnes:ntext',
             'manipulation:ntext',
             'recommendation:ntext',
+            'diagnosis:ntext',
         ],
     ]) ?>
 

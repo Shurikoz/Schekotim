@@ -102,21 +102,12 @@ $leader = Yii::$app->user->can('leader');
             ],
         ];
         $menuItems[] = [
-            'label' => 'Профиль',
-            'visible' => $admin || $administrator || $smm || $podolog || $leader,
+            'label' => Yii::$app->user->identity->username,
             'items' => [
-//                ['label' => 'Уведомления', 'url' => '/notification'],
                 ['label' => 'Настройки', 'url' => '/settings'],
+                ['label' => 'Выход',  'url' => '/site/logout'],
             ],
         ];
-        $menuItems[] = '<li>'
-            . Html::beginForm(['/site/logout'], 'post')
-            . Html::submitButton(
-                'Выход (' . Yii::$app->user->identity->username . ')',
-                ['class' => 'logout']
-            )
-            . Html::endForm()
-            . '</li>';
     }
     echo Nav::widget([
         'options' => ['class' => 'navbar-nav navbar-right'],
@@ -134,22 +125,22 @@ $leader = Yii::$app->user->can('leader');
     <div class="container">
         <?php if (!Yii::$app->user->isGuest) { ?>
             <div class="row">
-                <div class="col-md-8">
+                <div class="col-md-8 col-sm-8">
                     <?php if (!$admin) { ?>
                         <?= Html::a('<button type="button" class="btn btn-default">Служба поддержки</button>', ['/support']) ?>
                     <?php } ?>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-4 col-sm-4">
                     <?= Html::a('<button type="button" class="btn btn-default pull-right">Справка</button>', ['/tutorial']) ?>
                 </div>
             </div>
             <hr>
         <?php } ?>
         <div class="row">
-            <div class="col-md-6">
+            <div class="col-md-6 col-sm-6">
                 <p class="pull-left">&copy; <?= Html::encode(Yii::$app->name) ?> <?= date('Y') ?></p>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-6 col-sm-6">
                 <p class="pull-right"><?= Html::a('Политика конфиденциальности', ['/policy']) ?></p>
             </div>
         </div>

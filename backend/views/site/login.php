@@ -17,7 +17,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <p>Пожалуйста, заполните следующие поля для входа:</p>
 
     <div class="row">
-        <div class="col-lg-offset-4 col-lg-4 text-center">
+        <div class="col-xs-offset-3 col-xs-6 col-lg-offset-4 col-lg-4 text-center">
             <?php $form = ActiveForm::begin(['id' => 'login-form']); ?>
             <br>
             <?= $form->field($model, 'username')->textInput() ?>

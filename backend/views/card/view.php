@@ -1,12 +1,18 @@
 <?php
 
 use backend\models\Photo;
+use backend\models\Specialist;
+use backend\models\Visit;
 use common\widgets\Alert;
+use kartik\datetime\DateTimePicker;
 use newerton\fancybox3\FancyBox;
 use rmrevin\yii\fontawesome\FAS;
 use russ666\widgets\Countdown;
+use yii\bootstrap\Modal;
+use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\helpers\Url;
+use yii\widgets\ActiveForm;
 use yii\widgets\LinkPager;
 
 $this->title = 'Карта № ' . $model->number;
@@ -23,6 +29,7 @@ $admin = Yii::$app->user->can('admin');
 $administrator = Yii::$app->user->can('administrator');
 $smm = Yii::$app->user->can('smm');
 $podolog = Yii::$app->user->can('podolog');
+$dermatolog = Yii::$app->user->can('dermatolog');
 $leader = Yii::$app->user->can('leader');
 
 ?>
@@ -43,13 +50,13 @@ $leader = Yii::$app->user->can('leader');
         <span class="cardHeader"><b><?= Html::encode($this->title) ?></b></span>
     </div>
     <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-6 col-sm-6">
             <div class="box" style="border: 1px solid #7ba335">
                 <p class="titleCardName">
                     <b>ФИО:</b> <?= $model->name ?> <?= $model->middle_name ?> <?= $model->surname ?></p>
             </div>
         </div>
-        <div class="col-md-6 col-xs-6">
+        <div class="col-md-6 col-sm-6">
             <div class="box">
                 <p class="titleCardName"><b>Телефон:</b> <?= $model->phone ?> </p>
             </div>
@@ -57,7 +64,7 @@ $leader = Yii::$app->user->can('leader');
     </div>
     <?php if ($model->representative) {?>
     <div class="row">
-        <div class="col-md-6 col-xs-6">
+        <div class="col-md-6 col-sm-6">
             <div class="box">
                 <p><b>Представитель клиента:</b> <br> <?= $model->representative ?> </p>
             </div>
@@ -65,22 +72,22 @@ $leader = Yii::$app->user->can('leader');
     </div>
     <?php } ?>
     <div class="row">
-        <div class="col-md-3 col-xs-6">
+        <div class="col-md-3 col-sm-6">
             <div class="box">
                 <b>Дата рождения: </b><?= Yii::$app->formatter->asDate($model->birthday) ?>
             </div>
         </div>
-        <div class="col-md-2 col-xs-6">
+        <div class="col-md-2 col-sm-6">
             <div class="box">
                 <b>Возраст: </b><?= $age ?>
             </div>
         </div>
-        <div class="col-md-3 col-xs-6">
+        <div class="col-md-3 col-sm-6">
             <div class="box">
                 <b>Дата создания: </b><?= Yii::$app->formatter->asDate($model->created_at) ?>
             </div>
         </div>
-        <div class="col-md-4 col-xs-6">
+        <div class="col-md-4 col-sm-6">
             <div class="box">
                 <?= $model->city->name ?>, <?= $model->address_point->address_point ?>
             </div>
@@ -106,21 +113,18 @@ $leader = Yii::$app->user->can('leader');
         <?= Alert::widget() ?>
         <caption class="c-table__title">
             <div class="row">
-                <div class="col-md-8 col-xs-4">
+                <div class="col-md-8 col-sm-4">
                     Лист посещений
                     <small>Всего посещений: <?= $dataProvider->getTotalCount() ?></small>
                 </div>
-                <div class="col-md-4 col-xs-8">
+                <div class="col-md-4 col-sm-8">
                     <div class="pull-right">
-                        <?php if ($admin || $podolog || $leader) { ?>
+                        <?php if ($admin || $podolog || $dermatolog || $leader) { ?>
                             <?= Html::a('<span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Создать новое посещение', ['visit/create', 'id' => $model->id, 'number' => $model->number], ['class' => 'btn btn-green']) ?>
                         <?php } ?>
                     </div>
                 </div>
             </div>
-
-
-
         </caption>
         <thead class="c-table__head c-table__head--slim">
         <tr class="c-table__row">
@@ -151,6 +155,7 @@ $leader = Yii::$app->user->can('leader');
                     $hasCome = 'c-table__row--danger';
                     $picCome = '<span class="glyphicon glyphicon-remove"></span>';
                 }
+
                 // проверим решена проблема или нет
                 if ($item->resolve != 0) {
                     $picResolve = '<span class="glyphicon glyphicon-ok-circle"></span>';
@@ -158,13 +163,15 @@ $leader = Yii::$app->user->can('leader');
                     $picResolve = '';
                 }
 
-                if ($item->photo == null || Photo::countPhotoBefore($item->photo) == 0 || Photo::countPhotoAfter($item->photo) == 0) {
+                if ($item->specialist->profession == 'podolog' && (Photo::countPhotoBefore($item->photo) == 0 || Photo::countPhotoAfter($item->photo) == 0)) {
+                    $picCamera = '<span class="glyphicon glyphicon-camera"></span>';
+                } elseif ($item->specialist->profession == 'dermatolog' && $item->photo == null) {
                     $picCamera = '<span class="glyphicon glyphicon-camera"></span>';
                 } else {
                     $picCamera = '';
                 }
-                ?>
 
+                ?>
                 <tr class="c-table__row <?= $hasCome ?> openBox">
                     <td class="c-table__cell">
                         <span> <?= $item->id ?></span>
@@ -184,7 +191,8 @@ $leader = Yii::$app->user->can('leader');
                         <?php } ?>
                     </td>
                     <td class="c-table__cell">
-                        <?= $item->podolog->name ?>
+                        <?= (new Specialist())->profession($item->specialist->profession) ?><br>
+                        <?= $item->specialist->name ?>
                     </td>
                     <td class="c-table__cell">
                         <?php if (($item->next_visit_from != null && $item->next_visit_by != null && $item->has_come == 0 && $item->visit_date == null) || ($item->has_come == 2 && $item->next_visit_from != null && $item->next_visit_by != null)) { ?>
@@ -201,13 +209,12 @@ $leader = Yii::$app->user->can('leader');
                         <?= $picResolve ?>
                         <?= $item->recorded == 1 ? '<span class="glyphicon glyphicon-floppy-saved"></span>' : '' ?>
                         <?= $picCamera ?>
-                        <?= $item->not_in_time == 1 && ($administrator || $admin || $leader || $administrator) ? '<span class="glyphicon glyphicon-alert"></span>' : '' ?>
-
+                        <?= $item->not_in_time == 1 && ($administrator || $admin || $leader) ? '<span class="glyphicon glyphicon-alert"></span>' : '' ?>
                     </td>
                 </tr>
                 <tr class="c-table__row infoBlock hide hideBox">
-                        <td colspan="10" class="c-table__infoBlock">
-                            <?php if ($item->podolog->user_id == Yii::$app->user->id || $admin || $leader) { ?>
+                    <td colspan="10" class="c-table__infoBlock">
+                        <?php if ($item->specialist->user_id == Yii::$app->user->id || $admin || $leader) { ?>
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="userStatus pull-right">
@@ -216,7 +223,7 @@ $leader = Yii::$app->user->can('leader');
                                                     <?= Html::a('Создать копию', ['visit/copy', 'id' => $item->id, 'number' => $model->number], ['class' => 'btn btn-primary']) ?>
                                                 </div>
                                             <?php } ?>
-                                            <?php if ($item->has_come != 2 && ((($item->podolog->user_id == Yii::$app->user->id && $item->timestamp + 60 * 60 * 24 * 2 >= time()) && $item->resolve != 1) || $item->next_visit_by != null && $item->next_visit_by >= time())) { ?>
+                                            <?php if ((new Visit())->checkSuccess($item)) { ?>
                                                 <div id="blockEdit_<?= $item->id ?>" data-id="<?= $item->id ?>">
                                                     <?= Html::a('Изменить посещение', ['visit/update', 'id' => $item->id, 'number' => $model->number], ['class' => 'btn btn-info']) ?>
                                                     <?php //если указан интервал посещения, то таймер не выводим ?>
@@ -243,7 +250,7 @@ $leader = Yii::$app->user->can('leader');
                                                 </div>
                                             <?php } ?>
                                             <?php //кнопка «Проблема решена» доступна админу или тому, кто создал посещение?>
-                                            <?php if ($item->podolog->user_id == Yii::$app->user->id || $admin || $leader) { ?>
+                                            <?php if ($item->specialist->user_id == Yii::$app->user->id || $admin || $leader) { ?>
                                                 <?php if ($item->visit_date != null && $item->problem_id != 0 && $item->has_come != 2) { ?>
                                                     <div>
                                                         <?php if ($item->resolve == 0) { ?>
@@ -278,89 +285,88 @@ $leader = Yii::$app->user->can('leader');
                                         </div>
                                     </div>
                                 </div>
+                                <br>
                             <?php } ?>
-                            <?php if ($administrator || $admin || $podolog || $leader) { ?>
+                            <?php if ($administrator || $admin || $podolog || $dermatolog || $leader) { ?>
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="pull-right">
-<!--                                            --><?php //if ($administrator || $admin || $leader) { ?>
-<!--                                                --><?php //if ($item->has_come != 1) { ?>
-<!--                                                    <div class="form-modal">-->
-<!---->
-<!--                                                        --><?php
-//                                                        $form = ActiveForm::begin();
-//                                                        Modal::begin([
-//                                                            'header' => 'Изменить подолога',
-//                                                            'toggleButton' => [
-//                                                                'label' => 'Изменить подолога',
-//                                                                'class' => 'btn btn-primary userStatus pull-right',
-//                                                            ],
-//                                                            'footer' => Html::a('Сохранить', ['visit/set-podolog', 'id' => $item->id, 'number' => $model->number], [
-//                                                                'class' => 'btn btn-primary',
-//                                                                'data' => [
-//                                                                    'method' => 'post',
-//                                                                ],
-//                                                            ]),
-//                                                        ]);
-//                                                        $podologList = ArrayHelper::map($podologModel, 'id', 'name');
-//                                                        echo $form->field($item, 'podolog_id')
-//                                                            ->dropDownList($podologList)
-//                                                            ->label('Подолог');
-//                                                        Modal::end();
-//                                                        ActiveForm::end();
-//                                                        ?>
-<!--                                                    </div>-->
-<!--                                                    <div class="form-modal">-->
-<!--                                                        --><?php
-//                                                        $form = ActiveForm::begin([
-//                                                            'method' => 'post',
-//                                                        ]);
-//                                                        Modal::begin([
-//                                                            'header' => 'Указать время записи',
-//                                                            'size' => 'modal-custom',
-//                                                            'toggleButton' => [
-//                                                                'label' => 'Назначить время посещения',
-//                                                                'class' => 'btn btn-green',
-//                                                            ],
-//                                                            'footer' => Html::a('Сохранить', ['visit/record', 'id' => $item->id, 'page' => 'view', 'number' => $model->number], [
-//                                                                'class' => 'btn btn-green',
-//                                                                'data' => [
-//                                                                    'method' => 'post',
-//                                                                ],
-//                                                            ]),
-//                                                        ]);
-//                                                        echo DateTimePicker::widget([
-//                                                            'model' => $item,
-//                                                            'attribute' => 'visit_date',
-//                                                            'type' => DateTimePicker::TYPE_INLINE,
-//                                                            'options' => [
-//                                                                'id' => 'visit_date_' . $item->id,
-//                                                                'value' => $item->visit_date < 1 ? 'ДАТА И ВРЕМЯ ПОСЕЩЕНИЯ' : date('d.m.Y H:i', $item->visit_date)
-//                                                            ],
-//                                                            'pluginOptions' => [
-//                                                                'startDate' => date('d.m.Y H:i'),
-//                                                                'autoclose' => true,
-//                                                                'todayHighlight' => true,
-//                                                                'format' => 'dd.mm.yyyy H:i',
-//                                                                'minuteStep' => 10,
-//                                                                'hoursDisabled' => '0,1,2,3,4,5,6,7,8,9,21,22,23',
-//                                                                'minTime' => 0
-//                                                            ],
-//                                                        ]);
-//                                                        Modal::end();
-//                                                        ActiveForm::end();
-//                                                        ?>
-<!--                                                    </div>-->
-<!--                                                    --><?php //if ($item->recorded == 1) { ?>
-<!--                                                        --><?//= Html::a('Снять запись', ['visit/record-unmark', 'id' => $item->id], [
-//                                                            'class' => 'btn btn-default linkNewWindow',
-//                                                        ]) ?>
-<!--                                                    --><?php //} ?>
-<!--                                                --><?php //} ?>
-<!--                                            --><?php //} ?>
+                                            <?php if ($administrator || $admin || $leader) { ?>
+                                                <?php if ($item->has_come != 1) { ?>
+                                                    <div class="form-modal">
+                                                        <?php
+                                                        $form = ActiveForm::begin();
+                                                        Modal::begin([
+                                                            'header' => 'Изменить специалиста',
+                                                            'toggleButton' => [
+                                                                'label' => 'Изменить специалиста',
+                                                                'class' => 'btn btn-primary userStatus pull-right',
+                                                            ],
+                                                            'footer' => Html::a('Сохранить', ['visit/set-specialist', 'id' => $item->id, 'number' => $model->number], [
+                                                                'class' => 'btn btn-primary',
+                                                                'data' => [
+                                                                    'method' => 'post',
+                                                                ],
+                                                            ]),
+                                                        ]);
+                                                        $specialistList = ArrayHelper::map($specialistModel, 'id', 'name');
+                                                        echo $form->field($item, 'specialist_id')
+                                                            ->dropDownList($specialistList)
+                                                            ->label('Подолог');
+                                                        Modal::end();
+                                                        ActiveForm::end();
+                                                        ?>
+                                                    </div>
+                                                    <div class="form-modal">
+                                                        <?php
+                                                        $form = ActiveForm::begin([
+                                                            'method' => 'post',
+                                                        ]);
+                                                        Modal::begin([
+                                                            'header' => 'Указать время записи',
+                                                            'size' => 'modal-custom',
+                                                            'toggleButton' => [
+                                                                'label' => 'Назначить время посещения',
+                                                                'class' => 'btn btn-green',
+                                                            ],
+                                                            'footer' => Html::a('Сохранить', ['visit/record', 'id' => $item->id, 'page' => 'view', 'number' => $model->number], [
+                                                                'class' => 'btn btn-green',
+                                                                'data' => [
+                                                                    'method' => 'post',
+                                                                ],
+                                                            ]),
+                                                        ]);
+                                                        echo DateTimePicker::widget([
+                                                            'model' => $item,
+                                                            'attribute' => 'visit_date',
+                                                            'type' => DateTimePicker::TYPE_INLINE,
+                                                            'options' => [
+                                                                'id' => 'visit_date_' . $item->id,
+                                                                'value' => $item->visit_date < 1 ? 'ДАТА И ВРЕМЯ ПОСЕЩЕНИЯ' : date('d.m.Y H:i', $item->visit_date)
+                                                            ],
+                                                            'pluginOptions' => [
+                                                                'startDate' => date('d.m.Y H:i'),
+                                                                'autoclose' => true,
+                                                                'todayHighlight' => true,
+                                                                'format' => 'dd.mm.yyyy H:i',
+                                                                'minuteStep' => 10,
+                                                                'hoursDisabled' => '0,1,2,3,4,5,6,7,8,9,21,22,23',
+                                                                'minTime' => 0
+                                                            ],
+                                                        ]);
+                                                        Modal::end();
+                                                        ActiveForm::end();
+                                                        ?>
+                                                    </div>
+                                                    <?php if ($item->recorded == 1) { ?>
+                                                        <?= Html::a('Снять запись', ['visit/record-unmark', 'id' => $item->id, 'page' => 'view', 'number' => $model->number], [
+                                                            'class' => 'btn btn-default linkNewWindow',
+                                                        ]) ?>
+                                                    <?php } ?>
+                                                <?php } ?>
+                                            <?php } ?>
                                             <?php if ($item->has_come == 1) { ?>
-                                                <br>
-                                                <?= Html::a('Распечатать рекомендации', ['/visit/print-pdf', 'id' => $item->id, 'card_id' => $model->id], [
+                                                <?= Html::a('Распечатать рекомендации', ['/visit/print-pdf', 'profession' => $item->specialist->profession, 'id' => $item->id, 'card_id' => $model->id], [
                                                     'class' => 'btn btn-warning',
                                                     'target' => '_blank',
                                                     'data-toggle' => 'tooltip',
@@ -382,11 +388,22 @@ $leader = Yii::$app->user->can('leader');
                                         </div>
                                     </div>
                                     <div class="box">
-                                        <div class="col-md-12">
-                                            <p><b>Манипуляции:</b></p>
-                                            <br>
-                                            <p><?= $item->manipulation == null ? '<span class="text-red">Не заполнено</span>' : nl2br($item->manipulation) ?></p>
-                                        </div>
+                                        <?php if ($item->specialist->profession == 'podolog') { ?>
+
+                                            <div class="col-md-12">
+                                                <p><b>Манипуляции:</b></p>
+                                                <br>
+                                                <p><?= $item->manipulation == null ? '<span class="text-red">Не заполнено</span>' : nl2br($item->manipulation) ?></p>
+                                            </div>
+                                        <?php } ?>
+
+                                        <?php if ($item->specialist->profession == 'dermatolog') { ?>
+                                            <div class="col-md-12">
+                                                <p><b>Диагноз:</b></p>
+                                                <br>
+                                                <p><?= $item->diagnosis == null ? '<span class="text-red">Не заполнено</span>' : nl2br($item->diagnosis) ?></p>
+                                            </div>
+                                        <?php } ?>
                                     </div>
                                     <div class="box">
                                         <div class="col-md-12">
@@ -413,39 +430,59 @@ $leader = Yii::$app->user->can('leader');
                                 </div>
 
                                 <div class="col-md-6">
-
-                                    <div class="box">
-                                        <div class="col-md-12">
-                                            <p class="titleMin"><b>Фото до обработки:</b></p>
-                                            <?php if (Photo::countPhotoBefore($item->photo) != 0) { ?>
-                                                <?php foreach ($item->photo as $photo) { ?>
-                                                    <?php if ($photo->made == 'before') { ?>
-                                                        <div style="float: left; margin: 0 0 20px 20px;">
-                                                            <?= Html::a(Html::img($photo->thumbnail), $photo->url, ['data-fancybox' => true]);?>
-                                                        </div>
+                                    <?php if ($item->specialist->profession == 'podolog') { ?>
+                                        <div class="box">
+                                            <div class="col-md-12">
+                                                <p class="titleMin"><b>Фото до обработки:</b></p>
+                                                <?php if (Photo::countPhotoBefore($item->photo) != 0) { ?>
+                                                    <?php foreach ($item->photo as $photo) { ?>
+                                                        <?php if ($photo->made == 'before') { ?>
+                                                            <div style="float: left; margin: 0 0 20px 20px;">
+                                                                <?= Html::a(Html::img($photo->thumbnail), $photo->url, ['data-fancybox' => true]); ?>
+                                                            </div>
+                                                        <?php } ?>
                                                     <?php } ?>
+                                                <?php } else { ?>
+                                                    <p><span class="text-red">Не заполнено</span></p>
                                                 <?php } ?>
-                                            <?php } else { ?>
-                                                <p><span class="text-red">Не заполнено</span></p>
-                                            <?php } ?>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="box">
-                                        <div class="col-md-12">
-                                            <p class="titleMin"><b>Фото после обработки:</b></p>
-                                            <?php if (!Photo::countPhotoAfter($item->photo) == 0) { ?>
-                                                <?php foreach ($item->photo as $photo) { ?>
-                                                    <?php if ($photo->made == 'after') { ?>
-                                                        <div style="float: left; margin: 0 0 20px 20px;">
-                                                            <?= Html::a(Html::img($photo->thumbnail), $photo->url, ['data-fancybox' => true]);?>
-                                                        </div>
+                                        <div class="box">
+                                            <div class="col-md-12">
+                                                <p class="titleMin"><b>Фото после обработки:</b></p>
+                                                <?php if (Photo::countPhotoAfter($item->photo) != 0) { ?>
+                                                    <?php foreach ($item->photo as $photo) { ?>
+                                                        <?php if ($photo->made == 'after') { ?>
+                                                            <div style="float: left; margin: 0 0 20px 20px;">
+                                                                <?= Html::a(Html::img($photo->thumbnail), $photo->url, ['data-fancybox' => true]); ?>
+                                                            </div>
+                                                        <?php } ?>
                                                     <?php } ?>
+                                                <?php } else { ?>
+                                                    <p><span class="text-red">Не заполнено</span></p>
                                                 <?php } ?>
-                                            <?php } else { ?>
-                                                <p><span class="text-red">Не заполнено</span></p>
-                                            <?php } ?>
+                                            </div>
                                         </div>
-                                    </div>
+                                    <?php } ?>
+                                    <?php if ($item->specialist->profession == 'dermatolog') { ?>
+                                        <div class="box">
+                                            <div class="col-md-12">
+                                                <p class="titleMin"><b>Фото проблемы:</b></p>
+                                                <br>
+                                                <?php if (Photo::countPhotoDermatolog($item->photo) != 0) { ?>
+                                                    <?php foreach ($item->photo as $photo) { ?>
+                                                        <?php if ($photo->made == 'dermatolog') { ?>
+                                                            <div style="float: left; margin: 0 0 20px 20px;">
+                                                                <?= Html::a(Html::img($photo->thumbnail), $photo->url, ['data-fancybox' => true]); ?>
+                                                            </div>
+                                                        <?php } ?>
+                                                    <?php } ?>
+                                                <?php } else { ?>
+                                                    <p><span class="text-red">Не заполнено</span></p>
+                                                <?php } ?>
+                                            </div>
+                                        </div>
+                                    <?php } ?>
                                 </div>
                             </div>
                         </td>

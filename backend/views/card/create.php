@@ -9,11 +9,6 @@ use yii\widgets\MaskedInput;
 
 $this->title = 'Создание новой карты пациента';
 
-$podologList = ArrayHelper::map($podologModel, 'id', 'name');
-array_unshift($podologList, "Выберите подолога");
-
-$cityList = ArrayHelper::map($cityModel, 'id', 'name');
-
 $admin = Yii::$app->user->can('admin');
 
 ?>
@@ -28,11 +23,11 @@ $admin = Yii::$app->user->can('admin');
     </div>
     <hr>
     <div class="row">
-        <div class="col-md-4">
+        <div class="col-md-4 col-sm-6">
             <b>Город:</b> <?= $user->city->name;?>
 
         </div>
-        <div class="col-md-4">
+        <div class="col-md-4 col-sm-6">
             <b>Точка:</b> <?= $user->address_point->address_point; ?>
 
         </div>
@@ -47,12 +42,12 @@ $admin = Yii::$app->user->can('admin');
         <?php $form = ActiveForm::begin(); ?>
         <?php //TODO убрать блок ?>
         <div class="row">
-            <div class="col-md-4">
+            <div class="col-md-4 col-sm-6">
                 <div class="box">
                     <?= $form->field($cardModel, 'number')->textInput() ?>
                 </div>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-4 col-sm-6">
                 <p>Номер последней введенной карты: <b><?= $card->number ?></b></p>
             </div>
         </div>
@@ -64,39 +59,22 @@ $admin = Yii::$app->user->can('admin');
             <?= $form->field($cardModel, 'address_point_id')->hiddenInput(['value' => Yii::$app->user->identity->address_point_id])->label(false); ?>
         <?php } ?>
         <div class="row">
-            <div class="col-md-4">
+            <div class="col-md-4 col-sm-6">
                 <div class="box">
                     <?= $form->field($cardModel, 'surname')->textInput(['maxlength' => true, 'id' => 'surname']) ?>
                 </div>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-4 col-sm-6">
                 <div class="box">
                     <?= $form->field($cardModel, 'name')->textInput(['maxlength' => true, 'onchange' => 'checkCard()', 'id' => 'name']) ?>
                 </div>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-4 col-sm-6">
                 <div class="box">
                     <?= $form->field($cardModel, 'middle_name')->textInput(['maxlength' => true, 'onchange' => 'checkCard()', 'id' => 'middle_name']) ?>
                 </div>
             </div>
-        </div>
-        <br>
-        <div class="row">
-            <div class="col-md-4">
-                <div class="box">
-                    <?= Html::checkbox('representative', false, ['label' => 'Представитель клиента', 'onchange' => 'cardRepresentative()']) ?>
-                </div>
-            </div>
-
-            <div class="col-md-4 representative hide">
-                <div class="box">
-                    <?= $form->field($cardModel, 'representative', ['labelOptions' => ['class' => 'control-label']])->textarea()->label(''); ?>
-                </div>
-            </div>
-        </div>
-        <br>
-        <div class="row">
-            <div class="col-md-4">
+            <div class="col-md-4 col-sm-6">
                 <div class="box">
                     <?php echo $form->field($cardModel, 'birthday')->widget(DatePicker::classname(), [
                         'options' => ['placeholder' => 'Дата рождения'],
@@ -108,11 +86,10 @@ $admin = Yii::$app->user->can('admin');
                         ],
                         'options' => ['placeholder' => 'дд.мм.гггг', 'onchange' => 'checkCard()', 'id' => 'birthday']
                     ]);
-
                     ?>
                 </div>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-4 col-sm-6">
                 <div class="box">
                     <?= $form->field($cardModel, 'phone', ['labelOptions' => ['class' => 'control-label']])
                         ->widget(MaskedInput::className(), ['mask' => '+7 (999) 999 99 99'])
@@ -120,6 +97,21 @@ $admin = Yii::$app->user->can('admin');
                 </div>
             </div>
         </div>
+        <br>
+        <div class="row">
+            <div class="col-md-4 col-sm-6">
+                <div class="box">
+                    <?= Html::checkbox('representative', false, ['label' => 'Представитель клиента', 'onchange' => 'cardRepresentative()']) ?>
+                </div>
+            </div>
+
+            <div class="col-md-4 col-sm-6 representative hide">
+                <div class="box">
+                    <?= $form->field($cardModel, 'representative', ['labelOptions' => ['class' => 'control-label']])->textarea()->label(''); ?>
+                </div>
+            </div>
+        </div>
+        <br>
         <div class="row">
             <div class="col-md-12">
                 <div id="checkCard"></div>
@@ -131,7 +123,7 @@ $admin = Yii::$app->user->can('admin');
             <?php if ($admin) { ?>
                 <!--для администратора сделаем доступным отдельный ввод города, точки и специалиста
                     сначала выбираем город, затем адрес точки -->
-                <div class="col-md-4">
+                <div class="col-md-4 col-sm-6">
                     <div class="row">
                         <div class="col-md-12">
                             <p class="titleMin">Выбор города</p>
@@ -146,7 +138,7 @@ $admin = Yii::$app->user->can('admin');
                         </div>
                     </div>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-4 col-sm-6">
                     <div class="row">
                         <div class="col-md-12">
                             <p class="titleMin">Адрес точки</p>
@@ -164,7 +156,7 @@ $admin = Yii::$app->user->can('admin');
                 </div>
             <?php } ?>
             <?php if (!$admin) { ?>
-                <div class="col-md-4">
+                <div class="col-md-4 col-sm-6">
                     <div class="row">
                         <div class="col-md-12">
                             <p class="titleMin">Выбор специалиста</p>
@@ -174,9 +166,8 @@ $admin = Yii::$app->user->can('admin');
                     <div class="row">
                         <div class="col-md-12">
                             <div class="box">
-                                <?= $form->field($visitModel, 'podolog_id')
-                                    ->dropDownList($podologList)
-                                    ->label('Подолог') ?>
+                                <?= $form->field($visitModel, 'specialist_id')->dropDownList($specialistList, ['prompt' => '-'])->label('Специалист') ?>
+
                             </div>
                         </div>
                     </div>

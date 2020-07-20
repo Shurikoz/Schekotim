@@ -50,7 +50,7 @@ use yii\helpers\Html;
                     <?php } ?>
                 </td>
                 <td class="c-table__cell">
-                    <?= $item->podolog->name ?>
+                    <?= $item->specialist->name ?>
                 </td>
                 <td class="c-table__cell">
                     <?php if ($item->next_visit_from != null && $item->next_visit_by != null && $item->has_come == 0) { ?>

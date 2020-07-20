@@ -17,7 +17,7 @@ use yii\helpers\Html;
 <hr class="major"/>
 <h3>#подология</h3>
 <div class="row">
-    <?php foreach ($podolog as $photo) { ?>
+    <?php foreach ($specialist as $photo) { ?>
         <div class="col-md-3">
             <div class="photo-block">
                 <img width="180" src="<?= 'http://schekotim.ru/images/gallery/thumbnail/' . $photo->filename; ?>"

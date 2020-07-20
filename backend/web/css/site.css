@@ -85,6 +85,15 @@ section:nth-last-child(1)::after{
     font-size: 21px;
 }
 
+.navbar-inverse .navbar-toggle .icon-bar {
+    background-color: #000 !important;
+}
+
+.navbar-inverse .navbar-nav .open .dropdown-menu > li > a:hover, .navbar-inverse .navbar-nav .open .dropdown-menu > li > a:focus {
+    color: #7ba335;
+    background-color: transparent;
+}
+
 /* add sorting icons to gridview sort links */
 a.asc:after, a.desc:after {
     position: relative;

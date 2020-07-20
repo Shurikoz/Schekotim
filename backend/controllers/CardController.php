@@ -6,7 +6,7 @@ use backend\models\AddressPoint;
 use backend\models\Card;
 use backend\models\CardSearch;
 use backend\models\City;
-use backend\models\Podolog;
+use backend\models\Specialist;
 use backend\models\Visit;
 use backend\models\VisitMark;
 use backend\models\VisitSearch;
@@ -72,7 +72,7 @@ class CardController extends Controller
         $model = Card::find()->where(['number' => $number])->with('city', 'address_point')->one();
         $visits = Visit::find()->where(['card_number' => $number])->with(['photo', 'problem', 'city'])->all();
         $pages = new Pagination(['totalCount' => $dataProvider->getTotalCount(), 'pageSizeLimit' => [1, 60], 'defaultPageSize' => 20]);
-        $podologModel = Podolog::find()->where(['address_point_id' => Yii::$app->user->identity->address_point_id])->all();
+        $specialistModel = Specialist::find()->where(['address_point_id' => Yii::$app->user->identity->address_point_id])->all();
 
         //пройдемся по посещениям, если пациент не пришел до указанного времени, сделаем отметку
         $check = new Visit();
@@ -82,7 +82,7 @@ class CardController extends Controller
             'pages' => $pages,
             'model' => $model,
             'visits' => $visits,
-            'podologModel' => $podologModel,
+            'specialistModel' => $specialistModel,
             'dataProvider' => $dataProvider,
         ]);
     }
@@ -100,12 +100,14 @@ class CardController extends Controller
         $user = User::find()->where(['id' => Yii::$app->user->identity->getId()])->with('city', 'address_point')->one();
 
         if (Yii::$app->user->can('admin')){
-            $podologModel = Podolog::find()->all();
+            $specialistModel = Specialist::find()->all();
         } else {
-            $podologModel = Podolog::find()->where(['address_point_id' => $user->address_point_id])->all();
+            $specialistModel = Specialist::find()->where(['address_point_id' => $user->address_point_id])->all();
+            $specialistList = ArrayHelper::map($specialistModel, 'id', 'name');
         }
 
         $cityModel = City::find()->all();
+        $cityList = ArrayHelper::map($cityModel, 'id', 'name');
 
         $cardModel = new Card();
 
@@ -168,8 +170,8 @@ class CardController extends Controller
             'user' => $user,
             'cardModel' => $cardModel,
             'visitModel' => $visitModel,
-            'podologModel' => $podologModel,
-            'cityModel' => $cityModel
+            'specialistList' => $specialistList,
+            'cityList' => $cityList
         ]);
     }
 
@@ -236,13 +238,13 @@ class CardController extends Controller
      * @param $id
      * @return array|bool|\yii\db\ActiveRecord[]
      */
-    public function actionGetPodolog($id)
+    public function actionGetSpecialist($id)
     {
         \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
         if (Yii::$app->request->isAjax) {
             $addressPoint = AddressPoint::find()->where(['id' => $id])->one();
-            $podolog = Podolog::find()->where(['address_point' => $addressPoint->address_point])->all();
-            return $podolog;
+            $specialist = Specialist::find()->where(['address_point' => $addressPoint->address_point])->all();
+            return $specialist;
         }
         return false;
     }

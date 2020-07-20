@@ -20,7 +20,7 @@ class VisitPlannedSearch extends Visit
     public function rules()
     {
         return [
-            [['id', 'number', 'podolog_id', 'card_number', 'city_id', 'address_point_id', 'problem_id', 'dermatolog', 'immunolog', 'ortoped', 'hirurg', 'planned', 'has_come', 'resolve', 'used_photo', 'edit', 'contacted', 'recorded', 'cancel'], 'integer'],
+            [['id', 'number', 'specialist_id', 'card_number', 'city_id', 'address_point_id', 'problem_id', 'dermatolog', 'immunolog', 'ortoped', 'hirurg', 'planned', 'has_come', 'resolve', 'used_photo', 'edit', 'contacted', 'recorded', 'cancel'], 'integer'],
             [['surname', 'name', 'middle_name', 'anamnes', 'manipulation', 'recommendation', 'next_visit_from', 'next_visit_by', 'visit_date', 'visit_time', 'description', 'timestamp'], 'safe'],
         ];
     }
@@ -67,7 +67,7 @@ class VisitPlannedSearch extends Visit
         $query->andFilterWhere([
             'id' => $this->id,
             'number' => $this->number,
-            'podolog_id' => $this->podolog_id,
+            'specialist_id' => $this->specialist_id,
             'card_number' => $this->card_number,
             'city_id' => $this->city_id,
             'address_point_id' => $this->address_point_id,

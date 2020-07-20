@@ -21,6 +21,7 @@ class Photo extends ActiveRecord
 
     public $before;
     public $after;
+    public $dermatolog;
 
     /**
      * {@inheritdoc}
@@ -39,7 +40,7 @@ class Photo extends ActiveRecord
             [['visit_id'], 'integer'],
             [['url', 'thumbnail', 'original'], 'string'],
 
-            [['before', 'after'], 'image',
+            [['before', 'after', 'dermatolog'], 'image',
                 'extensions' => ['jpg', 'jpeg', 'JPG', 'JPEG', 'png', 'PNG'],
                 'checkExtensionByMimeType' => true,
                 'maxFiles' => 5,
@@ -61,7 +62,8 @@ class Photo extends ActiveRecord
             'addPhotoBefore' => 'Добавить фото',
             'addPhotoAfter' => 'Добавить фото',
             'before' => '',
-            'after' => ''
+            'after' => '',
+            'dermatolog' => ''
         ];
     }
 
@@ -189,6 +191,82 @@ class Photo extends ActiveRecord
     }
 
     /**
+     * Функция добавления до 5 фото "После обработки" при создании нового посещения
+     * @param $visitId
+     * @param $addressPoint
+     * @param $cardNumber
+     * @param $dateVisit
+     * @return bool
+     */
+    public function uploadDermatolog($visitId, $cardNumber, $dateVisit)
+    {
+        if ($this->validate()) {
+            $dir = 'upload/photo/' . $visitId;
+
+            if (!file_exists($dir)) {
+                mkdir($dir, 0777, true);
+                mkdir($dir . '/temp', 0777, true);
+                mkdir($dir . '/originalDermatolog', 0777, true);
+                mkdir($dir . '/drmatolog', 0777, true);
+                mkdir($dir . '/thumbDermatolog', 0777, true);
+            } elseif (!file_exists($dir . '/temp')){
+                mkdir($dir . '/temp', 0777, true);
+            } elseif (!file_exists($dir . '/originalDermatolog')){
+                mkdir($dir . '/originalDermatolog', 0777, true);
+            } elseif (!file_exists($dir. '/drmatolog')){
+                mkdir($dir . '/drmatolog', 0777, true);
+            } elseif (!file_exists($dir . '/thumbDermatolog')){
+                mkdir($dir . '/thumbDermatolog', 0777, true);
+            }
+
+            foreach ($this->dermatolog as $file) {
+                $fileName = $this->randomFileName($file->extension);
+                $file->saveAs($dir . '/temp/' . $fileName);
+
+                //изображение в папке temp
+                $tempImage = Yii::getAlias($dir . '/temp/' . $fileName);
+
+                //сохраним оригинал
+                copy($tempImage, $dir . '/originalDermatolog/' . $fileName);
+
+                Image::autorotate($tempImage)->save($tempImage);
+
+                Image::resize($tempImage, 1080, 1080)
+                    ->save($tempImage, ['quality' => 100]);
+
+                //создадим миниатюру
+                $thumb = Yii::getAlias($dir . '/thumbDermatolog/' . $fileName);
+                Image::thumbnail($tempImage, 120, 120)->save($thumb, ['quality' => 100]);
+
+                //наложим логотип
+                $this->setLogo($tempImage);
+
+                //наложим текст
+                $url = $dir . '/drmatolog/' . $fileName;
+                $this->setText($tempImage, $url, $cardNumber, $dateVisit);
+
+                //сохраним в бд
+                $model = new Photo();
+                $model->visit_id = $visitId;
+                $model->url = '/' . $dir . '/drmatolog/' . $fileName;
+                $model->thumbnail = '/' . $dir . '/thumbDermatolog/' . $fileName;
+                $model->original = '/' . $dir . '/originalDermatolog/' . $fileName;
+                $model->made = 'dermatolog';
+                $model->save(false);
+            }
+            //очистим папку temp
+            if (file_exists('upload/photo/' . $visitId . '/temp/')) {
+                foreach (glob('upload/photo/' . $visitId . '/temp/*') as $file) {
+                    unlink($file);
+                }
+            }
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
      * @param bool $extension
      * @return string
      */
@@ -240,6 +318,7 @@ class Photo extends ActiveRecord
         return Image::text($tempImage, $text, $fontFile, $start, $fontOptions)
             ->save(Yii::getAlias($url), ['quality' => 100]);
     }
+
     /**
      * @param $visitId
      * @param $dir
@@ -254,7 +333,7 @@ class Photo extends ActiveRecord
             mkdir($dir . '/after', 0777, true);
             mkdir($dir . '/thumbBefore', 0777, true);
             mkdir($dir . '/thumbAfter', 0777, true);
-        } elseif (!file_exists('upload/photo/' . $visitId . '/temp')){
+        } elseif (!file_exists($dir . '/temp')){
             mkdir($dir . '/temp', 0777, true);
         } elseif (!file_exists('upload/photo/' . $visitId . '/after')){
             mkdir($dir . '/after', 0777, true);
@@ -305,6 +384,20 @@ class Photo extends ActiveRecord
             $item->made == 'after' ? $after++ : '';
         }
         return $after;
+    }
+
+    /**
+     * функции для подсчета количества фотографий в посещении дерматолога
+     * @param $photo
+     * @return int
+     */
+    public static function countPhotoDermatolog($photo)
+    {
+        $dermatolog = 0;
+        foreach ($photo as $item) {
+            $item->made == 'dermatolog' ? $dermatolog++ : '';
+        }
+        return $dermatolog;
     }
 
 }

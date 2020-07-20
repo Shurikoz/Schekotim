@@ -60,8 +60,10 @@ $("#visit-problem_id").on('change', function () {
     }).done(function (data) {
         if (data != null) {
             $("#visit-anamnes").val(data.anamnes);
-            $("#visit-manipulation").val(data.manipulation);
             $("#visit-recommendation").val(data.recommendation);
+            $("#visit-manipulation").val(data.manipulation);
+            $("textarea").is("#visit-manipulation") ? $("#visit-manipulation").val(data.manipulation) : '';
+            $("textarea").is("#visit-diagnosis") ? $("#visit-diagnosis").val(data.diagnosis) : '';
         } else {
             $("#visit-anamnes").val('');
             $("#visit-manipulation").val('');
@@ -127,13 +129,13 @@ $("#card-city").on('change', function () {
 });
 //************************************************************************
 // $("#card-address_point").on('change', function () {
-//     let element = "visit-podolog_id";
+//     let element = "visit-specialist_id";
 //     let value = $('#card-address_point option:selected').attr('data-id') ;
 //     let data = [];
 //     let select = document.getElementById(element);
 //     select.innerHTML = '';
 //     $.ajax({
-//         url: "/card/get-podolog?id=" + value,
+//         url: "/card/get-specialist?id=" + value,
 //         cache: false,
 //         data: data,
 //         method: "POST",
@@ -239,7 +241,7 @@ function visitResolve() {
 }
 
 $('#saveBtn').on('click',function(){
-    $(this).attr('disabled', true);
+    $(this).hide();
     $("div").is("#visit-create") ? $('#visit-create').showLoading() : '';
     $("div").is("#visit-update") ? $('#visit-update').showLoading() : '';
     $("div").is("#visit-copy") ? $('#visit-copy').showLoading() : '';

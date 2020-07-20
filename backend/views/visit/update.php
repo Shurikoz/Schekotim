@@ -2,12 +2,12 @@
 
 use kartik\date\DatePicker;
 use kartik\file\FileInput;
+use nirvana\showloading\ShowLoadingAsset;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\ActiveForm;
 use yii\widgets\Pjax;
-use nirvana\showloading\ShowLoadingAsset;
 
 ShowLoadingAsset::register($this);
 
@@ -20,6 +20,12 @@ $card_id = (int)Yii::$app->request->get('number');
 //посчитаем возраст пациента по дате рождения
 $born = new DateTime($card->birthday); // дата рождения
 $age = $born->diff(new DateTime)->format('%y');
+
+$admin = Yii::$app->user->can('admin');
+$leader = Yii::$app->user->can('leader');
+$podolog = Yii::$app->user->can('podolog');
+$dermatolog = Yii::$app->user->can('dermatolog');
+
 ?>
 <div id="visit-update">
 <div class="row">
@@ -51,7 +57,7 @@ $age = $born->diff(new DateTime)->format('%y');
                 <b>Точка:</b> <?= $model->address_point->address_point ?>
             </div>
             <div class="col-md-4">
-                <b>Подолог:</b> <?= $podolog->name ?>
+                <b>Специалист:</b> <?= $specialist->name ?>
             </div>
         </div>
         <hr>
@@ -59,9 +65,9 @@ $age = $born->diff(new DateTime)->format('%y');
         <?= $form->field($model, 'card_number')->hiddenInput(['value' => $card_id])->label(false); ?>
         <?= $form->field($model, 'city_id')->hiddenInput(['value' => $model->city_id])->label(false); ?>
         <?= $form->field($model, 'address_point_id')->hiddenInput(['value' => $model->address_point_id])->label(false); ?>
-        <?= $form->field($model, 'podolog_id')->hiddenInput(['value' => $podolog->id])->label(false); ?>
+        <?= $form->field($model, 'specialist_id')->hiddenInput(['value' => $specialist->id])->label(false); ?>
         <div class="row">
-            <div class="col-md-4">
+            <div class="col-md-4 col-sm-6">
                 <div class="box">
                     <?= $form->field($model, 'problem_id')
                         ->dropDownList($problemName)
@@ -70,12 +76,12 @@ $age = $born->diff(new DateTime)->format('%y');
                 </div>
             </div>
             <?php if ($model->has_second_visit == 0) { ?>
-                <div class="col-md-4">
+                <div class="col-md-4 col-sm-6">
                     <div class="box">
                         <?= Html::checkbox('secondVisit', false, ['label' => 'Назначить повторное посещение', 'id' => 'secondVisit', 'onchange' => 'dateVisitUpdate()']) ?>
                     </div>
                 </div>
-                <div class="col-md-4 dateVisit hide">
+                <div class="col-md-4 col-sm-6 dateVisit hide">
                     <div class="box">
                         <?php
                         echo '<p><label class="control-label">Назначение даты</label></p>';
@@ -114,13 +120,12 @@ $age = $born->diff(new DateTime)->format('%y');
             <?php } ?>
         </div>
         <div class="row">
-
-            <div class="col-md-3">
+            <div class="col-md-3 col-sm-6">
                 <div class="box">
                     <?= $form->field($model, 'has_come')->checkbox(['value' => '1', 'checked ' => false])->label(false); ?>
                 </div>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-3 col-sm-6">
                 <div class="box">
                     <?= $form->field($model, 'resolve')->checkbox(['value' => '1', 'checked ' => false, 'onchange' => 'visitResolve()'])->label(false); ?>
                 </div>
@@ -135,7 +140,12 @@ $age = $born->diff(new DateTime)->format('%y');
             </div>
             <div class="col-md-6">
                 <div class="box">
-                    <?= $form->field($model, 'manipulation')->textarea(['rows' => 6]) ?>
+                    <span class="<?= $model->specialist->profession == 'podolog' ? '' : 'hidden'; ?>">
+                        <?= $form->field($model, 'manipulation')->textarea(['rows' => 6]) ?>
+                    </span>
+                    <span class="<?= $model->specialist->profession == 'dermatolog' ? '' : 'hidden'; ?>">
+                        <?= $form->field($model, 'diagnosis')->textarea(['rows' => 6]) ?>
+                    </span>
                 </div>
             </div>
             <div class="col-md-12">
@@ -149,26 +159,27 @@ $age = $born->diff(new DateTime)->format('%y');
                 </div>
             </div>
         </div>
+
         <hr>
         <p class="titleNormal">Рекомендовано посещение</p>
         <br>
         <div class="row">
-            <div class="col-md-3">
+            <div class="col-md-3 col-sm-4">
                 <div class="box">
                     <?= $form->field($model, 'dermatolog', ['options' => ['class' => 'form-checkbox']])->checkbox(); ?>
                 </div>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-3 col-sm-4">
                 <div class="box">
                     <?= $form->field($model, 'immunolog', ['options' => ['class' => 'form-checkbox']])->checkbox(); ?>
                 </div>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-3 col-sm-4">
                 <div class="box">
                     <?= $form->field($model, 'ortoped', ['options' => ['class' => 'form-checkbox']])->checkbox(); ?>
                 </div>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-3 col-sm-4">
                 <div class="box">
                     <?= $form->field($model, 'hirurg', ['options' => ['class' => 'form-checkbox']])->checkbox(); ?>
                 </div>
@@ -178,11 +189,12 @@ $age = $born->diff(new DateTime)->format('%y');
         <?php Pjax::begin(['timeout' => 120000, 'id' => 'photoEdit', 'enablePushState' => false]); ?>
         <div id="photoForm">
             <div class="row">
+                <?php if ($model->specialist->profession == 'podolog') { ?>
                 <div class="col-md-12">
                     <div class="titleNormal">Фотографии работ (максимум по 5 фотографий)</div>
                     <br>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-6 col-sm-6">
                     <p><b>До манипуляций</b></p>
                     <?php if (count($photoBefore) < 5) { ?>
                         <div class="col-md-12">
@@ -240,7 +252,7 @@ $age = $born->diff(new DateTime)->format('%y');
                         <?php } ?>
                     <?php } ?>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-6 col-sm-6">
                     <p><b>После манипуляций</b></p>
                     <?php if (count($photoAfter) < 5) { ?>
                         <div class="col-md-12">
@@ -296,6 +308,71 @@ $age = $born->diff(new DateTime)->format('%y');
                         <?php } ?>
                     <?php } ?>
                 </div>
+                <?php } ?>
+                <?php if ($model->specialist->profession == 'dermatolog') { ?>
+                    <div class="col-md-12">
+                        <p class="titleNormal text-center">Фотографии работ (максимум 5 фотографий)</p>
+                        <br>
+                    </div>
+                    <div class="col-md-offset-3 col-md-6 col-sm-offset-3 col-sm-6">
+                        <?php if (count($photoDermatolog) < 5) { ?>
+                            <div class="col-md-12">
+                                <?= $form->field($addPhotoDermatolog, 'dermatolog[]')
+                                    ->widget(FileInput::classname(), [
+                                        'options' => [
+                                            'multiple' => true,
+                                            'accept' => 'image/*'
+                                        ],
+                                        'pluginOptions' => [
+                                            'previewFileType' => 'image',
+                                            'allowedFileExtensions' => ['jpg', 'jpeg', 'JPG', 'JPEG', 'png', 'PNG'],
+                                            'showUpload' => false,
+                                            'maxFileCount' => 5 - count($photoDermatolog),
+                                            'uploadUrl' => Url::to(['']),
+                                            'fileActionSettings' => [
+                                                'showUpload' => false,
+                                                'showZoom' => false,
+
+                                            ],
+                                            'showPreview' => true,
+                                            'showRemove' => false,
+                                            'showCaption' => false,
+                                            'browseClass' => 'btn btn-primary btn-block',
+                                        ]
+                                    ]) ?>
+                            </div>
+                        <?php } ?>
+                        <?php for ($i = 0; $i <= 4; $i++) { ?>
+                            <?php if (isset($photoDermatolog[$i])) { ?>
+                                <div class="col-md-6" style="margin-bottom: 20px ">
+                                    <div id="box_<?= $i ?>" class="box">
+                                        <span><?= Html::a('<img src="' . $photoDermatolog[$i]->thumbnail . '">', $photoDermatolog[$i]->url, ['target' => '_blank', 'data-pjax' => '0']) ?></span>
+                                        <span style="margin-left: 20px">
+                                <?= Html::a('<span class="glyphicon glyphicon-trash"></span>', ['#'], [
+                                    'class' => 'btn btn-sm btn-info',
+                                    'onclick' =>
+                                        "
+                                    if (confirm('Вы уверены, что хотите удалить эту фотографию?')) {    
+                                        $.ajax({
+                                        type:'POST',
+                                        cache: false,
+                                        url: '" . Url::to(['visit/delete-photo', 'id' => $photoDermatolog[$i]->id]) . "',
+                                        complete: function() {
+                                            $.pjax.reload({container:'#photoEdit'});
+                                        }
+                                        });
+                                    }
+                                    return false;
+                                ",
+                                ]); ?>
+                            </span>
+                                    </div>
+                                </div>
+                            <?php } ?>
+                        <?php } ?>
+                    </div>
+
+                <?php } ?>
             </div>
         </div>
         <?php Pjax::end(); ?>

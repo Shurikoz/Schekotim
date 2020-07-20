@@ -9,15 +9,14 @@
 namespace backend\controllers;
 
 use backend\models\AddressPoint;
-use backend\models\Podolog;
+use backend\models\City;
+use backend\models\SignupUser;
+use backend\models\Specialist;
 use backend\models\UserEdit;
 use common\models\User;
-use backend\models\City;
 use Yii;
-use yii\filters\VerbFilter;
 use yii\helpers\ArrayHelper;
 use yii\web\Controller;
-use backend\models\SignupUser;
 use yii\web\NotFoundHttpException;
 
 class UserController extends Controller
@@ -55,7 +54,6 @@ class UserController extends Controller
     {
         $post = Yii::$app->request->post();
         $allRoles = ArrayHelper::map(Yii::$app->authManager->getRoles(), 'name', 'description');
-        $podolog = new Podolog();
 
         //исключим из списка административную роль
         unset($allRoles['admin']);
@@ -78,16 +76,24 @@ class UserController extends Controller
             $user->updated_at = time();
                 if ($user->save()){
 
-                    //если выбрали роль подолога, то создадим запись в таблице списка подологов
-                    $delPodolog = Podolog::find()->where(['user_id' => $user->getId()])->one();
-                    if (Yii::$app->getRequest()->post()["role"] == 'podolog' && !$delPodolog){
-                        $podolog->user_id = $user->getId();
-                        $podolog->address_point_id = $user->address_point_id;
-                        $podolog->name = $user->name;
-                        $podolog->save();
+                    //если выбрали роль подолога или дерматолога, то создадим запись в таблице списка специалистов
+                    $specialist = Specialist::find()->where(['user_id' => $user->getId()])->one();
+                    $specialist != null ? $model = $specialist : $model = new Specialist();
+                    if (Yii::$app->getRequest()->post()["role"] == 'podolog'){
+                        $model->user_id = $user->getId();
+                        $model->address_point_id = $user->address_point_id;
+                        $model->name = $user->name;
+                        $model->profession = 'podolog';
+                        $model->save();
+                    } elseif (Yii::$app->getRequest()->post()["role"] == 'dermatolog') {
+                        $model->user_id = $user->getId();
+                        $model->address_point_id = $user->address_point_id;
+                        $model->name = $user->name;
+                        $model->profession = 'dermatolog';
+                        $model->save();
                     } else {
-                        if ($delPodolog){
-                            $delPodolog->delete();
+                        if ($specialist != null){
+                            $specialist->delete();
                         }
                     }
 
@@ -106,6 +112,54 @@ class UserController extends Controller
             'addressPoint' => $addressPointList,
             'allRoles' => $allRoles,
             'userRole' => $userRole,
+        ]);
+    }
+
+    /**
+     * @return string
+     * @throws \Exception
+     */
+    public function actionSignup()
+    {
+        $roles = ArrayHelper::map(Yii::$app->authManager->getRoles(), 'name', 'description');
+        //исключим из списка административную роль
+        unset($roles['admin']);
+        $model = new SignupUser();
+        $city = City::find()->all();
+        $cityList = ArrayHelper::map($city, 'id', 'name');
+        $specialist = new Specialist();
+        if ($model->load(Yii::$app->getRequest()->post())) {
+
+            if ($user = $model->signup()) {
+                if (Yii::$app->getRequest()->post()["role"]) {
+                    $specialist->user_id = $user->getId();
+                    $specialist->address_point_id = $model->address_point;
+                    $specialist->name = $model->name;
+                    if (Yii::$app->getRequest()->post()["role"] == 'podolog') {
+                        $specialist->profession = 'podolog';
+                        $specialist->save();
+
+                    } elseif (Yii::$app->getRequest()->post()["role"] == 'dermatolog') {
+                        $specialist->profession = 'dermatolog';
+                        $specialist->save();
+                    }
+
+                    $auth = Yii::$app->authManager;
+                    $authorRole = $auth->getRole(Yii::$app->getRequest()->post()["role"]);
+                    $auth->assign($authorRole, $user->getId());
+                    Yii::$app->session->setFlash('success', 'Пользователь <b>' . $user->username . '</b> создан!');
+                } else {
+                    Yii::$app->session->setFlash('success', 'Пользователь <b>' . $user->username . '</b> создан! Назначьте ему права доступа!');
+                }
+
+            }
+        }
+
+        return $this->render('signup', [
+            'model' => $model,
+            'city' => $cityList,
+            'roles' => $roles,
+            'specialist' => $specialist,
         ]);
     }
 
@@ -150,48 +204,6 @@ class UserController extends Controller
     }
 
     /**
-     * @return string
-     * @throws \Exception
-     */
-    public function actionSignup()
-    {
-        $roles = ArrayHelper::map(Yii::$app->authManager->getRoles(), 'name', 'description');
-        //исключим из списка административную роль
-        unset($roles['admin']);
-        $model = new SignupUser();
-        $city = City::find()->all();
-        $cityList = ArrayHelper::map($city, 'id', 'name');
-        $podolog = new Podolog();
-        if ($model->load(Yii::$app->getRequest()->post())) {
-
-            if ($user = $model->signup()) {
-                if (Yii::$app->getRequest()->post()["role"]){
-                    if (Yii::$app->getRequest()->post()["role"] == 'podolog'){
-                        $podolog->user_id = $user->getId();
-                        $podolog->address_point_id = $model->address_point;
-                        $podolog->name = $model->name;
-                        $podolog->save();
-                    }
-                    $auth = Yii::$app->authManager;
-                    $authorRole = $auth->getRole(Yii::$app->getRequest()->post()["role"]);
-                    $auth->assign($authorRole, $user->getId());
-                    Yii::$app->session->setFlash('success', 'Пользователь <b>' . $user->username . '</b> создан!');
-                } else {
-                    Yii::$app->session->setFlash('success', 'Пользователь <b>' . $user->username . '</b> создан! Назначьте ему права доступа!');
-                }
-
-            }
-        }
-
-        return $this->render('signup', [
-            'model' => $model,
-            'city' => $cityList,
-            'roles' => $roles,
-            'podolog' => $podolog,
-        ]);
-    }
-
-    /**
      * Deletes an existing User model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
@@ -203,9 +215,9 @@ class UserController extends Controller
         if ($model->delete()){
             $role = array_keys(Yii::$app->authManager->getRolesByUser($id));
             $userRole = Yii::$app->authManager->getRole($role)->name;
-            $podolog = Podolog::find()->where(['user_id' => $id])->one();
-            if ($userRole == 'podolog' && $podolog){
-                $podolog->delete();
+            $specialist = Specialist::find()->where(['user_id' => $id])->one();
+            if ($userRole == 'dermatolog' || $userRole == 'podolog' && $specialist){
+                $specialist->delete();
             }
             Yii::$app->authManager->revokeAll($id);
             Yii::$app->session->setFlash('success', 'Пользователь #' . $model->username . ' удален!');

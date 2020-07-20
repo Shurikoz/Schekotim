@@ -51,7 +51,7 @@ $age = $born->diff(new DateTime)->format('%y');
                 <b>Точка:</b> <?= $model->address_point->address_point ?>
             </div>
             <div class="col-md-4">
-                <b>Подолог:</b> <?= $podolog->name ?>
+                <b>Подолог:</b> <?= $specialist->name ?>
             </div>
         </div>
         <hr>
@@ -59,7 +59,7 @@ $age = $born->diff(new DateTime)->format('%y');
         <?= $form->field($model, 'card_number')->hiddenInput(['value' => $card_id])->label(false); ?>
         <?= $form->field($model, 'city_id')->hiddenInput(['value' => $model->city_id])->label(false); ?>
         <?= $form->field($model, 'address_point_id')->hiddenInput(['value' => $model->address_point_id])->label(false); ?>
-        <?= $form->field($model, 'podolog_id')->hiddenInput(['value' => $podolog->id])->label(false); ?>
+        <?= $form->field($model, 'specialist_id')->hiddenInput(['value' => $specialist->id])->label(false); ?>
         <div class="row">
             <div class="col-md-4">
                 <div class="box">

@@ -14,12 +14,12 @@ class GalleryController extends Controller
     public function actionIndex()
     {
         //категории: 0 - подология, 1 - маникюр, 2- педикюр
-        $podolog = Gallery::find()->where(['category' => 0])->all();
+        $specialist = Gallery::find()->where(['category' => 0])->all();
         $manicure = Gallery::find()->where(['category' => 1])->all();
         $pedicure = Gallery::find()->where(['category' => 2])->all();
 
         return $this->render('index', [
-            'podolog' => $podolog,
+            'specialist' => $specialist,
             'manicure' => $manicure,
             'pedicure' => $pedicure,
         ]);

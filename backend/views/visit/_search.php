@@ -13,7 +13,7 @@ use yii\widgets\ActiveForm;
 
 <!--    --><?//= $form->field($model, 'number') ?>
 
-<!--    --><?//= $form->field($model, 'podolog_id') ?>
+<!--    --><?//= $form->field($model, 'specialist_id') ?>
 
 <!--    --><?//= $form->field($model, 'card_number')->textInput(['class' => 'autoSearchSubmit c-input'])->label('Номер карты', ['class' => 'c-field__label']) ?>
 

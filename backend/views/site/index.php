@@ -18,6 +18,7 @@ $admin = Yii::$app->user->can('admin');
 $administrator = Yii::$app->user->can('administrator');
 $smm = Yii::$app->user->can('smm');
 $podolog = Yii::$app->user->can('podolog');
+$dermatolog = Yii::$app->user->can('dermatolog');
 $leader = Yii::$app->user->can('leader');
 
 ?>
@@ -40,12 +41,12 @@ $leader = Yii::$app->user->can('leader');
 
 <?php if ($admin) { ?>
     <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-6 col-sm-6">
             <div class="box">
                 <?= Html::a('Обращения', ['pages/support'], ['class' => 'btn btn-lg btn-green center-block']) ?>
             </div>
         </div>
-        <div class="col-md-6">
+        <div class="col-md-6 col-sm-6">
             <div class="box">
                 <p>Новых обращений: <b><?= $viewed ?></b></p>
                 <p>Нерешенных обращений: <b><?= $result ?></b></p>
@@ -56,15 +57,15 @@ $leader = Yii::$app->user->can('leader');
 <?php } ?>
 <div class="row">
     <?php if ($admin || $administrator || $leader) { ?>
-        <div class="col-md-6">
+        <div class="col-md-6 col-sm-6">
             <div class="box">
                 <?= Html::a('Создать карту клиента', ['card/create'], ['class' => 'btn btn-lg btn-green center-block']) ?>
             </div>
         </div>
     <?php } ?>
 
-    <?php if ($admin || $podolog || $administrator || $leader) { ?>
-        <div class="col-md-6">
+    <?php if ($admin || $podolog || $dermatolog || $administrator || $leader) { ?>
+        <div class="col-md-6 col-sm-6">
             <div class="box">
                 <?= Html::a('Карты клиентов', ['card/index'], ['class' => 'btn btn-lg btn-info center-block']) ?>
             </div>
@@ -72,7 +73,7 @@ $leader = Yii::$app->user->can('leader');
     <?php } ?>
 
     <?php if ($admin || $smm || $leader) { ?>
-        <div class="col-md-6">
+        <div class="col-md-6 col-sm-6">
             <div class="box">
                 <?= Html::a('Фото работ (из карт клиентов)', ['photo/index'], ['class' => 'btn btn-lg btn-info center-block']) ?>
             </div>
@@ -80,19 +81,19 @@ $leader = Yii::$app->user->can('leader');
     <?php } ?>
 
     <?php if ($admin || $administrator || $leader) { ?>
-        <div class="col-md-6">
+        <div class="col-md-6 col-sm-6">
             <div class="box">
                 <?= Html::a('Пропущенные посещения', ['visit/missed'], ['class' => 'btn btn-lg btn-danger center-block']) ?>
             </div>
         </div>
-        <div class="col-md-6">
+        <div class="col-md-6 col-sm-6">
             <div class="box">
                 <?= Html::a('Запланированные посещения', ['visit/planned'], ['class' => 'btn btn-lg btn-warning center-block']) ?>
             </div>
         </div>
     <?php } ?>
     <?php if ($admin || $administrator || $leader) { ?>
-        <div class="col-md-6">
+        <div class="col-md-6  col-sm-6 col-sm-6">
             <div class="box">
                 <?= Html::a('Посещения без фото', ['visit/nophotos'], ['class' => 'btn btn-lg btn-default center-block']) ?>
             </div>
@@ -102,14 +103,14 @@ $leader = Yii::$app->user->can('leader');
 <?php if ($admin || $leader) { ?>
     <hr>
     <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-6 col-sm-6 col-sm-6">
             <div class="box">
                 <?= Html::a('Логи', ['logs/index'], ['class' => 'btn btn-lg btn-info center-block']) ?>
             </div>
         </div>
-        <div class="col-md-6">
+        <div class="col-md-6 col-sm-6 col-sm-6">
             <div class="box">
-                <?= Html::a('Шаблоны для подологов', ['problem/index'], ['class' => 'btn btn-lg btn-info center-block']) ?>
+                <?= Html::a('Шаблоны для специалистов', ['problem/index'], ['class' => 'btn btn-lg btn-info center-block']) ?>
             </div>
         </div>
     </div>

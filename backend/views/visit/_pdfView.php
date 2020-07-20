@@ -23,6 +23,11 @@
         </span>
         </div>
     </div>
+    <!--            --><?php //if ($item->specialist->profession == 'podolog') { ?>
+    <?php if ($profession == 'dermatolog') { ?>
+        <h4 style="color: #0b9341">Диагноз</h4>
+        <?= nl2br($visit->diagnosis) ?>
+    <?php } ?>
     <h4 style="color: #0b9341">Рекомендации</h4>
     <div>
         <?= nl2br($visit->recommendation) ?>
@@ -44,7 +49,7 @@
     <hr>
     <div>
         <div style="width: 49%;float: left;">
-            <p>Подолог: <?= $podolog->name ?></p>
+            <p><?= $profession == 'dermatolog' ? 'Дерматоллог' : 'Подолог'?>: <?= $specialist->name ?></p>
         </div>
     </div>
 </div>

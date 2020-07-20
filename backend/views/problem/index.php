@@ -2,6 +2,7 @@
 
 use yii\grid\GridView;
 use yii\helpers\Html;
+use yii\widgets\Pjax;
 
 $this->title = 'Шаблоны для специалистов';
 
@@ -20,9 +21,9 @@ $this->title = 'Шаблоны для специалистов';
 </div>
 <br>
 <div class="problem-index">
-
     <div class="row">
         <div class="col-md-12">
+            <?php Pjax::begin(); ?>
             <?= GridView::widget([
                 'dataProvider' => $dataProvider,
                 'columns' => [
@@ -52,6 +53,7 @@ $this->title = 'Шаблоны для специалистов';
 
                 ],
             ]); ?>
+            <?php Pjax::end(); ?>
         </div>
     </div>
 </div>

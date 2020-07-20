@@ -5,20 +5,21 @@ namespace backend\models;
 use yii\db\ActiveRecord;
 
 /**
- * This is the model class for table "podolog".
+ * This is the model class for table "specialist".
  *
  * @property int $id
  * @property int $address_point
  * @property string $name
+ * @property string $profession
  */
-class Podolog extends ActiveRecord
+class Specialist extends ActiveRecord
 {
     /**
      * {@inheritdoc}
      */
     public static function tableName()
     {
-        return 'podolog';
+        return 'specialist';
     }
 
     /**
@@ -27,7 +28,7 @@ class Podolog extends ActiveRecord
     public function rules()
     {
         return [
-            [['name'], 'string'],
+            [['name', 'profession'], 'string'],
         ];
     }
 
@@ -42,9 +43,19 @@ class Podolog extends ActiveRecord
         ];
     }
 
+    public function profession($specialist) {
+        switch ($specialist) {
+            case 'podolog':
+                return "Подолог";
+            case 'dermatolog':
+                return "Дерматолог";
+        }
+        return '-';
+    }
+
     public function getVisit()
     {
-        return $this->hasMany(Visit::className(), ['podolog_id' => 'id']);
+        return $this->hasMany(Visit::className(), ['specialist_id' => 'id']);
     }
 
 

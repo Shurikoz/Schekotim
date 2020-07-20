@@ -21,7 +21,7 @@ class PhotoSearch extends Visit
     {
         return [
             [['id', 'number', 'card_number'], 'integer'],
-            [['city', 'address_point', 'anamnes', 'podolog_id', 'manipulation', 'recommendation', 'next_visit_from', 'next_visit_by', 'has_come', 'description', 'used_photo', 'problem'], 'safe'],
+            [['city', 'address_point', 'anamnes', 'specialist_id', 'manipulation', 'recommendation', 'next_visit_from', 'next_visit_by', 'has_come', 'description', 'used_photo', 'problem'], 'safe'],
         ];
     }
 
@@ -75,7 +75,7 @@ class PhotoSearch extends Visit
 
         $query->andFilterWhere(['like', 'city', $this->city])
             ->andFilterWhere(['like', 'address_point', $this->address_point])
-            ->andFilterWhere(['like', 'podolog', $this->podolog_id])
+            ->andFilterWhere(['like', 'specialist', $this->specialist_id])
             ->andFilterWhere(['like', Visit::tableName() . '.number', $this->number])
             ->andFilterWhere(['like', Problem::tableName() . '.id', $this->problem])
             ->andFilterWhere(['like', 'has_come', $this->has_come])

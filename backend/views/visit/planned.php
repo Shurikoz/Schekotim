@@ -60,6 +60,7 @@ $this->title = 'Лист запланированных посещений';
     </caption>
     <thead class="c-table__head c-table__head--slim">
     <tr class="c-table__row">
+        <th class="c-table__cell c-table__cell--head">ID</th>
         <th class="c-table__cell c-table__cell--head">Карта</th>
         <th class="c-table__cell c-table__cell--head">ФИО</th>
         <th class="c-table__cell c-table__cell--head">Город / Точка</th>
@@ -74,6 +75,9 @@ $this->title = 'Лист запланированных посещений';
     <?php if ($dataProvider->getTotalCount() != 0) { ?>
         <?php foreach ($dataProvider->getModels() as $item) { ?>
             <tr class="c-table__row openBox">
+                <td class="c-table__cell">
+                    <p><?= $item->id ?></p>
+                </td>
                 <td class="c-table__cell">
                     <p><?= $item->card_number ?></p>
                 </td>
@@ -95,7 +99,7 @@ $this->title = 'Лист запланированных посещений';
                     <?php } ?>
                 </td>
                 <td class="c-table__cell">
-                    <?= $item->podolog->name ?>
+                    <?= $item->specialist->name ?>
                 </td>
                 <td class="c-table__cell">
                     <?php if ($item->next_visit_from != null && $item->next_visit_by != null && $item->has_come == 0 && $item->recorded == 0) { ?>
@@ -111,7 +115,8 @@ $this->title = 'Лист запланированных посещений';
                     <?= $item->recorded == 1 ? '<span class="glyphicon glyphicon-floppy-saved"></span>' : '' ?>
                     <?= $item->cancel == 1 ? '<span class="glyphicon glyphicon-floppy-remove"></span>' : '' ?>
                     <span class="glyphicon glyphicon-hourglass" title="ожидание посещения"></span>
-                    <?= $item->not_in_time == 1 && ($administrator || $admin || $leader || $administrator) ? '<span class="glyphicon glyphicon-alert"></span>' : '' ?>
+                    <?php $titleAlert = $item->next_visit_from != null && $item->next_visit_by != null ? 'c ' . date('d.m.Y', $item->next_visit_from) . ' по ' . date('d.m.Y', $item->next_visit_by) : '' ; ?>
+                    <?= $item->not_in_time == 1 ? '<span class="glyphicon glyphicon-alert" title="' . $titleAlert . '"></span>' : '' ?>
                     <br>
                     <?= $item->contacted != 0 && $item->recorded == 0 ? '<span class="glyphicon glyphicon-earphone"></span><span class="planned-call-time">' . date('d.m.Y H:i', $item->contacted) . '</span>' : '' ?>
                 </td>
@@ -133,7 +138,7 @@ $this->title = 'Лист запланированных посещений';
                                                 'label' => 'Связались, назначить время',
                                                 'class' => 'btn btn-green',
                                             ],
-                                            'footer' => Html::a('Сохранить', ['visit/record', 'id' => $item->id], [
+                                            'footer' => Html::a('Сохранить', ['visit/record', 'id' => $item->id, 'page' => 'planned', 'number' => $item->card_number], [
                                                 'class' => 'btn btn-green',
                                                 'data' => [
                                                     'method' => 'post',
@@ -228,7 +233,7 @@ $this->title = 'Лист запланированных посещений';
                                     ]) ?>
                                 <?php } ?>
                                 <?php if ($item->recorded == 1) { ?>
-                                    <?= Html::a('Снять запись', ['visit/record-unmark', 'id' => $item->id], [
+                                    <?= Html::a('Снять запись', ['visit/record-unmark', 'id' => $item->id, 'page' => 'planned', 'number' => $item->card_number], [
                                         'class' => 'btn btn-default linkNewWindow',
                                     ]) ?>
                                 <?php } ?>

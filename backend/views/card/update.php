@@ -20,11 +20,11 @@ $this->title = 'Редактирование карты №: ' . $cardModel->num
     </div>
     <hr>
     <div class="row">
-        <div class="col-md-4">
+        <div class="col-md-4 col-sm-6">
             <b>Город:</b> <?= $user->city->name;?>
 
         </div>
-        <div class="col-md-4">
+        <div class="col-md-4 col-sm-6">
             <b>Точка:</b> <?= $user->address_point->address_point; ?>
 
         </div>
@@ -39,12 +39,12 @@ $this->title = 'Редактирование карты №: ' . $cardModel->num
         <?php $form = ActiveForm::begin(); ?>
         <?php //TODO убрать блок ?>
         <div class="row">
-            <div class="col-md-4">
+            <div class="col-md-4 col-sm-6">
                 <div class="box">
                     <?= $form->field($cardModel, 'number')->textInput() ?>
                 </div>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-4 col-sm-6">
                 <p>Номер последней введенной карты: <b><?= $card->number ?></b></p>
             </div>
         </div>
@@ -52,38 +52,22 @@ $this->title = 'Редактирование карты №: ' . $cardModel->num
 
         <?= $form->field($cardModel, 'user_id')->hiddenInput(['value' => Yii::$app->user->id])->label(false); ?>
         <div class="row">
-            <div class="col-md-4">
+            <div class="col-md-4 col-sm-6">
                 <div class="box">
                     <?= $form->field($cardModel, 'surname')->textInput(['maxlength' => true, 'id' => 'surname']) ?>
                 </div>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-4 col-sm-6">
                 <div class="box">
                     <?= $form->field($cardModel, 'name')->textInput(['maxlength' => true, 'onchange' => 'checkCard()', 'id' => 'name']) ?>
                 </div>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-4 col-sm-6">
                 <div class="box">
                     <?= $form->field($cardModel, 'middle_name')->textInput(['maxlength' => true, 'onchange' => 'checkCard()', 'id' => 'middle_name']) ?>
                 </div>
             </div>
-        </div>
-        <br>
-        <div class="row">
-            <div class="col-md-4">
-                <div class="box">
-                    <?= Html::checkbox('representative', $cardModel->representative != null ? true : false, ['label' => 'Представитель клиента', 'onchange' => 'cardRepresentative()']) ?>
-                </div>
-            </div>
-            <div class="col-md-4 representative <?= $cardModel->representative != null ? '' : 'hide' ?>">
-                <div class="box">
-                    <?= $form->field($cardModel, 'representative', ['labelOptions' => ['class' => 'control-label']])->textarea()->label(''); ?>
-                </div>
-            </div>
-        </div>
-        <br>
-        <div class="row">
-            <div class="col-md-4">
+            <div class="col-md-4 col-sm-6">
                 <div class="box">
                     <?php echo $form->field($cardModel, 'birthday')->widget(DatePicker::classname(), [
                         'options' => ['placeholder' => 'Дата рождения'],
@@ -99,7 +83,7 @@ $this->title = 'Редактирование карты №: ' . $cardModel->num
                     ?>
                 </div>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-4 col-sm-6">
                 <div class="box">
                     <?= $form->field($cardModel, 'phone', ['labelOptions' => ['class' => 'control-label']])
                         ->widget(MaskedInput::className(), ['mask' => '+7 (999) 999 99 99'])
@@ -107,6 +91,20 @@ $this->title = 'Редактирование карты №: ' . $cardModel->num
                 </div>
             </div>
         </div>
+        <br>
+        <div class="row">
+            <div class="col-md-4 col-sm-6">
+                <div class="box">
+                    <?= Html::checkbox('representative', $cardModel->representative != null ? true : false, ['label' => 'Представитель клиента', 'onchange' => 'cardRepresentative()']) ?>
+                </div>
+            </div>
+            <div class="col-md-4 col-sm-6 representative <?= $cardModel->representative != null ? '' : 'hide' ?>">
+                <div class="box">
+                    <?= $form->field($cardModel, 'representative', ['labelOptions' => ['class' => 'control-label']])->textarea()->label(''); ?>
+                </div>
+            </div>
+        </div>
+        <br>
         <div class="row">
             <div class="col-md-12">
                 <div id="checkCard"></div>

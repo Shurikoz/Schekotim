@@ -343,6 +343,24 @@ class Photo extends ActiveRecord
     }
 
     /**
+     * функция для удаления фотографий посещения
+     * @param $dir
+     */
+    public static function delPhoto($dir)
+    {
+        $folders = ['/temp', '/before', '/after', '/thumbBefore', '/thumbAfter', '/originalBefore', '/originalAfter', '/drmatolog', '/originalDermatolog', '/thumbDermatolog'];
+        foreach ($folders as $folder) {
+            if (file_exists($dir . $folder . '/')) {
+                foreach (glob($dir . $folder . '/*') as $file) {
+                    unlink($file);
+                }
+                rmdir($dir . $folder);
+            }
+        }
+        rmdir($dir);
+    }
+
+    /**
      * @return \yii\db\ActiveQuery
      */
     public function getVisit()

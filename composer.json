@@ -37,7 +37,8 @@
     "vova07/yii2-imperavi-widget": "*",
     "newerton/yii2-fancybox-3": "*",
     "kartik-v/yii2-widget-datetimepicker": "dev-master",
-    "nirvana-msu/yii2-showloading": "1.0.*@dev"
+    "nirvana-msu/yii2-showloading": "1.0.*@dev",
+    "philippfrenzel/yii2fullcalendar": "3.9.0"
   },
   "require-dev": {
     "yiisoft/yii2-debug": "~2.1.0",

@@ -57,6 +57,7 @@ class UserController extends Controller
 
         //исключим из списка административную роль
         unset($allRoles['admin']);
+        unset($allRoles['leader']);
 
         $user = UserEdit::findOne(['id' => $id]);
         $role = array_keys(Yii::$app->authManager->getRolesByUser($user->id));
@@ -124,6 +125,8 @@ class UserController extends Controller
         $roles = ArrayHelper::map(Yii::$app->authManager->getRoles(), 'name', 'description');
         //исключим из списка административную роль
         unset($roles['admin']);
+        unset($roles['leader']);
+
         $model = new SignupUser();
         $city = City::find()->all();
         $cityList = ArrayHelper::map($city, 'id', 'name');

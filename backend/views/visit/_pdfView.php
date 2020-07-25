@@ -4,7 +4,7 @@
             <img src="images/logoPdf.png" alt=""/>
         </div>
         <div style="width: 49%;float: left;">
-            <img src="images/headerPdf.png" alt=""/>
+            <img src="images/<?= $profession == 'dermatolog' ? 'headerPdfDerm.png' : 'headerPdf.png'?>" alt=""/>
         </div>
     </div>
     <div>
@@ -49,7 +49,7 @@
     <hr>
     <div>
         <div style="width: 49%;float: left;">
-            <p><?= $profession == 'dermatolog' ? 'Дерматоллог' : 'Подолог'?>: <?= $specialist->name ?></p>
+            <p><?= $profession == 'dermatolog' ? 'Дерматолог' : 'Подолог: ' . $specialist->name?></p>
         </div>
     </div>
 </div>

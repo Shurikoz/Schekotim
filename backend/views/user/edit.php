@@ -24,7 +24,7 @@ $this->title = 'Радактирование пользователя';
 <?php $form = ActiveForm::begin(); ?>
 <div class="row">
     <div class="col-md-4">
-        <!--        --><? //= $form->field($user, 'username')->textInput(['class' => 'c-input'])->label('Логин'); ?>
+        <?= $form->field($user, 'username')->textInput(['class' => 'c-input'])->label('Логин'); ?>
         <?= $form->field($user, 'email')->textInput(['class' => 'c-input'])->label('Email'); ?>
     </div>
     <div class="col-md-4">

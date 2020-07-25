@@ -17,6 +17,7 @@ $administrator = Yii::$app->user->can('administrator');
 $smm = Yii::$app->user->can('smm');
 $podolog = Yii::$app->user->can('podolog');
 $leader = Yii::$app->user->can('leader');
+$dermatolog = Yii::$app->user->can('dermatolog');
 
 ?>
 <?php $this->beginPage() ?>
@@ -62,11 +63,6 @@ $leader = Yii::$app->user->can('leader');
 //
 //        ];
         $menuItems[] = [
-            'label' => 'Картотека',
-            'url' => ['/card/index'],
-            'visible' => $podolog || $administrator
-        ];
-        $menuItems[] = [
             'label' => 'Фото работ',
             'url' => ['/photo/index'],
             'visible' => $smm,
@@ -84,13 +80,13 @@ $leader = Yii::$app->user->can('leader');
         ];
         $menuItems[] = [
             'label' => 'Система учета',
-            'visible' => $admin || $leader,
             'items' => [
-                ['label' => 'Карты', 'url' => '/card/index'],
-                ['label' => 'Фото работ', 'url' => '/photo/index'],
-                ['label' => 'Пропущенные посещения', 'url' => '/visit/missed'],
-                ['label' => 'Запланированные посещения', 'url' => '/visit/planned'],
-                ['label' => 'Пользователи', 'url' => '/user/index'],
+                ['label' => 'Карты', 'url' => '/card/index', 'visible' => $admin || $leader || $administrator || $podolog || $dermatolog],
+                ['label' => 'Календарь', 'url' => '/event', 'visible' => $admin || $leader || $administrator || $podolog || $dermatolog],
+                ['label' => 'Фото работ', 'url' => '/photo/index', 'visible' => $admin || $leader || $smm],
+                ['label' => 'Пропущенные посещения', 'url' => '/visit/missed', 'visible' => $admin || $leader || $administrator],
+                ['label' => 'Запланированные посещения', 'url' => '/visit/planned', 'visible' => $admin || $leader || $administrator],
+                ['label' => 'Пользователи', 'url' => '/user/index', 'visible' => $admin || $leader],
             ],
         ];
         $menuItems[] = [

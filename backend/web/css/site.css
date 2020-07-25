@@ -348,6 +348,10 @@ a.desc:after {
     border-left-color: currentcolor;
 }
 
+.c-table__cell .em-font{
+    font-size: 11px;
+}
+
 .glyphicon-remove,
 .glyphicon-hourglass,
 .glyphicon-ok,
@@ -813,4 +817,17 @@ div.datetimepicker-minutes table{
     z-index: 5001 !important;
     left: 49% !important;
     top: 49% !important;
+}
+
+.eveClass{
+    height: 35px;
+    cursor: pointer;
+}
+
+.eveClass:hover{
+    background-color: #f5f8f1;
+}
+
+.fc-list-empty{
+    padding: 10px 0;
 }

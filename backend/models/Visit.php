@@ -125,8 +125,8 @@ class Visit extends ActiveRecord
     {
         foreach ($visits as $visit) {
             //клиент пришел не вовремя
-            if ($visit->next_visit_from != null && $visit->next_visit_by != null && $visit->not_in_time != 1) {
-                if (($visit->visit_date > $visit->next_visit_by) || ($visit->visit_date == null && $visit->next_visit_by + 60 * 60 * 11 < time())) {
+            if ($visit->next_visit_from != null && $visit->next_visit_by != null && $visit->not_in_time != 1 && $visit->has_come == 0) {
+                if (($visit->visit_date > $visit->next_visit_by + 60 * 60 * 12) || ($visit->visit_date == null && $visit->next_visit_by + 60 * 60 * 12 < time())) {
                     $visit->not_in_time = 1;
                     $visit->save();
                 }

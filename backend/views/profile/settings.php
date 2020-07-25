@@ -41,7 +41,7 @@ use yii\helpers\Html;
             <br>
             <p><b>Город:</b> <?= $user->city->name ?></p>
             <br>
-            <p><b>Точка:</b> <?= $user->address_point->address_point ?></p>
+            <p><b>Адрес:</b> <?= $user->address_point->address_point ?></p>
         </div>
     </div>
 </div>

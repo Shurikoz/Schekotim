@@ -171,11 +171,11 @@ class VisitController extends Controller
                 if (Yii::$app->user->can('podolog')){
                     $photoBefore->before = UploadedFile::getInstances($photoBefore, 'before');
                     $photoAfter->after = UploadedFile::getInstances($photoAfter, 'after');
-                    $photoBefore->uploadBefore($model->id, Yii::$app->request->get('card_number'), date('d.m.Y', $model->visit_date));
-                    $photoAfter->uploadAfter($model->id, Yii::$app->request->get('card_number'), date('d.m.Y', $model->visit_date));
+                    $photoBefore->uploadBefore($model->id, Yii::$app->request->get('number'), date('d.m.Y', $model->visit_date));
+                    $photoAfter->uploadAfter($model->id, Yii::$app->request->get('number'), date('d.m.Y', $model->visit_date));
                 } elseif (Yii::$app->user->can('dermatolog')) {
                     $photoDermatolog->dermatolog = UploadedFile::getInstances($photoDermatolog, 'dermatolog');
-                    $photoDermatolog->uploadDermatolog($model->id, Yii::$app->request->get('card_number'), date('d.m.Y', $model->visit_date));
+                    $photoDermatolog->uploadDermatolog($model->id, Yii::$app->request->get('number'), date('d.m.Y', $model->visit_date));
                 }
 
                 Yii::$app->session->setFlash('success', 'Данные сохранены!');
@@ -257,12 +257,12 @@ class VisitController extends Controller
                     $addPhotoBefore->before = UploadedFile::getInstances($addPhotoBefore, 'before');
                     $addPhotoAfter->after = UploadedFile::getInstances($addPhotoAfter, 'after');
 
-                    $addPhotoBefore->uploadBefore($model->id, Yii::$app->request->get('card_number'), date('d.m.Y', $model->visit_date));
-                    $addPhotoAfter->uploadAfter($model->id, Yii::$app->request->get('card_number'), date('d.m.Y', $model->visit_date));
+                    $addPhotoBefore->uploadBefore($model->id, Yii::$app->request->get('number'), date('d.m.Y', $model->visit_date));
+                    $addPhotoAfter->uploadAfter($model->id, Yii::$app->request->get('number'), date('d.m.Y', $model->visit_date));
 
                 } elseif ($model->specialist->profession == 'dermatolog') {
                     $addPhotoDermatolog->dermatolog = UploadedFile::getInstances($addPhotoDermatolog, 'dermatolog');
-                    $addPhotoDermatolog->uploadDermatolog($model->id, Yii::$app->request->get('card_number'), date('d.m.Y', $model->visit_date));
+                    $addPhotoDermatolog->uploadDermatolog($model->id, Yii::$app->request->get('number'), date('d.m.Y', $model->visit_date));
                 }
 
                 Yii::$app->session->setFlash('success', 'Данные визита <b>#' . $model->id . '</b> сохранены!');
@@ -403,7 +403,7 @@ class VisitController extends Controller
         $dir = Yii::getAlias('@webroot/upload/photo/') . $id;
         if (is_dir($dir)) {
             chmod($dir, 0777);
-            $this->delPhoto($dir);
+            Photo::DelPhoto($dir);
         }
 
 
@@ -676,23 +676,6 @@ class VisitController extends Controller
         return $pdf->render();
     }
 
-    /**
-     * функция для удаления фотографий посещения
-     * @param $dir
-     */
-    protected function delPhoto($dir)
-    {
-        $folders = ['/temp', '/before', '/after', '/thumbBefore', '/thumbAfter', '/originalBefore', '/originalAfter'];
-        foreach ($folders as $folder) {
-            if (file_exists($dir . $folder . '/')) {
-                foreach (glob($dir . $folder . '/*') as $file) {
-                    unlink($file);
-                }
-            }
-            rmdir($dir . $folder);
-        }
-        rmdir($dir);
-    }
 
     /**
      * Finds the Visit model based on its primary key value.

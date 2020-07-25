@@ -106,7 +106,8 @@ $this->title = 'Лист запланированных посещений';
                         <p>с <?= date('d.m.Y', $item->next_visit_from) ?></p>
                         <p>до <?= date('d.m.Y', $item->next_visit_by) ?></p>
                     <?php } else if ($item->recorded == 1) { ?>
-                        <span> <?= date('d.m.Y <b>H:i</b>', $item->visit_date) ?></span>
+                        <span><?= date('d.m.Y <b>H:i</b>', $item->visit_date) ?></span><br>
+                    <span class="em-font"><em>с <?= date('d.m.Y', $item->next_visit_from) ?> до <?= date('d.m.Y', $item->next_visit_by) ?></em></span>
                     <?php } else if ($item->has_come == 2) { ?>
                         <span>-</span>
                     <?php } ?>

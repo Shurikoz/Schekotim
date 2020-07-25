@@ -15,15 +15,15 @@ return [
     'language' => 'ru-RU',
     'basePath' => dirname(__DIR__),
     'controllerNamespace' => 'backend\controllers',
-    'bootstrap' => ['gii', 'debug'],
+//    'bootstrap' => ['gii', 'debug'],
     'modules' => [
         'debug' => [
             'class' => 'yii\debug\Module',
         ],
-        'gii' => [
-            'class' => 'yii\gii\Module',
-            'allowedIPs' => ['*'],
-        ],
+//        'gii' => [
+//            'class' => 'yii\gii\Module',
+//            'allowedIPs' => ['*'],
+//        ],
         'admin' => [
             'class' => 'mdm\admin\Module',
             'controllerMap' => [

@@ -63,7 +63,7 @@ class Problem extends \yii\db\ActiveRecord
 
     public function getVisit()
     {
-        return $this->hasMany(Visit::className(), ['problem_id' => 'id']);
+        return $this->hasOne(Visit::className(), ['problem_id' => 'id']);
     }
 
 

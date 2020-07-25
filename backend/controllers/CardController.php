@@ -6,6 +6,7 @@ use backend\models\AddressPoint;
 use backend\models\Card;
 use backend\models\CardSearch;
 use backend\models\City;
+use backend\models\Photo;
 use backend\models\Specialist;
 use backend\models\Visit;
 use backend\models\VisitMark;
@@ -224,7 +225,7 @@ class CardController extends Controller
             $dir = Yii::getAlias('@webroot/upload/photo/') . $visit->id;
             if (file_exists($dir)){
                 chmod($dir, 0777);
-                $this->delPhoto($dir);
+                Photo::delPhoto($dir);
             }
             $visit->delete();
         }
@@ -276,24 +277,6 @@ class CardController extends Controller
             return $model;
         }
         throw new NotFoundHttpException('Запрашиваемая страница не существует.');
-    }
-
-    /**
-     * функция для удаления фотографий посещения
-     * @param $dir
-     */
-    protected function delPhoto($dir)
-    {
-        $folders = ['/temp', '/before', '/after', '/thumbBefore', '/thumbAfter', '/originalBefore', '/originalAfter'];
-        foreach ($folders as $folder) {
-            if (file_exists($dir . $folder . '/')) {
-                foreach (glob($dir . $folder . '/*') as $file) {
-                    unlink($file);
-                }
-            }
-            rmdir($dir . $folder);
-        }
-        rmdir($dir);
     }
 
 }

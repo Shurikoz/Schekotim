@@ -130,7 +130,7 @@ $leader = Yii::$app->user->can('leader');
         <tr class="c-table__row">
             <th class="c-table__cell c-table__cell--head" width="5%">ID</th>
             <th class="c-table__cell c-table__cell--head" width="5%">№</th>
-            <th class="c-table__cell c-table__cell--head" width="20%">Город / Точка</th>
+            <th class="c-table__cell c-table__cell--head" width="20%">Город / Адрес</th>
             <th class="c-table__cell c-table__cell--head" width="20%">Проблема</th>
             <th class="c-table__cell c-table__cell--head" width="15%">Специалист</th>
             <th class="c-table__cell c-table__cell--head" width="15%">Дата визита</th>
@@ -200,6 +200,10 @@ $leader = Yii::$app->user->can('leader');
                             <p>до <?= date('d.m.Y', $item->next_visit_by) ?></p>
                         <?php } else if ($item->visit_date != null) { ?>
                             <span> <?= date('d.m.Y <b>H:i</b>', $item->visit_date)?></span>
+                            <?php if ($item->next_visit_from != null && $item->next_visit_by != null) { ?>
+                            <br>
+                            <span class="em-font"><em>с <?= date('d.m.Y', $item->next_visit_from) ?> до <?= date('d.m.Y', $item->next_visit_by) ?></em></span>
+                            <?php } ?>
                         <?php } else if ($item->visit_date == null) { ?>
                             <span>-</span>
                         <?php } ?>
@@ -302,7 +306,7 @@ $leader = Yii::$app->user->can('leader');
                                                                 'label' => 'Изменить специалиста',
                                                                 'class' => 'btn btn-primary userStatus pull-right',
                                                             ],
-                                                            'footer' => Html::a('Сохранить', ['visit/set-specialist', 'id' => $item->id, 'number' => $model->number], [
+                                                            'footer' => Html::a('Сохранить', ['visit/setspecialist', 'id' => $item->id, 'number' => $model->number], [
                                                                 'class' => 'btn btn-primary',
                                                                 'data' => [
                                                                     'method' => 'post',
@@ -513,7 +517,6 @@ $leader = Yii::$app->user->can('leader');
             <p><span class="glyphicon glyphicon-remove"></span> - клиент не пришел в указанное время</p>
             <p><span class="glyphicon glyphicon-camera"></span> - не добавлены фотографии</p>
             <?= $administrator || $admin || $leader ? '<p><span class="glyphicon glyphicon-alert"></span> - клиент не уложился в сроки</p>' : '' ?>
-
         </div>
     </div>
 </div>

@@ -70,6 +70,13 @@ $leader = Yii::$app->user->can('leader');
                 <?= Html::a('Карты клиентов', ['card/index'], ['class' => 'btn btn-lg btn-info center-block']) ?>
             </div>
         </div>
+        <?php if ($admin || $leader || $podolog || $dermatolog) { ?>
+            <div class="col-md-6 col-sm-6 col-sm-6">
+                <div class="box">
+                    <?= Html::a('Календарь', ['/event'], ['class' => 'btn btn-lg btn-primary center-block']) ?>
+                </div>
+            </div>
+        <?php } ?>
     <?php } ?>
 
     <?php if ($admin || $smm || $leader) { ?>

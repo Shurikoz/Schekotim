@@ -1,7 +1,7 @@
 "use strict";
 //фенкция для скрытия оповещений через 5 сек
 window.setTimeout(function () {
-    $(".alert-success, .alert-warning, .alert-danger, .alert-info, .alert-error ").fadeTo(500, 0).slideUp(500, function () {
+    $(".alert-success, .alert-warning, .alert-danger, .alert-error ").fadeTo(500, 0).slideUp(500, function () {
         $(this).remove();
     });
 }, 10000);

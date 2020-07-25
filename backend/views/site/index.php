@@ -38,23 +38,6 @@ $leader = Yii::$app->user->can('leader');
 </div>
     <hr>
     <br>
-
-<?php if ($admin) { ?>
-    <div class="row">
-        <div class="col-md-6 col-sm-6">
-            <div class="box">
-                <?= Html::a('Обращения', ['pages/support'], ['class' => 'btn btn-lg btn-green center-block']) ?>
-            </div>
-        </div>
-        <div class="col-md-6 col-sm-6">
-            <div class="box">
-                <p>Новых обращений: <b><?= $viewed ?></b></p>
-                <p>Нерешенных обращений: <b><?= $result ?></b></p>
-            </div>
-        </div>
-    </div>
-    <hr>
-<?php } ?>
 <div class="row">
     <?php if ($admin || $administrator || $leader) { ?>
         <div class="col-md-6 col-sm-6">
@@ -121,4 +104,21 @@ $leader = Yii::$app->user->can('leader');
             </div>
         </div>
     </div>
+<?php } ?>
+<hr>
+<?php if ($admin) { ?>
+    <div class="row">
+        <div class="col-md-6 col-sm-6">
+            <div class="box">
+                <?= Html::a('Обращения', ['pages/support'], ['class' => 'btn btn-lg btn-green center-block']) ?>
+            </div>
+        </div>
+        <div class="col-md-6 col-sm-6">
+            <div class="box">
+                <p>Новых обращений: <b><?= $viewed ?></b></p>
+                <p>Нерешенных обращений: <b><?= $result ?></b></p>
+            </div>
+        </div>
+    </div>
+    <hr>
 <?php } ?>

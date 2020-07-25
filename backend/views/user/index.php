@@ -1,9 +1,5 @@
 <?php
 
-/* @var $this yii\web\View */
-
-/* @var $model backend\models\Visit */
-
 use yii\helpers\Html;
 
 \yii\web\YiiAsset::register($this);
@@ -16,13 +12,14 @@ $admin = Yii::$app->user->can('admin');
         <hr>
     </div>
 </div>
+<?php if ($countUser) {?>
 <div class="row">
     <div class="col-md-12">
         <?= Html::a('Регистрация нового пользователя', ['/user/signup'], ['class' => 'btn btn-green pull-right']) ?>
     </div>
 </div>
+<?php } ?>
 <br>
-
 <div class="row">
     <div class="col-md-12">
         <table class="c-table">

@@ -29,9 +29,11 @@ class UserController extends Controller
     {
         //получим всех пользователей кроме администратора
         $model = User::find()->where(['not in', 'username', 'admin'])->with('city', 'address_point')->all();
+        $countUser = User::userCount();
 
         return $this->render('index', [
             'model' => $model,
+            'countUser' => $countUser
         ]);
     }
 
@@ -57,7 +59,6 @@ class UserController extends Controller
 
         //исключим из списка административную роль
         unset($allRoles['admin']);
-        unset($allRoles['leader']);
 
         $user = UserEdit::findOne(['id' => $id]);
         $role = array_keys(Yii::$app->authManager->getRolesByUser($user->id));
@@ -122,10 +123,10 @@ class UserController extends Controller
      */
     public function actionSignup()
     {
+
         $roles = ArrayHelper::map(Yii::$app->authManager->getRoles(), 'name', 'description');
         //исключим из списка административную роль
         unset($roles['admin']);
-        unset($roles['leader']);
 
         $model = new SignupUser();
         $city = City::find()->all();

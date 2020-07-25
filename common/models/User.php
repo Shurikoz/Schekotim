@@ -196,6 +196,19 @@ class User extends ActiveRecord implements IdentityInterface
         $this->password_reset_token = null;
     }
 
+    /**
+     * @return bool
+     */
+    public static function userCount()
+    {
+        $count = count(self::find()->where(['not in', 'username', 'admin'])->all());
+        if ($count >= Yii::$app->params['maxUsers']) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
 
     public function getCity()
     {

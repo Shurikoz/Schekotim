@@ -54,10 +54,11 @@ array_unshift($addressPpointList, '');
                 <p>Если пользователю будет присвоена роль "Подолог", это имя будет отображаться в списке подологов</p>
             </div>
         </div>
+        <hr>
         <div class="row">
             <div class="col-md-12">
                 <div class="form-group">
-                    <?= Html::submitButton('Зарегистрировать', ['class' => 'btn btn-green', 'name' => 'signup-button']) ?>
+                    <?= Html::submitButton('Зарегистрировать', ['class' => 'btn btn-green pull-right', 'name' => 'signup-button']) ?>
                 </div>
             </div>
         </div>

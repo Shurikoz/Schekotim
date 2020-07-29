@@ -1,11 +1,6 @@
 <?php
-use common\widgets\Alert;
-use rmrevin\yii\fontawesome\FAS;
-use russ666\widgets\Countdown;
-use yii\bootstrap\Modal;
-use yii\helpers\ArrayHelper;
+
 use yii\helpers\Html;
-use yii\widgets\ActiveForm;
 use yii\helpers\Url;
 use yii\widgets\LinkPager;
 
@@ -48,6 +43,7 @@ $admin = Yii::$app->user->can('admin');
             <thead class="c-table__head c-table__head--slim">
             <tr class="c-table__row">
                 <th class="c-table__cell c-table__cell--head">ID операции</th>
+                <th class="c-table__cell c-table__cell--head">Город / Адрес</th>
                 <th class="c-table__cell c-table__cell--head">Дата</th>
                 <th class="c-table__cell c-table__cell--head">Время</th>
                 <th class="c-table__cell c-table__cell--head">Объект</th>
@@ -63,6 +59,10 @@ $admin = Yii::$app->user->can('admin');
                 <tr class="c-table__row openBox">
                     <td class="c-table__cell">
                         <?= $item->id ?>
+                    </td>
+                    <td class="c-table__cell">
+                        <p><?= $item->city->name ?></p>
+                        <p><?= $item->address_point->address_point ?></p>
                     </td>
                     <td class="c-table__cell">
                         <?= date('d.m.Y', $item->time)?>

@@ -290,7 +290,7 @@ $count_visits = (isset($_GET['per-page'])) ? $_GET['per-page'] : 10;
             <?php } ?>
 
         <?php } else {?>
-            <div align="center">Ничего не найдено :(</div>
+            <div align="center">Ничего не найдено</div>
         <?php } ?>
         <div class="pull-right">
             <?= LinkPager::widget([

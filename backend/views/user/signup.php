@@ -46,7 +46,7 @@ array_unshift($addressPpointList, '');
                 <!-- Получим список точек из AJAX запрса по выбранному городу -->
                 <?= $form->field($model, 'address_point')
                     ->dropDownList(['prompt' => 'Сначала выберите город'])
-                    ->label('Адрес точки <div id="errorData" class="" style="float: right"></div>') ?>
+                    ->label('Адрес <div id="errorData" class="" style="float: right"></div>') ?>
             </div>
             <div class="col-lg-4">
                 <?= $form->field($model, 'name') ?>

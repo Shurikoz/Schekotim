@@ -46,13 +46,13 @@ class SignupUser extends Signup
             ['password', 'string', 'min' => 6],
 
             ['retypePassword', 'required'],
-            ['retypePassword', 'compare', 'compareAttribute' => 'password'],
+            ['retypePassword', 'compare', 'compareAttribute' => 'password', 'message' => 'Пароли не совпадают'],
 
             [['city', 'address_point'], 'required'],
             ['city', 'integer', 'min' => '1', 'tooSmall' => 'Город не выбран!'],
 
             [['city', 'address_point'], 'required'],
-            ['address_point', 'integer', 'min' => '1', 'tooSmall' => 'Точка не выбрана!'],
+            ['address_point', 'integer', 'min' => '1', 'tooSmall' => 'Адрес не выбран!', 'message' => 'Выберите город'],
 
         ];
     }
@@ -63,17 +63,19 @@ class SignupUser extends Signup
     {
         return [
             'city' => 'Город',
-            'address_point' => 'Адрес точки',
+            'address_point' => 'Адрес',
             'username' => 'Имя пользователя',
             'password' => 'Пароль',
             'retypePassword' => 'Повторите пароль',
             'name' => 'Имя пользователя'
         ];
     }
+
     /**
      * Signs user up.
      *
      * @return User|null the saved model or null if saving fails
+     * @throws \Exception
      */
     public function signup()
     {

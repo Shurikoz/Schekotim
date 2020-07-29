@@ -10,12 +10,15 @@ use Yii;
  *
  * @property int $id
  * @property int $user_id
+ * @property int city_id
+ * @property int address_point_id
  * @property int $object
  * @property int $object_id
  * @property int $operation
  * @property string $time
  * @property string $changes
  */
+
 class Logs extends \yii\db\ActiveRecord
 {
     /**
@@ -32,7 +35,7 @@ class Logs extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['user_id'], 'integer'],
+            [['user_id', 'city_id', 'address_point_id'], 'integer'],
             [['changes'], 'string'],
             [['time', 'operation', 'object', 'object_id'], 'string', 'max' => 255],
         ];
@@ -54,6 +57,16 @@ class Logs extends \yii\db\ActiveRecord
     public function getUser()
     {
         return $this->hasOne(User::className(), ['id' => 'user_id']);
+    }
+
+    public function getCity()
+    {
+        return $this->hasOne(City::className(), ['id' => 'city_id']);
+    }
+
+    public function getAddress_point()
+    {
+        return $this->hasOne(AddressPoint::className(), ['id' => 'address_point_id']);
     }
 
 }

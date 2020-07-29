@@ -58,10 +58,14 @@ class City extends \yii\db\ActiveRecord
         return $this->hasMany(Card::className(), ['city_id' => 'id']);
     }
 
-
     public function getUser()
     {
         return $this->hasOne(User::className(), ['city_id' => 'id']);
+    }
+
+    public function getLogs()
+    {
+        return $this->hasMany(Logs::className(), ['city_id' => 'id']);
     }
 
 }

@@ -144,7 +144,6 @@ class ProblemController extends Controller
             $model->save(false);
             $modelBefore->save(false);
         }
-
         return $this->actionIndex();
     }
 

@@ -8,7 +8,7 @@ use yii\data\Pagination;
 use yii\web\Controller;
 use Yii;
 
-class LogsController extends Controller
+class LogController extends Controller
 {
 
     public function actionIndex()
@@ -16,10 +16,9 @@ class LogsController extends Controller
         $searchModel = new LogsSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
         $pages = new Pagination(['totalCount' => $dataProvider->getTotalCount(), 'pageSizeLimit' => [1, 60], 'defaultPageSize' => 20]);
-        $model = Logs::find()->all();
-        return $this->render('logs', [
+
+        return $this->render('index', [
             'pages' => $pages,
-            'model' => $model,
             'dataProvider' => $dataProvider
         ]);
     }

@@ -33,7 +33,9 @@ $dermatolog = Yii::$app->user->can('dermatolog');
 $leader = Yii::$app->user->can('leader');
 
 ?>
+
 <?= FancyBox::widget();?>
+
 <div class="card-view">
     <div class="row">
         <div class="col-md-12">
@@ -218,16 +220,16 @@ $leader = Yii::$app->user->can('leader');
                 </tr>
                 <tr class="c-table__row infoBlock hide hideBox">
                     <td colspan="10" class="c-table__infoBlock">
-                        <?php if ($item->specialist->user_id == Yii::$app->user->id || $admin || $leader) { ?>
+                        <?php if ($podolog || $admin || $leader) { ?>
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="userStatus pull-right">
-                                            <?php if ($item->next_visit_from == null && $item->next_visit_by == null && $item->visit_date != null ) { ?>
+                                            <?php if (Visit::checkSuccessCopy($item)) { ?>
                                                 <div>
                                                     <?= Html::a('Создать копию', ['visit/copy', 'id' => $item->id, 'number' => $model->number], ['class' => 'btn btn-primary']) ?>
                                                 </div>
                                             <?php } ?>
-                                            <?php if ((new Visit())->checkSuccess($item)) { ?>
+                                            <?php if (Visit::checkSuccessChange($item)) { ?>
                                                 <div id="blockEdit_<?= $item->id ?>" data-id="<?= $item->id ?>">
                                                     <?= Html::a('Изменить посещение', ['visit/update', 'id' => $item->id, 'number' => $model->number], ['class' => 'btn btn-info']) ?>
                                                     <?php //если указан интервал посещения, то таймер не выводим ?>
@@ -251,6 +253,11 @@ $leader = Yii::$app->user->can('leader');
                                             <?php } elseif ($admin || $leader) { ?>
                                                 <div>
                                                     <?= Html::a('Изменить посещение', ['visit/update', 'id' => $item->id, 'number' => $model->number], ['class' => 'btn btn-info']) ?>
+                                                </div>
+                                            <?php } ?>
+                                            <?php if (($admin || $leader) && $item->timestamp < time()) { ?>
+                                                <div>
+                                                    <?= Html::a('+24 часа', ['visit/edit24h', 'id' => $item->id, 'number' => $model->number], ['class' => 'btn btn-warning']) ?>
                                                 </div>
                                             <?php } ?>
                                             <?php //кнопка «Проблема решена» доступна админу или тому, кто создал посещение?>

@@ -148,13 +148,28 @@ class Visit extends ActiveRecord
      * @param $visit
      * @return bool
      */
-    public function checkSuccess($visit)
+    public static function checkSuccessChange($visit)
     {
         $admin = Yii::$app->user->can('admin');
         $leader = Yii::$app->user->can('leader');
+        $administrator = Yii::$app->user->can('administrator');
         if ($visit->has_come != 2
-            && ($visit->specialist->user_id == Yii::$app->user->id || $admin || $leader) && ($visit->timestamp >= time() && $visit->resolve != 1 || $visit->next_visit_by != null && $visit->next_visit_by >= time())
-        ) {
+            && ($visit->specialist->user_id == Yii::$app->user->id || $admin || $leader || $administrator) && ($visit->timestamp >= time() && $visit->resolve != 1 || $visit->next_visit_by != null && $visit->next_visit_by >= time()))
+        {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * проверка на разрешение создания копии посещения
+     * @param $item
+     * @return bool
+     */
+    public static function checkSuccessCopy($item)
+    {
+        if ($item->next_visit_from == null && $item->next_visit_by == null && $item->visit_date != null){
             return true;
         } else {
             return false;

@@ -82,10 +82,11 @@ $dermatolog = Yii::$app->user->can('dermatolog');
             'label' => 'Система учета',
             'items' => [
                 ['label' => 'Карты', 'url' => '/card/index', 'visible' => $admin || $leader || $administrator || $podolog || $dermatolog],
-                ['label' => 'Календарь', 'url' => '/event', 'visible' => $admin || $leader || $administrator || $podolog || $dermatolog],
+                ['label' => 'Календарь', 'url' => '/event', 'visible' => $podolog || $dermatolog],
                 ['label' => 'Фото работ', 'url' => '/photo/index', 'visible' => $admin || $leader || $smm],
                 ['label' => 'Пропущенные посещения', 'url' => '/visit/missed', 'visible' => $admin || $leader || $administrator],
                 ['label' => 'Запланированные посещения', 'url' => '/visit/planned', 'visible' => $admin || $leader || $administrator],
+                ['label' => 'Шаблоны для специалистов', 'url' => '/problem/index', 'visible' => $admin || $leader],
                 ['label' => 'Пользователи', 'url' => '/user/index', 'visible' => $admin || $leader],
             ],
         ];

@@ -19,13 +19,15 @@ $(".resetFormButton").click(function () {
 //************************************************************************
 //функция для соткрытия/скрытия информации о визитах
 $(document).on('click', 'tr.openBox', function (e) {
-    var a = $(e.target).closest('tr.openBox');
-    a.toggleClass('activeBox');
-    $('tr.openBox').not(a).removeClass('activeBox');
+    if (e.target.tagName !== 'SPAN') {
+        var a = $(e.target).closest('tr.openBox');
+        a.toggleClass('activeBox');
+        $('tr.openBox').not(a).removeClass('activeBox');
 
-    var b = $(e.target).closest('tr.openBox').next('tr');
-    b.toggleClass('hide');
-    $('tr.infoBlock').not(b).addClass('hide');
+        var b = $(e.target).closest('tr.openBox').next('tr');
+        b.toggleClass('hide');
+        $('tr.infoBlock').not(b).addClass('hide');
+    }
 });
 //************************************************************************
 //функция для отметки сообщения в службе поддержки как прочитанное

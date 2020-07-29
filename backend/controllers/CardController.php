@@ -141,7 +141,8 @@ class CardController extends Controller
             $visitModel->timestamp = time() + 60 * 60 * 24 * 2; // 2 суток на редактирование
             $visitModel->city_id = $user->city_id;
             $visitModel->address_point_id = $user->address_point_id;
-            $visitModel->visit_date = time();
+//            $visitModel->visit_date = time();
+            $visitModel->visit_date = null;
 
             if ($cardModel->load($post) && $visitModel->load($post)) {
                 $visitModel->card_number = $cardModel->number;

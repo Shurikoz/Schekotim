@@ -217,7 +217,7 @@ class VisitController extends Controller
         $card = Card::find()->where(['number' => $model->card_number])->one();
 
         // проверка на разрешение редактирования посещения
-        if (!(new Visit())->checkSuccess($model)){
+        if (!Visit::checkSuccessChange($model)){
             Yii::$app->session->setFlash('danger', 'Вам не разрешено редактировать это посещение!');
             return $this->redirect(['card/view', 'number' => $card->number]);
         }
@@ -298,7 +298,9 @@ class VisitController extends Controller
 
         $model = Visit::find()->where(['id' => $id])->with('city', 'address_point')->one();
         $copyVisit = new Visit();
-        $specialist = Specialist::find()->where(['id' => $model->specialist_id])->one();
+//        $specialist = Specialist::find()->where(['id' => $model->specialist_id])->one();
+        $specialist = Specialist::find()->where(['user_id' => Yii::$app->user->getId()])->one();
+
         $card = Card::find()->where(['number' => $model->card_number])->one();
         $lastVisit = Visit::find()->where(['card_number' => $model->card_number])->orderBy(['number' => SORT_DESC])->one();
 
@@ -554,7 +556,6 @@ class VisitController extends Controller
         } elseif ($page == 'planned') {
             $this->redirect("/visit/planned");
         }
-
     }
 
     /**
@@ -676,6 +677,23 @@ class VisitController extends Controller
         return $pdf->render();
     }
 
+    /**
+     * @param $id
+     * @param $number
+     * @return \yii\web\Response
+     */
+    public function actionEdit24h($id, $number)
+    {
+        $model = Visit::find()->where(['id' => $id])->one();
+        $card = Card::find()->where(['number' => $number])->one();
+        $model->timestamp = time() + 60 * 60 * 24;
+        if ($model->save(false)) {
+            Yii::$app->session->setFlash('success', 'Возможность редактирования посещения <b>#' . $model->id . '</b> продлена на 24 часа!');
+        } else {
+            Yii::$app->session->setFlash('danger', 'Ошибка продления срока редактирования!');
+        }
+        return $this->redirect(['card/view', 'number' => $card->number]);
+    }
 
     /**
      * Finds the Visit model based on its primary key value.

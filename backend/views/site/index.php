@@ -42,7 +42,7 @@ $leader = Yii::$app->user->can('leader');
     <?php if ($admin || $administrator || $leader) { ?>
         <div class="col-md-6 col-sm-6">
             <div class="box">
-                <?= Html::a('Создать карту клиента', ['card/create'], ['class' => 'btn btn-lg btn-green center-block']) ?>
+                <?= Html::a('Создать карту', ['card/create'], ['class' => 'btn btn-lg btn-green center-block']) ?>
             </div>
         </div>
     <?php } ?>
@@ -50,10 +50,10 @@ $leader = Yii::$app->user->can('leader');
     <?php if ($admin || $podolog || $dermatolog || $administrator || $leader) { ?>
         <div class="col-md-6 col-sm-6">
             <div class="box">
-                <?= Html::a('Карты клиентов', ['card/index'], ['class' => 'btn btn-lg btn-info center-block']) ?>
+                <?= Html::a('Карты', ['/card'], ['class' => 'btn btn-lg btn-info center-block']) ?>
             </div>
         </div>
-        <?php if ($admin || $leader || $podolog || $dermatolog) { ?>
+        <?php if ($podolog || $dermatolog) { ?>
             <div class="col-md-6 col-sm-6 col-sm-6">
                 <div class="box">
                     <?= Html::a('Календарь', ['/event'], ['class' => 'btn btn-lg btn-primary center-block']) ?>
@@ -65,7 +65,7 @@ $leader = Yii::$app->user->can('leader');
     <?php if ($admin || $smm || $leader) { ?>
         <div class="col-md-6 col-sm-6">
             <div class="box">
-                <?= Html::a('Фото работ (из карт клиентов)', ['photo/index'], ['class' => 'btn btn-lg btn-info center-block']) ?>
+                <?= Html::a('Фото работ (из карт клиентов)', ['/photo'], ['class' => 'btn btn-lg btn-info center-block']) ?>
             </div>
         </div>
     <?php } ?>
@@ -95,12 +95,12 @@ $leader = Yii::$app->user->can('leader');
     <div class="row">
         <div class="col-md-6 col-sm-6 col-sm-6">
             <div class="box">
-                <?= Html::a('Логи', ['logs/index'], ['class' => 'btn btn-lg btn-info center-block']) ?>
+                <?= Html::a('Логи', ['/log'], ['class' => 'btn btn-lg btn-info center-block']) ?>
             </div>
         </div>
         <div class="col-md-6 col-sm-6 col-sm-6">
             <div class="box">
-                <?= Html::a('Шаблоны для специалистов', ['problem/index'], ['class' => 'btn btn-lg btn-info center-block']) ?>
+                <?= Html::a('Шаблоны для специалистов', ['/problem'], ['class' => 'btn btn-lg btn-info center-block']) ?>
             </div>
         </div>
     </div>

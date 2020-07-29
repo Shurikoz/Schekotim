@@ -38,7 +38,7 @@ class LogsSearch extends Logs
      */
     public function search($params)
     {
-        $query = Logs::find()->joinWith('user');
+        $query = Logs::find()->joinWith(['user', 'city', 'address_point']);
 
         // add conditions that should always apply here
 

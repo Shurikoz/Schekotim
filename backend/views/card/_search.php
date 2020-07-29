@@ -1,8 +1,8 @@
 <?php
 
+use kartik\date\DatePicker;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
-use kartik\date\DatePicker;
 
 /* @var $this yii\web\View */
 /* @var $model backend\models\CardSearch */
@@ -16,22 +16,21 @@ use kartik\date\DatePicker;
                 'action' => ['index'],
                 'method' => 'get',
             ]); ?>
-<div class="row">
-    <div class="col-sm-6 col-xs-6">
-        <p class="titleNormal">Фильтр</p>
-    </div>
-    <div class="col-sm-6 col-xs-6">
-        <div class="pull-right">
-            <!--                    <span class="openNewWindow">-->
-            <!--                        <input type="checkbox" id="openNewWindow" name="openNewWindow">-->
-            <!--                        <label for="openNewWindow" style="cursor:pointer;">Открывать карты в новом окне</label>-->
-            <!--                    </span>-->
-            <?= Html::button('Сбросить', ['class' => 'btn btn-default resetFormButton pull-right']) ?>
-        </div>
-    </div>
+            <div class="row">
+                <div class="col-sm-6 col-xs-6">
+                    <p class="titleNormal">Фильтр</p>
+                </div>
+                <div class="col-sm-6 col-xs-6">
+                    <div class="pull-right">
+                        <!--                    <span class="openNewWindow">-->
+                        <!--                        <input type="checkbox" id="openNewWindow" name="openNewWindow">-->
+                        <!--                        <label for="openNewWindow" style="cursor:pointer;">Открывать карты в новом окне</label>-->
+                        <!--                    </span>-->
+                        <?= Html::button('Сбросить', ['class' => 'btn btn-default resetFormButton pull-right']) ?>
+                    </div>
+                </div>
 
-</div>
-
+            </div>
 
 
             <hr>
@@ -48,7 +47,7 @@ use kartik\date\DatePicker;
                 </div>
                 <div class="col-md-3 col-sm-4">
                     <div class="c-field">
-                        <?= $form->field($model, 'address_point_id')->dropDownList($addressPoint, ['prompt' => 'Все', 'class' => 'autoSearchSubmit c-input'])->label('Точка', ['class' => 'c-field__label']) ?>
+                        <?= $form->field($model, 'address_point_id')->dropDownList($addressPoint, ['prompt' => 'Все', 'class' => 'autoSearchSubmit c-input'])->label('Адрес', ['class' => 'c-field__label']) ?>
                     </div>
                 </div>
             </div>

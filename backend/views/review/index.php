@@ -4,12 +4,8 @@ namespace app\models;
 use Yii;
 use yii\helpers\Html;
 
-/* @var $this yii\web\View */
-/* @var $searchModel common\models\ReviewSearch */
-/* @var $dataProvider yii\data\ActiveDataProvider */
-
 $this->title = 'Отзывы';
-$this->params['breadcrumbs'][] = $this->title;
+
 ?>
 <div class="row">
     <div class="col-md-12">
@@ -73,7 +69,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                 $publish = Html::a('<span style="font-size: 18px" class="glyphicon glyphicon-remove">', ['review/hide', 'id' => $item->id], ['title' => 'Снять с публикации']);
                                 $unpublish = Html::a('<span style="font-size: 18px" class="glyphicon glyphicon-ok">', ['review/show', 'id' => $item->id], ['title' => 'Опубликовать']);
                                 ?>
-                                <?= $item->active == 0 ? $publish : $unpublish ?>
+                                <?= $item->active == 0 ? $unpublish : $publish ?>
                                 <?= Html::a('<span style="font-size: 18px" class="glyphicon glyphicon-pencil">', ['review/update', 'id' => $item->id], ['title' => 'Редактировать']); ?>
                                 <?= Html::a('<span style="font-size: 18px" class="glyphicon glyphicon-trash">', ['review/delete', 'id' => $item->id], [
                                     'title' => 'Удалить',

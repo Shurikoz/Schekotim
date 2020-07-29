@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 
 \yii\web\YiiAsset::register($this);
+
 $admin = Yii::$app->user->can('admin');
 
 ?>
@@ -94,5 +95,13 @@ $admin = Yii::$app->user->can('admin');
             <?php } ?>
             </tbody>
         </table>
+    </div>
+</div>
+<hr>
+<div class="row">
+    <div class="col-md-12">
+        <div class="pull-right">
+            Максимальное число пользователей - <?= Yii::$app->params['maxUsers']?>
+        </div>
     </div>
 </div>

@@ -58,6 +58,8 @@ class Card extends \yii\db\ActiveRecord
         $log->operation = $operation;
         $log->changes = json_encode($this->attributes, JSON_UNESCAPED_UNICODE);
         $log->user_id = Yii::$app->user->identity->getId();
+        $log->city_id = Yii::$app->user->identity->city_id;
+        $log->address_point_id = Yii::$app->user->identity->address_point_id;
         $log->object = 'card';
         $log->object_id = $this->id;
         $log->save(false);

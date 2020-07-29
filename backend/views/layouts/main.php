@@ -88,6 +88,7 @@ $dermatolog = Yii::$app->user->can('dermatolog');
                 ['label' => 'Запланированные посещения', 'url' => '/visit/planned', 'visible' => $admin || $leader || $administrator],
                 ['label' => 'Шаблоны для специалистов', 'url' => '/problem/index', 'visible' => $admin || $leader],
                 ['label' => 'Пользователи', 'url' => '/user/index', 'visible' => $admin || $leader],
+                ['label' => 'Настройки', 'url' => '/settings', 'visible' => $admin || $leader],
             ],
         ];
         $menuItems[] = [
@@ -101,7 +102,7 @@ $dermatolog = Yii::$app->user->can('dermatolog');
         $menuItems[] = [
             'label' => Yii::$app->user->identity->username,
             'items' => [
-                ['label' => 'Настройки', 'url' => '/settings'],
+                ['label' => 'Настройки', 'url' => '/profile/settings'],
                 ['label' => 'Выход',  'url' => '/site/logout'],
             ],
         ];

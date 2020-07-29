@@ -62,10 +62,12 @@ $dermatolog = Yii::$app->user->can('dermatolog');
         </div>
         <hr>
         <?php $form = ActiveForm::begin(['id' => 'formUpdate']); ?>
+
         <?= $form->field($model, 'card_number')->hiddenInput(['value' => $card_id])->label(false); ?>
         <?= $form->field($model, 'city_id')->hiddenInput(['value' => $model->city_id])->label(false); ?>
         <?= $form->field($model, 'address_point_id')->hiddenInput(['value' => $model->address_point_id])->label(false); ?>
         <?= $form->field($model, 'specialist_id')->hiddenInput(['value' => $specialist->id])->label(false); ?>
+
         <div class="row">
             <div class="col-md-4 col-sm-6">
                 <div class="box">

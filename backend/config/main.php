@@ -84,7 +84,6 @@ return [
                 '<action:(index|review|login|request-password-reset|reset-password|support|policy)>' => 'site/<action>',
                 '<action:(show|hide)>' => 'review/<action>',
                 '<action:(tutorial)>' => 'pages/<action>',
-                '<action:(settings)>' => 'profile/<action>',
                 '<action:(notification)>' => 'notification/<action>',
             ],
 

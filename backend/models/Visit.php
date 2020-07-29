@@ -114,6 +114,8 @@ class Visit extends ActiveRecord
         $log->operation = $operation;
         $log->changes = json_encode($this->attributes, JSON_UNESCAPED_UNICODE);
 //        $log->user_id = $specialist->user_id;
+        $log->city_id = Yii::$app->user->identity->city_id;
+        $log->address_point_id = Yii::$app->user->identity->address_point_id;
         $log->user_id = Yii::$app->user->identity->getId();
         $log->object = 'visit';
         $log->object_id = $this->id;

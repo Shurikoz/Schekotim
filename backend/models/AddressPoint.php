@@ -68,7 +68,7 @@ class AddressPoint extends \yii\db\ActiveRecord
 
     public function getLogs()
     {
-        return $this->hasMany(Logs::className(), ['address_point_id' => 'id']);
+        return $this->hasOne(Logs::className(), ['address_point_id' => 'id']);
     }
 
 }

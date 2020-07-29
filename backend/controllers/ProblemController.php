@@ -35,7 +35,7 @@ class ProblemController extends Controller
      */
     public function actionIndex()
     {
-        $model = Problem::find()->orderBy(['number' => SORT_DESC])->one();
+        $model = Problem::find()->orderBy('number asc')->all();
         $searchModel = new ProblemSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 

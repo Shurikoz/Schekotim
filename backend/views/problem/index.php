@@ -7,7 +7,6 @@ use yii\widgets\Pjax;
 $this->title = 'Шаблоны для специалистов';
 $num = 0;
 ?>
-
 <div class="row">
     <div class="col-md-12">
         <h3><?= Html::encode($this->title) ?></h3>
@@ -46,10 +45,10 @@ $num = 0;
                             </td>
                             <td class="c-table__cell">
                                 <?php
-                                if ($item->number != min($dataProvider->getModels())) {
+                                if ($item->number != ($model)[0]["number"]) {
                                     echo Html::a('<span style="font-size: 18px" class="glyphicon glyphicon-chevron-up">', ['problem/up', 'id' => $item->id], ['title' => 'Поднять']) . '<br>';
                                 }
-                                if ($item->number != end($dataProvider->getModels())["number"]) {
+                                if ($item->number != end($model)["number"]) {
                                     echo Html::a('<span style="font-size: 18px" class="glyphicon glyphicon-chevron-down">', ['problem/down', 'id' => $item->id], ['title' => 'Опустить']);
                                 }
                                 ?>

@@ -2,12 +2,12 @@
 
 namespace backend\controllers;
 
-use Yii;
 use backend\models\Problem;
 use backend\models\ProblemSearch;
+use Yii;
+use yii\filters\VerbFilter;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
 
 /**
  * ProblemController implements the CRUD actions for Problem model.
@@ -136,14 +136,16 @@ class ProblemController extends Controller
     public function actionUp($id)
     {
         $model = $this->findModel($id);
-        $modelBefore = Problem::find()->where(['number' => $model->number - 1])->one();
-        if ($model->number != 1 ){
-            $num = $model->number - 1;
+        $modelBefore = $model->getPrev($model->number);
+
+        if ($modelBefore !== null) {
+            $num = $modelBefore->number;
             $modelBefore->number = $model->number;
             $model->number = $num;
             $model->save(false);
             $modelBefore->save(false);
         }
+
         return $this->actionIndex();
     }
 
@@ -155,9 +157,9 @@ class ProblemController extends Controller
     public function actionDown($id)
     {
         $model = $this->findModel($id);
-        $modelAfter = Problem::find()->where(['number' => $model->number + 1])->one();
-        if ($model->number != (new Problem())->count() ){
-            $num = $model->number + 1;
+        $modelAfter = $model->getNext($model->number);
+        if ($modelAfter !== null) {
+            $num = $modelAfter->number;
             $modelAfter->number = $model->number;
             $model->number = $num;
             $model->save(false);

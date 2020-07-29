@@ -5,7 +5,7 @@ use yii\helpers\Html;
 use yii\widgets\Pjax;
 
 $this->title = 'Шаблоны для специалистов';
-
+$num = 0;
 ?>
 
 <div class="row">
@@ -38,17 +38,18 @@ $this->title = 'Шаблоны для специалистов';
                     <?php foreach ($dataProvider->getModels() as $item) { ?>
                         <tr class="c-table__row openBox" data-id="<?=$item->id?>">
                             <td class="c-table__cell">
-                                <?= $item->number ?>
+                                <?php $num++;?>
+                                <?= $num ?>
                             </td>
                             <td class="c-table__cell">
                                 <?= $item->name ?>
                             </td>
                             <td class="c-table__cell">
                                 <?php
-                                if ($item->number != 1) {
+                                if ($item->number != min($dataProvider->getModels())) {
                                     echo Html::a('<span style="font-size: 18px" class="glyphicon glyphicon-chevron-up">', ['problem/up', 'id' => $item->id], ['title' => 'Поднять']) . '<br>';
                                 }
-                                if ($item->count() != $item->number) {
+                                if ($item->number != end($dataProvider->getModels())["number"]) {
                                     echo Html::a('<span style="font-size: 18px" class="glyphicon glyphicon-chevron-down">', ['problem/down', 'id' => $item->id], ['title' => 'Опустить']);
                                 }
                                 ?>

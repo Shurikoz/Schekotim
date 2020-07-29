@@ -61,6 +61,16 @@ class Problem extends \yii\db\ActiveRecord
         return $count;
     }
 
+    public function getNext($number) {
+        $next = $this->find()->where(['>', 'number', $number])->orderBy('number asc')->one();
+        return $next;
+    }
+
+    public function getPrev($number) {
+        $prev = $this->find()->where(['<', 'number', $number])->orderBy('number desc')->one();
+        return $prev;
+    }
+
     public function getVisit()
     {
         return $this->hasOne(Visit::className(), ['problem_id' => 'id']);

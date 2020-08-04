@@ -79,13 +79,17 @@ class CardController extends Controller
         $check = new Visit();
         $check->checkVisit($visits);
 
-        return $this->render('view', [
-            'pages' => $pages,
-            'model' => $model,
-            'visits' => $visits,
-            'specialistModel' => $specialistModel,
-            'dataProvider' => $dataProvider,
-        ]);
+        if ($model) {
+            return $this->render('view', [
+                'pages' => $pages,
+                'model' => $model,
+                'visits' => $visits,
+                'specialistModel' => $specialistModel,
+                'dataProvider' => $dataProvider,
+            ]);
+        } else {
+            return $this->render('error');
+        }
     }
 
     /**
@@ -102,6 +106,7 @@ class CardController extends Controller
 
         if (Yii::$app->user->can('admin')){
             $specialistModel = Specialist::find()->all();
+            $specialistList = ArrayHelper::map($specialistModel, 'id', 'name');
         } else {
             $specialistModel = Specialist::find()->where(['address_point_id' => $user->address_point_id])->all();
             $specialistList = ArrayHelper::map($specialistModel, 'id', 'name');
@@ -137,7 +142,7 @@ class CardController extends Controller
         if (!Yii::$app->user->can('admin')) {
             // 0 - ожидает посещения, 1 - пришел, 2 - не пришел
             $visitModel->number = 1;
-            $visitModel->has_come = '1';
+            $visitModel->has_come = 0;
             $visitModel->timestamp = time() + 60 * 60 * 24 * 2; // 2 суток на редактирование
             $visitModel->city_id = $user->city_id;
             $visitModel->address_point_id = $user->address_point_id;

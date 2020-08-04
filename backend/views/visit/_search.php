@@ -3,9 +3,6 @@
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
-/* @var $this yii\web\View */
-/* @var $model backend\models\VisitPlannedSearch */
-/* @var $form yii\widgets\ActiveForm */
 ?>
 
 <div class="visit-search">
@@ -66,7 +63,6 @@ use yii\widgets\ActiveForm;
     <div class="box">
         <div class="col-sm-12">
             <?php $form = ActiveForm::begin([
-                'action' => ['planned'],
                 'method' => 'get',
             ]); ?>
             <div class="pull-right">

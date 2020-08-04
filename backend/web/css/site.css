@@ -391,7 +391,9 @@ font-size: 18px;
 .glyphicon-ok-circle,
 .glyphicon-new-window,
 .glyphicon-earphone,
-.glyphicon-floppy-saved{
+.glyphicon-floppy-saved,
+.glyphicon-chevron-down,
+.glyphicon-chevron-up{
     color: #7ba335;
 }
 
@@ -830,4 +832,8 @@ div.datetimepicker-minutes table{
 
 .fc-list-empty{
     padding: 10px 0;
+}
+
+.tutorialDesc{
+    margin-top: 5px;
 }

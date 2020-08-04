@@ -4,21 +4,20 @@ namespace backend\controllers;
 
 use backend\models\Card;
 use backend\models\Photo;
-use backend\models\Specialist;
 use backend\models\Problem;
+use backend\models\Specialist;
 use backend\models\Visit;
 use backend\models\VisitPlannedSearch;
+use backend\models\VisitMissedSearch;
 use backend\models\VisitSearch;
 use common\models\User;
 use kartik\mpdf\Pdf;
-use Mpdf\Config\ConfigVariables;
 use Yii;
+use yii\data\Pagination;
 use yii\filters\VerbFilter;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\web\UploadedFile;
-use yii\data\Pagination;
-use Mpdf\Config\FontVariables;
 
 
 /**
@@ -64,12 +63,15 @@ class VisitController extends Controller
      */
     public function actionMissed()
     {
-        $searchModel = new VisitSearch();
+        $searchModel = new VisitMissedSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $pages = new Pagination(['totalCount' => $dataProvider->getTotalCount(), 'pageSizeLimit' => [1, 60], 'defaultPageSize' => 20]);
         //has_come: 0 - ожидание, 1 - пришел, 2 - не пришел
-        $model = Visit::find()->where(['has_come' => '2'])->with('card', 'city', 'address_point')->all();
+        //$model = Visit::find()->where(['has_come' => '2'])->with('card', 'city', 'address_point')->all();
         return $this->render('missed', [
+            'pages' => $pages,
             'searchModel' => $searchModel,
-            'model' => $model
+            'dataProvider' => $dataProvider
         ]);
     }
 
@@ -155,7 +157,6 @@ class VisitController extends Controller
                     $secondVisit->timestamp = $secondVisit->next_visit_by + 60 * 60 * 11;
                     $secondVisit->planned = 1;
                 }
-
             $model->next_visit_from = null;
             $model->next_visit_by = null;
 
@@ -167,7 +168,7 @@ class VisitController extends Controller
                     $model->has_second_visit = $secondVisit->id;
                     $model->save();
                 }
-
+                $card->load($post) ? $card->save() : false;
                 if (Yii::$app->user->can('podolog')){
                     $photoBefore->before = UploadedFile::getInstances($photoBefore, 'before');
                     $photoAfter->after = UploadedFile::getInstances($photoAfter, 'after');
@@ -251,7 +252,7 @@ class VisitController extends Controller
             if ($model->save()) {
                 $model->has_second_visit = $secondVisit->id;
                 $model->save();
-
+                $card->load($post) ? $card->save() : false;
                 if ($model->specialist->profession == 'podolog'){
 
                     $addPhotoBefore->before = UploadedFile::getInstances($addPhotoBefore, 'before');
@@ -307,7 +308,10 @@ class VisitController extends Controller
         if ($copyVisit->load($post)) {
             $copyVisit->number = (int)$lastVisit->number + 1;
             $copyVisit->timestamp = time() + 60 * 60 * 24 * 2; // 2 суток на редактирование
-            $copyVisit->visit_date = null;
+//            $copyVisit->visit_date = null;
+            if ($copyVisit->has_come == 1 && $copyVisit->visit_date == null) {
+                $copyVisit->visit_date = time();
+            }
             $copyVisit->card_number = $card->number;
             $copyVisit->planned = 0;
             $copyVisit->next_visit_from = null;
@@ -343,8 +347,8 @@ class VisitController extends Controller
         $model->has_come = 1;
         if ($model->save()) {
             Yii::$app->session->setFlash('success', 'Посещение зафиксировано!');
-            return $result;
         }
+        return $result;
     }
 
     /**
@@ -357,31 +361,10 @@ class VisitController extends Controller
      */
     public function actionCompleted($id, $card, $resolve)
     {
-        $model = $this->findModel($id);
-        $result = $this->redirect(['/card/view', 'number' => $card]);
-
-        //достанем то что записано в дате будущего визита и перезапишем
-        $next_visit_from = $model->next_visit_from;
-        $next_visit_by = $model->next_visit_by;
-
-        if ($resolve == true) {
-            $model->resolve = 1;
-            $model->next_visit_from = $next_visit_from;
-            $model->next_visit_by = $next_visit_by;
-            if ($model->save()) {
-                Yii::$app->session->setFlash('success', 'Проблема #' . $model->id . ' помечена решенной!');
-                return $result;
-            }
-        } else if ($resolve == false) {
-            $model->resolve = 0;
-            if ($model->save()) {
-                Yii::$app->session->setFlash('info', 'Проблема #' . $model->id . ' помечена как нерешенная.');
-                return $result;
-            }
-        }
-        Yii::$app->session->setFlash('danger', 'Ошибка отметки проблемы!');
-        return $result;
+        Visit::completed($id, $resolve);
+        return $this->redirect(['/card/view', 'number' => $card]);
     }
+
 
     /**
      * Deletes an existing Visit model.
@@ -394,43 +377,19 @@ class VisitController extends Controller
      */
     public function actionDelete($id, $card)
     {
-        $model = $this->findModel($id);
-        $modelPhoto = Photo::find()->where(['visit_id' => $model->id])->all();
-        $model->delete();
-        foreach ($modelPhoto as $item) {
-            $item->delete();
-        }
-
-        //удалим все фотографии посещения
-        $dir = Yii::getAlias('@webroot/upload/photo/') . $id;
-        if (is_dir($dir)) {
-            chmod($dir, 0777);
-            Photo::DelPhoto($dir);
-        }
-
-
-        Yii::$app->session->setFlash('success', 'Посещение удалено!');
+        Visit::deleteVisit($id);
         return $this->redirect(['/card/view', 'number' => $card]);
-    }
-
-    /**
-     * @return array|\yii\db\ActiveRecord[]
-     */
-    protected function findProblem()
-    {
-        $problem = Problem::find()->orderBy(['number' => SORT_ASC])->all();
-        return $problem;
     }
 
     /**
      * функция получения "рыбы" для форм в добавлении нового посещения
      * @return string
      */
-    public function actionReceive($id)
+    public function actionReceive($number)
     {
         \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
         if (Yii::$app->request->isAjax) {
-            $problem = Problem::find()->where(['id' => $id])->one();
+            $problem = Problem::find()->where(['number' => $number])->one();
             return $problem;
         }
     }
@@ -443,32 +402,8 @@ class VisitController extends Controller
      */
     public function actionDeletePhoto($id)
     {
-
-        $photoBefore = Photo::find()->where(['visit_id' => $id, 'made' => 'before'])->all();
-        $photoAfter = Photo::find()->where(['visit_id' => $id, 'made' => 'after'])->all();
-        $photoDermatolog = Photo::find()->where(['visit_id' => $id, 'made' => 'dermatolog'])->all();
-
-        $addPhotoBefore = new Photo();
-        $addPhotoAfter = new Photo();
-        $addPhotoDermatolog = new Photo();
-        $photo = Photo::findOne($id);
-        $dirUrl = Yii::getAlias('@webroot' . $photo->url);
-        $dirThumb = Yii::getAlias('@webroot' . $photo->thumbnail);
-        if ($photo->delete()) {
-            chmod($dirUrl, 0777);
-            chmod($dirThumb, 0777);
-            unlink($dirUrl);
-            unlink($dirThumb);
-        }
-
-        return $this->renderAjax('/photo/photo', [
-            'photoBefore' => $photoBefore,
-            'photoAfter' => $photoAfter,
-            'photoDermatolog' => $photoDermatolog,
-            'addPhotoBefore' => $addPhotoBefore,
-            'addPhotoAfter' => $addPhotoAfter,
-            'addPhotoDermatolog' => $addPhotoDermatolog,
-        ]);
+        $result = Visit::deletePhoto($id);
+        return $this->renderAjax('/photo/photo', $result);
     }
 
     /**
@@ -538,19 +473,7 @@ class VisitController extends Controller
      */
     public function actionRecord($id, $page, $number)
     {
-        $post = Yii::$app->request->post();
-        $visit = $this->findModel($id);
-        if ($visit->load($post)) {
-            $visit->visit_date = strtotime($post["Visit"]["visit_date"]);
-            $visit->timestamp = strtotime($post["Visit"]["visit_date"]) + 60 * 60 * 24 * 2;
-            $visit->recorded = 1;
-        }
-        if ($visit->save()) {
-            Yii::$app->session->setFlash('success', 'Клинент записан!');
-        } else {
-            Yii::$app->session->setFlash('danger', 'Не выбрано время записи!');
-        }
-
+        Visit::record($id);
         if ($page == 'view'){
             $this->redirect(['card/view', 'number' => $number]);
         } elseif ($page == 'planned') {
@@ -559,26 +482,13 @@ class VisitController extends Controller
     }
 
     /**
-     * снять отметку
-     * клиент записан на посещение
+     * снять отметку "клиент записан на посещение"
      * @throws NotFoundHttpException
      */
     public function actionRecordUnmark($id, $page, $number)
     {
-        $visit = $this->findModel($id);
-        $visit->visit_date = null;
-        if ($visit->next_visit_from != null && $visit->next_visit_by != null && $visit->not_in_time == 1) {
-            if (($visit->visit_date < $visit->next_visit_by) || ($visit->visit_date == null && (int)$visit->next_visit_by + 60 * 60 * 11 > time())) {
-                $visit->timestamp = strtotime($visit->next_visit_by) + 60 * 60 * 24 * 2;
-                $visit->not_in_time = 0;
-            }
-        }
-        $visit->recorded = 0;
-        if ($visit->save()) {
-            Yii::$app->session->setFlash('warning', 'Запись клиента снята!');
-        }
-
-        if ($page == 'view'){
+        Visit::recordUnmark($id);
+        if ($page == 'view') {
             $this->redirect(['card/view', 'number' => $number]);
         } elseif ($page == 'planned') {
             $this->redirect("/visit/planned");
@@ -693,6 +603,15 @@ class VisitController extends Controller
             Yii::$app->session->setFlash('danger', 'Ошибка продления срока редактирования!');
         }
         return $this->redirect(['card/view', 'number' => $card->number]);
+    }
+
+    /**
+     * @return array|\yii\db\ActiveRecord[]
+     */
+    protected function findProblem()
+    {
+        $problem = Problem::find()->orderBy(['number' => SORT_ASC])->all();
+        return $problem;
     }
 
     /**

@@ -289,7 +289,6 @@ $this->title = 'Лист запланированных посещений';
             <p><span class="glyphicon glyphicon-floppy-saved"></span> - записали клиента</p>
             <p><span class="glyphicon glyphicon-floppy-remove"></span> - отказ от записи</p>
             <p><span class="glyphicon glyphicon-alert"></span> - клиент не уложился в сроки</p>
-
         </div>
     </div>
 </div>

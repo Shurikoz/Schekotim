@@ -12,15 +12,13 @@ ShowLoadingAsset::register($this);
 
 $this->title = 'Новое посещение, карта №: ' . $card->number;
 
-$problemName = ArrayHelper::map($problem, 'id', 'name');
-array_unshift($problemName, '');
+$problemName = ArrayHelper::map($problem, 'number', 'name');
 
 //посчитаем возраст пациента по дате рождения
 $born = new DateTime($card->birthday); // дата рождения
 $age = $born->diff(new DateTime)->format('%y');
 
 $specialistList = ArrayHelper::map($specialistModel, 'id', 'name');
-array_unshift($specialistList, "Выберите подолога");
 
 $admin = Yii::$app->user->can('admin');
 $leader = Yii::$app->user->can('leader');
@@ -54,14 +52,47 @@ $dermatolog = Yii::$app->user->can('dermatolog');
                 <b>Город:</b> <?= $user->city->name ?>
             </div>
             <div class="col-md-4">
-                <b>Точка:</b> <?= $user->address_point->address_point ?>
+                <b>Адрес:</b> <?= $user->address_point->address_point ?>
             </div>
             <div class="col-md-4">
                 <?php if ($leader || $admin) { ?>
-                    <?= $form->field($model, 'specialist_id')->dropDownList($specialistList)->label('<b>Подолог</b>') ?>
+                    <?= $form->field($model, 'specialist_id')->dropDownList($specialistList, [
+                            'prompt' => [
+                                'text' => 'Выберите специалиста',
+                                'options' => [
+                                    'value' => '0'
+                                ]
+                            ]
+                        ])->label('<b>Специалист</b>') ?>
                 <?php } else { ?>
                     <b>Специалист:</b> <?= $specialist->name ?>
                 <?php } ?>
+            </div>
+        </div>
+        <hr>
+        <div class="panel panel-default" style="background-color: transparent">
+            <div class="panel-heading">
+                <h4 class="panel-title">
+                    <a data-toggle="collapse" data-parent="#accordion" href="#create_card">
+                        <div class="row">
+                            <div class="col-md-6 col-sm-6 col-xs-6">Данные пациента</div>
+                            <div class="col-md-6 col-sm-6 col-xs-6">
+                                <div class="pull-right">+</div>
+                            </div>
+                        </div>
+                    </a>
+                </h4>
+            </div>
+            <div id="create_card" class="panel-collapse collapse">
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-4 col-sm-6">
+                            <div class="box">
+                                <?= $form->field($card, 'profession')->textInput()->label('Профессия (Кем работает)') ?>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
         <hr>
@@ -75,9 +106,14 @@ $dermatolog = Yii::$app->user->can('dermatolog');
         <div class="row">
             <div class="col-md-4">
                 <div class="box">
-                    <?= $form->field($model, 'problem_id')
-                        ->dropDownList($problemName)
-                        ->label('Проблема <div id="errorData" class="" style="float: right"></div>') ?>
+                    <?= $form->field($model, 'problem_id')->dropDownList($problemName, [
+                        'prompt' => [
+                            'text' => '-',
+                            'options' => [
+                                'value' => '0'
+                            ]
+                        ]
+                    ])->label('Проблема <div id="errorData" class="" style="float: right"></div>') ?>
                 </div>
             </div>
             <div class="col-md-4">
@@ -285,8 +321,8 @@ $dermatolog = Yii::$app->user->can('dermatolog');
                     </div>
                 </div>
             </div>
+            <hr>
         <?php } ?>
-        <hr>
         <div class="form-group pull-right">
             <?= Html::submitButton('Сохранить', ['class' => 'btn btn-green', 'id' => 'saveBtn']) ?>
         </div>

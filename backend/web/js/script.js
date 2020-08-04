@@ -52,7 +52,7 @@ $(document).on('click', 'tr.supportMessage', function () {
 $("#visit-problem_id").on('change', function () {
     let getValue = $(this).val();
     $.ajax({
-        url: "/visit/receive?id=" + getValue,
+        url: "/visit/receive?number=" + getValue,
         cache: false,
         data: {},
         method: "POST",
@@ -242,12 +242,11 @@ function visitResolve() {
     }
 }
 
-$('#saveBtn').on('click',function(){
-    $(this).hide();
-    $("div").is("#visit-create") ? $('#visit-create').showLoading() : '';
-    $("div").is("#visit-update") ? $('#visit-update').showLoading() : '';
-    $("div").is("#visit-copy") ? $('#visit-copy').showLoading() : '';
-
+$("form").on("beforeSubmit", function(){
+    if (!$(this).find('.has-error').length) {
+        $('#saveBtn').hide();
+        $("div").is("#visit-create") ? $('#visit-create').showLoading() : '';
+        $("div").is("#visit-update") ? $('#visit-update').showLoading() : '';
+        $("div").is("#visit-copy") ? $('#visit-copy').showLoading() : '';
+    }
 });
-
-

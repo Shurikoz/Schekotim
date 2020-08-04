@@ -14,7 +14,7 @@ ShowLoadingAsset::register($this);
 $this->title = 'Редактирование посещения, карта №: ' . $model->card_number;
 
 $problemName = ArrayHelper::map($problem, 'id', 'name');
-array_unshift($problemName, '');
+
 $card_id = (int)Yii::$app->request->get('number');
 
 //посчитаем возраст пациента по дате рождения
@@ -67,12 +67,44 @@ $dermatolog = Yii::$app->user->can('dermatolog');
         <?= $form->field($model, 'city_id')->hiddenInput(['value' => $model->city_id])->label(false); ?>
         <?= $form->field($model, 'address_point_id')->hiddenInput(['value' => $model->address_point_id])->label(false); ?>
         <?= $form->field($model, 'specialist_id')->hiddenInput(['value' => $specialist->id])->label(false); ?>
-
+        <div class="panel panel-default" style="background-color: transparent">
+            <div class="panel-heading">
+                <h4 class="panel-title">
+                    <a data-toggle="collapse" data-parent="#accordion" href="#create_card">
+                        <div class="row">
+                            <div class="col-md-6 col-sm-6 col-xs-6">Данные пациента</div>
+                            <div class="col-md-6 col-sm-6 col-xs-6">
+                                <div class="pull-right">+</div>
+                            </div>
+                        </div>
+                    </a>
+                </h4>
+            </div>
+            <div id="create_card" class="panel-collapse collapse">
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-4 col-sm-6">
+                            <div class="box">
+                                <?= $form->field($card, 'profession')->textInput()->label('Профессия (Кем работает)') ?>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr>
         <div class="row">
             <div class="col-md-4 col-sm-6">
                 <div class="box">
                     <?= $form->field($model, 'problem_id')
-                        ->dropDownList($problemName)
+                        ->dropDownList($problemName, [
+                            'prompt' => [
+                                'text' => '-',
+                                'options' => [
+                                    'value' => '0'
+                                ]
+                            ]
+                        ])
                         ->label('Проблема') ?>
                     <div id="errorData" style="color:red"></div>
                 </div>

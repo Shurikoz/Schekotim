@@ -2,7 +2,6 @@
 
 use kartik\date\DatePicker;
 use rmrevin\yii\fontawesome\FAS;
-use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use yii\widgets\MaskedInput;
@@ -77,16 +76,19 @@ $admin = Yii::$app->user->can('admin');
             <div class="col-md-4 col-sm-6">
                 <div class="box">
                     <?php echo $form->field($cardModel, 'birthday')->widget(DatePicker::classname(), [
-                        'options' => ['placeholder' => 'Дата рождения'],
                         'removeButton' => false,
                         'pluginOptions' => [
                             'autoclose' => true,
                             'todayHighlight' => true,
                             'endDate' => date('Ymd'),
+                            'startDate' => '01.01.1930'
                         ],
-                        'options' => ['placeholder' => 'дд.мм.гггг', 'onchange' => 'checkCard()', 'id' => 'birthday']
-                    ]);
-                    ?>
+                        'options' => [
+                            'placeholder' => 'дд.мм.гггг',
+                            'onchange' => 'checkCard()',
+                            'id' => 'birthday'
+                        ]
+                    ]);?>
                 </div>
             </div>
             <div class="col-md-4 col-sm-6">
@@ -119,7 +121,6 @@ $admin = Yii::$app->user->can('admin');
         </div>
         <hr>
         <div class="row">
-
             <?php if ($admin) { ?>
                 <!--для администратора сделаем доступным отдельный ввод города, точки и специалиста
                     сначала выбираем город, затем адрес точки -->
@@ -149,13 +150,12 @@ $admin = Yii::$app->user->can('admin');
                         <div class="col-md-12">
                             <div class="box">
                                 <!-- Получим список точек из AJAX запрса по выбранному городу -->
-                                <?= $form->field($cardModel, 'address_point')->dropDownList([])->label('Адрес точки <div id="errorData" class="" style="float: right"></div>') ?>
+                                <?= $form->field($cardModel, 'address_point')->dropDownList([])->label('Адрес <div id="errorData" class="" style="float: right"></div>') ?>
                             </div>
                         </div>
                     </div>
                 </div>
             <?php } ?>
-            <?php if (!$admin) { ?>
                 <div class="col-md-4 col-sm-6">
                     <div class="row">
                         <div class="col-md-12">
@@ -166,13 +166,18 @@ $admin = Yii::$app->user->can('admin');
                     <div class="row">
                         <div class="col-md-12">
                             <div class="box">
-                                <?= $form->field($visitModel, 'specialist_id')->dropDownList($specialistList, ['prompt' => '-'])->label('Специалист') ?>
-
+                                <?= $form->field($visitModel, 'specialist_id')->dropDownList($specialistList, [
+                                    'prompt' => [
+                                        'text' => '-',
+                                        'options' => [
+                                            'value' => '0'
+                                        ]
+                                    ]
+                                ])->label('') ?>
                             </div>
                         </div>
                     </div>
                 </div>
-            <?php } ?>
         </div>
         <hr>
         <div class="row">

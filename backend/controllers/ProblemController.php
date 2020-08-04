@@ -70,16 +70,9 @@ class ProblemController extends Controller
         $problem = Problem::find()->orderBy(['number' => SORT_DESC])->one();
         $model->number = (int)$problem->number + 1;
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            Yii::$app->session->setFlash('success', 'Шаблон "' . $model->name . '" создан!');
+            return $this->actionIndex();
 
-            Yii::$app->session->setFlash('success', 'Шаблон' . $model->name . ' создан!');
-
-            $searchModel = new ProblemSearch();
-            $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-
-            return $this->render('index', [
-                'searchModel' => $searchModel,
-                'dataProvider' => $dataProvider,
-            ]);
         }
 
         return $this->render('create', [
@@ -99,14 +92,8 @@ class ProblemController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            Yii::$app->session->setFlash('success', 'Шаблон' . $model->name . ' изменен!');
-            $searchModel = new ProblemSearch();
-            $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-
-            return $this->render('index', [
-                'searchModel' => $searchModel,
-                'dataProvider' => $dataProvider,
-            ]);
+            Yii::$app->session->setFlash('success', 'Шаблон "' . $model->name . '" изменен!');
+            return $this->actionIndex();
         }
 
         return $this->render('update', [
@@ -124,8 +111,10 @@ class ProblemController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
-        return $this->redirect(['index']);
+        $model = $this->findModel($id);
+        $model->delete();
+        Yii::$app->session->setFlash('warning', 'Шаблон "' . $model->name . '" удален!');
+        return $this->actionIndex();
     }
 
     /**

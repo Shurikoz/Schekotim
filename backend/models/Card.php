@@ -3,6 +3,8 @@
 namespace backend\models;
 
 use Yii;
+use yii\db\ActiveRecord;
+
 /**
  * This is the model class for table "card".
  *
@@ -18,8 +20,9 @@ use Yii;
  * @property string $created_at
  * @property string $representative
  * @property string $phone
+ * @property string $profession
  */
-class Card extends \yii\db\ActiveRecord
+class Card extends ActiveRecord
 {
     /**
      * {@inheritdoc}
@@ -39,11 +42,14 @@ class Card extends \yii\db\ActiveRecord
             [['name', 'surname', 'middle_name'], 'match', 'pattern' => '/^([а-яА-ЯЁё\-\s]+)$/u', 'message' => 'Разрешено вводить только кириллические символы, пробелы и знак "-"'],
             [['user_id', 'number'], 'integer'],
             [['city_id', 'address_point_id', 'name', 'surname', 'middle_name', 'number', 'phone', 'user_id', 'birthday'], 'required'],
-            [['created_at', 'representative'], 'safe'],
+            [['created_at', 'representative', 'profession'], 'safe'],
             [['name', 'surname', 'middle_name'], 'string', 'max' => 255],
             [['number'], 'unique'],
+            [['birthday'], 'match', 'pattern' => '/^\d{2}[\,\.]\d{2}[\,\.]\d{4}$/', 'message' => 'Укажите дату в формате дд.мм.гггг'],
+
         ];
     }
+
 
     /**
      * @param $insert
@@ -83,7 +89,8 @@ class Card extends \yii\db\ActiveRecord
             'birthday' => 'День рождения',
             'created_at' => 'Дата создания',
             'phone' => 'Телефон',
-            'representative' => 'Представитель клиента'
+            'representative' => 'Представитель клиента',
+            'profession' => 'Профессия'
         ];
     }
 

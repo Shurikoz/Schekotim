@@ -2,9 +2,13 @@
 
 use yii\helpers\Html;
 use rmrevin\yii\fontawesome\FAS;
+use common\widgets\Alert;
+use yii\helpers\Url;
+use yii\widgets\LinkPager;
 
-/* @var $this yii\web\View */
-/* @var $model backend\models\Visit */
+$count_items = (isset($_GET['per-page'])) ? $_GET['per-page'] : 20;
+
+$this->title = 'Лист пропущенных посещений';
 
 \yii\web\YiiAsset::register($this);
 ?>
@@ -16,20 +20,40 @@ use rmrevin\yii\fontawesome\FAS;
     </div>
 </div>
 <hr>
-<!--<div class="row">-->
-<!--    <div class="col-md-12">-->
-<!--        --><?//= $this->render('_search', [
-//            'model' => $searchModel,
-//        ]) ?>
-<!--    </div>-->
-<!--</div>-->
+<div class="row">
+    <div class="col-md-12">
+        <?= $this->render('_search', [
+            'model' => $searchModel,
+        ]) ?>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <?= Alert::widget() ?>
+        <div class="pull-left cardsOnPage">
+            <span>Карт на странице:</span>
+            <?= Html::a(20, Url::current(['per-page' => 20]), ['class' => ($count_items == 20) ? 'active' : '']) ?>
+            <?= Html::a(40, Url::current(['per-page' => 40]), ['class' => ($count_items == 40) ? 'active' : '']) ?>
+            <?= Html::a(60, Url::current(['per-page' => 60]), ['class' => ($count_items == 60) ? 'active' : '']) ?>
+        </div>
+        <div class="pull-right perPage">
+            <?= LinkPager::widget([
+                'pagination' => $pages,
+                'maxButtonCount' => 5,
+                'firstPageLabel' => true,
+                'lastPageLabel' => true,
+            ]); ?>
+        </div>
+    </div>
+</div>
 <table class="c-table">
     <caption class="c-table__title">
         Лист пропущенных посещений
-        <small>Всего пропущенных посещений: <?= count($model) ?></small>
+        <small>Всего пропущенных посещений: <?= $dataProvider->getTotalCount() ?></small>
     </caption>
     <thead class="c-table__head c-table__head--slim">
     <tr class="c-table__row">
+        <th class="c-table__cell c-table__cell--head">Id</th>
         <th class="c-table__cell c-table__cell--head">Карта</th>
         <th class="c-table__cell c-table__cell--head">ФИО</th>
         <th class="c-table__cell c-table__cell--head">Город / Точка</th>
@@ -42,8 +66,8 @@ use rmrevin\yii\fontawesome\FAS;
     </thead>
     <tbody>
     <?php // TODO Исправить timeout?>
-    <?php if (count($model) != 0) { ?>
-        <?php foreach (array_reverse($model) as $item) { ?>
+    <?php if ($dataProvider->getTotalCount() != 0) { ?>
+        <?php foreach ($dataProvider->getModels() as $item) { ?>
             <?php
             // проверим указатель пришел ли пациент
             if ($item->has_come == 0) {
@@ -55,6 +79,9 @@ use rmrevin\yii\fontawesome\FAS;
             }
             ?>
             <tr class="c-table__row">
+                <td class="c-table__cell">
+                    <p><?= $item->id ?></p>
+                </td>
                 <td class="c-table__cell">
                     <p><?= $item->card_number ?></p>
                 </td>

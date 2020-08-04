@@ -36,12 +36,7 @@ $count_visits = (isset($_GET['per-page'])) ? $_GET['per-page'] : 10;
                 <div class="row">
                     <div class="col-md-2">
                         <div class="c-field">
-                            <?= $form->field($searchModel, 'card_number')->textInput(['class' => 'autoSearchSubmit c-input'])->label('Номер карты', ['class' => 'c-field__label']) ?>
-                        </div>
-                    </div>
-                    <div class="col-md-2">
-                        <div class="c-field">
-                            <?= $form->field($searchModel, 'number')->textInput(['class' => 'autoSearchSubmit c-input'])->label('Номер посещения', ['class' => 'c-field__label']) ?>
+                            <?= $form->field($searchModel, 'card_number')->textInput(['class' => 'autoSearchSubmit c-input'])->label('№ карты', ['class' => 'c-field__label']) ?>
                         </div>
                     </div>
                     <div class="col-md-3">
@@ -83,39 +78,29 @@ $count_visits = (isset($_GET['per-page'])) ? $_GET['per-page'] : 10;
                         <?php if ($item->used_photo != 1) { ?>
                             <div class="pull-right">
                                 <?= Html::a('<span class="glyphicon glyphicon-check"></span> Использовано', ['photo/used', 'id' => $item->id], [
-                                    'class' => 'btn btn-info',
+                                    'class' => 'btn btn-green',
                                     'data' => [
                                         'confirm' => 'Отметить посещение использованными?',
                                     ],
                                 ]) ?>
                             </div>
                         <?php } else { ?>
-                            <p class="pull-right" style="color: #000; font-weight: 700">Карточка помечена
-                                использованной</p>
+                            <p class="pull-right" style="color: #000; font-weight: 700">Карточка помечена использованной</p>
                         <?php } ?>
-                        <br>
-                        <br>
                         <div class="row">
                             <div class="col-md-2">
                                 <div class="box">
-                                    <p><b>Номер карты:</b></p>
-                                    <p><?= $item->card_number ?></p>
+                                    <p><b>№ карты: </b><?= $item->card_number ?></p>
                                 </div>
                             </div>
                             <div class="col-md-3">
                                 <div class="box">
-                                    <p><b>Номер посещения:</b></p>
-                                    <p><?= $item->number ?></p>
+                                    <p><b>№ посещения: </b><?= $item->number ?></p>
                                 </div>
                             </div>
                             <div class="col-md-3">
                                 <div class="box">
-                                    <p><b>Проблема:</b></p>
-                                    <?php if ($item->problem_id == '0') { ?>
-                                        <span class="text-red">Не указана</span>
-                                    <?php } else { ?>
-                                        <p><?= $item->problem->name ?></p>
-                                    <?php } ?>
+                                    <p><b>Проблема: </b><?= $item->problem_id == '0' ? '<span class="text-red">Не указана</span>' : $item->problem->name ?></p>
                                 </div>
                             </div>
                         </div>
@@ -207,24 +192,17 @@ $count_visits = (isset($_GET['per-page'])) ? $_GET['per-page'] : 10;
                         <div class="row">
                             <div class="col-md-2">
                                 <div class="box">
-                                    <p><b>Номер карты:</b></p>
-                                    <p><?= $item->card_number ?></p>
+                                    <p><b>№ карты: </b><?= $item->card_number ?></p>
                                 </div>
                             </div>
                             <div class="col-md-3">
                                 <div class="box">
-                                    <p><b>Номер посещения:</b></p>
-                                    <p><?= $item->number ?></p>
+                                    <p><b>№ посещения: </b><?= $item->number ?></p>
                                 </div>
                             </div>
                             <div class="col-md-3">
                                 <div class="box">
-                                    <p><b>Проблема:</b></p>
-                                    <?php if ($item->problem_id == '0') { ?>
-                                        <span class="text-red">Не указана</span>
-                                    <?php } else { ?>
-                                        <p><?= $item->problem->name ?></p>
-                                    <?php } ?>
+                                    <p><b>Проблема: </b><?= $item->problem_id == '0' ? '<span class="text-red">Не указана</span>' : $item->problem->name ?></p>
                                 </div>
                             </div>
                         </div>

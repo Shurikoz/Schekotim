@@ -1,10 +1,10 @@
 <?php
 
-use yii\helpers\Html;
 use kartik\date\DatePicker;
+use rmrevin\yii\fontawesome\FAS;
+use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use yii\widgets\MaskedInput;
-use rmrevin\yii\fontawesome\FAS;
 
 $this->title = 'Редактирование карты №: ' . $cardModel->number;
 
@@ -70,17 +70,19 @@ $this->title = 'Редактирование карты №: ' . $cardModel->num
             <div class="col-md-4 col-sm-6">
                 <div class="box">
                     <?php echo $form->field($cardModel, 'birthday')->widget(DatePicker::classname(), [
-                        'options' => ['placeholder' => 'Дата рождения'],
                         'removeButton' => false,
                         'pluginOptions' => [
                             'autoclose' => true,
                             'todayHighlight' => true,
                             'endDate' => date('Ymd'),
+                            'startDate' => '01.01.1930'
                         ],
-                        'options' => ['placeholder' => 'дд.мм.гггг', 'onchange' => 'checkCard()', 'id' => 'birthday']
-                    ]);
-
-                    ?>
+                        'options' => [
+                            'placeholder' => 'дд.мм.гггг',
+                            'onchange' => 'checkCard()',
+                            'id' => 'birthday'
+                        ]
+                    ]);?>
                 </div>
             </div>
             <div class="col-md-4 col-sm-6">

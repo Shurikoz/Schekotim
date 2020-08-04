@@ -42,7 +42,6 @@ use yii\db\ActiveRecord;
 
 class Visit extends ActiveRecord
 {
-
     /**
      * {@inheritdoc}
      */
@@ -123,24 +122,35 @@ class Visit extends ActiveRecord
         parent::afterSave($insert, $changedAttributes);
     }
 
+    /**
+     * @param $visits
+     */
     public function checkVisit($visits)
     {
         foreach ($visits as $visit) {
-            //клиент пришел не вовремя
-            if ($visit->next_visit_from != null && $visit->next_visit_by != null && $visit->not_in_time != 1 && $visit->has_come == 0) {
-                if (($visit->visit_date > $visit->next_visit_by + 60 * 60 * 12) || ($visit->visit_date == null && $visit->next_visit_by + 60 * 60 * 12 < time())) {
-                    $visit->not_in_time = 1;
+            if ($visit->next_visit_from != null && $visit->next_visit_by != null) {
+                //клиент пришел не вовремя
+                if ($visit->not_in_time == 0 && $visit->has_come == 0 && $visit->cancel == 0) {
+                    if ($visit->visit_date == null && $visit->next_visit_by + 60 * 60 * 24 < time()) {
+                        $visit->not_in_time = 1;
+                        $visit->save();
+                    } elseif ($visit->visit_date > $visit->next_visit_by + 60 * 60 * 24) {
+                        $visit->not_in_time = 1;
+                        $visit->save();
+                    }
+                }
+
+                //клиент не пришел
+                if ($visit->recorded == 0 && $visit->has_come == 0 && $visit->has_come != 2 && $visit->next_visit_by + 60 * 60 * 24 < time()) {
+                    $visit->has_come = 2; //клиент не пришел
+                    $visit->planned = 0;
+                    $visit->save();
+                } elseif ($visit->recorded == 1 && $visit->visit_date != null && $visit->visit_date + 60 * 60 * 12 < time() && $visit->has_come == 0 && $visit->has_come != 2) {
+                    $visit->has_come = 2; //клиент не пришел
+                    $visit->planned = 0;
                     $visit->save();
                 }
-            }
-            if ($visit->next_visit_from != null && $visit->next_visit_by != null && $visit->next_visit_by + 60 * 60 * 11 < time() && $visit->has_come == 0 && $visit->recorded == 0 && $visit->has_come != 2) {
-                $visit->has_come = 2; //клиент не пришел
-                $visit->planned = 0;
-                $visit->save();
-            } elseif ($visit->recorded == 1 && $visit->visit_date != 0 && $visit->visit_date + 60 * 60 * 11 < time() && $visit->has_come == 0 && $visit->has_come != 2) {
-                $visit->has_come = 2; //клиент не пришел
-                $visit->planned = 0;
-                $visit->save();
+
             }
         }
     }
@@ -178,6 +188,132 @@ class Visit extends ActiveRecord
         }
     }
 
+    /**
+     * запись клиента на посещение
+     * @param $id
+     */
+    public static function record($id)
+    {
+        $post = Yii::$app->request->post();
+        $visit = Visit::findOne($id);
+        if ($visit->load($post)) {
+            $visit->visit_date = strtotime($post["Visit"]["visit_date"]);
+            $visit->timestamp = strtotime($post["Visit"]["visit_date"]) + 60 * 60 * 24 * 2;
+            $visit->recorded = 1;
+        }
+        if ($visit->save()) {
+            Yii::$app->session->setFlash('success', 'Клинент записан!');
+        } else {
+            Yii::$app->session->setFlash('danger', 'Не выбрано время записи!');
+        }
+    }
+
+    /**
+     * снять отметку "клиент записан на посещение"
+     * @param $id
+     */
+    public static function recordUnmark($id)
+    {
+        $visit = Visit::findOne($id);
+        $visit->visit_date = null;
+        if ($visit->next_visit_from != null && $visit->next_visit_by != null && $visit->not_in_time == 1) {
+            if (($visit->visit_date < $visit->next_visit_by) || ($visit->visit_date == null && (int)$visit->next_visit_by + 60 * 60 * 11 > time())) {
+                $visit->timestamp = strtotime($visit->next_visit_by) + 60 * 60 * 24 * 2;
+                $visit->not_in_time = 0;
+            }
+        }
+        $visit->recorded = 0;
+        if ($visit->save()) {
+            Yii::$app->session->setFlash('warning', 'Запись клиента снята!');
+        }
+    }
+
+    /**
+     * @param $id
+     * @param $resolve
+     * @return bool
+     */
+    public static function completed($id, $resolve)
+    {
+        $model = Visit::findOne($id);
+        //достанем то что записано в дате будущего визита и перезапишем
+        $next_visit_from = $model->next_visit_from;
+        $next_visit_by = $model->next_visit_by;
+
+        if ($resolve == true) {
+            $model->resolve = 1;
+            $model->next_visit_from = $next_visit_from;
+            $model->next_visit_by = $next_visit_by;
+            if ($model->save()) {
+                Yii::$app->session->setFlash('success', 'Проблема #' . $model->id . ' помечена решенной!');
+            }
+        } else if ($resolve == false) {
+            $model->resolve = 0;
+            if ($model->save()) {
+                Yii::$app->session->setFlash('warning', 'Проблема #' . $model->id . ' помечена как нерешенная.');
+            }
+        } else {
+            Yii::$app->session->setFlash('danger', 'Ошибка отметки проблемы!');
+        }
+        return true;
+    }
+
+    /**
+     * @param $id
+     * @throws \Throwable
+     * @throws \yii\db\StaleObjectException
+     */
+    public static function deleteVisit($id)
+    {
+        $model = Visit::findOne($id);
+        $modelPhoto = Photo::find()->where(['visit_id' => $model->id])->all();
+        $model->delete();
+        foreach ($modelPhoto as $item) {
+            $item->delete();
+        }
+
+        //удалим все фотографии посещения
+        $dir = Yii::getAlias('@webroot/upload/photo/') . $id;
+        if (is_dir($dir)) {
+            chmod($dir, 0777);
+            Photo::DelPhoto($dir);
+        }
+        Yii::$app->session->setFlash('success', 'Посещение удалено!');
+    }
+
+    /**
+     * @param $id
+     * @return array
+     * @throws \Throwable
+     * @throws \yii\db\StaleObjectException
+     */
+    public static function deletePhoto($id)
+    {
+        $photoBefore = Photo::find()->where(['visit_id' => $id, 'made' => 'before'])->all();
+        $photoAfter = Photo::find()->where(['visit_id' => $id, 'made' => 'after'])->all();
+        $photoDermatolog = Photo::find()->where(['visit_id' => $id, 'made' => 'dermatolog'])->all();
+
+        $addPhotoBefore = new Photo();
+        $addPhotoAfter = new Photo();
+        $addPhotoDermatolog = new Photo();
+        $photo = Photo::findOne($id);
+        $dirUrl = Yii::getAlias('@webroot' . $photo->url);
+        $dirThumb = Yii::getAlias('@webroot' . $photo->thumbnail);
+        if ($photo->delete()) {
+            chmod($dirUrl, 0777);
+            chmod($dirThumb, 0777);
+            unlink($dirUrl);
+            unlink($dirThumb);
+        }
+        return [
+            'photoBefore' => $photoBefore,
+            'photoAfter' => $photoAfter,
+            'photoDermatolog' => $photoDermatolog,
+            'addPhotoBefore' => $addPhotoBefore,
+            'addPhotoAfter' => $addPhotoAfter,
+            'addPhotoDermatolog' => $addPhotoDermatolog,
+        ];
+    }
 
     public function getCard()
     {

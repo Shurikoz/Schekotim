@@ -97,15 +97,20 @@ $leader = Yii::$app->user->can('leader');
             </div>
         </div>
     </div>
-    <?php if ($model->representative) {?>
         <div class="row">
-            <div class="col-md-6 col-sm-6">
+            <?php if ($model->representative) {?>
+                <div class="col-md-6 col-sm-6">
                 <div class="box">
                     <p><b>Представитель клиента:</b> <br> <?= $model->representative ?> </p>
                 </div>
             </div>
+            <?php } ?>
+            <div class="col-md-6 col-sm-6">
+                <div class="box">
+                    <p><b>Ортопедические особенности:</b> <br> <?= $model->orthopedic_features == null ? 'Отсутствуют' : $model->orthopedic_features ?> </p>
+                </div>
+            </div>
         </div>
-    <?php } ?>
     <div class="row">
         <div class="col-md-12">
             <div class="pull-left cardsOnPage">

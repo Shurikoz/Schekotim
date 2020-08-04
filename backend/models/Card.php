@@ -21,6 +21,7 @@ use yii\db\ActiveRecord;
  * @property string $representative
  * @property string $phone
  * @property string $profession
+ * @property string $orthopedic_features
  */
 class Card extends ActiveRecord
 {
@@ -42,7 +43,7 @@ class Card extends ActiveRecord
             [['name', 'surname', 'middle_name'], 'match', 'pattern' => '/^([а-яА-ЯЁё\-\s]+)$/u', 'message' => 'Разрешено вводить только кириллические символы, пробелы и знак "-"'],
             [['user_id', 'number'], 'integer'],
             [['city_id', 'address_point_id', 'name', 'surname', 'middle_name', 'number', 'phone', 'user_id', 'birthday'], 'required'],
-            [['created_at', 'representative', 'profession'], 'safe'],
+            [['created_at', 'representative', 'profession', 'orthopedic_features'], 'safe'],
             [['name', 'surname', 'middle_name'], 'string', 'max' => 255],
             [['number'], 'unique'],
             [['birthday'], 'match', 'pattern' => '/^\d{2}[\,\.]\d{2}[\,\.]\d{4}$/', 'message' => 'Укажите дату в формате дд.мм.гггг'],
@@ -90,7 +91,8 @@ class Card extends ActiveRecord
             'created_at' => 'Дата создания',
             'phone' => 'Телефон',
             'representative' => 'Представитель клиента',
-            'profession' => 'Профессия'
+            'profession' => 'Профессия',
+            'orthopedic_features' => 'Ортопедические особенности'
         ];
     }
 

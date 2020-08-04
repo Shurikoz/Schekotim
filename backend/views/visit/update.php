@@ -88,6 +88,11 @@ $dermatolog = Yii::$app->user->can('dermatolog');
                                 <?= $form->field($card, 'profession')->textInput()->label('Профессия (Кем работает)') ?>
                             </div>
                         </div>
+                        <div class="col-md-4 col-sm-6">
+                            <div class="box">
+                                <?= $form->field($card, 'orthopedic_features')->textarea(['rows' => 4]); ?>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

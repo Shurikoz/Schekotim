@@ -243,10 +243,12 @@ function visitResolve() {
 function clientComeTrue() {
     $('#visit-has_come').prop('checked', true);
     $('#modalCome').modal('hide');
+    $('.boxHasCome').addClass('animateBoxHasCome');
 }
 function clientComeFalse() {
     $('#visit-has_come').prop('checked', false);
     $('#modalCome').modal('hide');
+    $('.boxHasCome').addClass('animateBoxHasCome');
 }
 
 $("form").on("beforeSubmit", function(){

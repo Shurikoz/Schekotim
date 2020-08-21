@@ -180,7 +180,7 @@ JS;
         </div>
         <div class="row">
             <div class="col-md-3 col-sm-6">
-                <div id="" class="box">
+                <div id="" class="box boxHasCome">
                     <?= $form->field($model, 'has_come', ['options' => ['class' => 'form-checkbox']])->checkbox(['value' => '1', 'checked ' => false])->label(false); ?>
                 </div>
             </div>

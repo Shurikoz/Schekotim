@@ -843,6 +843,7 @@ div.datetimepicker-minutes table{
     margin-top: 5px;
 }
 
+/*--------------------------*/
 /* кнопки в модальном окне при изменении посещения */
 .modalVisitBtn{
     display: inline-block;
@@ -853,3 +854,25 @@ div.datetimepicker-minutes table{
     padding-left: 40px;
     padding-right: 40px;
 }
+
+.boxColor {
+    background: green;
+    transition: background 0.5s ease-in-out;
+}
+
+.animateBoxHasCome {
+    transform: scale(1);
+    animation: pulse 1s ease-in-out;
+}
+@keyframes pulse {
+    from {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.15);
+    }
+    to {
+        transform: scale(1);
+    }
+}
+/*--------------------------*/

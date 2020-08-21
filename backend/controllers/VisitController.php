@@ -440,7 +440,7 @@ class VisitController extends Controller
     {
         $post = Yii::$app->request->post();
         $visit = $this->findModel($id);
-        $visit->contacted = strtotime($post["Visit"]["contacted"]);
+        $visit->contacted = 1;
         $visit->comment = $post["Visit"]["comment"];
         if ($visit->save()) {
             Yii::$app->session->setFlash('success', 'Клинент уведомлен о посещении!');

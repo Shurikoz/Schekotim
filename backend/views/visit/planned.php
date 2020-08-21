@@ -119,7 +119,7 @@ $this->title = 'Лист запланированных посещений';
                     <?php $titleAlert = $item->next_visit_from != null && $item->next_visit_by != null ? 'c ' . date('d.m.Y', $item->next_visit_from) . ' по ' . date('d.m.Y', $item->next_visit_by) : '' ; ?>
                     <?= $item->not_in_time == 1 ? '<span class="glyphicon glyphicon-alert" title="' . $titleAlert . '"></span>' : '' ?>
                     <br>
-                    <?= $item->contacted != 0 && $item->recorded == 0 ? '<span class="glyphicon glyphicon-earphone"></span><span class="planned-call-time">' . date('d.m.Y H:i', $item->contacted) . '</span>' : '' ?>
+                    <?= $item->contacted != 0 && $item->recorded == 0 ? '<span class="glyphicon glyphicon-earphone"></span>' : '' ?>
                 </td>
             </tr>
             <tr class="c-table__row infoBlock hide hideBox">
@@ -176,10 +176,10 @@ $this->title = 'Лист запланированных посещений';
                                             'method' => 'post',
                                         ]);
                                         Modal::begin([
-                                            'header' => 'Указать время повторного звонка',
+                                            'header' => 'С клиентом связались',
                                             'size' => 'modal-custom',
                                             'toggleButton' => [
-                                                'label' => 'Связались, перезвонить',
+                                                'label' => 'Связались',
                                                 'class' => 'btn btn-info',
                                             ],
                                             'footer' => Html::a('Сохранить', ['visit/contacted', 'id' => $item->id], [
@@ -189,29 +189,7 @@ $this->title = 'Лист запланированных посещений';
                                                 ],
                                             ]),
                                         ]);
-
-                                        echo DateTimePicker::widget([
-                                            'model' => $item,
-                                            'attribute' => 'contacted',
-                                            'type' => DateTimePicker::TYPE_INLINE,
-                                            'options' => [
-                                                'id' => 'contacted_' . $item->id,
-                                                'value' => $item->contacted == 0 ? 'ДАТА И ВРЕМЯ ЗВОНКА' : date('d.m.Y H:i', $item->visit_date)
-                                            ],
-                                            'pluginOptions' => [
-                                                'startDate' => date('d.m.Y H:i'),
-                                                'autoclose' => true,
-                                                'todayHighlight' => true,
-                                                'format' => 'dd.mm.yyyy H:i',
-                                                'minuteStep' => 10,
-                                                'hoursDisabled' => '0,1,2,3,4,5,6,7,8,9,21,22,23',
-                                                'minTime' => 0
-                                            ],
-                                        ]);
-                                        echo '<br>';
-
                                         echo $form->field($item, 'comment')->textarea();
-
                                         Modal::end();
                                         ActiveForm::end();
                                         ?>

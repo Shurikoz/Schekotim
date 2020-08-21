@@ -166,7 +166,7 @@ class Visit extends ActiveRecord
         $leader = Yii::$app->user->can('leader');
         $administrator = Yii::$app->user->can('administrator');
         if ($visit->has_come != 2
-            && ($visit->specialist->user_id == Yii::$app->user->id || $admin || $leader || $administrator) && ($visit->timestamp >= time() && $visit->resolve != 1 || $visit->next_visit_by != null && $visit->next_visit_by >= time())) {
+            && ($visit->specialist->user_id == Yii::$app->user->id || $admin || $leader || $administrator || $visit->specialist_id == 0) && ($visit->timestamp >= time() && $visit->resolve != 1 || $visit->next_visit_by != null && $visit->next_visit_by >= time())) {
             return true;
         } else {
             return false;

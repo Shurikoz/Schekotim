@@ -133,42 +133,13 @@ class CardController extends Controller
         $card = Card::find()->orderBy(['number' => SORT_DESC])->one();
 //        //TODO удалить >>
 
-
-
         $cardModel->created_at = date('Y-m-d');
 
-        $visitModel = new Visit();
-
-        if (!Yii::$app->user->can('admin')) {
-            // 0 - ожидает посещения, 1 - пришел, 2 - не пришел
-            $visitModel->number = 1;
-            $visitModel->has_come = 0;
-            $visitModel->timestamp = time() + 60 * 60 * 24 * 2; // 2 суток на редактирование
-            $visitModel->city_id = $user->city_id;
-            $visitModel->address_point_id = $user->address_point_id;
-//            $visitModel->visit_date = time();
-            $visitModel->visit_date = null;
-
-            if ($cardModel->load($post) && $visitModel->load($post)) {
-                $visitModel->card_number = $cardModel->number;
-                if ($cardModel->save() && $visitModel->save()){
-                    Yii::$app->session->setFlash('success', 'Карта создана!');
-                    return $this->redirect(['view', 'number' => $cardModel->number]);
-                }
+        if ($cardModel->load($post)) {
+            if ($cardModel->save()) {
+                Yii::$app->session->setFlash('success', 'Карта создана!');
+                return $this->redirect(['view', 'number' => $cardModel->number]);
             }
-        } else {
-            if ($cardModel->load($post)) {
-                $c = City::find()->where(['id' => $post["Card"]["city"]])->one();
-                $ap = AddressPoint::find()->where(['id' => $post["Card"]["address_point"]])->one();
-                $cardModel->city = $c->name;
-                $cardModel->address_point = $ap->address_point;
-
-                if ($cardModel->save()) {
-                    Yii::$app->session->setFlash('success', 'Карта создана!');
-                    return $this->redirect(['view', 'number' => $cardModel->number]);
-                }
-            }
-
         }
         return $this->render('create', [
             //TODO удалить <<
@@ -176,7 +147,6 @@ class CardController extends Controller
             //TODO удалить >>
             'user' => $user,
             'cardModel' => $cardModel,
-            'visitModel' => $visitModel,
             'specialistList' => $specialistList,
             'cityList' => $cityList
         ]);

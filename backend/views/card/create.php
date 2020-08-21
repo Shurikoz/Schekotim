@@ -121,66 +121,6 @@ $admin = Yii::$app->user->can('admin');
         </div>
         <hr>
         <div class="row">
-            <?php if ($admin) { ?>
-                <!--для администратора сделаем доступным отдельный ввод города, точки и специалиста
-                    сначала выбираем город, затем адрес точки -->
-                <div class="col-md-4 col-sm-6">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <p class="titleMin">Выбор города</p>
-                        </div>
-                    </div>
-                    <br>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="box">
-                                <?= $form->field($cardModel, 'city')->dropDownList($cityList, ['prompt' => 'Выберите город',])->label('Город') ?>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4 col-sm-6">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <p class="titleMin">Адрес точки</p>
-                        </div>
-                    </div>
-                    <br>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="box">
-                                <!-- Получим список точек из AJAX запрса по выбранному городу -->
-                                <?= $form->field($cardModel, 'address_point')->dropDownList([])->label('Адрес <div id="errorData" class="" style="float: right"></div>') ?>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            <?php } ?>
-                <div class="col-md-4 col-sm-6">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <p class="titleMin">Выбор специалиста</p>
-                        </div>
-                    </div>
-                    <br>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="box">
-                                <?= $form->field($visitModel, 'specialist_id')->dropDownList($specialistList, [
-                                    'prompt' => [
-                                        'text' => '-',
-                                        'options' => [
-                                            'value' => '0'
-                                        ]
-                                    ]
-                                ])->label('') ?>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-        </div>
-        <hr>
-        <div class="row">
             <div class="col-md-12">
                 <div class="form-group">
                     <?= Html::submitButton('Сохранить', [

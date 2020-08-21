@@ -74,11 +74,13 @@ $leader = Yii::$app->user->can('leader');
                 <b>Возраст: </b><?= $age ?>
             </div>
         </div>
+        <?php if ($admin || $leader || $administrator) { ?>
         <div class="col-md-3 col-sm-6">
             <div class="box">
                 <b>Телефон: </b><?= $model->phone ?>
             </div>
         </div>
+        <?php } ?>
         <div class="col-md-4 col-sm-6">
             <div class="box">
                 <b>Профессия: </b><?= $model->profession == null ? 'Не указана' : $model->profession ?>
@@ -327,7 +329,7 @@ $leader = Yii::$app->user->can('leader');
                                                                 'class' => 'btn btn-primary userStatus pull-right',
                                                             ],
                                                             'footer' => Html::a('Сохранить', ['visit/setspecialist', 'id' => $item->id, 'number' => $model->number], [
-                                                                'class' => 'btn btn-primary',
+                                                                'class' => 'btn btn-green',
                                                                 'data' => [
                                                                     'method' => 'post',
                                                                 ],
@@ -336,7 +338,7 @@ $leader = Yii::$app->user->can('leader');
                                                         $specialistList = ArrayHelper::map($specialistModel, 'id', 'name');
                                                         echo $form->field($item, 'specialist_id')
                                                             ->dropDownList($specialistList)
-                                                            ->label('Подолог');
+                                                            ->label('Специалист');
                                                         Modal::end();
                                                         ActiveForm::end();
                                                         ?>

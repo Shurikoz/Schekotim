@@ -4,6 +4,7 @@ use common\widgets\Alert;
 use kartik\datetime\DateTimePicker;
 use rmrevin\yii\fontawesome\FAS;
 use yii\bootstrap\Modal;
+use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\ActiveForm;
@@ -99,7 +100,7 @@ $this->title = 'Лист запланированных посещений';
                     <?php } ?>
                 </td>
                 <td class="c-table__cell">
-                    <?= $item->specialist->name ?>
+                    <?= $item->specialist->name == null ? '-' : $item->specialist->name ?>
                 </td>
                 <td class="c-table__cell">
                     <?php if ($item->next_visit_from != null && $item->next_visit_by != null && $item->has_come == 0 && $item->recorded == 0) { ?>
@@ -136,7 +137,7 @@ $this->title = 'Лист запланированных посещений';
                                             'header' => 'Указать время записи',
                                             'size' => 'modal-custom',
                                             'toggleButton' => [
-                                                'label' => 'Связались, назначить время',
+                                                'label' => 'Записать клиента',
                                                 'class' => 'btn btn-green',
                                             ],
                                             'footer' => Html::a('Сохранить', ['visit/record', 'id' => $item->id, 'page' => 'planned', 'number' => $item->card_number], [
@@ -164,6 +165,10 @@ $this->title = 'Лист запланированных посещений';
                                                 'minTime' => 0
                                             ],
                                         ]);
+                                        $specialistList = ArrayHelper::map($specialistModel, 'id', 'name');
+                                        echo $form->field($item, 'specialist_id')
+                                            ->dropDownList($specialistList)
+                                            ->label('Специалист');
                                         Modal::end();
                                         ActiveForm::end();
                                         ?>

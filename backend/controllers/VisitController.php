@@ -178,10 +178,13 @@ class VisitController extends Controller
         $check = new Visit();
         $check->checkVisit($dataProvider->getModels());
 
+        $specialistModel = Specialist::find()->where(['address_point_id' => Yii::$app->user->identity->address_point_id])->all();
+
         return $this->render('planned', [
             'pages' => $pages,
             'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider
+            'dataProvider' => $dataProvider,
+            'specialistModel' => $specialistModel
         ]);
     }
 
@@ -506,7 +509,7 @@ class VisitController extends Controller
         $visit->cancel = 1;
         $visit->contacted = 0;
 
-        if ($visit->save()) {
+        if ($visit->save(false)) {
             Yii::$app->session->setFlash('warning', 'Клинент отказался от записи!');
         }
         $this->redirect("/visit/planned");
@@ -521,7 +524,7 @@ class VisitController extends Controller
     {
         $visit = $this->findModel($id);
         $visit->cancel = 0;
-        if ($visit->save()) {
+        if ($visit->save(false)) {
             Yii::$app->session->setFlash('warning', 'Отметка "Клинент отказался от записи снята!');
         }
         $this->redirect("/visit/planned");

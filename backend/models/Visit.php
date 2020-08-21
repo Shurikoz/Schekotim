@@ -119,7 +119,7 @@ class Visit extends ActiveRecord
         $log->object = 'visit';
         $log->object_id = $this->id;
         $log->save(false);
-        parent::afterSave($insert, $changedAttributes);
+        return parent::afterSave($insert, $changedAttributes);
     }
 
     /**
@@ -166,8 +166,7 @@ class Visit extends ActiveRecord
         $leader = Yii::$app->user->can('leader');
         $administrator = Yii::$app->user->can('administrator');
         if ($visit->has_come != 2
-            && ($visit->specialist->user_id == Yii::$app->user->id || $admin || $leader || $administrator) && ($visit->timestamp >= time() && $visit->resolve != 1 || $visit->next_visit_by != null && $visit->next_visit_by >= time()))
-        {
+            && ($visit->specialist->user_id == Yii::$app->user->id || $admin || $leader || $administrator) && ($visit->timestamp >= time() && $visit->resolve != 1 || $visit->next_visit_by != null && $visit->next_visit_by >= time())) {
             return true;
         } else {
             return false;

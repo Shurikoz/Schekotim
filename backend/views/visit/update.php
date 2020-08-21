@@ -3,6 +3,7 @@
 use kartik\date\DatePicker;
 use kartik\file\FileInput;
 use nirvana\showloading\ShowLoadingAsset;
+use yii\bootstrap\Modal;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\helpers\Url;
@@ -27,6 +28,16 @@ $podolog = Yii::$app->user->can('podolog');
 $dermatolog = Yii::$app->user->can('dermatolog');
 
 ?>
+
+<?php
+if ($model->has_come == 0) {
+    $script = <<< JS
+$('#modalCome').modal('show');
+JS;
+    $this->registerJs($script, yii\web\View::POS_READY);
+}
+?>
+
 <div id="visit-update">
 <div class="row">
     <div class="col-md-12">
@@ -117,7 +128,16 @@ $dermatolog = Yii::$app->user->can('dermatolog');
             <?php if ($model->has_second_visit == 0) { ?>
                 <div class="col-md-4 col-sm-6">
                     <div class="box">
-                        <?= Html::checkbox('secondVisit', false, ['label' => 'Назначить повторное посещение', 'id' => 'secondVisit', 'onchange' => 'dateVisitUpdate()']) ?>
+                        <div class="custom-checkbox form-checkbox">
+                            <?= Html::checkbox('secondVisit', false, [
+                                'label' => 'Назначить повторное посещение',
+                                'labelOptions' => [
+                                    'class' => 'custom-checkbox'
+                                ],
+                                'id' => 'secondVisit',
+                                'onchange' => 'dateVisitUpdate()'
+                            ]) ?>
+                        </div>
                     </div>
                 </div>
                 <div class="col-md-4 col-sm-6 dateVisit hide">
@@ -160,13 +180,13 @@ $dermatolog = Yii::$app->user->can('dermatolog');
         </div>
         <div class="row">
             <div class="col-md-3 col-sm-6">
-                <div class="box">
-                    <?= $form->field($model, 'has_come')->checkbox(['value' => '1', 'checked ' => false])->label(false); ?>
+                <div id="" class="box">
+                    <?= $form->field($model, 'has_come', ['options' => ['class' => 'form-checkbox']])->checkbox(['value' => '1', 'checked ' => false])->label(false); ?>
                 </div>
             </div>
             <div class="col-md-3 col-sm-6">
                 <div class="box">
-                    <?= $form->field($model, 'resolve')->checkbox(['value' => '1', 'checked ' => false, 'onchange' => 'visitResolve()'])->label(false); ?>
+                    <?= $form->field($model, 'resolve', ['options' => ['class' => 'form-checkbox']])->checkbox(['value' => '1', 'checked ' => false, 'onchange' => 'visitResolve()'])->label(false); ?>
                 </div>
             </div>
         </div>
@@ -198,7 +218,6 @@ $dermatolog = Yii::$app->user->can('dermatolog');
                 </div>
             </div>
         </div>
-
         <hr>
         <p class="titleNormal">Рекомендовано посещение</p>
         <br>
@@ -422,3 +441,14 @@ $dermatolog = Yii::$app->user->can('dermatolog');
         <?php ActiveForm::end(); ?>
     </div>
 </div>
+
+<?php
+Modal::begin(['id' => 'modalCome']); ?>
+<h3 class="text-center">Пациент пришел?</h3>
+<div class="modalVisitBtn text-center">
+    <button class="btn btn-lg btn-green" onclick="clientComeTrue()">Да</button>
+</div>
+<div class="modalVisitBtn text-center">
+    <button class="btn btn-lg btn-green" onclick="clientComeFalse()">Нет</button>
+</div>
+<?php Modal::end(); ?>

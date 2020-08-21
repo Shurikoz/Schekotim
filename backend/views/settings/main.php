@@ -1,7 +1,4 @@
-<?php
-
-?>
-
 <?=$this->render('partials/_menu');?>
 
-<?= 'index';?>
+<?php
+echo 'main';

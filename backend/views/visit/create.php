@@ -123,7 +123,15 @@ $dermatolog = Yii::$app->user->can('dermatolog');
             </div>
             <div class="col-md-4">
                 <div class="box">
-                    <?= Html::checkbox('secondVisit', false, ['label' => 'Назначить повторное посещение', 'onchange' => 'dateVisitCreate()']) ?>
+                    <div class="custom-checkbox">
+                        <?= Html::checkbox('secondVisit', false, [
+                            'label' => 'Назначить повторное посещение',
+                            'labelOptions' => [
+                                'class' => 'custom-checkbox'
+                            ],
+                            'onchange' => 'dateVisitCreate()'
+                        ]) ?>
+                    </div>
                 </div>
             </div>
             <div class="col-md-4 dateVisit hide">

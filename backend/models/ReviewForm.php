@@ -58,7 +58,8 @@ class ReviewForm extends ActiveRecord
             'reviewMobile' => $reviewMobile,
             'reviewImage' => $reviewImage,
         ])
-            ->setFrom(['marketing@schekotim.ru' => 'Спасибо за оставленнный отзыв!'])
+//            ->setFrom(['admin@schekotim.ru' => 'Спасибо за оставленнный отзыв!'])
+            ->setFrom([Yii::$app->params['adminEmail'] => 'Спасибо за оставленнный отзыв!'])
             ->setTo($reviewEmail)
             ->setSubject('Ваш отзыв опубликован!')
             ->send();

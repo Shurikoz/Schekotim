@@ -46,7 +46,6 @@ $(document).on('click', 'tr.supportMessage', function () {
         })
     }
 });
-
 //************************************************************************
 //функция для загрузки "рыбы" при заполнении полей в создании посещения (visit/create)
 $("#visit-problem_id").on('change', function () {
@@ -155,7 +154,6 @@ $("#card-city").on('change', function () {
 //         $("#errorDataPod").removeClass('errorData').addClass('text-red').html('Ошибка загрузки данных!');
 //     });
 // });
-
 //************************************************************************
 //функция открывать в новом окне
 $(document).on('click', '.linkNewWindow', function (e) {
@@ -176,7 +174,6 @@ $('.infoHiddenBlockBtn').on('click',function(e){
     }
     $('.infoHiddenBlock' + a).slideToggle(300);
 });
-
 //************************************************************************
 //функция проверки существует ли пациент по введенным ФИО
 function checkCard() {
@@ -242,6 +239,16 @@ function visitResolve() {
     }
 }
 
+//функция для отметки пациент пришел/не пришел при ридактировании посещения
+function clientComeTrue() {
+    $('#visit-has_come').prop('checked', true);
+    $('#modalCome').modal('hide');
+}
+function clientComeFalse() {
+    $('#visit-has_come').prop('checked', false);
+    $('#modalCome').modal('hide');
+}
+
 $("form").on("beforeSubmit", function(){
     if (!$(this).find('.has-error').length) {
         $('#saveBtn').hide();
@@ -250,3 +257,4 @@ $("form").on("beforeSubmit", function(){
         $("div").is("#visit-copy") ? $('#visit-copy').showLoading() : '';
     }
 });
+

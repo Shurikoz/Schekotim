@@ -195,6 +195,11 @@ a.desc:after {
     background-color: #d4d4d4;
 }
 
+.nav-pills > li.active-green > a, .nav-pills > li.active-green > a:hover, .nav-pills > li.active-green > a:focus {
+    color: #fff;
+    background-color: #bababa;
+}
+
 .box {
     border: 1px solid #e6eaee;
     border-radius: 4px;
@@ -836,4 +841,15 @@ div.datetimepicker-minutes table{
 
 .tutorialDesc{
     margin-top: 5px;
+}
+
+/* кнопки в модальном окне при изменении посещения */
+.modalVisitBtn{
+    display: inline-block;
+    width: 49%;
+}
+.modalVisitBtn .btn{
+    margin: 25px;
+    padding-left: 40px;
+    padding-right: 40px;
 }

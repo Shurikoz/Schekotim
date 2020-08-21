@@ -86,6 +86,21 @@ $leader = Yii::$app->user->can('leader');
         </div>
     </div>
     <div class="row">
+        <?php if ($model->representative) { ?>
+            <div class="col-md-6 col-sm-6">
+                <div class="box">
+                    <p><b>Представитель клиента:</b> <br> <?= $model->representative ?> </p>
+                </div>
+            </div>
+        <?php } ?>
+        <div class="col-md-6 col-sm-6">
+            <div class="box">
+                <p><b>Ортопедические особенности:</b>
+                    <br> <?= $model->orthopedic_features == null ? 'Отсутствуют' : $model->orthopedic_features ?> </p>
+            </div>
+        </div>
+    </div>
+    <div class="row">
         <div class="col-md-3 col-sm-6">
             <div class="box">
                 <b>Дата создания: </b><?= Yii::$app->formatter->asDate($model->created_at) ?>
@@ -97,20 +112,6 @@ $leader = Yii::$app->user->can('leader');
             </div>
         </div>
     </div>
-        <div class="row">
-            <?php if ($model->representative) {?>
-                <div class="col-md-6 col-sm-6">
-                <div class="box">
-                    <p><b>Представитель клиента:</b> <br> <?= $model->representative ?> </p>
-                </div>
-            </div>
-            <?php } ?>
-            <div class="col-md-6 col-sm-6">
-                <div class="box">
-                    <p><b>Ортопедические особенности:</b> <br> <?= $model->orthopedic_features == null ? 'Отсутствуют' : $model->orthopedic_features ?> </p>
-                </div>
-            </div>
-        </div>
     <div class="row">
         <div class="col-md-12">
             <div class="pull-left cardsOnPage">
@@ -231,7 +232,7 @@ $leader = Yii::$app->user->can('leader');
                 </tr>
                 <tr class="c-table__row infoBlock hide hideBox">
                     <td colspan="10" class="c-table__infoBlock">
-                        <?php if ($podolog || $admin || $leader) { ?>
+                        <?php if ($admin || $leader || $podolog || $dermatolog) { ?>
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="userStatus pull-right">
@@ -309,7 +310,8 @@ $leader = Yii::$app->user->can('leader');
                                 </div>
                                 <br>
                             <?php } ?>
-                            <?php if ($administrator || $admin || $podolog || $dermatolog || $leader) { ?>
+<!--                        --><?php //if ($administrator || $admin || $podolog || $dermatolog || $leader) { ?>
+                            <?php if (!$smm) { ?>
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="pull-right">

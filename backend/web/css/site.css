@@ -778,7 +778,7 @@ div.datetimepicker-minutes table{
 }
 
 .krajee-default.file-preview-frame .kv-file-content {
-    width: 195px;
+    width: 126px;
 }
 
 .form-checkbox {
@@ -876,3 +876,8 @@ div.datetimepicker-minutes table{
     }
 }
 /*--------------------------*/
+
+.file-input .btn-block{
+    width: 30%;
+    float: right;
+}

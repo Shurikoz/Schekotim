@@ -244,196 +244,257 @@ JS;
             </div>
         </div>
         <hr>
-        <?php Pjax::begin(['timeout' => 120000, 'id' => 'photoEdit', 'enablePushState' => false]); ?>
         <div id="photoForm">
+
             <div class="row">
                 <?php if ($model->specialist->profession == 'podolog') { ?>
                 <div class="col-md-12">
                     <div class="titleNormal">Фотографии работ (максимум по 5 фотографий)</div>
                     <br>
                 </div>
-                <div class="col-md-6 col-sm-6">
+                    <?php Pjax::begin(['timeout' => 5000, 'id' => 'photoEditBefore', 'enablePushState' => false]); ?>
+                    <div class="col-md-6 col-sm-6">
                     <p><b>До манипуляций</b></p>
-                    <?php if (count($photoBefore) < 5) { ?>
                         <div class="col-md-12">
-                            <?= $form->field($addPhotoBefore, 'before[]')
-                                ->widget(FileInput::classname(), [
-                                    'options' => [
-                                        'multiple' => true,
-                                        'accept' => 'image/*'
-                                    ],
-                                    'pluginOptions' => [
-                                        'previewFileType' => 'image',
-                                        'allowedFileExtensions' => ['jpg', 'jpeg', 'JPG', 'JPEG', 'png', 'PNG'],
-                                        'showUpload' => false,
-                                        'maxFileCount' => 5 - count($photoBefore),
-                                        'uploadUrl' => Url::to(['']),
-                                        'fileActionSettings' => [
-                                            'showUpload' => false,
-                                            'showZoom' => false,
-
-                                        ],
-                                        'showPreview' => true,
-                                        'showRemove' => false,
-                                        'showCaption' => false,
-                                        'browseClass' => 'btn btn-primary btn-block',
-                                    ]
-                                ]) ?>
-                        </div>
-                    <?php } ?>
-                    <?php for ($i = 0; $i <= 4; $i++) { ?>
-                        <?php if (isset($photoBefore[$i])) { ?>
-                            <div class="col-md-6" style="margin-bottom: 20px ">
-                                <div id="box_<?= $i ?>" class="box">
-                                    <span><?= Html::a('<img src="' . $photoBefore[$i]->thumbnail . '">', $photoBefore[$i]->url, ['target' => '_blank', 'data-pjax' => '0']) ?></span>
-                                    <span style="margin-left: 20px">
-                                <?= Html::a('<span class="glyphicon glyphicon-trash"></span>', ['#'], [
-                                    'class' => 'btn btn-sm btn-info',
-                                    'onclick' =>
-                                        "
-                                    if (confirm('Вы уверены, что хотите удалить эту фотографию?')) {    
-                                        $.ajax({
-                                        type:'POST',
-                                        cache: false,
-                                        url: '" . Url::to(['visit/delete-photo', 'id' => $photoBefore[$i]->id]) . "',
-                                        complete: function() {
-                                            $.pjax.reload({container:'#photoEdit'});
-                                        }
-                                        });
-                                    }
-                                    return false;
-                                ",
-                                ]); ?>
-                            </span>
-                                </div>
-                            </div>
-                        <?php } ?>
-                    <?php } ?>
-                </div>
-                <div class="col-md-6 col-sm-6">
-                    <p><b>После манипуляций</b></p>
-                    <?php if (count($photoAfter) < 5) { ?>
-                        <div class="col-md-12">
-                            <?= $form->field($addPhotoAfter, 'after[]')->widget(FileInput::classname(), [
+                            <?php
+                            $photoBeforeArray = [];
+                            $initialConfigBefore = [];
+                            for ($i = 0; $i <= 4; $i++) {
+                                if (isset($photoBefore[$i])) {
+                                    array_push($photoBeforeArray, [$photoBefore[$i]->thumbnail]);
+                                    array_push($initialConfigBefore, ['url' => '/visit/delete-photo?id=' . $photoBefore[$i]->id]);
+                                }
+                            } ?>
+                            <?= FileInput::widget([
+                                'model' => $addPhotoBefore,
+                                'name' => 'before[]',
+                                'attribute' => 'before[]',
                                 'options' => [
                                     'multiple' => true,
                                     'accept' => 'image/*'
                                 ],
                                 'pluginOptions' => [
+                                    'initialPreviewAsData' => true,
+                                    'initialPreview' => $photoBeforeArray,
+                                    'initialPreviewConfig' => $initialConfigBefore,
+                                    'overwriteInitial' => false,
                                     'previewFileType' => 'image',
                                     'allowedFileExtensions' => ['jpg', 'jpeg', 'JPG', 'JPEG', 'png', 'PNG'],
-                                    'showUpload' => false,
-                                    'maxFileCount' => 5 - count($photoAfter),
-                                    'uploadUrl' => Url::to(['']),
+                                    'maxFileCount' => 5 - count($photoBefore),
+                                    'uploadUrl' => Url::to(['/visit/upload-photo', 'id' => $model->id, 'location' => 'before']),
                                     'fileActionSettings' => [
                                         'showUpload' => false,
                                         'showZoom' => false,
-
+                                        'showDrag' => false,
                                     ],
                                     'showPreview' => true,
                                     'showRemove' => false,
                                     'showCaption' => false,
-                                    'browseClass' => 'btn btn-primary btn-block',
+                                    'showUpload' => count($photoBefore) < 5 ? true : false,
+                                    'showBrowse' => count($photoBefore) < 5 ? true : false,
+                                    'browseClass' => 'btn btn-default btn-block',
+                                    'layoutTemplates' => [
+                                            'footer' => '<div class="file-thumbnail-footer" style="height: 0">{indicator}{actions}</div>'
+                                    ],
+                                ],
+                                'pluginEvents'=>[
+                                    'filepredelete' => "function(){
+                                        if (confirm('Вы уверены, что хотите удалить эту фотографию?')) {
+                                                $.ajax({
+                                                    type:'POST',
+                                                    cache: false,
+                                                    url: '" . Url::to(['visit/render-photo', 'id' => $model->id]) . "',
+                                                    complete: function() {
+                                                        $.pjax.reload({container:'#photoEditBefore'});
+                                                    }
+                                                });
+                                            }
+                                        }",
+                                    'filebatchuploadcomplete' => "function(){
+                                            function a(){
+                                                $.ajax({
+                                                    type:'POST',
+                                                    cache: false,
+                                                    url: '" . Url::to(['visit/render-photo', 'id' => $model->id]) . "',
+                                                    complete: function() {
+                                                        $.pjax.reload({container:'#photoEditBefore'});
+                                                    }
+                                                });
+                                            };
+                                            setTimeout(a, 2000);
+                                        }"
+
                                 ]
-                            ]) ?>
+                            ]);
+                            ?>
                         </div>
-                    <?php } ?>
-                    <?php for ($i = 0; $i <= 4; $i++) { ?>
-                        <?php if (isset($photoAfter[$i])) { ?>
-                            <div class="col-md-6" style="margin-bottom: 20px ">
-                                <div class="box">
-                                    <span><?= Html::a('<img src="' . $photoAfter[$i]->thumbnail . '">', $photoAfter[$i]->url, ['target' => '_blank', 'data-pjax' => '0']) ?></span>
-                                    <span style="margin-left: 20px">
-                            <?= Html::a('<span class="glyphicon glyphicon-trash"></span>', ['#'], [
-                                'class' => 'btn btn-sm btn-info',
-                                'onclick' =>
-                                    "
-                                    if (confirm('Вы уверены, что хотите удалить эту фотографию?')) {    
-                                        $.ajax({
-                                        type:'POST',
-                                        cache: false,
-                                        url: '" . Url::to(['visit/delete-photo', 'id' => $photoAfter[$i]->id]) . "',
-                                        complete: function() {
-                                            $.pjax.reload({container:'#photoEdit'});
-                                        }
-                                        });
-                                    }
-                                    return false;
-                                ",
-                            ]); ?></span>
-                                </div>
-                            </div>
-                        <?php } ?>
-                    <?php } ?>
                 </div>
+                    <?php Pjax::end(); ?>
+                    <?php Pjax::begin(['timeout' => 5000, 'id' => 'photoEditAfter', 'enablePushState' => false]); ?>
+                    <div class="col-md-6 col-sm-6">
+                    <p><b>После манипуляций</b></p>
+                        <div class="col-md-12">
+                            <?php
+                            $photoAfterArray = [];
+                            $initialConfigAfter = [];
+                            for ($i = 0; $i <= 4; $i++) {
+                                if (isset($photoAfter[$i])) {
+                                    array_push($photoAfterArray, $photoAfter[$i]->thumbnail);
+                                    array_push($initialConfigAfter, ['url' => '/visit/delete-photo?id=' . $photoAfter[$i]->id]);
+                                }
+                            } ?>
+                            <?= FileInput::widget([
+                                'model' => $addPhotoAfter,
+                                'name' => 'after[]',
+                                'attribute' => 'after[]',
+                                'options' => [
+                                    'multiple' => true,
+                                    'accept' => 'image/*'
+                                ],
+                                'pluginOptions' => [
+                                    'initialPreviewAsData' => true,
+                                    'initialPreview' => $photoAfterArray,
+                                    'initialPreviewConfig' => $initialConfigAfter,
+                                    'overwriteInitial' => false,
+                                    'previewFileType' => 'image',
+                                    'allowedFileExtensions' => ['jpg', 'jpeg', 'JPG', 'JPEG', 'png', 'PNG'],
+                                    'maxFileCount' => 5 - count($photoAfter),
+                                    'uploadUrl' => Url::to(['/visit/upload-photo', 'id' => $model->id, 'location' => 'after']),
+                                    'fileActionSettings' => [
+                                        'showUpload' => false,
+                                        'showZoom' => false,
+                                        'showDrag' => false,
+                                    ],
+                                    'showPreview' => true,
+                                    'showRemove' => false,
+                                    'showCaption' => false,
+                                    'showUpload' => count($photoAfter) < 5 ? true : false,
+                                    'showBrowse' => count($photoAfter) < 5 ? true : false,
+                                    'browseClass' => 'btn btn-default btn-block',
+                                    'layoutTemplates' => [
+                                        'footer' => '<div class="file-thumbnail-footer" style="height: 0">{indicator}{actions}</div>'
+                                    ],
+                                ],
+                                'pluginEvents'=>[
+                                    'filepredelete' => "function(){
+                                        if (confirm('Вы уверены, что хотите удалить эту фотографию?')) {
+                                            $.ajax({
+                                                type:'POST',
+                                                cache: false,
+                                                url: '" . Url::to(['visit/render-photo', 'id' => $model->id]) . "',
+                                                complete: function() {
+                                                    $.pjax.reload({container:'#photoEditAfter'});
+                                                }
+                                                });
+                                                }
+                                        }",
+                                    'filebatchuploadcomplete' => "function(){
+                                             function a(){
+                                                $.ajax({
+                                                    type:'POST',
+                                                    cache: false,
+                                                    url: '" . Url::to(['visit/render-photo', 'id' => $model->id]) . "',
+                                                    complete: function() {
+                                                        $.pjax.reload({container:'#photoEditAfter'});
+                                                    }
+                                                });
+                                            };
+                                            setTimeout(a, 2000);
+                                           }"
+
+                                ]
+                            ]);
+                            ?>
+                        </div>
+                </div>
+                    <?php Pjax::end(); ?>
                 <?php } ?>
                 <?php if ($model->specialist->profession == 'dermatolog') { ?>
                     <div class="col-md-12">
                         <p class="titleNormal text-center">Фотографии работ (максимум 5 фотографий)</p>
                         <br>
                     </div>
+                    <?php Pjax::begin(['timeout' => 5000, 'id' => 'photoEditDermatolog', 'enablePushState' => false]); ?>
                     <div class="col-md-offset-3 col-md-6 col-sm-offset-3 col-sm-6">
-                        <?php if (count($photoDermatolog) < 5) { ?>
                             <div class="col-md-12">
-                                <?= $form->field($addPhotoDermatolog, 'dermatolog[]')
-                                    ->widget(FileInput::classname(), [
-                                        'options' => [
-                                            'multiple' => true,
-                                            'accept' => 'image/*'
-                                        ],
-                                        'pluginOptions' => [
-                                            'previewFileType' => 'image',
-                                            'allowedFileExtensions' => ['jpg', 'jpeg', 'JPG', 'JPEG', 'png', 'PNG'],
-                                            'showUpload' => false,
-                                            'maxFileCount' => 5 - count($photoDermatolog),
-                                            'uploadUrl' => Url::to(['']),
-                                            'fileActionSettings' => [
-                                                'showUpload' => false,
-                                                'showZoom' => false,
-
-                                            ],
-                                            'showPreview' => true,
-                                            'showRemove' => false,
-                                            'showCaption' => false,
-                                            'browseClass' => 'btn btn-primary btn-block',
-                                        ]
-                                    ]) ?>
-                            </div>
-                        <?php } ?>
-                        <?php for ($i = 0; $i <= 4; $i++) { ?>
-                            <?php if (isset($photoDermatolog[$i])) { ?>
-                                <div class="col-md-6" style="margin-bottom: 20px ">
-                                    <div id="box_<?= $i ?>" class="box">
-                                        <span><?= Html::a('<img src="' . $photoDermatolog[$i]->thumbnail . '">', $photoDermatolog[$i]->url, ['target' => '_blank', 'data-pjax' => '0']) ?></span>
-                                        <span style="margin-left: 20px">
-                                <?= Html::a('<span class="glyphicon glyphicon-trash"></span>', ['#'], [
-                                    'class' => 'btn btn-sm btn-info',
-                                    'onclick' =>
-                                        "
-                                    if (confirm('Вы уверены, что хотите удалить эту фотографию?')) {    
-                                        $.ajax({
-                                        type:'POST',
-                                        cache: false,
-                                        url: '" . Url::to(['visit/delete-photo', 'id' => $photoDermatolog[$i]->id]) . "',
-                                        complete: function() {
-                                            $.pjax.reload({container:'#photoEdit'});
-                                        }
-                                        });
+                                <?php
+                                $photoDermatologArray = [];
+                                $initialConfigDermatolog = [];
+                                for ($i = 0; $i <= 4; $i++) {
+                                    if (isset($photoDermatolog[$i])) {
+                                        array_push($photoDermatologArray, $photoDermatolog[$i]->thumbnail);
+                                        array_push($initialConfigDermatolog, ['url' => '/visit/delete-photo?id=' . $photoDermatolog[$i]->id]);
                                     }
-                                    return false;
-                                ",
-                                ]); ?>
-                            </span>
-                                    </div>
-                                </div>
-                            <?php } ?>
-                        <?php } ?>
+                                } ?>
+                                <?= FileInput::widget([
+                                    'model' => $addPhotoDermatolog,
+                                    'name' => 'dermatolog[]',
+                                    'attribute' => 'dermatolog[]',
+                                    'options' => [
+                                        'multiple' => true,
+                                        'accept' => 'image/*'
+                                    ],
+                                    'pluginOptions' => [
+                                        'initialPreviewAsData' => true,
+                                        'initialPreview' => $photoDermatologArray,
+                                        'initialPreviewConfig' => $initialConfigDermatolog,
+                                        'overwriteInitial' => false,
+                                        'previewFileType' => 'image',
+                                        'allowedFileExtensions' => ['jpg', 'jpeg', 'JPG', 'JPEG', 'png', 'PNG'],
+                                        'maxFileCount' => 5 - count($photoDermatolog),
+                                        'uploadUrl' => Url::to(['/visit/upload-photo', 'id' => $model->id, 'location' => 'dermatolog']),
+                                        'fileActionSettings' => [
+                                            'showUpload' => false,
+                                            'showZoom' => false,
+                                            'showDrag' => false,
+                                        ],
+                                        'showPreview' => true,
+                                        'showRemove' => false,
+                                        'showCaption' => false,
+                                        'showUpload' => count($photoDermatolog) < 5 ? true : false,
+                                        'showBrowse' => count($photoDermatolog) < 5 ? true : false,
+                                        'browseClass' => 'btn btn-default btn-block',
+                                        'layoutTemplates' => [
+                                            'footer' => '<div class="file-thumbnail-footer" style="height: 0">{indicator}{actions}</div>'
+                                        ],
+                                    ],
+                                    'pluginEvents'=>[
+                                        'filepredelete' => "function(){
+                                        if (confirm('Вы уверены, что хотите удалить эту фотографию?')) {
+                                            $.ajax({
+                                                type:'POST',
+                                                cache: false,
+                                                url: '" . Url::to(['visit/render-photo', 'id' => $model->id]) . "',
+                                                complete: function() {
+                                                    $.pjax.reload({container:'#photoEditDermatolog'});
+                                                }
+                                                });
+                                                }
+                                        }",
+                                        'filebatchuploadcomplete' => "function(){
+                                             function a(){
+                                                $.ajax({
+                                                    type:'POST',
+                                                    cache: false,
+                                                    url: '" . Url::to(['visit/render-photo', 'id' => $model->id]) . "',
+                                                    complete: function() {
+                                                        $.pjax.reload({container:'#photoEditDermatolog'});
+                                                    }
+                                                });
+                                            };
+                                            setTimeout(a, 2000);
+                                           }"
+
+                                    ]
+                                ]);
+                                ?>
+                            </div>
                     </div>
+                    <?php Pjax::end(); ?>
 
                 <?php } ?>
             </div>
         </div>
-        <?php Pjax::end(); ?>
         <hr>
         <div class="form-group pull-right">
             <?= Html::submitButton('Сохранить', ['class' => 'btn btn-green', 'id' => 'saveBtn']) ?>

@@ -119,7 +119,6 @@ $this->title = 'Лист запланированных посещений';
                     <span class="glyphicon glyphicon-hourglass" title="ожидание посещения"></span>
                     <?php $titleAlert = $item->next_visit_from != null && $item->next_visit_by != null ? 'c ' . date('d.m.Y', $item->next_visit_from) . ' по ' . date('d.m.Y', $item->next_visit_by) : '' ; ?>
                     <?= $item->not_in_time == 1 ? '<span class="glyphicon glyphicon-alert" title="' . $titleAlert . '"></span>' : '' ?>
-                    <br>
                     <?= $item->contacted != 0 && $item->recorded == 0 ? '<span class="glyphicon glyphicon-earphone"></span>' : '' ?>
                 </td>
             </tr>

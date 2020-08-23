@@ -3,6 +3,7 @@
 namespace backend\models;
 use Yii;
 use yii\db\ActiveRecord;
+use common\models\User;
 
 /**
  * This is the model class for table "visit".
@@ -123,7 +124,22 @@ class Visit extends ActiveRecord
     }
 
     /**
-     * @param $visits
+     * создание нового посещения
+     */
+    public function createNewVisit(){
+
+    }
+
+    /**
+     * изменение посещения
+     */
+    public function updateVisit(){
+
+    }
+
+    /**
+     * проверка посещений - пришел ли клиент и пришел вовремя/не вовремя
+     * производится в контроллере CardController в экшене actionView
      */
     public function checkVisit($visits)
     {
@@ -157,26 +173,26 @@ class Visit extends ActiveRecord
 
     /**
      * проверка на разрешение редактирования посещения
-     * @param $visit
-     * @return bool
+     * производится во вьюхе card/view
      */
     public static function checkSuccessChange($visit)
     {
         $admin = Yii::$app->user->can('admin');
         $leader = Yii::$app->user->can('leader');
         $administrator = Yii::$app->user->can('administrator');
-        if ($visit->has_come != 2
-            && ($visit->specialist->user_id == Yii::$app->user->id || $admin || $leader || $administrator || $visit->specialist_id == 0) && ($visit->timestamp >= time() && $visit->resolve != 1 || $visit->next_visit_by != null && $visit->next_visit_by >= time())) {
-            return true;
-        } else {
-            return false;
+        if ($visit->specialist_id != 0){
+            if ($visit->has_come != 2
+                && ($visit->specialist->user_id == Yii::$app->user->id || $admin || $leader || $administrator || $visit->specialist_id == 0) && ($visit->timestamp >= time() && $visit->resolve != 1 || $visit->next_visit_by != null && $visit->next_visit_by >= time())) {
+                return true;
+            } else {
+                return false;
+            }
         }
+        return true;
     }
 
     /**
      * проверка на разрешение создания копии посещения
-     * @param $item
-     * @return bool
      */
     public static function checkSuccessCopy($item)
     {
@@ -189,7 +205,6 @@ class Visit extends ActiveRecord
 
     /**
      * запись клиента на посещение
-     * @param $id
      */
     public static function record($id)
     {
@@ -209,7 +224,6 @@ class Visit extends ActiveRecord
 
     /**
      * снять отметку "клиент записан на посещение"
-     * @param $id
      */
     public static function recordUnmark($id)
     {
@@ -229,9 +243,7 @@ class Visit extends ActiveRecord
     }
 
     /**
-     * @param $id
-     * @param $resolve
-     * @return bool
+     * отметка проблемы как Решенная
      */
     public static function completed($id, $resolve)
     {
@@ -259,9 +271,7 @@ class Visit extends ActiveRecord
     }
 
     /**
-     * @param $id
-     * @throws \Throwable
-     * @throws \yii\db\StaleObjectException
+     * удаление посещения
      */
     public static function deleteVisit($id)
     {
@@ -282,10 +292,8 @@ class Visit extends ActiveRecord
     }
 
     /**
-     * @param $id
-     * @return array
-     * @throws \Throwable
-     * @throws \yii\db\StaleObjectException
+     * удаление фотографий
+     * производится через VisitController, экшен actionDeletePhoto
      */
     public static function deletePhoto($id)
     {
@@ -299,11 +307,14 @@ class Visit extends ActiveRecord
         $photo = Photo::findOne($id);
         $dirUrl = Yii::getAlias('@webroot' . $photo->url);
         $dirThumb = Yii::getAlias('@webroot' . $photo->thumbnail);
+        $dirOrig = Yii::getAlias('@webroot' . $photo->original);
         if ($photo->delete()) {
             chmod($dirUrl, 0777);
             chmod($dirThumb, 0777);
+            chmod($dirOrig, 0777);
             unlink($dirUrl);
             unlink($dirThumb);
+            unlink($dirOrig);
         }
         return [
             'photoBefore' => $photoBefore,

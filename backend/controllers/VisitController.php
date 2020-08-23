@@ -7,8 +7,8 @@ use backend\models\Photo;
 use backend\models\Problem;
 use backend\models\Specialist;
 use backend\models\Visit;
-use backend\models\VisitPlannedSearch;
 use backend\models\VisitMissedSearch;
+use backend\models\VisitPlannedSearch;
 use backend\models\VisitSearch;
 use common\models\User;
 use kartik\mpdf\Pdf;
@@ -17,6 +17,7 @@ use yii\data\Pagination;
 use yii\filters\VerbFilter;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
+use yii\web\Response;
 use yii\web\UploadedFile;
 
 
@@ -173,10 +174,9 @@ class VisitController extends Controller
         $searchModel = new VisitPlannedSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
         $pages = new Pagination(['totalCount' => $dataProvider->getTotalCount(), 'pageSizeLimit' => [1, 60], 'defaultPageSize' => 20]);
-        //пройдемся по посещениям, если пациент не пришел до указанного времени, сделаем отметку
 
-        $check = new Visit();
-        $check->checkVisit($dataProvider->getModels());
+        //пройдемся по посещениям, если пациент не пришел до указанного времени, сделаем отметку
+        (new Visit())->checkVisit($dataProvider->getModels());
 
         $specialistModel = Specialist::find()->where(['address_point_id' => Yii::$app->user->identity->address_point_id])->all();
 
@@ -395,6 +395,61 @@ class VisitController extends Controller
             $problem = Problem::find()->where(['number' => $number])->one();
             return $problem;
         }
+    }
+
+
+    public function actionUploadPhoto($id, $location)
+    {
+        $photoBefore = Photo::find()->where(['visit_id' => $id, 'made' => 'before'])->all();
+        $photoAfter = Photo::find()->where(['visit_id' => $id, 'made' => 'after'])->all();
+        $photoDermatolog = Photo::find()->where(['visit_id' => $id, 'made' => 'dermatolog'])->all();
+
+        $addPhotoBefore = new Photo();
+        $addPhotoAfter = new Photo();
+        $addPhotoDermatolog = new Photo();
+        $model = Visit::find()->where(['id' => $id])->with('city', 'address_point', 'specialist')->one();
+        Yii::$app->response->format = Response::FORMAT_JSON;
+        if ($location == 'before') {
+            $addPhotoBefore->before = UploadedFile::getInstances($addPhotoBefore, 'before');
+            $addPhotoBefore->uploadBefore($model->id, Yii::$app->request->get('number'), date('d.m.Y', $model->visit_date));
+        } elseif ($location == 'after'){
+            $addPhotoAfter->after = UploadedFile::getInstances($addPhotoAfter, 'after');
+            $addPhotoAfter->uploadAfter($model->id, Yii::$app->request->get('number'), date('d.m.Y', $model->visit_date));
+        } elseif ($location == 'dermatolog'){
+            $addPhotoDermatolog->dermatolog = UploadedFile::getInstances($addPhotoDermatolog, 'dermatolog');
+            $addPhotoDermatolog->uploadDermatolog($model->id, Yii::$app->request->get('number'), date('d.m.Y', $model->visit_date));
+        }
+
+        return true;
+
+        return $this->renderAjax('/photo/photo', [
+            'photoBefore' => $photoBefore,
+            'photoAfter' => $photoAfter,
+            'photoDermatolog' => $photoDermatolog,
+            'addPhotoBefore' => $addPhotoBefore,
+            'addPhotoAfter' => $addPhotoAfter,
+            'addPhotoDermatolog' => $addPhotoDermatolog,
+        ]);
+    }
+
+    public function actionRenderPhoto($id)
+    {
+        $photoBefore = Photo::find()->where(['visit_id' => $id, 'made' => 'before'])->all();
+        $photoAfter = Photo::find()->where(['visit_id' => $id, 'made' => 'after'])->all();
+        $photoDermatolog = Photo::find()->where(['visit_id' => $id, 'made' => 'dermatolog'])->all();
+        $addPhotoBefore = new Photo();
+        $addPhotoAfter = new Photo();
+        $addPhotoDermatolog = new Photo();
+
+        return $this->renderAjax('/photo/photo', [
+            'photoBefore' => $photoBefore,
+            'photoAfter' => $photoAfter,
+            'photoDermatolog' => $photoDermatolog,
+            'addPhotoBefore' => $addPhotoBefore,
+            'addPhotoAfter' => $addPhotoAfter,
+            'addPhotoDermatolog' => $addPhotoDermatolog,
+        ]);
+
     }
 
     /**

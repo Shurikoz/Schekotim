@@ -51,6 +51,7 @@ class CardController extends Controller
         $pages = new Pagination(['totalCount' => $dataProvider->getTotalCount(), 'pageSizeLimit' => [1, 60], 'defaultPageSize' => 20]);
         $city = ArrayHelper::map(City::find()->all(), 'id', 'name');
         $addressPoint = ArrayHelper::map(AddressPoint::find()->where(['city_id' => Yii::$app->request->get("CardSearch")["city_id"]])->all(), 'id', 'address_point');
+
         return $this->render('index', [
             'pages' => $pages,
             'cards' => $cards,

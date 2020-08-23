@@ -35,6 +35,7 @@ $leader = Yii::$app->user->can('leader');
 ?>
 
 <?= FancyBox::widget();?>
+
 <div class="card-view">
     <div class="row">
         <div class="col-md-12">
@@ -75,11 +76,11 @@ $leader = Yii::$app->user->can('leader');
             </div>
         </div>
         <?php if ($admin || $leader || $administrator) { ?>
-        <div class="col-md-3 col-sm-6">
-            <div class="box">
-                <b>Телефон: </b><?= $model->phone ?>
+            <div class="col-md-3 col-sm-6">
+                <div class="box">
+                    <b>Телефон: </b><?= $model->phone ?>
+                </div>
             </div>
-        </div>
         <?php } ?>
         <div class="col-md-4 col-sm-6">
             <div class="box">
@@ -338,7 +339,7 @@ $leader = Yii::$app->user->can('leader');
                                                         $specialistList = ArrayHelper::map($specialistModel, 'id', 'name');
                                                         echo $form->field($item, 'specialist_id')
                                                             ->dropDownList($specialistList)
-                                                            ->label('Специалист');
+                                                            ->label('Подолог');
                                                         Modal::end();
                                                         ActiveForm::end();
                                                         ?>

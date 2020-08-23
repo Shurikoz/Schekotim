@@ -244,8 +244,6 @@ $dermatolog = Yii::$app->user->can('dermatolog');
         <div class="row">
             <div class="col-md-6 col-sm-6">
                 <p><b>До манипуляций</b></p>
-                <br>
-                <div class="box">
                     <?= $form->field($photoBefore, 'before[]')
                         ->widget(FileInput::classname(), [
                             'options' => [
@@ -266,15 +264,12 @@ $dermatolog = Yii::$app->user->can('dermatolog');
                                 'showPreview' => true,
                                 'showRemove' => false,
                                 'showCaption' => false,
-                                'browseClass' => 'btn btn-primary btn-block',
+                                'browseClass' => 'btn btn-default btn-block',
                             ]
                         ])?>
-                </div>
             </div>
             <div class="col-md-6 col-sm-6">
                 <p><b>После манипуляций</b></p>
-                <br>
-                <div class="box">
                     <?= $form->field($photoAfter, 'after[]')
                         ->widget(FileInput::classname(), [
                             'options' => [
@@ -295,10 +290,12 @@ $dermatolog = Yii::$app->user->can('dermatolog');
                                 'showPreview' => true,
                                 'showRemove' => false,
                                 'showCaption' => false,
-                                'browseClass' => 'btn btn-primary btn-block',
+                                'browseClass' => 'btn btn-default btn-block',
+                                'layoutTemplates' => [
+                                    'footer' => '<div class="file-thumbnail-footer" style="height: 0">{indicator}{actions}</div>'
+                                ],
                             ]
                         ])?>
-                </div>
             </div>
         </div>
         <?php } ?>
@@ -328,7 +325,10 @@ $dermatolog = Yii::$app->user->can('dermatolog');
                                     'showPreview' => true,
                                     'showRemove' => false,
                                     'showCaption' => false,
-                                    'browseClass' => 'btn btn-primary btn-block',
+                                    'browseClass' => 'btn btn-default btn-block',
+                                    'layoutTemplates' => [
+                                        'footer' => '<div class="file-thumbnail-footer" style="height: 0">{indicator}{actions}</div>'
+                                    ],
                                 ]
                             ])?>
                     </div>
@@ -336,6 +336,7 @@ $dermatolog = Yii::$app->user->can('dermatolog');
             </div>
             <hr>
         <?php } ?>
+        <hr>
         <div class="form-group pull-right">
             <?= Html::submitButton('Сохранить', ['class' => 'btn btn-green', 'id' => 'saveBtn']) ?>
         </div>

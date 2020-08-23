@@ -881,3 +881,33 @@ div.datetimepicker-minutes table{
     width: 30%;
     float: right;
 }
+
+.btnMenu {
+    border: 3px solid #4f5d73;
+    border-radius: 10px;
+    color: #4f5d73;
+    padding: 30px;
+    height: 280px;
+}
+
+.btnMenu .menuText{
+    padding-top: 15px;
+}
+.btnMenu .menuIcon{
+    margin: 0 auto;
+}
+
+a.menuLink{
+    text-decoration: none;
+}
+
+a.menuLink .btnMenu{
+    -moz-transition: all 0.1s ease-out;
+    -o-transition: all 0.1s ease-out;
+    -webkit-transition: all 0.1s ease-out;
+}
+a.menuLink:hover .btnMenu{
+    -webkit-transform: scale(1.02);
+    -moz-transform: scale(1.02);
+    -o-transform: scale(1.02);
+}

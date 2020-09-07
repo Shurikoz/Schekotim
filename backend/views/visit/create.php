@@ -12,8 +12,6 @@ ShowLoadingAsset::register($this);
 
 $this->title = 'Новое посещение, карта №: ' . $card->number;
 
-$problemName = ArrayHelper::map($problem, 'number', 'name');
-
 //посчитаем возраст пациента по дате рождения
 $born = new DateTime($card->birthday); // дата рождения
 $age = $born->diff(new DateTime)->format('%y');
@@ -111,7 +109,7 @@ $dermatolog = Yii::$app->user->can('dermatolog');
         <div class="row">
             <div class="col-md-4">
                 <div class="box">
-                    <?= $form->field($model, 'problem_id')->dropDownList($problemName, [
+                    <?= $form->field($model, 'problem_id')->dropDownList($problem, [
                         'prompt' => [
                             'text' => '-',
                             'options' => [
@@ -168,9 +166,15 @@ $dermatolog = Yii::$app->user->can('dermatolog');
                 </div>
             </div>
         </div>
+        <?php if ($openProblem) {?>
+            <div class="alert alert-warning" role="alert">
+                <p><em>Внимание, имеются незакрытые проблемы - <?php foreach ($openProblem as $item) { echo '<b>'. $item . '</b>; ';} ?></em></p>
+                <p><em>Создание нового посещения с этой проблемой (проблемами) невозможно!</em></p>
+            </div>
+        <?php }?>
         <hr>
         <div class="row">
-            <div class="col-md-6">
+            <div class="col-md-6 col-sm-6">
                 <div class="box">
                     <?= $form->field($model, 'anamnes')->textarea(['value' => '', 'rows' => 6]) ?>
                 </div>
@@ -191,22 +195,20 @@ $dermatolog = Yii::$app->user->can('dermatolog');
                 <div class="col-md-6 col-sm-6">
                     <div class="box">
                         <?= $form->field($model, 'manipulation')->textarea(['value' => '', 'rows' => 6]); ?>
-
                     </div>
                 </div>
                 <div class="col-md-6 col-sm-6">
                     <div class="box">
                         <?= $form->field($model, 'diagnosis')->textarea(['value' => '', 'rows' => 6]); ?>
-
                     </div>
                 </div>
             <?php } ?>
-            <div class="col-md-12">
+            <div class="col-md-12 col-sm-12">
                 <div class="box">
                     <?= $form->field($model, 'recommendation')->textarea(['value' => '', 'rows' => 6]) ?>
                 </div>
             </div>
-            <div class="col-md-12">
+            <div class="col-md-12 col-sm-12">
                 <div class="box">
                     <?= $form->field($model, 'description')->textarea(['rows' => 2]) ?>
                 </div>

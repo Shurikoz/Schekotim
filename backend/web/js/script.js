@@ -69,6 +69,7 @@ $("#visit-problem_id").on('change', function () {
             $("#visit-anamnes").val('');
             $("#visit-manipulation").val('');
             $("#visit-recommendation").val('');
+            $("#visit-diagnosis").val('');
         }
         $("#errorData").removeClass('textRed errorData').html('');
     }).fail(function () {

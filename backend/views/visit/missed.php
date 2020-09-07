@@ -15,7 +15,7 @@ $this->title = 'Лист пропущенных посещений';
 <div class="row">
     <div class="col-md-12">
         <div class="pull-left">
-            <?= Html::a(FAS::icon('angle-left', ['class' => 'big', 'data-role' => 'arrow']) . '&nbsp Назад', ['/'], ['class' => 'btn btn-default']) ?>
+            <?= Html::a(FAS::icon('angle-left', ['class' => 'big', 'data-role' => 'arrow']) . '&nbsp В главное меню', ['/'], ['class' => 'btn btn-default']) ?>
         </div>
     </div>
 </div>

@@ -43,82 +43,63 @@ $leader = Yii::$app->user->can('leader');
                 <?= Html::a(FAS::icon('angle-left', ['class' => 'big', 'data-role' => 'arrow']) . '&nbsp Вернуться к списку карт', ['/card'], ['class' => 'btn btn-default']) ?>
             </div>
             <div class="pull-right">
-                <span style="display: block;margin-top: 6px;">ID: <?= $model->id ?></span>
+                <span style="display: block;margin-top: 5px;" class="titleCardName"><b><?= Html::encode($this->title) ?></b></span>
+
             </div>
         </div>
     </div>
     <br>
-    <div class="row">
-        <div class="col-md-3 col-sm-12">
-            <div class="box">
-                <!--                <span class="cardHeader"><b>-->
-                <? //= Html::encode($this->title) ?><!--</b></span>-->
-                <span class="titleCardName"><b><?= Html::encode($this->title) ?></b></span>
-
+    <div class="box">
+        <div class="row">
+            <div class="col-md-12 col-sm-12">
+                <p class="titleCardName"><b> <?= $model->name ?> <?= $model->middle_name ?> <?= $model->surname ?></b></p>
+                <br>
             </div>
         </div>
-        <div class="col-md-9 col-sm-12">
-            <div class="box" style="border: 1px solid #7ba335">
-                <p class="titleCardName">
-                    <b>ФИО:</b> <?= $model->name ?> <?= $model->middle_name ?> <?= $model->surname ?></p>
+        <div class="row">
+            <div class="col-md-6 col-sm-12">
+                <p class="borderBottom"><b>Дата рождения:</b> <em><?= Yii::$app->formatter->asDate($model->birthday) ?></em></p>
+                <p><b>Возраст:</b> <em><?= $age ?></em></p>
             </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-3 col-sm-6">
-            <div class="box">
-                <b>Дата рождения: </b><?= Yii::$app->formatter->asDate($model->birthday) ?>
-            </div>
-        </div>
-        <div class="col-md-2 col-sm-6">
-            <div class="box">
-                <b>Возраст: </b><?= $age ?>
-            </div>
-        </div>
-        <?php if ($admin || $leader || $administrator) { ?>
-            <div class="col-md-3 col-sm-6">
-                <div class="box">
-                    <b>Телефон: </b><?= $model->phone ?>
-                </div>
-            </div>
-        <?php } ?>
-        <div class="col-md-4 col-sm-6">
-            <div class="box">
-                <b>Профессия: </b><?= $model->profession == null ? 'Не указана' : $model->profession ?>
+            <div class="col-md-6 col-sm-12">
+                <p class="borderBottom"><b>Профессия:</b> <em><?= $model->profession == null ? 'Не указана' : $model->profession ?></em></p>
+                <p><b>Ортопедические особенности:</b> <em><?= $model->orthopedic_features == null ? 'Отсутствуют' : '<br>' . $model->orthopedic_features ?></em>
+                </p>
             </div>
         </div>
     </div>
     <div class="row">
         <?php if ($model->representative) { ?>
-            <div class="col-md-6 col-sm-6">
+            <div class="col-md-12 col-sm-12">
                 <div class="box">
-                    <p><b>Представитель клиента:</b> <br> <?= $model->representative ?> </p>
+                    <p><b>Представитель клиента:</b> <em><?= $model->representative ?></em> </p>
                 </div>
             </div>
         <?php } ?>
-        <div class="col-md-6 col-sm-6">
-            <div class="box">
-                <p><b>Ортопедические особенности:</b>
-                    <br> <?= $model->orthopedic_features == null ? 'Отсутствуют' : $model->orthopedic_features ?> </p>
-            </div>
-        </div>
     </div>
+    <?php if ($admin || $administrator || $leader) { ?>
     <div class="row">
         <div class="col-md-3 col-sm-6">
             <div class="box">
-                <b>Дата создания: </b><?= Yii::$app->formatter->asDate($model->created_at) ?>
+                <b>Телефон: </b><em><?= $model->phone ?></em>
+            </div>
+        </div>
+        <div class="col-md-3 col-sm-6">
+            <div class="box">
+                <b>Дата создания: </b><em><?= Yii::$app->formatter->asDate($model->created_at) ?></em>
             </div>
         </div>
         <div class="col-md-4 col-sm-6">
             <div class="box">
-                <?= $model->city->name ?>, <?= $model->address_point->address_point ?>
+                <em><?= $model->city->name ?>, <?= $model->address_point->address_point ?></em>
             </div>
         </div>
     </div>
+    <?php } ?>
     <div class="row">
         <div class="col-md-12">
             <div class="pull-left cardsOnPage">
-                <span>Карт на странице:</span>
+                <span>Посещений на странице:</span>
                 <?= Html::a(20, Url::current(['per-page' => 20]), ['class' => ($count_visits == 20) ? 'active' : '']) ?>
                 <?= Html::a(40, Url::current(['per-page' => 40]), ['class' => ($count_visits == 40) ? 'active' : '']) ?>
                 <?= Html::a(60, Url::current(['per-page' => 60]), ['class' => ($count_visits == 60) ? 'active' : '']) ?>
@@ -135,11 +116,11 @@ $leader = Yii::$app->user->can('leader');
         <?= Alert::widget() ?>
         <caption class="c-table__title">
             <div class="row">
-                <div class="col-md-8 col-sm-4">
+                <div class="col-md-8 col-sm-7">
                     Лист посещений
                     <small>Всего посещений: <?= $dataProvider->getTotalCount() ?></small>
                 </div>
-                <div class="col-md-4 col-sm-8">
+                <div class="col-md-4 col-sm-5">
                     <div class="pull-right">
                         <?php if ($admin || $podolog || $dermatolog || $leader) { ?>
                             <?= Html::a('<span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Создать новое посещение', ['visit/create', 'id' => $model->id, 'number' => $model->number], ['class' => 'btn btn-green']) ?>
@@ -213,8 +194,8 @@ $leader = Yii::$app->user->can('leader');
                     </td>
                     <td class="c-table__cell">
                         <?php if (($item->next_visit_from != null && $item->next_visit_by != null && $item->has_come == 0 && $item->visit_date == null) || ($item->has_come == 2 && $item->next_visit_from != null && $item->next_visit_by != null)) { ?>
-                            <p>с <?= date('d.m.Y', $item->next_visit_from) ?></p>
-                            <p>до <?= date('d.m.Y', $item->next_visit_by) ?></p>
+                            <span class="font-warning">Время не назначено</span><br>
+                            <span class="em-font"><em>с <?= date('d.m.Y', $item->next_visit_from) ?> до <?= date('d.m.Y', $item->next_visit_by) ?></em></span>
                         <?php } else if ($item->visit_date != null) { ?>
                             <span> <?= date('d.m.Y <b>H:i</b>', $item->visit_date)?></span>
                             <?php if ($item->next_visit_from != null && $item->next_visit_by != null) { ?>
@@ -239,6 +220,28 @@ $leader = Yii::$app->user->can('leader');
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="userStatus pull-right">
+                                            <?php //кнопка «Проблема решена» доступна админу или тому, кто создал посещение?>
+                                            <?php if ($item->specialist->user_id == Yii::$app->user->id || $admin || $leader) { ?>
+                                                <?php if ($item->visit_date != null && $item->problem_id != 0 && $item->has_come != 2) { ?>
+                                                    <div>
+                                                        <?php if ($item->resolve == 0) { ?>
+                                                            <?= Html::a('Проблема решена!', ['visit/completed', 'id' => $item->id, 'card' => $model->number, 'resolve' => true], [
+                                                                'class' => 'btn btn-green',
+                                                                'data' => [
+                                                                    'confirm' => 'Отметить проблему решенной?',
+                                                                    'method' => 'post',
+                                                                ],
+                                                            ]) ?>
+                                                        <?php } else { ?>
+                                                            <?php if ($admin || $leader) { ?>
+                                                                <?= Html::a('Снять отметку «Проблема решена»!', ['visit/completed', 'id' => $item->id, 'card' => $model->number, 'resolve' => false], [
+                                                                    'class' => 'btn btn-default'
+                                                                ]) ?>
+                                                            <?php } ?>
+                                                        <?php } ?>
+                                                    </div>
+                                                <?php } ?>
+                                            <?php } ?>
                                             <?php if (Visit::checkSuccessCopy($item)) { ?>
                                                 <div>
                                                     <?= Html::a('Создать копию', ['visit/copy', 'id' => $item->id, 'number' => $model->number], ['class' => 'btn btn-primary']) ?>
@@ -275,28 +278,6 @@ $leader = Yii::$app->user->can('leader');
                                                     <?= Html::a('+24 часа', ['visit/edit24h', 'id' => $item->id, 'number' => $model->number], ['class' => 'btn btn-warning']) ?>
                                                 </div>
                                             <?php } ?>
-                                            <?php //кнопка «Проблема решена» доступна админу или тому, кто создал посещение?>
-                                            <?php if ($item->specialist->user_id == Yii::$app->user->id || $admin || $leader) { ?>
-                                                <?php if ($item->visit_date != null && $item->problem_id != 0 && $item->has_come != 2) { ?>
-                                                    <div>
-                                                        <?php if ($item->resolve == 0) { ?>
-                                                            <?= Html::a('Проблема решена!', ['visit/completed', 'id' => $item->id, 'card' => $model->number, 'resolve' => true], [
-                                                                'class' => 'btn btn-green',
-                                                                'data' => [
-                                                                'confirm' => 'Отметить проблему решенной?',
-                                                                'method' => 'post',
-                                                            ],
-                                                            ]) ?>
-                                                        <?php } else { ?>
-                                                            <?php if ($admin || $leader) { ?>
-                                                                <?= Html::a('Снять отметку «Проблема решена»!', ['visit/completed', 'id' => $item->id, 'card' => $model->number, 'resolve' => false], [
-                                                                    'class' => 'btn btn-default'
-                                                                ]) ?>
-                                                            <?php } ?>
-                                                        <?php } ?>
-                                                    </div>
-                                                <?php } ?>
-                                            <?php } ?>
                                             <?php if ($admin || $leader) { ?>
                                                 <div>
                                                     <?= Html::a('Удалить', ['visit/delete', 'id' => $item->id, 'card' => $model->number], [
@@ -319,7 +300,7 @@ $leader = Yii::$app->user->can('leader');
                                     <div class="col-md-12">
                                         <div class="pull-right">
                                             <?php if ($administrator || $admin || $leader) { ?>
-                                                <?php if ($item->has_come == 0) { ?>
+                                                <?php if ($item->has_come == 0 || $admin || $leader) { ?>
                                                     <div class="form-modal">
                                                         <?php
                                                         $form = ActiveForm::begin();

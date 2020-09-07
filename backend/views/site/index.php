@@ -61,7 +61,7 @@ $leader = Yii::$app->user->can('leader');
                             <h3>Создать карту</h3>
                         </div>
                     </div>',
-                        ['/card/create'], ['class' => 'menuLink']) ?>
+                    ['/card/create'], ['class' => 'menuLink']) ?>
             </div>
         </div>
     <?php } ?>
@@ -76,7 +76,7 @@ $leader = Yii::$app->user->can('leader');
                             <h3>Список карт</h3>
                         </div>
                     </div>',
-                        ['/card'], ['class' => 'menuLink']) ?>
+                    ['/card'], ['class' => 'menuLink']) ?>
             </div>
         </div>
         <?php if ($podolog || $dermatolog) { ?>
@@ -191,7 +191,7 @@ $leader = Yii::$app->user->can('leader');
                         <div class="menuText text-center">
                             <h3>Поддержка</h3>
                         </div>
-                        <div>Новых обращений: <b>' . $viewed  . '</b></div>
+                        <div>Новых обращений: <b>' . $viewed . '</b></div>
                         <div>Нерешенных обращений: <b>' . $result . '</b></div>
                     </div>',
                     ['/pages/support'], ['class' => 'menuLink']) ?>

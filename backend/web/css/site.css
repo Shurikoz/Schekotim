@@ -226,6 +226,12 @@ a.desc:after {
     font-size: 17px;
 }
 
+.borderBottom{
+    margin-bottom: 9px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #d2d2d2;
+}
+
 .btn-green {
     background-color: #7ba335;
     border-color: #7ba335;
@@ -554,7 +560,7 @@ font-size: 18px;
     flex-basis: 100%;
     margin: 0 0 .3125rem;
     color: #7f8fa4;
-    font-size: 1.2rem;
+    font-size: 1.4rem;
     font-weight: 400;
 }
 
@@ -562,13 +568,13 @@ font-size: 18px;
     display: block;
     width: 100%;
     margin: 0;
-    padding: .59375rem .9375rem;
+    padding: .7rem 1rem;
     transition: all .3s;
     border: 1px solid #dfe3e9;
     border-radius: 4px;
     background-color: #fff;
     color: #354052;
-    font-size: 1.2rem;
+    font-size: 1.3rem;
     font-weight: 400;
     resize: none;
 }
@@ -600,7 +606,7 @@ font-size: 18px;
     margin-left: -15px;
 }
 .titleCardName{
-    font-size: 18px;
+    font-size: 20px;
     color: #333;
 }
 
@@ -743,12 +749,12 @@ div.datetimepicker-minutes table{
 
 .cardBtn .btn {
     border: 1px solid;
-    font-size: 14px;
-    padding: 5px 8px 3px 8px;
+    font-size: 16px;
+    padding: 8px 10px 6px 10px;
     color: #7ba335;
 }
 .cardBtn .btn:hover{
-    background-color: #0a73bb66;
+    background-color: #7ba3353b;
 }
 
 .cardBtn .glyphicon-ban-circle{
@@ -910,4 +916,12 @@ a.menuLink:hover .btnMenu{
     -webkit-transform: scale(1.02);
     -moz-transform: scale(1.02);
     -o-transform: scale(1.02);
+}
+
+.font-warning{
+    color: #f0ad4e;
+}
+
+.font-success{
+    color: #7ba335;
 }

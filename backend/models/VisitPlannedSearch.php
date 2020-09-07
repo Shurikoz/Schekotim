@@ -43,7 +43,7 @@ class VisitPlannedSearch extends Visit
      */
     public function search($params)
     {
-        $query = Visit::find()->where(['planned' => 1])->joinWith('card');
+        $query = Visit::find()->where(['planned' => 1])->andWhere(['<>', 'has_come', 2])->joinWith('card');
 
         // add conditions that should always apply here
 

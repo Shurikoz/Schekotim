@@ -1,6 +1,8 @@
 <?php
 
 namespace backend\models;
+use yii\helpers\ArrayHelper;
+
 
 /**
  * This is the model class for table "problem".
@@ -70,6 +72,47 @@ class Problem extends \yii\db\ActiveRecord
         $prev = $this->find()->where(['<', 'number', $number])->orderBy('number desc')->one();
         return $prev;
     }
+
+    /**
+     * передадим на вход номер карты
+     * делаем проверку на существование не закрытых проблем и исключаем их.
+     * возвращаем список проблем
+     * Если есть одна или несколько проблем, которые не отмечены "пациент пришел" или "проблема решена", то они будут удаляться из массива для предотвращения задвоения
+     */
+    public function listProblem($cardNumber)
+    {
+        $model = $this::find()->orderBy(['number' => SORT_ASC])->all();
+        $problem = ArrayHelper::map($model, 'number', 'name');
+        $visit = Visit::find()->where(['card_number' => $cardNumber])->all();
+        foreach ($visit as $item) {
+            if ($this->checkOpenProblems($item)) {
+                unset($problem[$item->problem_id]);
+            }
+        }
+        return $problem;
+    }
+
+    public function openProblem($cardNumber)
+    {
+        $problem = [];
+        $visit = Visit::find()->where(['card_number' => $cardNumber])->all();
+        foreach ($visit as $item) {
+            if ($this->checkOpenProblems($item)) {
+                array_push($problem, $item->problem->name);
+            }
+        }
+        return $problem;
+    }
+
+    public function checkOpenProblems($visit)
+    {
+        if (($visit->planned == 1 || $visit->visit_date <= $visit->next_visit_by) && $visit->has_come == 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
 
     public function getVisit()
     {

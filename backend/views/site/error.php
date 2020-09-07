@@ -14,8 +14,7 @@ $this->title = $name;
     <div class="site-error text-center">
         <div class="row">
             <div class="col-md-12 font-phenomena">
-                <h1>Ошибка 404</h1>
-                <h3>Страница не найдена</h3>
+                <h1>Ошибка доступа</h1>
                 <p>Возможно, у вас нет прав доступа или не выполнен <?= Html::a('вход в систему', ['/login']) ?>.</p>
             </div>
         </div>

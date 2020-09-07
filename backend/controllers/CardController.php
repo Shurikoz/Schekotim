@@ -77,8 +77,7 @@ class CardController extends Controller
         $specialistModel = Specialist::find()->where(['address_point_id' => Yii::$app->user->identity->address_point_id])->all();
 
         //пройдемся по посещениям, если пациент не пришел до указанного времени, сделаем отметку
-        $check = new Visit();
-        $check->checkVisit($visits);
+        (new Visit())->checkVisit($visits);
 
         if ($model) {
             return $this->render('view', [

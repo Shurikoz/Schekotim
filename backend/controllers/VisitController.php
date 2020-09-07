@@ -103,7 +103,6 @@ class VisitController extends Controller
                 $secondVisit->next_visit_by = strtotime($secondVisit->next_visit_by);
                 $secondVisit->timestamp = $secondVisit->next_visit_by + 60 * 60 * 11;
                 $secondVisit->planned = 1;
-                $secondVisit->specialist_id = 0;
             }
             $model->next_visit_from = null;
             $model->next_visit_by = null;
@@ -112,7 +111,7 @@ class VisitController extends Controller
                 if ($secondVisit->next_visit_from && $secondVisit->next_visit_by) {
                     $second = Visit::find()->where(['card_number' => $cardNumber])->orderBy(['number' => SORT_DESC])->one();
                     $secondVisit->number = (int)$second->number + 1;
-                    $secondVisit->save(false);
+                    $secondVisit->save();
                     $model->has_second_visit = $secondVisit->id;
                     $model->save();
                 }
@@ -141,8 +140,95 @@ class VisitController extends Controller
             'photoAfter' => $photoAfter,
             'photoDermatolog' => $photoDermatolog,
             'specialist' => $specialist,
-            'problem' => $this->findProblem(),
+            'problem' => (new Problem)->listProblem($cardNumber),
+            'openProblem' => (new Problem)->openProblem($cardNumber),
             'specialistModel' => $specialistModel,
+        ]);
+    }
+
+    /**
+     * Updates an existing Visit model.
+     * If update is successful, the browser will be redirected to the 'view' page.
+     * @param integer $id
+     * @return mixed
+     * @throws NotFoundHttpException if the model cannot be found
+     */
+    public function actionUpdate($id)
+    {
+        $post = Yii::$app->request->post();
+        $model = Visit::find()->where(['id' => $id])->with('city', 'address_point', 'specialist')->one();
+        $addPhotoBefore = new Photo();
+        $addPhotoAfter = new Photo();
+        $addPhotoDermatolog = new Photo();
+        $secondVisit = new Visit();
+        $card = Card::find()->where(['number' => $model->card_number])->one();
+        $problem = Problem::find()->orderBy(['number' => SORT_ASC])->all();
+        // проверка на разрешение редактирования посещения
+        if (!Visit::checkSuccessChange($model)){
+            Yii::$app->session->setFlash('danger', 'Вам не разрешено редактировать это посещение!');
+            return $this->redirect(['card/view', 'number' => $card->number]);
+        }
+
+        $photoBefore = Photo::find()->where(['visit_id' => $model->id, 'made' => 'before'])->all();
+        $photoAfter = Photo::find()->where(['visit_id' => $model->id, 'made' => 'after'])->all();
+        $photoDermatolog = Photo::find()->where(['visit_id' => $model->id, 'made' => 'dermatolog'])->all();
+        $specialist = Specialist::find()->where(['id' => $model->specialist_id])->one();
+
+        $lastVisit = Visit::find()->where(['card_number' => $model->card_number])->orderBy(['number' => SORT_DESC])->one();
+
+        if ($model->load($post) && $secondVisit->load($post)) {
+            if ($secondVisit->next_visit_from && $secondVisit->next_visit_by) {
+                $secondVisit->number = (int)$lastVisit->number + 1;
+                $secondVisit->next_visit_from = strtotime($secondVisit->next_visit_from);
+                $secondVisit->next_visit_by = strtotime($secondVisit->next_visit_by);
+                $secondVisit->timestamp = $secondVisit->next_visit_by + 60 * 60 * 11;
+                $secondVisit->planned = 1;
+                $secondVisit->has_come = 0;
+                $secondVisit->save();
+            }
+
+            if ($model->has_come == 1 && $model->visit_date == null) {
+                $model->visit_date = time();
+            }
+            $model->card_number = $card->number;
+            $model->planned = 0;
+            $model->next_visit_from = null;
+            $model->next_visit_by = null;
+
+            if ($model->save()) {
+                $model->has_second_visit = $secondVisit->id;
+                $model->save();
+                $card->load($post) ? $card->save() : false;
+//                if ($model->specialist->profession == 'podolog'){
+//
+//                    $addPhotoBefore->before = UploadedFile::getInstances($addPhotoBefore, 'before');
+//                    $addPhotoAfter->after = UploadedFile::getInstances($addPhotoAfter, 'after');
+//
+//                    $addPhotoBefore->uploadBefore($model->id, Yii::$app->request->get('number'), date('d.m.Y', $model->visit_date));
+//                    $addPhotoAfter->uploadAfter($model->id, Yii::$app->request->get('number'), date('d.m.Y', $model->visit_date));
+//
+//                } elseif ($model->specialist->profession == 'dermatolog') {
+//                    $addPhotoDermatolog->dermatolog = UploadedFile::getInstances($addPhotoDermatolog, 'dermatolog');
+//                    $addPhotoDermatolog->uploadDermatolog($model->id, Yii::$app->request->get('number'), date('d.m.Y', $model->visit_date));
+//                }
+
+                Yii::$app->session->setFlash('success', 'Данные визита <b>#' . $model->id . '</b> сохранены!');
+                return $this->redirect(['card/view', 'number' => $card->number]);
+            }
+
+        }
+        return $this->render('update', [
+            'card' => $card,
+            'model' => $model,
+            'secondVisit' => $secondVisit,
+            'specialist' => $specialist,
+            'problem' => $problem,
+            'photoBefore' => $photoBefore,
+            'photoAfter' => $photoAfter,
+            'addPhotoBefore' => $addPhotoBefore,
+            'addPhotoAfter' => $addPhotoAfter,
+            'photoDermatolog' => $photoDermatolog,
+            'addPhotoDermatolog' => $addPhotoDermatolog,
         ]);
     }
 
@@ -157,8 +243,6 @@ class VisitController extends Controller
         $searchModel = new VisitMissedSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
         $pages = new Pagination(['totalCount' => $dataProvider->getTotalCount(), 'pageSizeLimit' => [1, 60], 'defaultPageSize' => 20]);
-        //has_come: 0 - ожидание, 1 - пришел, 2 - не пришел
-        //$model = Visit::find()->where(['has_come' => '2'])->with('card', 'city', 'address_point')->all();
         return $this->render('missed', [
             'pages' => $pages,
             'searchModel' => $searchModel,
@@ -200,94 +284,6 @@ class VisitController extends Controller
             'photo' => $photo,
         ]);
 
-    }
-
-    /**
-     * Updates an existing Visit model.
-     * If update is successful, the browser will be redirected to the 'view' page.
-     * @param integer $id
-     * @return mixed
-     * @throws NotFoundHttpException if the model cannot be found
-     */
-    public function actionUpdate($id)
-    {
-
-        $post = Yii::$app->request->post();
-
-        $model = Visit::find()->where(['id' => $id])->with('city', 'address_point', 'specialist')->one();
-        $addPhotoBefore = new Photo();
-        $addPhotoAfter = new Photo();
-        $addPhotoDermatolog = new Photo();
-        $secondVisit = new Visit();
-        $card = Card::find()->where(['number' => $model->card_number])->one();
-
-        // проверка на разрешение редактирования посещения
-        if (!Visit::checkSuccessChange($model)){
-            Yii::$app->session->setFlash('danger', 'Вам не разрешено редактировать это посещение!');
-            return $this->redirect(['card/view', 'number' => $card->number]);
-        }
-
-        $photoBefore = Photo::find()->where(['visit_id' => $model->id, 'made' => 'before'])->all();
-        $photoAfter = Photo::find()->where(['visit_id' => $model->id, 'made' => 'after'])->all();
-        $photoDermatolog = Photo::find()->where(['visit_id' => $model->id, 'made' => 'dermatolog'])->all();
-        $specialist = Specialist::find()->where(['id' => $model->specialist_id])->one();
-
-        $lastVisit = Visit::find()->where(['card_number' => $model->card_number])->orderBy(['number' => SORT_DESC])->one();
-
-            if ($model->load($post) && $secondVisit->load($post)) {
-                if ($secondVisit->next_visit_from && $secondVisit->next_visit_by) {
-                    $secondVisit->number = (int)$lastVisit->number + 1;
-                    $secondVisit->next_visit_from = strtotime($secondVisit->next_visit_from);
-                    $secondVisit->next_visit_by = strtotime($secondVisit->next_visit_by);
-                    $secondVisit->timestamp = $secondVisit->next_visit_by + 60 * 60 * 11;
-                    $secondVisit->planned = 1;
-                    $secondVisit->has_come = 0;
-                    $secondVisit->save();
-                }
-
-                if ($model->has_come == 1 && $model->visit_date == null) {
-                    $model->visit_date = time();
-                }
-                $model->card_number = $card->number;
-                $model->planned = 0;
-                $model->next_visit_from = null;
-                $model->next_visit_by = null;
-
-            if ($model->save()) {
-                $model->has_second_visit = $secondVisit->id;
-                $model->save();
-                $card->load($post) ? $card->save() : false;
-                if ($model->specialist->profession == 'podolog'){
-
-                    $addPhotoBefore->before = UploadedFile::getInstances($addPhotoBefore, 'before');
-                    $addPhotoAfter->after = UploadedFile::getInstances($addPhotoAfter, 'after');
-
-                    $addPhotoBefore->uploadBefore($model->id, Yii::$app->request->get('number'), date('d.m.Y', $model->visit_date));
-                    $addPhotoAfter->uploadAfter($model->id, Yii::$app->request->get('number'), date('d.m.Y', $model->visit_date));
-
-                } elseif ($model->specialist->profession == 'dermatolog') {
-                    $addPhotoDermatolog->dermatolog = UploadedFile::getInstances($addPhotoDermatolog, 'dermatolog');
-                    $addPhotoDermatolog->uploadDermatolog($model->id, Yii::$app->request->get('number'), date('d.m.Y', $model->visit_date));
-                }
-
-                Yii::$app->session->setFlash('success', 'Данные визита <b>#' . $model->id . '</b> сохранены!');
-                return $this->redirect(['card/view', 'number' => $card->number]);
-            }
-
-        }
-        return $this->render('update', [
-            'card' => $card,
-            'model' => $model,
-            'secondVisit' => $secondVisit,
-            'specialist' => $specialist,
-            'problem' => $this->findProblem(),
-            'photoBefore' => $photoBefore,
-            'photoAfter' => $photoAfter,
-            'addPhotoBefore' => $addPhotoBefore,
-            'addPhotoAfter' => $addPhotoAfter,
-            'photoDermatolog' => $photoDermatolog,
-            'addPhotoDermatolog' => $addPhotoDermatolog,
-        ]);
     }
 
     /**
@@ -396,7 +392,6 @@ class VisitController extends Controller
             return $problem;
         }
     }
-
 
     public function actionUploadPhoto($id, $location)
     {
@@ -661,15 +656,6 @@ class VisitController extends Controller
             Yii::$app->session->setFlash('danger', 'Ошибка продления срока редактирования!');
         }
         return $this->redirect(['card/view', 'number' => $card->number]);
-    }
-
-    /**
-     * @return array|\yii\db\ActiveRecord[]
-     */
-    protected function findProblem()
-    {
-        $problem = Problem::find()->orderBy(['number' => SORT_ASC])->all();
-        return $problem;
     }
 
     /**

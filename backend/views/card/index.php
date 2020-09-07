@@ -5,6 +5,7 @@ use yii\helpers\Url;
 use yii\widgets\LinkPager;
 use yii\widgets\Pjax;
 use common\widgets\Alert;
+use rmrevin\yii\fontawesome\FAS;
 
 /* @var $this yii\web\View */
 /* @var $searchModel backend\models\CardSearch */
@@ -21,13 +22,22 @@ $podolog = Yii::$app->user->can('podolog');
 $leader = Yii::$app->user->can('leader');
 
 ?>
-<div class="row">
-    <div class="col-md-12">
-        <h3>Карты пациентов</h3>
-        <hr>
-    </div>
-</div>
+
 <div class="card-index">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="pull-left">
+                <?= Html::a(FAS::icon('angle-left', ['class' => 'big', 'data-role' => 'arrow']) . '&nbsp В главное меню', ['/'], ['class' => 'btn btn-default']) ?>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <h3>Карты пациентов</h3>
+            <hr>
+        </div>
+    </div>
+    <br>
     <div class="row">
         <div class="col-md-12">
             <?= $this->render('_search', [

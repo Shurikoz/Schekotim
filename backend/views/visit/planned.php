@@ -22,7 +22,7 @@ $this->title = 'Лист запланированных посещений';
 <div class="row">
     <div class="col-md-12">
         <div class="pull-left">
-            <?= Html::a(FAS::icon('angle-left', ['class' => 'big', 'data-role' => 'arrow']) . '&nbsp Назад', ['/'], ['class' => 'btn btn-default']) ?>
+            <?= Html::a(FAS::icon('angle-left', ['class' => 'big', 'data-role' => 'arrow']) . '&nbsp В главное меню', ['/'], ['class' => 'btn btn-default']) ?>
         </div>
     </div>
 </div>
@@ -104,11 +104,11 @@ $this->title = 'Лист запланированных посещений';
                 </td>
                 <td class="c-table__cell">
                     <?php if ($item->next_visit_from != null && $item->next_visit_by != null && $item->has_come == 0 && $item->recorded == 0) { ?>
-                        <p>с <?= date('d.m.Y', $item->next_visit_from) ?></p>
-                        <p>до <?= date('d.m.Y', $item->next_visit_by) ?></p>
+                        <span class="font-warning">Время не назначено</span><br>
+                        <span class="em-font"><em>с <?= date('d.m.Y', $item->next_visit_from) ?> до <?= date('d.m.Y', $item->next_visit_by) ?></em></span>
                     <?php } else if ($item->recorded == 1) { ?>
                         <span><?= date('d.m.Y <b>H:i</b>', $item->visit_date) ?></span><br>
-                    <span class="em-font"><em>с <?= date('d.m.Y', $item->next_visit_from) ?> до <?= date('d.m.Y', $item->next_visit_by) ?></em></span>
+                        <span class="em-font"><em>с <?= date('d.m.Y', $item->next_visit_from) ?> до <?= date('d.m.Y', $item->next_visit_by) ?></em></span>
                     <?php } else if ($item->has_come == 2) { ?>
                         <span>-</span>
                     <?php } ?>

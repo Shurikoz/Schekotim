@@ -5,6 +5,7 @@ use yii\helpers\Url;
 use yii\widgets\ActiveForm;
 use yii\widgets\LinkPager;
 use newerton\fancybox3\FancyBox;
+use rmrevin\yii\fontawesome\FAS;
 
 /* @var $this yii\web\View */
 /* @var $searchModel backend\models\VisitSearch */
@@ -16,13 +17,24 @@ $count_visits = (isset($_GET['per-page'])) ? $_GET['per-page'] : 10;
 ?>
 <?= FancyBox::widget();?>
 
-<div class="row">
-    <div class="col-md-12">
-        <h3><?= Html::encode($this->title) ?></h3>
-        <hr>
-    </div>
-</div>
+
 <div class="photo-index">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="pull-left">
+                <?= Html::a(FAS::icon('angle-left', ['class' => 'big', 'data-role' => 'arrow']) . '&nbsp В главное меню', ['/'], ['class' => 'btn btn-default']) ?>
+            </div>
+            <div class="pull-right">
+                <span style="display: block;margin-top: 6px;">ID: <?= $model->id ?></span>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <h3><?= Html::encode($this->title) ?></h3>
+            <hr>
+        </div>
+    </div>
     <div class="visit-search">
         <div class="box">
             <div class="col-sm-12">

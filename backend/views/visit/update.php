@@ -245,16 +245,17 @@ JS;
         </div>
         <hr>
         <div id="photoForm">
-
             <div class="row">
                 <?php if ($model->specialist->profession == 'podolog') { ?>
-                <div class="col-md-12">
+                <div class="col-md-12 col-sm-12">
                     <div class="titleNormal">Фотографии работ (максимум по 5 фотографий)</div>
                     <br>
                 </div>
                     <?php Pjax::begin(['timeout' => 5000, 'id' => 'photoEditBefore', 'enablePushState' => false]); ?>
-                    <div class="col-md-6 col-sm-6">
-                    <p><b>До манипуляций</b></p>
+                    <div class="col-md-6 col-sm-12">
+                        <br>
+                        <p><b>До манипуляций</b></p>
+                        <br>
                         <div class="col-md-12">
                             <?php
                             $photoBeforeArray = [];
@@ -266,6 +267,7 @@ JS;
                                 }
                             } ?>
                             <?= FileInput::widget([
+                                'id' => 'before',
                                 'model' => $addPhotoBefore,
                                 'name' => 'before[]',
                                 'attribute' => 'before[]',
@@ -281,7 +283,7 @@ JS;
                                     'previewFileType' => 'image',
                                     'allowedFileExtensions' => ['jpg', 'jpeg', 'JPG', 'JPEG', 'png', 'PNG'],
                                     'maxFileCount' => 5 - count($photoBefore),
-                                    'uploadUrl' => Url::to(['/visit/upload-photo', 'id' => $model->id, 'location' => 'before']),
+                                    'uploadUrl' => Url::to(['/visit/upload-photo', 'id' => $model->id, 'number' => $model->card_number, 'location' => 'before']),
                                     'fileActionSettings' => [
                                         'showUpload' => false,
                                         'showZoom' => false,
@@ -297,7 +299,7 @@ JS;
                                             'footer' => '<div class="file-thumbnail-footer" style="height: 0">{indicator}{actions}</div>'
                                     ],
                                 ],
-                                'pluginEvents'=>[
+                                'pluginEvents' => [
                                     'filepredelete' => "function(){
                                         if (confirm('Вы уверены, что хотите удалить эту фотографию?')) {
                                                 $.ajax({
@@ -321,19 +323,22 @@ JS;
                                                     }
                                                 });
                                             };
-                                            setTimeout(a, 2000);
+                                            setTimeout(a, 1000);
                                         }"
-
                                 ]
                             ]);
                             ?>
                         </div>
                 </div>
                     <?php Pjax::end(); ?>
+                    <br>
+                    <br>
                     <?php Pjax::begin(['timeout' => 5000, 'id' => 'photoEditAfter', 'enablePushState' => false]); ?>
-                    <div class="col-md-6 col-sm-6">
-                    <p><b>После манипуляций</b></p>
-                        <div class="col-md-12">
+                    <div class="col-md-6 col-sm-12">
+                        <br>
+                        <p><b>После манипуляций</b></p>
+                        <br>
+                        <div class="col-md-12 col-sm-12">
                             <?php
                             $photoAfterArray = [];
                             $initialConfigAfter = [];
@@ -344,6 +349,7 @@ JS;
                                 }
                             } ?>
                             <?= FileInput::widget([
+                                'id' => 'after',
                                 'model' => $addPhotoAfter,
                                 'name' => 'after[]',
                                 'attribute' => 'after[]',
@@ -359,7 +365,7 @@ JS;
                                     'previewFileType' => 'image',
                                     'allowedFileExtensions' => ['jpg', 'jpeg', 'JPG', 'JPEG', 'png', 'PNG'],
                                     'maxFileCount' => 5 - count($photoAfter),
-                                    'uploadUrl' => Url::to(['/visit/upload-photo', 'id' => $model->id, 'location' => 'after']),
+                                    'uploadUrl' => Url::to(['/visit/upload-photo', 'id' => $model->id, 'number' => $model->card_number, 'location' => 'after']),
                                     'fileActionSettings' => [
                                         'showUpload' => false,
                                         'showZoom' => false,
@@ -375,7 +381,7 @@ JS;
                                         'footer' => '<div class="file-thumbnail-footer" style="height: 0">{indicator}{actions}</div>'
                                     ],
                                 ],
-                                'pluginEvents'=>[
+                                'pluginEvents' => [
                                     'filepredelete' => "function(){
                                         if (confirm('Вы уверены, что хотите удалить эту фотографию?')) {
                                             $.ajax({
@@ -399,9 +405,8 @@ JS;
                                                     }
                                                 });
                                             };
-                                            setTimeout(a, 2000);
+                                            setTimeout(a, 1000);
                                            }"
-
                                 ]
                             ]);
                             ?>
@@ -410,13 +415,13 @@ JS;
                     <?php Pjax::end(); ?>
                 <?php } ?>
                 <?php if ($model->specialist->profession == 'dermatolog') { ?>
-                    <div class="col-md-12">
+                    <div class="col-md-12 col-sm-12">
                         <p class="titleNormal text-center">Фотографии работ (максимум 5 фотографий)</p>
                         <br>
                     </div>
                     <?php Pjax::begin(['timeout' => 5000, 'id' => 'photoEditDermatolog', 'enablePushState' => false]); ?>
                     <div class="col-md-offset-3 col-md-6 col-sm-offset-3 col-sm-6">
-                            <div class="col-md-12">
+                            <div class="col-md-12 col-sm-12">
                                 <?php
                                 $photoDermatologArray = [];
                                 $initialConfigDermatolog = [];
@@ -427,6 +432,7 @@ JS;
                                     }
                                 } ?>
                                 <?= FileInput::widget([
+                                    'id' => 'dermatolog',
                                     'model' => $addPhotoDermatolog,
                                     'name' => 'dermatolog[]',
                                     'attribute' => 'dermatolog[]',
@@ -442,11 +448,12 @@ JS;
                                         'previewFileType' => 'image',
                                         'allowedFileExtensions' => ['jpg', 'jpeg', 'JPG', 'JPEG', 'png', 'PNG'],
                                         'maxFileCount' => 5 - count($photoDermatolog),
-                                        'uploadUrl' => Url::to(['/visit/upload-photo', 'id' => $model->id, 'location' => 'dermatolog']),
+                                        'uploadUrl' => Url::to(['/visit/upload-photo', 'id' => $model->id, 'number' => $model->card_number, 'location' => 'dermatolog']),
                                         'fileActionSettings' => [
                                             'showUpload' => false,
                                             'showZoom' => false,
                                             'showDrag' => false,
+
                                         ],
                                         'showPreview' => true,
                                         'showRemove' => false,
@@ -482,7 +489,7 @@ JS;
                                                     }
                                                 });
                                             };
-                                            setTimeout(a, 2000);
+                                            setTimeout(a, 1000);
                                            }"
 
                                     ]

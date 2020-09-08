@@ -229,7 +229,6 @@ class Visit extends ActiveRecord
     {
         $visit = Visit::findOne($id);
         $visit->visit_date = null;
-        $visit->specialist_id = 0;
         if ($visit->next_visit_from != null && $visit->next_visit_by != null && $visit->not_in_time == 1) {
             if (($visit->visit_date < $visit->next_visit_by) || ($visit->visit_date == null && (int)$visit->next_visit_by + 60 * 60 * 11 > time())) {
                 $visit->timestamp = strtotime($visit->next_visit_by) + 60 * 60 * 24 * 2;

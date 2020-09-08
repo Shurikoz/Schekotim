@@ -503,6 +503,14 @@ $leader = Yii::$app->user->can('leader');
         <?php } ?>
         </tbody>
     </table>
+
+
+
+
+
+
+
+
     <div class="pull-right">
         <?= LinkPager::widget([
             'pagination' => $pages,

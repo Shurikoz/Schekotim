@@ -261,8 +261,9 @@ a.desc:after {
 .pagination > li > span {
     color: #333;
 }
-/* card table */
 
+/*------------------------------------------------------------------------*/
+/* card table */
 .c-table {
     display: table;
     width: 100%;
@@ -279,7 +280,7 @@ a.desc:after {
 }
 
 
-.c-table__title {
+.c-table__title{
     position: relative;
     padding: 25px 30px;
     border: 1px solid #e6eaee;
@@ -363,6 +364,147 @@ a.desc:after {
     font-size: 11px;
 }
 
+.c-table__row--wait {
+    border-left-color: #a9a9a9;
+    background-color: #f3f3f3;
+}
+
+.c-table__row--success {
+    border-left-color: #7ba335;
+}
+
+.c-table__cell--empty{
+    text-align: center;
+    padding: 10px;
+}
+
+.c-table__row--danger {
+    border-left-color: #d84248;
+}
+
+
+.c-table tr.infoBlock:hover {
+    background-color: #eef1f0;
+}
+
+.c-table tr.newMessage{
+    background-color: #ffdcc7;
+}
+
+/*------------------------------------------------------------------------*/
+.panel{
+    border: 0;
+}
+
+.panel .panel-body {
+    border: 1px solid #ddd;
+}
+.panel tr:hover,
+.panel .activeBox{
+    background-color: #f5f8f1;
+}
+
+.panel-heading{
+    position: relative;
+    /*padding: 25px 30px;*/
+    border: 1px solid #e6eaee;
+    border-bottom-color: rgb(230, 234, 238);
+    border-bottom-style: solid;
+    border-bottom-width: 1px;
+    border-bottom: 0;
+    border-radius: 4px 4px 0 0;
+    background-color: #fff;
+    color: #354052;
+    font-size: 24px;
+    text-align: left;
+}
+
+
+.panel-heading small {
+    display: inline-block;
+    margin-left: 10px;
+    color: #7f8fa4;
+    font-size: 14px;
+}
+
+.panel-heading small::before {
+    display: inline-block;
+    position: relative;
+    bottom: -2px;
+    width: 1px;
+    height: 14px;
+    margin-right: 12px;
+    background-color: #dfe3e9;
+    content: "";
+}
+
+.panel thead {
+    padding: 0;
+    background-color: #f5f8fa;
+    color: #7f8fa4;
+    font-size: 1.2rem;
+    font-weight: 500;
+}
+
+.table > thead > tr > th {
+    border-bottom: none;
+}
+
+.panel thead > tr > th{
+    padding: 10px 0 10px 20px;
+}
+
+.panel tbody > tr > td {
+    /*padding: 15px 0 15px 20px;*/
+    color: #333;
+    font-size: 1.3rem;
+    font-weight: 500;
+    text-align: left;
+    white-space: nowrap;
+    vertical-align: middle;
+}
+.panel .infoBlock td{
+    padding: 15px;
+
+}
+
+.panel-danger,
+.panel-info,
+.panel-success,
+.panel-warning,
+.panel-wait{
+    border-left: 3px solid;
+    border-left-color: currentcolor;
+}
+
+.panel-wait {
+    border-left-color: #a9a9a9;
+    background-color: beige;
+}
+
+.panel-success {
+    border-left-color: #7ba335;
+}
+
+.panel-danger {
+    border-left-color: #d84248;
+}
+
+.panel .em-font{
+    font-size: 11px;
+}
+.panel tr.infoBlock:hover {
+    background-color: #eef1f0;
+}
+
+
+.panel-empty{
+    text-align: center;
+    padding: 10px;
+}
+/*------------------------------------------------------------------------*/
+
+
 .glyphicon-remove,
 .glyphicon-hourglass,
 .glyphicon-ok,
@@ -376,26 +518,15 @@ a.desc:after {
 font-size: 18px;
 }
 
-.c-table__row--danger {
-    border-left-color: #d84248;
-}
+
 
 .glyphicon-remove,
 .glyphicon-camera{
     color: #d84248;
 }
 
-.c-table__row--wait {
-    border-left-color: #a9a9a9;
-    background-color: beige;
-}
-
 .glyphicon-hourglass {
     color: #a9a9a9;
-}
-
-.c-table__row--success {
-    border-left-color: #7ba335;
 }
 
 .glyphicon-ok,
@@ -414,10 +545,6 @@ font-size: 18px;
     color: orange;
 }
 
-.c-table__cell--empty{
-    text-align: center;
-    padding: 10px;
-}
 .visitMarker{
     color: #7ba335;
     font-size: 16px;
@@ -625,13 +752,6 @@ font-size: 18px;
     cursor: pointer;
 }
 
-.c-table tr.infoBlock:hover {
-    background-color: #eef1f0;
-}
-
-.c-table tr.newMessage{
-    background-color: #ffdcc7;
-}
 
 .text-red{
     color: #ed1c24;

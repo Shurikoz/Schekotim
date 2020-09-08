@@ -59,19 +59,26 @@ $age = $born->diff(new DateTime)->format('%y');
         <?= $form->field($model, 'card_number')->hiddenInput(['value' => $card_id])->label(false); ?>
         <?= $form->field($model, 'city_id')->hiddenInput(['value' => $model->city_id])->label(false); ?>
         <?= $form->field($model, 'address_point_id')->hiddenInput(['value' => $model->address_point_id])->label(false); ?>
-        <?= $form->field($model, 'specialist_id')->hiddenInput(['value' => $specialist->id])->label(false); ?>
+        <?= $form->field($model, 'problem_id')->hiddenInput(['value' => $model->problem->id])->label(false); ?>
         <div class="row">
             <div class="col-md-4">
                 <div class="box">
-                    <?= $form->field($model, 'problem_id')
-                        ->dropDownList($problemName)
-                        ->label('Проблема') ?>
-                    <div id="errorData" style="color:red"></div>
+                    <b>Проблема:</b> <?= $model->problem->name ?>
                 </div>
             </div>
         </div>
+<!--        --><?//= $form->field($model, 'specialist_id')->hiddenInput(['value' => $specialist->id])->label(false); ?>
+<!--        <div class="row">-->
+<!--            <div class="col-md-4">-->
+<!--                <div class="box">-->
+<!--                    --><?//= $form->field($model, 'problem_id')
+//                        ->dropDownList($problemName)
+//                        ->label('Проблема') ?>
+<!--                    <div id="errorData" style="color:red"></div>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
         <div class="row">
-
             <div class="col-md-3">
                 <div class="box">
                     <?= $form->field($copyVisit, 'has_come')->checkbox(['value' => '1', 'checked ' => false])->label(false); ?>

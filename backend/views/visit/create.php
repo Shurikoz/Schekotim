@@ -35,33 +35,24 @@ $dermatolog = Yii::$app->user->can('dermatolog');
     <br>
     <p class="titleNormal"><?= Html::encode($this->title) ?></p>
     <hr>
+    <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]); ?>
     <div class="visit-form"><div class="row">
-            <div class="col-md-4">
+            <div class="col-md-4 col-sm-12">
                 <b>Пациент:</b> <?= $card->surname ?> <?= $card->name ?> <?= $card->middle_name ?></p>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-4 col-sm-12">
                 <b>Возраст:</b> <?= $age ?>
             </div>
-        </div>
-        <hr>
-        <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]); ?>
-        <div class="row">
-            <div class="col-md-4">
-                <b>Город:</b> <?= $user->city->name ?>
-            </div>
-            <div class="col-md-4">
-                <b>Адрес:</b> <?= $user->address_point->address_point ?>
-            </div>
-            <div class="col-md-4">
+            <div class="col-md-4 col-sm-12">
                 <?php if ($leader || $admin) { ?>
                     <?= $form->field($model, 'specialist_id')->dropDownList($specialistList, [
-                            'prompt' => [
-                                'text' => 'Выберите специалиста',
-                                'options' => [
-                                    'value' => '0'
-                                ]
+                        'prompt' => [
+                            'text' => 'Выберите специалиста',
+                            'options' => [
+                                'value' => '0'
                             ]
-                        ])->label('<b>Специалист</b>') ?>
+                        ]
+                    ])->label('<b>Специалист</b>') ?>
                 <?php } else { ?>
                     <b>Специалист:</b> <?= $specialist->name ?>
                 <?php } ?>
@@ -105,7 +96,14 @@ $dermatolog = Yii::$app->user->can('dermatolog');
         <?php if (!$leader && !$admin) { ?>
             <?= $form->field($model, 'specialist_id')->hiddenInput(['value' => $specialist->id])->label(false); ?>
         <?php } ?>
-
+        <?php if ($openProblem) {?>
+            <ul class="list-group">
+                <li class="list-group-item list-group-item-warning">
+                    <p><em>Внимание, имеются незакрытые проблемы - <?php foreach ($openProblem as $item) { echo '<b>'. $item . '</b>; ';} ?></em></p>
+                    <p><em>Создание нового посещения с этой проблемой (проблемами) невозможно!</em></p>
+                </li>
+            </ul>
+        <?php } ?>
         <div class="row">
             <div class="col-md-4">
                 <div class="box">
@@ -166,12 +164,6 @@ $dermatolog = Yii::$app->user->can('dermatolog');
                 </div>
             </div>
         </div>
-        <?php if ($openProblem) {?>
-            <div class="alert alert-warning" role="alert">
-                <p><em>Внимание, имеются незакрытые проблемы - <?php foreach ($openProblem as $item) { echo '<b>'. $item . '</b>; ';} ?></em></p>
-                <p><em>Создание нового посещения с этой проблемой (проблемами) невозможно!</em></p>
-            </div>
-        <?php }?>
         <hr>
         <div class="row">
             <div class="col-md-6 col-sm-6">
@@ -241,11 +233,11 @@ $dermatolog = Yii::$app->user->can('dermatolog');
         </div>
         <hr>
         <?php if ($podolog) { ?>
-        <p class="titleNormal">Фотографии работ (максимум по 5 фотографий)</p>
-        <br>
-        <div class="row">
-            <div class="col-md-6 col-sm-6">
-                <p><b>До манипуляций</b></p>
+            <p class="titleNormal">Фотографии работ (максимум по 5 фотографий)</p>
+            <br>
+            <div class="row">
+                <div class="col-md-6 col-sm-6">
+                    <p><b>До манипуляций</b></p>
                     <?= $form->field($photoBefore, 'before[]')
                         ->widget(FileInput::classname(), [
                             'options' => [
@@ -269,9 +261,9 @@ $dermatolog = Yii::$app->user->can('dermatolog');
                                 'browseClass' => 'btn btn-default btn-block',
                             ]
                         ])?>
-            </div>
-            <div class="col-md-6 col-sm-6">
-                <p><b>После манипуляций</b></p>
+                </div>
+                <div class="col-md-6 col-sm-6">
+                    <p><b>После манипуляций</b></p>
                     <?= $form->field($photoAfter, 'after[]')
                         ->widget(FileInput::classname(), [
                             'options' => [
@@ -298,8 +290,8 @@ $dermatolog = Yii::$app->user->can('dermatolog');
                                 ],
                             ]
                         ])?>
+                </div>
             </div>
-        </div>
         <?php } ?>
         <?php if ($dermatolog) { ?>
             <p class="titleNormal text-center">Фотографии работ (максимум 5 фотографий)</p>

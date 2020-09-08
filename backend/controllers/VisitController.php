@@ -328,7 +328,8 @@ class VisitController extends Controller
             'model' => $model,
             'copyVisit' => $copyVisit,
             'specialist' => $specialist,
-            'problem' => $this->findProblem(),
+            'problem' => (new Problem)->findProblem(),
+
         ]);
     }
 

@@ -44,6 +44,8 @@ class PhotoSearch extends Visit
     public function search($params)
     {
         $query = Visit::find()->joinWith('problem');
+//        $query = Visit::find()->select('visit.*')->leftJoin('photo', '`photo`.`visit_id` = `visit`.`id`')->where(['visit.id' => 'photo.visit_id'])->joinWith('problem');
+
 
         // add conditions that should always apply here
 

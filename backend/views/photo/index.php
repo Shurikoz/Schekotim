@@ -24,9 +24,6 @@ $count_visits = (isset($_GET['per-page'])) ? $_GET['per-page'] : 10;
             <div class="pull-left">
                 <?= Html::a(FAS::icon('angle-left', ['class' => 'big', 'data-role' => 'arrow']) . '&nbsp В главное меню', ['/'], ['class' => 'btn btn-default']) ?>
             </div>
-            <div class="pull-right">
-                <span style="display: block;margin-top: 6px;">ID: <?= $model->id ?></span>
-            </div>
         </div>
     </div>
     <div class="row">
@@ -46,17 +43,17 @@ $count_visits = (isset($_GET['per-page'])) ? $_GET['per-page'] : 10;
                 <p class="titleNormal">Фильтр</p>
                 <hr>
                 <div class="row">
-                    <div class="col-md-2">
+                    <div class="col-md-2 col-sm-12">
                         <div class="c-field">
                             <?= $form->field($searchModel, 'card_number')->textInput(['class' => 'autoSearchSubmit c-input'])->label('№ карты', ['class' => 'c-field__label']) ?>
                         </div>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-3 col-sm-12">
                         <div class="c-field">
                             <?= $form->field($searchModel, 'problem')->dropDownList($problem, ['prompt' => 'Все','class' => 'autoSearchSubmit c-input'])->label('Проблема', ['class' => 'c-field__label']) ?>
                         </div>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-4 col-sm-12">
                         <div class="c-field">
                             <?= $form->field($searchModel, 'used_photo')->dropDownList($filter, ['prompt' => 'Все', 'class' => 'autoSearchSubmit c-input'])->label('Фильтр использованных фотографий', ['class' => 'c-field__label']) ?>
                         </div>
@@ -81,13 +78,11 @@ $count_visits = (isset($_GET['per-page'])) ? $_GET['per-page'] : 10;
         <br>
         <br>
         <br>
-
-        <?php // TODO Исправить timeout?>
         <?php if ($dataProvider->models) { ?>
             <?php foreach ($dataProvider->models as $item) { ?>
                 <?php if ($item->photo != null) { ?>
                     <div class="blockCard <?= $item->used_photo == 1 ? 'usingCard' : '' ?>">
-                        <?php if ($item->used_photo != 1) { ?>
+                        <?php if ($item->used_photo == 0) { ?>
                             <div class="pull-right">
                                 <?= Html::a('<span class="glyphicon glyphicon-check"></span> Использовано', ['photo/used', 'id' => $item->id], [
                                     'class' => 'btn btn-green',

@@ -86,15 +86,13 @@ $leader = Yii::$app->user->can('leader');
                     <th class="c-table__cell c-table__cell--head">Город / Адрес</th>
                     <th class="c-table__cell c-table__cell--head">Пациент</th>
                     <th class="c-table__cell c-table__cell--head">Посещений</th>
-                    <th class="c-table__cell c-table__cell--head">
-                        <span class="u-hidden-visually">Действия</span>
-                    </th>
+                    <th class="c-table__cell c-table__cell--head"><span class="u-hidden-visually">Действия</span></th>
                 </tr>
                 </thead>
                 <tbody>
+
                 <?php // TODO Исправить timeout?>
                 <?php Pjax::begin(['timeout' => 5000]); ?>
-
                 <?php if ($dataProvider->getModels()) { ?>
                     <?php foreach ($dataProvider->getModels() as $item) { ?>
                         <tr class="c-table__row">

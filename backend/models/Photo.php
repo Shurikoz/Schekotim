@@ -14,7 +14,9 @@ use yii\imagine\Image;
  * @property string $url
  * @property string $thumbnail
  * @property string $original
+ * @property string $template
  * @property string $files
+ * @property string $made
  */
 class Photo extends ActiveRecord
 {
@@ -38,9 +40,9 @@ class Photo extends ActiveRecord
     {
         return [
             [['visit_id'], 'integer'],
-            [['url', 'thumbnail', 'original'], 'string'],
+            [['url', 'thumbnail', 'original', 'template'], 'string'],
 
-            [['before', 'after', 'dermatolog'], 'image',
+            [['before', 'after', 'dermatolog', 'template'], 'image',
                 'extensions' => ['jpg', 'jpeg', 'JPG', 'JPEG', 'png', 'PNG'],
                 'checkExtensionByMimeType' => true,
                 'maxFiles' => 5,
@@ -63,6 +65,7 @@ class Photo extends ActiveRecord
             'addPhotoAfter' => 'Добавить фото',
             'before' => '',
             'after' => '',
+            'template' => '',
             'dermatolog' => ''
         ];
     }
@@ -88,25 +91,26 @@ class Photo extends ActiveRecord
 
                 //изображение в папке temp
                 $tempImage = Yii::getAlias($dir . '/temp/' . $fileName);
+                $finishImage = Yii::getAlias($dir . '/before/' . $fileName);
 
                 //сохраним оригинал
                 copy($tempImage, $dir . '/originalBefore/' . $fileName);
 
                 Image::autorotate($tempImage)->save($tempImage);
 
-                Image::resize($tempImage, 1080, 1080)
-                    ->save($tempImage, ['quality' => 100]);
+                Image::resize($tempImage, 1080, 1080)->save($finishImage, ['quality' => 100]);
 
                 //создадим миниатюру
                 $thumb = Yii::getAlias($dir . '/thumbBefore/' . $fileName);
                 Image::thumbnail($tempImage, 120, 120)->save($thumb, ['quality' => 100]);
 
-                //наложим логотип
-                $this->setLogo($tempImage);
-
-                //наложим текст
-                $url = $dir . '/before/' . $fileName;
-                $this->setText($tempImage, $url, $cardNumber, $dateVisit);
+                //наложим текст и лого
+                $image = Yii::getAlias('@webroot/images/template.png');
+                $tempFileName = $this->randomFileName(pathinfo($image, PATHINFO_EXTENSION));
+                copy($image, $dir . '/templateBefore/' . $tempFileName);
+                $url = Yii::getAlias($dir . '/templateBefore/' . $tempFileName);
+                $this->setText($image, $url, $cardNumber, $dateVisit);
+                $this->setLogo($url);
 
                 //сохраним в бд
                 $model = new Photo();
@@ -114,6 +118,7 @@ class Photo extends ActiveRecord
                 $model->url = '/' . $dir . '/before/' . $fileName;
                 $model->thumbnail = '/' . $dir . '/thumbBefore/' . $fileName;
                 $model->original = '/' . $dir . '/originalBefore/' . $fileName;
+                $model->template = '/' . $dir . '/templateBefore/' . $tempFileName;
                 $model->made = 'before';
                 $model->save(false);
             }
@@ -149,25 +154,26 @@ class Photo extends ActiveRecord
 
                 //изображение в папке temp
                 $tempImage = Yii::getAlias($dir . '/temp/' . $fileName);
+                $finishImage = Yii::getAlias($dir . '/after/' . $fileName);
 
                 //сохраним оригинал
                 copy($tempImage, $dir . '/originalAfter/' . $fileName);
 
                 Image::autorotate($tempImage)->save($tempImage);
 
-                Image::resize($tempImage, 1080, 1080)
-                    ->save($tempImage, ['quality' => 100]);
+                Image::resize($tempImage, 1080, 1080)->save($finishImage, ['quality' => 100]);
 
                 //создадим миниатюру
                 $thumb = Yii::getAlias($dir . '/thumbAfter/' . $fileName);
                 Image::thumbnail($tempImage, 120, 120)->save($thumb, ['quality' => 100]);
 
-                //наложим логотип
-                $this->setLogo($tempImage);
-
-                //наложим текст
-                $url = $dir . '/after/' . $fileName;
-                $this->setText($tempImage, $url, $cardNumber, $dateVisit);
+                //наложим текст и лого
+                $image = Yii::getAlias('@webroot/images/template.png');
+                $tempFileName = $this->randomFileName(pathinfo($image, PATHINFO_EXTENSION));
+                copy($image, $dir . '/templateAfter/' . $tempFileName);
+                $url = Yii::getAlias($dir . '/templateAfter/' . $tempFileName);
+                $this->setText($image, $url, $cardNumber, $dateVisit);
+                $this->setLogo($url);
 
                 //сохраним в бд
                 $model = new Photo();
@@ -175,6 +181,7 @@ class Photo extends ActiveRecord
                 $model->url = '/' . $dir . '/after/' . $fileName;
                 $model->thumbnail = '/' . $dir . '/thumbAfter/' . $fileName;
                 $model->original = '/' . $dir . '/originalAfter/' . $fileName;
+                $model->template = '/' . $dir . '/templateAfter/' . $tempFileName;
                 $model->made = 'after';
                 $model->save(false);
             }
@@ -202,22 +209,7 @@ class Photo extends ActiveRecord
     {
         if ($this->validate()) {
             $dir = 'upload/photo/' . $visitId;
-
-            if (!file_exists($dir)) {
-                mkdir($dir, 0777, true);
-                mkdir($dir . '/temp', 0777, true);
-                mkdir($dir . '/originalDermatolog', 0777, true);
-                mkdir($dir . '/drmatolog', 0777, true);
-                mkdir($dir . '/thumbDermatolog', 0777, true);
-            } elseif (!file_exists($dir . '/temp')){
-                mkdir($dir . '/temp', 0777, true);
-            } elseif (!file_exists($dir . '/originalDermatolog')){
-                mkdir($dir . '/originalDermatolog', 0777, true);
-            } elseif (!file_exists($dir. '/drmatolog')){
-                mkdir($dir . '/drmatolog', 0777, true);
-            } elseif (!file_exists($dir . '/thumbDermatolog')){
-                mkdir($dir . '/thumbDermatolog', 0777, true);
-            }
+            $this->checkDir($visitId, $dir);
 
             foreach ($this->dermatolog as $file) {
                 $fileName = $this->randomFileName($file->extension);
@@ -225,25 +217,26 @@ class Photo extends ActiveRecord
 
                 //изображение в папке temp
                 $tempImage = Yii::getAlias($dir . '/temp/' . $fileName);
+                $finishImage = Yii::getAlias($dir . '/dermatolog/' . $fileName);
 
                 //сохраним оригинал
                 copy($tempImage, $dir . '/originalDermatolog/' . $fileName);
 
                 Image::autorotate($tempImage)->save($tempImage);
 
-                Image::resize($tempImage, 1080, 1080)
-                    ->save($tempImage, ['quality' => 100]);
+                Image::resize($tempImage, 1080, 1080)->save($finishImage, ['quality' => 100]);
 
                 //создадим миниатюру
                 $thumb = Yii::getAlias($dir . '/thumbDermatolog/' . $fileName);
                 Image::thumbnail($tempImage, 120, 120)->save($thumb, ['quality' => 100]);
 
-                //наложим логотип
-                $this->setLogo($tempImage);
-
-                //наложим текст
-                $url = $dir . '/drmatolog/' . $fileName;
-                $this->setText($tempImage, $url, $cardNumber, $dateVisit);
+                //наложим текст и лого
+                $image = Yii::getAlias('@webroot/images/template.png');
+                $tempFileName = $this->randomFileName(pathinfo($image, PATHINFO_EXTENSION));
+                copy($image, $dir . '/templateDermatolog/' . $tempFileName);
+                $url = Yii::getAlias($dir . '/templateDermatolog/' . $tempFileName);
+                $this->setText($image, $url, $cardNumber, $dateVisit);
+                $this->setLogo($url);
 
                 //сохраним в бд
                 $model = new Photo();
@@ -251,6 +244,7 @@ class Photo extends ActiveRecord
                 $model->url = '/' . $dir . '/drmatolog/' . $fileName;
                 $model->thumbnail = '/' . $dir . '/thumbDermatolog/' . $fileName;
                 $model->original = '/' . $dir . '/originalDermatolog/' . $fileName;
+                $model->template = '/' . $dir . '/templateDermatolog/' . $fileName;
                 $model->made = 'dermatolog';
                 $model->save(false);
             }
@@ -284,27 +278,26 @@ class Photo extends ActiveRecord
      * @param $tempImage
      * @return \Imagine\Image\ImageInterface
      */
-    private function setLogo($tempImage)
+    private function setLogo($image)
     {
         $watermark = Yii::getAlias('@webroot/images/logoImage.png');
-        $size = getimagesize($tempImage); // Определяем размер картинки
+        $size = getimagesize($image); // Определяем размер картинки
         $imageWidth = $size[0]; // Ширина картинки
         $imageHeight = $size[1]; // Высота картинки
         $watermarkPositionLeft = $imageWidth - 386; // Новая позиция watermark по оси X (горизонтально)
         $watermarkPositionTop = $imageHeight - 85; // Новая позиция watermark по оси Y (вертикально)
         //наложим логотип
-        return Image::watermark($tempImage, $watermark, [$watermarkPositionLeft, $watermarkPositionTop])
-            ->save($tempImage, ['quality' => 100]);
+        return Image::watermark($image, $watermark, [$watermarkPositionLeft, $watermarkPositionTop])->save($image, ['quality' => 90]);
     }
 
     /**
-     * @param $tempImage
+     * @param $image
      * @param $url
      * @param $cardNumber
      * @param $dateVisit
      * @return \Imagine\Image\ImageInterface
      */
-    private function setText($tempImage, $url, $cardNumber, $dateVisit)
+    private function setText($image, $url, $cardNumber, $dateVisit)
     {
         //параметры текста для фото
         $text = '#: ' . $cardNumber . ',  ' . $dateVisit;
@@ -315,8 +308,7 @@ class Photo extends ActiveRecord
             'size'  => 34,    // Размер шрифта
             'color' => '0b9341', // цвет шрифта
         ];
-        return Image::text($tempImage, $text, $fontFile, $start, $fontOptions)
-            ->save(Yii::getAlias($url), ['quality' => 100]);
+        return Image::text($image, $text, $fontFile, $start, $fontOptions)->save($url, ['quality' => 90]);
     }
 
     /**
@@ -333,13 +325,66 @@ class Photo extends ActiveRecord
             mkdir($dir . '/after', 0777, true);
             mkdir($dir . '/thumbBefore', 0777, true);
             mkdir($dir . '/thumbAfter', 0777, true);
-        } elseif (!file_exists($dir . '/temp')){
+            mkdir($dir . '/templateBefore', 0777, true);
+            mkdir($dir . '/templateAfter', 0777, true);
+            mkdir($dir . '/originalDermatolog', 0777, true);
+            mkdir($dir . '/dermatolog', 0777, true);
+            mkdir($dir . '/thumbDermatolog', 0777, true);
+            mkdir($dir . '/templateDermatolog', 0777, true);
+        }
+
+        if (!file_exists($dir . '/temp')){
             mkdir($dir . '/temp', 0777, true);
-        } elseif (!file_exists('upload/photo/' . $visitId . '/after')){
+        }
+
+        if (!file_exists('upload/photo/' . $visitId . '/originalBefore')){
+            mkdir($dir . '/originalBefore', 0777, true);
+        }
+
+        if (!file_exists('upload/photo/' . $visitId . '/originalAfter')){
+            mkdir($dir . '/originalAfter', 0777, true);
+        }
+
+        if (!file_exists('upload/photo/' . $visitId . '/before')){
+            mkdir($dir . '/before', 0777, true);
+        }
+
+        if (!file_exists('upload/photo/' . $visitId . '/after')){
             mkdir($dir . '/after', 0777, true);
-        } elseif (!file_exists('upload/photo/' . $visitId . '/thumbAfter')){
+        }
+
+        if (!file_exists('upload/photo/' . $visitId . '/thumbBefore')){
+            mkdir($dir . '/thumbBefore', 0777, true);
+        }
+
+        if (!file_exists('upload/photo/' . $visitId . '/thumbAfter')){
             mkdir($dir . '/thumbAfter', 0777, true);
         }
+
+        if (!file_exists('upload/photo/' . $visitId . '/templateBefore')){
+            mkdir($dir . '/templateBefore', 0777, true);
+        }
+
+        if (!file_exists('upload/photo/' . $visitId . '/templateAfter')){
+            mkdir($dir . '/templateAfter', 0777, true);
+        }
+
+        if (!file_exists($dir. '/dermatolog')){
+            mkdir($dir . '/dermatolog', 0777, true);
+        }
+
+        if (!file_exists($dir . '/originalDermatolog')){
+            mkdir($dir . '/originalDermatolog', 0777, true);
+        }
+
+        if (!file_exists($dir . '/thumbDermatolog')){
+            mkdir($dir . '/thumbDermatolog', 0777, true);
+        }
+
+        if (!file_exists('upload/photo/' . $visitId . '/templateDermatolog')){
+            mkdir($dir . '/templateDermatolog', 0777, true);
+        }
+
     }
 
     /**
@@ -348,7 +393,21 @@ class Photo extends ActiveRecord
      */
     public static function delPhoto($dir)
     {
-        $folders = ['/temp', '/before', '/after', '/thumbBefore', '/thumbAfter', '/originalBefore', '/originalAfter', '/drmatolog', '/originalDermatolog', '/thumbDermatolog'];
+        $folders = [
+            '/temp',
+            '/before',
+            '/after',
+            '/dermatolog',
+            '/thumbBefore',
+            '/thumbAfter',
+            '/thumbDermatolog',
+            '/originalBefore',
+            '/originalAfter',
+            '/originalDermatolog',
+            '/templateBefore',
+            '/templateAfter',
+            '/templateDermatolog'
+        ];
         foreach ($folders as $folder) {
             if (file_exists($dir . $folder . '/')) {
                 foreach (glob($dir . $folder . '/*') as $file) {
@@ -358,14 +417,6 @@ class Photo extends ActiveRecord
             }
         }
         rmdir($dir);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getVisit()
-    {
-        return $this->hasOne(Visit::className(), ['id' => 'visit_id']);
     }
 
     public function getFilter()
@@ -417,5 +468,15 @@ class Photo extends ActiveRecord
         }
         return $dermatolog;
     }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getVisit()
+    {
+        return $this->hasOne(Visit::className(), ['id' => 'visit_id']);
+    }
+
+
 
 }

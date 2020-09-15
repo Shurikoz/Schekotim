@@ -14,8 +14,6 @@ ShowLoadingAsset::register($this);
 
 $this->title = 'Редактирование посещения, карта №: ' . $model->card_number;
 
-$problemName = ArrayHelper::map($problem, 'id', 'name');
-
 $card_id = (int)Yii::$app->request->get('number');
 
 //посчитаем возраст пациента по дате рождения
@@ -113,7 +111,7 @@ JS;
             <div class="col-md-4 col-sm-6">
                 <div class="box">
                     <?= $form->field($model, 'problem_id')
-                        ->dropDownList($problemName, [
+                        ->dropDownList($problem, [
                             'prompt' => [
                                 'text' => '-',
                                 'options' => [

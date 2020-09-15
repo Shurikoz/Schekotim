@@ -13,8 +13,6 @@ ShowLoadingAsset::register($this);
 
 $this->title = 'Создание копии посещения, карта №: ' . $model->card_number;
 
-$problemName = ArrayHelper::map($problem, 'id', 'name');
-array_unshift($problemName, '');
 $card_id = (int)Yii::$app->request->get('number');
 
 //посчитаем возраст пациента по дате рождения
@@ -60,6 +58,8 @@ $age = $born->diff(new DateTime)->format('%y');
         <?= $form->field($model, 'city_id')->hiddenInput(['value' => $model->city_id])->label(false); ?>
         <?= $form->field($model, 'address_point_id')->hiddenInput(['value' => $model->address_point_id])->label(false); ?>
         <?= $form->field($model, 'problem_id')->hiddenInput(['value' => $model->problem->id])->label(false); ?>
+        <?= $form->field($model, 'specialist_id')->hiddenInput(['value' => $specialist->id])->label(false); ?>
+
         <div class="row">
             <div class="col-md-4">
                 <div class="box">
@@ -67,12 +67,18 @@ $age = $born->diff(new DateTime)->format('%y');
                 </div>
             </div>
         </div>
-<!--        --><?//= $form->field($model, 'specialist_id')->hiddenInput(['value' => $specialist->id])->label(false); ?>
 <!--        <div class="row">-->
 <!--            <div class="col-md-4">-->
 <!--                <div class="box">-->
 <!--                    --><?//= $form->field($model, 'problem_id')
-//                        ->dropDownList($problemName)
+//                        ->dropDownList($problem, [
+//                            'prompt' => [
+//                                'text' => '-',
+//                                'options' => [
+//                                    'value' => '0'
+//                                ]
+//                            ]
+//                        ])
 //                        ->label('Проблема') ?>
 <!--                    <div id="errorData" style="color:red"></div>-->
 <!--                </div>-->

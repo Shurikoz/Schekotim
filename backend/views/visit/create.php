@@ -259,6 +259,9 @@ $dermatolog = Yii::$app->user->can('dermatolog');
                                 'showRemove' => false,
                                 'showCaption' => false,
                                 'browseClass' => 'btn btn-default btn-block',
+                                'layoutTemplates' => [
+                                    'footer' => '<div class="file-thumbnail-footer" style="height: 0">{indicator}{actions}</div>'
+                                ],
                             ]
                         ])?>
                 </div>
@@ -271,9 +274,9 @@ $dermatolog = Yii::$app->user->can('dermatolog');
                                 'accept' => 'image/*',
                             ],
                             'pluginOptions' => [
+                                'showUpload' => false,
                                 'previewFileType' => 'image',
                                 'allowedFileExtensions' => ['jpg', 'jpeg'],
-                                'showUpload' => false,
                                 'maxFileCount' => 5,
                                 'uploadUrl' => Url::to(['']),
                                 'fileActionSettings' => [

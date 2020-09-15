@@ -4,7 +4,6 @@ namespace backend\models;
 
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use backend\models\Photo;
 
 /**
  * PhotoVisitSearch represents the model behind the search form of `backend\models\PhotoVisit`.
@@ -34,6 +33,7 @@ class PhotoSearch extends Visit
         return Model::scenarios();
     }
 
+
     /**
      * Creates data provider instance with search query applied
      *
@@ -43,12 +43,21 @@ class PhotoSearch extends Visit
      */
     public function search($params)
     {
-        $query = Visit::find()->joinWith('problem');
-//        $query = Visit::find()->select('visit.*')->leftJoin('photo', '`photo`.`visit_id` = `visit`.`id`')->where(['visit.id' => 'photo.visit_id'])->joinWith('problem');
 
+        $query = Visit::find()->where(['has_come' => '1'])->joinWith('problem');
+
+//        $query = Visit::find()->select(['visit.*', 'COUNT(photo.id) AS visitsCount'])->joinWith('photo')->groupBy('visit.id')->joinWith('problem');
+
+//        $query = Visit::find()->select('visit.*')->join('INNER JOIN', 'photo','photo.visit_id = visit.id')->joinWith('problem');
+
+//        $query = Visit::find()->select('visit.*')->leftJoin('photo', '`photo`.`visit_id` = `visit`.`id`')->joinWith('problem');
+
+//        $query = Visit::find()->select(['{{visit}}.*', 'COUNT({{photo}}.id) AS visitCount'])->joinWith('photo')->groupBy('{{photo}}.id')->joinWith('problem');
+//        $customers = Customer::find()->select(['{{customer}}.*', 'COUNT({{order}}.id) AS ordersCount'])->joinWith('orders')->groupBy('{{customer}}.id')->all();
+
+//        $customers = Customer::find()->select('customer.*')->leftJoin('order', '`order`.`customer_id` = `customer`.`id`')->where(['order.status' => Order::STATUS_ACTIVE])->with('orders')->all();
 
         // add conditions that should always apply here
-
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
             'pagination' => [

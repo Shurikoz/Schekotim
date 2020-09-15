@@ -142,6 +142,8 @@ class PhotoController extends Controller
             return Yii::$app->response->sendFile(Yii::getAlias('@backend/web' . $image->url));
         } elseif ($type == 'original'){
             return Yii::$app->response->sendFile(Yii::getAlias('@backend/web' . $image->original));
+        } elseif ($type == 'template'){
+            return Yii::$app->response->sendFile(Yii::getAlias('@backend/web' . $image->template));
         }
     }
 

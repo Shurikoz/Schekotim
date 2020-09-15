@@ -16,6 +16,8 @@ $count_visits = (isset($_GET['per-page'])) ? $_GET['per-page'] : 10;
 
 ?>
 <?= FancyBox::widget();?>
+
+
 <div class="photo-index">
     <div class="row">
         <div class="col-md-12">
@@ -71,8 +73,6 @@ $count_visits = (isset($_GET['per-page'])) ? $_GET['per-page'] : 10;
             <?= LinkPager::widget([
                 'pagination' => $pages,
                 'maxButtonCount' => 5,
-                'firstPageLabel' => true,
-                'lastPageLabel' => true,
             ]); ?>
         </div>
         <br>
@@ -80,6 +80,7 @@ $count_visits = (isset($_GET['per-page'])) ? $_GET['per-page'] : 10;
         <br>
         <?php if ($dataProvider->models) { ?>
             <?php foreach ($dataProvider->models as $item) { ?>
+                <?php if ($item->photo != null) { ?>
                     <div class="blockCard <?= $item->used_photo == 1 ? 'usingCard' : '' ?>">
                         <?php if ($item->used_photo == 0) { ?>
                             <div class="pull-right">
@@ -101,7 +102,7 @@ $count_visits = (isset($_GET['per-page'])) ? $_GET['per-page'] : 10;
                             </div>
                             <div class="col-md-3">
                                 <div class="box">
-                                    <p><b>Id посещения: </b><?= $item->id ?></p>
+                                    <p><b>№ посещения: </b><?= $item->number ?></p>
                                 </div>
                             </div>
                             <div class="col-md-3">
@@ -145,18 +146,7 @@ $count_visits = (isset($_GET['per-page'])) ? $_GET['per-page'] : 10;
                                         <p><?= $item->recommendation == null ? 'Не заполнено' : nl2br($item->recommendation) ?></p>
                                     </div>
                                 </div>
-                                <?php if ($item->diagnosis) { ?>
                                 <div class="col-md-6">
-                                    <div class="box">
-                                        <p><b>Диагноз:</b></p>
-                                        <br>
-                                        <p><?= $item->diagnosis == null ? 'Не заполнено' : nl2br($item->diagnosis) ?></p>
-                                    </div>
-                                </div>
-                                <?php } ?>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-12 col-sm-12">
                                     <div class="box">
                                         <p><b>Комментарий:</b></p>
                                         <br>
@@ -175,14 +165,8 @@ $count_visits = (isset($_GET['per-page'])) ? $_GET['per-page'] : 10;
                                             <div class="photo" style="float: left; margin:0 0 20px 20px">
                                                 <?= Html::a(Html::img($photo->thumbnail), $photo->url, ['data-fancybox' => true]);?>
                                                 <br>
-                                                <br>
-                                                <?= Html::a('<span class="glyphicon glyphicon-download-alt"></span> Обработанное', ['photo/download', 'id' => $photo->id, 'type' => 'processed']) ?>
-                                                <br>
+                                                <?= Html::a('<span class="glyphicon glyphicon-download-alt"></span> Обработанное', ['photo/download', 'id' => $photo->id, 'type' => 'processed']) ?>                                                <br>
                                                 <?= Html::a('<span class="glyphicon glyphicon-download-alt"></span> Оригинал', ['photo/download', 'id' => $photo->id, 'type' => 'original']) ?>
-                                                <?php if ($photo->template){ ?>
-                                                <br>
-                                                <?= Html::a('<span class="glyphicon glyphicon-download-alt"></span> Шаблон', ['photo/download', 'id' => $photo->id, 'type' => 'template']) ?>
-                                                <?php } ?>
                                             </div>
                                         <?php } ?>
                                     <?php } ?>
@@ -196,15 +180,8 @@ $count_visits = (isset($_GET['per-page'])) ? $_GET['per-page'] : 10;
                                             <div class="photo" style="float: left; margin:0 0 20px 20px">
                                                 <?= Html::a(Html::img($photo->thumbnail), $photo->url, ['data-fancybox' => true]);?>
                                                 <br>
-                                                <br>
-                                                <?= Html::a('<span class="glyphicon glyphicon-download-alt"></span> Обработанное', ['photo/download', 'id' => $photo->id, 'type' => 'processed']) ?>
-                                                <br>
+                                                <?= Html::a('<span class="glyphicon glyphicon-download-alt"></span> Обработанное', ['photo/download', 'id' => $photo->id, 'type' => 'processed']) ?>                                                <br>
                                                 <?= Html::a('<span class="glyphicon glyphicon-download-alt"></span> Оригинал', ['photo/download', 'id' => $photo->id, 'type' => 'original']) ?>
-                                            <?php if ($photo->template){ ?>
-                                                <br>
-                                                <?= Html::a('<span class="glyphicon glyphicon-download-alt"></span> Шаблон', ['photo/download', 'id' => $photo->id, 'type' => 'template']) ?>
-                                            <?php } ?>
-
                                             </div>
                                         <?php } ?>
                                     <?php } ?>
@@ -217,6 +194,84 @@ $count_visits = (isset($_GET['per-page'])) ? $_GET['per-page'] : 10;
                             <hr style="margin: 35px 0;border: 2px solid #7ba335;">
                         </div>
                     </div>
+                <?php } else { ?>
+                    <div class="blockCard <?= $item->used_photo == 1 ? 'usingCard' : '' ?>">
+                        <div class="row">
+                            <div class="col-md-2">
+                                <div class="box">
+                                    <p><b>№ карты: </b><?= $item->card_number ?></p>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="box">
+                                    <p><b>№ посещения: </b><?= $item->number ?></p>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="box">
+                                    <p><b>Проблема: </b><?= $item->problem_id == '0' ? '<span class="text-red">Не указана</span>' : $item->problem->name ?></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <?= Html::button('Показать информацию <span class="glyphicon glyphicon-arrow-down"></span>', [
+                                    'class' => 'btn btn-default infoHiddenBlockBtn',
+                                    'style' => 'margin: 3px;',
+                                    'data' => ['id' => $item->id]
+                                ]) ?>
+                            </div>
+                        </div>
+                        <div class="infoHiddenBlock<?= $item->id ?>" hidden>
+                            <br>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="box">
+                                        <p><b>Анамнез:</b></p>
+                                        <br>
+                                        <p><?= $item->anamnes == null ? 'Не заполнено' : nl2br($item->anamnes) ?></p>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="box">
+                                        <p><b>Манипуляции:</b></p>
+                                        <br>
+                                        <p><?= $item->manipulation == null ? 'Не заполнено' : nl2br($item->manipulation) ?></p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="box">
+                                        <p><b>Рекомендации:</b></p>
+                                        <br>
+                                        <p><?= $item->recommendation == null ? 'Не заполнено' : nl2br($item->recommendation) ?></p>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="box">
+                                        <p><b>Комментарий:</b></p>
+                                        <br>
+                                        <p><?= $item->description == null ? 'Не заполнено' : nl2br($item->description) ?></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="box">
+                                    <p style="color: red" align="center">Фотографии не добавлены!</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <hr style="margin: 35px 0;border: 2px solid #7ba335;">
+                        </div>
+                    </div>
+                <?php } ?>
             <?php } ?>
 
         <?php } else {?>
@@ -226,8 +281,6 @@ $count_visits = (isset($_GET['per-page'])) ? $_GET['per-page'] : 10;
             <?= LinkPager::widget([
                 'pagination' => $pages,
                 'maxButtonCount' => 5,
-                'firstPageLabel' => true,
-                'lastPageLabel' => true,
             ]); ?>
         </div>
 

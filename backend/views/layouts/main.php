@@ -63,11 +63,6 @@ $dermatolog = Yii::$app->user->can('dermatolog');
 //
 //        ];
         $menuItems[] = [
-            'label' => 'Фото работ',
-            'url' => ['/photo/index'],
-            'visible' => $smm,
-        ];
-        $menuItems[] = [
             'label' => 'Сайт',
             'visible' => $admin || $leader,
             'items' => [

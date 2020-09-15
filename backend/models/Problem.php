@@ -73,12 +73,6 @@ class Problem extends \yii\db\ActiveRecord
         return $prev;
     }
 
-    public function findProblem()
-    {
-        $problem = Problem::find()->orderBy(['number' => SORT_ASC])->all();
-        return $problem;
-    }
-
     /**
      * передадим на вход номер карты
      * делаем проверку на существование не закрытых проблем и исключаем их.
@@ -89,13 +83,14 @@ class Problem extends \yii\db\ActiveRecord
     {
         $model = $this::find()->orderBy(['number' => SORT_ASC])->all();
         $problem = ArrayHelper::map($model, 'number', 'name');
-        $visit = Visit::find()->where(['card_number' => $cardNumber])->all();
-        foreach ($visit as $item) {
-            if ($this->checkOpenProblems($item)) {
-                unset($problem[$item->problem_id]);
+        if ($cardNumber != null) {
+            $visit = Visit::find()->where(['card_number' => $cardNumber])->all();
+            foreach ($visit as $item) {
+                if ($this->checkOpenProblems($item)) {
+                    unset($problem[$item->problem_id]);
+                }
             }
         }
-
         return $problem;
     }
 

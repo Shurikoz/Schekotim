@@ -80,7 +80,7 @@ class VisitController extends Controller
 
         $specialist = Specialist::find()->where(['user_id' => Yii::$app->user->identity->id])->one();
 
-        $specialistModel = Specialist::find()->where(['address_point_id' => $user->address_point_id])->all();
+        $specialistModel = Specialist::find()->all();
 
         $card = Card::find()->where(['number' => $cardNumber])->one();
 

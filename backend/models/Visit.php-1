@@ -3,6 +3,7 @@
 namespace backend\models;
 use Yii;
 use yii\db\ActiveRecord;
+use common\models\User;
 
 /**
  * This is the model class for table "visit".
@@ -42,7 +43,6 @@ use yii\db\ActiveRecord;
 
 class Visit extends ActiveRecord
 {
-
     /**
      * {@inheritdoc}
      */
@@ -300,32 +300,31 @@ class Visit extends ActiveRecord
         $photoAfter = Photo::find()->where(['visit_id' => $id, 'made' => 'after'])->all();
         $photoDermatolog = Photo::find()->where(['visit_id' => $id, 'made' => 'dermatolog'])->all();
 
+        $addPhotoBefore = new Photo();
+        $addPhotoAfter = new Photo();
+        $addPhotoDermatolog = new Photo();
         $photo = Photo::findOne($id);
         $dirUrl = Yii::getAlias('@webroot' . $photo->url);
         $dirThumb = Yii::getAlias('@webroot' . $photo->thumbnail);
         $dirOrig = Yii::getAlias('@webroot' . $photo->original);
         $dirTemplate = Yii::getAlias('@webroot' . $photo->template);
-
         if ($photo->delete()) {
             chmod($dirUrl, 0777);
-            unlink($dirUrl);
-
             chmod($dirThumb, 0777);
-            unlink($dirThumb);
-
             chmod($dirOrig, 0777);
-            unlink($dirOrig);
-
             chmod($dirTemplate, 0777);
+            unlink($dirUrl);
+            unlink($dirThumb);
+            unlink($dirOrig);
             unlink($dirTemplate);
         }
         return [
             'photoBefore' => $photoBefore,
             'photoAfter' => $photoAfter,
             'photoDermatolog' => $photoDermatolog,
-            'addPhotoBefore' => new Photo(),
-            'addPhotoAfter' => new Photo(),
-            'addPhotoDermatolog' => new Photo(),
+            'addPhotoBefore' => $addPhotoBefore,
+            'addPhotoAfter' => $addPhotoAfter,
+            'addPhotoDermatolog' => $addPhotoDermatolog,
         ];
     }
 
@@ -337,11 +336,6 @@ class Visit extends ActiveRecord
     public function getPhoto()
     {
         return $this->hasMany(Photo::className(), ['visit_id' => 'id']);
-    }
-
-    public function getPhotoCount()
-    {
-        return count($this->photo);
     }
 
     public function getSpecialist()

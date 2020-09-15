@@ -129,13 +129,13 @@ $this->registerJs($script, yii\web\View::POS_READY);
                 </header>
                 <ul>
                     <li><a href="/">Главная</a></li>
-                    <li><a href="/uslugi">Услуги и цены</a></li>
+                    <li><a href="/services">Услуги и цены</a></li>
                     <li><a href="/stock">Акции и скидки</a></li>
-                    <li><a href="/sertificats">Дипломы и сертификаты</a></li>
-                    <li><a href="/raboty">Примеры работ</a></li>
+                    <li><a href="/certificates">Дипломы и сертификаты</a></li>
+                    <li><a href="/work">Примеры работ</a></li>
                     <li><a href="/review">Отзывы</a></li>
-                    <li><a href="/obuchenie">Обучение</a></li>
-                    <li><a href="/vakansii">Вакансии</a></li>
+                    <li><a href="/training">Обучение</a></li>
+                    <li><a href="/vacancy">Вакансии</a></li>
                     <li><a href="/franchise">Франчайзинг</a></li>
                     <li><a href="/contacts">Контакты</a></li>
                 </ul>

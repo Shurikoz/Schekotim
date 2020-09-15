@@ -80,7 +80,7 @@ $count_visits = (isset($_GET['per-page'])) ? $_GET['per-page'] : 10;
         <br>
         <?php if ($dataProvider->models) { ?>
             <?php foreach ($dataProvider->models as $item) { ?>
-                    <div class="blockCard <?= $item->used_photo == 1 ? 'usingCard' : '' ?>">
+                <div class="blockCard <?= $item->used_photo == 1 ? 'usingCard' : '' ?>">
                         <?php if ($item->used_photo == 0) { ?>
                             <div class="pull-right">
                                 <?= Html::a('<span class="glyphicon glyphicon-check"></span> Использовано', ['photo/used', 'id' => $item->id], [
@@ -212,11 +212,7 @@ $count_visits = (isset($_GET['per-page'])) ? $_GET['per-page'] : 10;
                             </div>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <hr style="margin: 35px 0;border: 2px solid #7ba335;">
-                        </div>
-                    </div>
+                <hr>
             <?php } ?>
 
         <?php } else {?>

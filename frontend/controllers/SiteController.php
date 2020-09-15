@@ -224,10 +224,10 @@ class SiteController extends Controller
      *
      * @return mixed
      */
-    public function actionUslugi()
+    public function actionServices()
     {
         $model = Price::find()->one();
-        return $this->render('uslugi', [
+        return $this->render('services', [
             'model' => $model,
         ]);
     }
@@ -237,13 +237,13 @@ class SiteController extends Controller
      *
      * @return mixed
      */
-    public function actionSertificats()
+    public function actionCertificates()
     {
         $this->view->registerMetaTag([
             'name' => 'description',
             'content' => '«Щекотливая тема» - Дипломы и сертификаты'
         ]);
-        return $this->render('sertificats');
+        return $this->render('certificates');
     }
 
     public function actionFranchise()
@@ -260,7 +260,7 @@ class SiteController extends Controller
      *
      * @return mixed
      */
-    public function actionRaboty()
+    public function actionWork()
     {
         $this->view->registerMetaTag([
             'name' => 'description',
@@ -271,7 +271,7 @@ class SiteController extends Controller
         $manicure = Gallery::find()->where(['category' => 1])->all();
         $pedicure = Gallery::find()->where(['category' => 2])->all();
 
-        return $this->render('raboty', [
+        return $this->render('work', [
             'podolog' => $podolog,
             'manicure' => $manicure,
             'pedicure' => $pedicure,
@@ -365,29 +365,29 @@ class SiteController extends Controller
      *
      * @return mixed
      */
-    public function actionObuchenie()
+    public function actionTraining()
     {
         $this->view->registerMetaTag([
             'name' => 'description',
             'content' => '«Щекотливая тема» - Обучение'
         ]);
 
-        return $this->render('obuchenie');
+        return $this->render('training');
     }
 
     /**
-     * Displays vakansii page.
+     * Displays vacancy page.
      *
      * @return mixed
      */
-    public function actionVakansii()
+    public function actionVacancy()
     {
         $this->view->registerMetaTag([
             'name' => 'description',
             'content' => '«Щекотливая тема» - Вакансии'
         ]);
 
-        return $this->render('vakansii');
+        return $this->render('vacancy');
     }
 
     /**

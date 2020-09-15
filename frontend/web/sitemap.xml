@@ -9,7 +9,7 @@
 		<changefreq>hourly</changefreq>
 	</url>
 	<url>
-		<loc>https://schekotim.ru/vakansii</loc>
+		<loc>https://schekotim.ru/vacancy</loc>
 		<lastmod>2020-05-01T19:35:31+03:00</lastmod>
 		<priority>0.5</priority>
 		<changefreq>hourly</changefreq>
@@ -21,7 +21,7 @@
 		<changefreq>hourly</changefreq>
 	</url>
 	<url>
-		<loc>https://schekotim.ru/obuchenie</loc>
+		<loc>https://schekotim.ru/training</loc>
 		<lastmod>2020-05-01T19:35:31+03:00</lastmod>
 		<priority>0.5</priority>
 		<changefreq>hourly</changefreq>
@@ -39,7 +39,7 @@
 		<changefreq>hourly</changefreq>
 	</url>
 	<url>
-		<loc>https://schekotim.ru/raboty</loc>
+		<loc>https://schekotim.ru/work</loc>
 		<lastmod>2020-05-01T19:35:31+03:00</lastmod>
 		<priority>0.5</priority>
 		<changefreq>hourly</changefreq>
@@ -51,7 +51,7 @@
 		<changefreq>hourly</changefreq>
 	</url>
 	<url>
-		<loc>https://schekotim.ru/sertificats</loc>
+		<loc>https://schekotim.ru/certificates</loc>
 		<lastmod>2020-05-01T19:35:31+03:00</lastmod>
 		<priority>0.5</priority>
 		<changefreq>hourly</changefreq>
@@ -69,7 +69,7 @@
 		<changefreq>always</changefreq>
 	</url>
 	<url>
-		<loc>https://schekotim.ru/uslugi</loc>
+		<loc>https://schekotim.ru/services</loc>
 		<lastmod>2020-05-01T19:35:31+03:00</lastmod>
 		<priority>0.5</priority>
 		<changefreq>hourly</changefreq>

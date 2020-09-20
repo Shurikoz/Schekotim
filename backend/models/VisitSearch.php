@@ -38,6 +38,7 @@ class VisitSearch extends Visit
      *
      * @param array $params
      *
+     * @param $number
      * @return ActiveDataProvider
      */
     public function search($params, $number)

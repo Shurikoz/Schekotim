@@ -34,7 +34,62 @@ $leader = Yii::$app->user->can('leader');
 
 ?>
 
-<?= FancyBox::widget();?>
+<?= FancyBox::widget([
+    'target' => '[data-fancybox]',
+    'config' => [
+        // Enable infinite gallery navigation
+        'loop'              => true,
+
+        // Space around image, ignored if zoomed-in or viewport smaller than 800px
+        'margin'            => [44,0],
+
+        // Horizontal space between slides
+        'gutter'            => 30,
+
+        // Enable keyboard navigation
+        'keyboard'          => true,
+
+        // Should display navigation arrows at the screen edges
+        'arrows'            => true,
+
+        // Should display infobar (counter and arrows at the top)
+        'infobar'           => true,
+
+        // Should display toolbar (buttons at the top)
+        'toolbar'           => true,
+
+        // What buttons should appear in the top right corner.
+        // Buttons will be created using templates from `btnTpl` option
+        // and they will be placed into toolbar (class="fancybox-toolbar"` element)
+        'buttons' => [
+            'slideShow',
+            'fullScreen',
+            'thumbs',
+            'close'
+        ],
+
+        // Detect "idle" time in seconds
+        'idleTime'          => 4,
+
+        // Should display buttons at top right corner of the content
+        // If 'auto' - they will be created for content having type 'html', 'inline' or 'ajax'
+        // Use template from `btnTpl.smallBtn` for customization
+        'smallBtn'          => 'auto',
+
+        // Disable right-click and use simple image protection for images
+        'protect'           => false,
+
+        // Shortcut to make content "modal" - disable keyboard navigtion, hide buttons, etc
+        'modal'             => false,
+
+        'image' => [
+            // Wait for images to load before displaying
+            // Requires predefined image dimensions
+            // If 'auto' - will zoom in thumbnail if 'width' and 'height' attributes are found
+            'preload' => "auto",
+        ],
+    ]
+]); ?>
 
 <div class="card-view">
     <div class="row">
@@ -436,7 +491,6 @@ $leader = Yii::$app->user->can('leader');
                                         </div>
                                     </div>
                                 </div>
-
                                 <div class="col-md-6">
                                     <?php if ($item->specialist->profession == 'podolog') { ?>
                                         <div class="box">
@@ -446,7 +500,7 @@ $leader = Yii::$app->user->can('leader');
                                                     <?php foreach ($item->photo as $photo) { ?>
                                                         <?php if ($photo->made == 'before') { ?>
                                                             <div style="float: left; margin: 0 0 20px 20px;">
-                                                                <?= Html::a(Html::img($photo->thumbnail), $photo->url, ['data-fancybox' => true]); ?>
+                                                                <?= Html::a(Html::img($photo->thumbnail), $photo->url, ['data-fancybox' => 'before_' . $item->id]); ?>
                                                             </div>
                                                         <?php } ?>
                                                     <?php } ?>
@@ -462,7 +516,7 @@ $leader = Yii::$app->user->can('leader');
                                                     <?php foreach ($item->photo as $photo) { ?>
                                                         <?php if ($photo->made == 'after') { ?>
                                                             <div style="float: left; margin: 0 0 20px 20px;">
-                                                                <?= Html::a(Html::img($photo->thumbnail), $photo->url, ['data-fancybox' => true]); ?>
+                                                                <?= Html::a(Html::img($photo->thumbnail), $photo->url, ['data-fancybox' => 'after_' . $item->id]); ?>
                                                             </div>
                                                         <?php } ?>
                                                     <?php } ?>
@@ -481,7 +535,7 @@ $leader = Yii::$app->user->can('leader');
                                                     <?php foreach ($item->photo as $photo) { ?>
                                                         <?php if ($photo->made == 'dermatolog') { ?>
                                                             <div style="float: left; margin: 0 0 20px 20px;">
-                                                                <?= Html::a(Html::img($photo->thumbnail), $photo->url, ['data-fancybox' => true]); ?>
+                                                                <?= Html::a(Html::img($photo->thumbnail), $photo->url, ['data-fancybox' => 'dermatolog_' . $item->id]); ?>
                                                             </div>
                                                         <?php } ?>
                                                     <?php } ?>
@@ -503,14 +557,6 @@ $leader = Yii::$app->user->can('leader');
         <?php } ?>
         </tbody>
     </table>
-
-
-
-
-
-
-
-
     <div class="pull-right">
         <?= LinkPager::widget([
             'pagination' => $pages,

@@ -25,17 +25,22 @@ $this->registerMetaTag([
         <p class="reviewTitleText"><b>Щекотливая тема</b> благодарит вас за посещение. Если вы хотите поделиться отзывом и поставить оценку, перейдите по ссылке в QR-коде. </p>
         <?= Alert::widget() ?>
         <div class="row">
-            <div id="zoon" class="col-4 col-12-medium" style="padding: 0;">
-                <p class="rew-title">Оставьте отзыв на <a href="https://zoon.ru/msk/medical/tsentr_podologii_schekotlivaya_tema_na_ulitse_samuila_marshaka_vo_vnukovskom_poselenii/" target="_blank">zoon.ru</a></p>
+            <div id="zoon" class="col-3 col-12-medium" style="padding: 0;">
+                <p class="rew-title">Оставьте отзыв на <a href="https://g.page/schekotim/review?gm" target="_blank">Google</a></p>
+                <a href="https://g.page/schekotim/review?gm" target="_blank"><img class="qrc" src="/images/google.jpg" alt=""></a>
+                <a href="https://g.page/schekotim/review?gm" target="_blank"><img class="qrc" src="http://qrcoder.ru/code/?https%3A%2F%2Fg.page%2Fschekotim%2Freview%3Fgm&6&0" alt=""></a>
+            </div>
+            <div id="google" class="col-3 col-12-medium" style="padding: 0;">
+                <p class="rew-title">Оставьте отзыв на <a href="https://zoon.ru/msk/medical/tsentr_podologii_schekotlivaya_tema_na_ulitse_samuila_marshaka_vo_vnukovskom_poselenii/" target="_blank">zoon</a></p>
                 <a href="https://zoon.ru/msk/medical/tsentr_podologii_schekotlivaya_tema_na_ulitse_samuila_marshaka_vo_vnukovskom_poselenii/" target="_blank"><img class="qrc" src="https://zoon.ru/images/header/zoon_logo.png?v=2" alt=""></a>
                 <a href="https://zoon.ru/msk/medical/tsentr_podologii_schekotlivaya_tema_na_ulitse_samuila_marshaka_vo_vnukovskom_poselenii/" target="_blank"><img class="qrc" src="http://qrcoder.ru/code/?https%3A%2F%2Fzoon.ru%2Fmsk%2Fmedical%2Ftsentr_podologii_schekotlivaya_tema_na_ulitse_samuila_marshaka_vo_vnukovskom_poselenii%2F&4&0" alt=""></a>
             </div>
-            <div id="yand" class="col-4 col-12-medium" style="padding: 0;">
-                <p class="rew-title">Оставьте отзыв на <a href="https://yandex.ru/profile/34151440370">Yandex.ru</a></p>
+            <div id="yand" class="col-3 col-12-medium" style="padding: 0;">
+                <p class="rew-title">Оставьте отзыв на <a href="https://yandex.ru/profile/34151440370">Yandex</a></p>
                 <a href="https://yandex.ru/profile/34151440370"><img class="qrc" src="/images/yandex.jpg" alt=""></a>
                 <a href="https://yandex.ru/profile/34151440370"><img class="qrc" src="/images/qryan.jpg" alt=""></a>
             </div>
-            <div class="col-4 col-12-medium">
+            <div class="col-3 col-12-medium">
                 <p class="rew-title">Оставьте отзыв на нашем сайте</p>
                 <br>
                 <br>

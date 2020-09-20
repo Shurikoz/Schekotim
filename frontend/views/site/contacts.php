@@ -46,7 +46,9 @@ $this->registerMetaTag([
                 <p>
                     Если у вас есть вопросы или предложения, пожалуйста, заполните следующую форму, чтобы связаться с
                     нами.
-                    Спасибо.
+                </p>
+                <p>
+                    Записаться к нам можно через <a href="https://api.whatsapp.com/send?phone=+79100048558&text=Здравствуйте! Хочу записаться к вам на прием!" class="icon fab fa-whatsapp">&nbsp;<span>WhatsApp</span></a> или позвонив по телефону <a href="tel:+74951818780" class="icon fas fa-phone">&nbsp;<span>+7(495)181-87-80</span></a>
                 </p>
                 <hr class="major"/>
                 <?php $form = ActiveForm::begin(['id' => 'contact-form']); ?>

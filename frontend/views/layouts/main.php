@@ -131,7 +131,13 @@ $this->registerJs($script, yii\web\View::POS_READY);
                     <li><a href="/">Главная</a></li>
                     <li><a href="/services">Услуги и цены</a></li>
                     <li><a href="/stock">Акции и скидки</a></li>
-                    <li><a href="/certificates">Дипломы и сертификаты</a></li>
+                    <li>
+                        <span class="opener">Дипломы и сертификаты</span>
+                        <ul>
+                            <li><a href="/certificates">Наших специалистов</a></li>
+                            <li><a href="/registry">Наших студентов</a></li>
+                        </ul>
+                    </li>
                     <li><a href="/work">Примеры работ</a></li>
                     <li><a href="/review">Отзывы</a></li>
                     <li><a href="/training">Обучение</a></li>

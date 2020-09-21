@@ -1,6 +1,7 @@
 <?php
 
 namespace backend\models;
+use russ666\widgets\Countdown;
 use Yii;
 use yii\db\ActiveRecord;
 
@@ -124,20 +125,6 @@ class Visit extends ActiveRecord
     }
 
     /**
-     * создание нового посещения
-     */
-    public function createNewVisit(){
-
-    }
-
-    /**
-     * изменение посещения
-     */
-    public function updateVisit(){
-
-    }
-
-    /**
      * проверка посещений - пришел ли клиент и пришел вовремя/не вовремя
      * производится в контроллере CardController в экшене actionView
      */
@@ -171,6 +158,28 @@ class Visit extends ActiveRecord
         }
     }
 
+    /**
+     * таймер обратного отсчета для кнопки изменения посещения
+     * @param $item
+     * @return string
+     * @throws \Exception
+     */
+    public static function timer($item)
+    {
+        $res = Countdown::widget([
+            'id' => 'timer_' . $item->id,
+            'datetime' => date('Y-m-d H:i:s O', time() + ($item->timestamp - time())),
+            'format' => '<span style=\"color: red\"\>%-D д. %-H:%-M:%-S</span> ',
+            'tagName' => 'span',
+            'events' => [
+                'finish' => 'function(){$(\'#blockEdit_\' + $(this).parent().attr("data-id")).remove();}',
+            ],
+            'options' => [
+                'class' => 'timerBox'
+            ]
+        ]);
+        return $res;
+    }
     /**
      * проверка на разрешение редактирования посещения
      * производится во вьюхе card/view

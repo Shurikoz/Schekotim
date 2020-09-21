@@ -817,9 +817,11 @@ div.datetimepicker-minutes table{
 }
 
 .timerBox{
-    padding: 5px;
+    padding: 4px 10px;
     position: relative;
-    top: 2px;
+    background-color: white;
+    border-radius: 5px;
+    margin: 0 -8px 0 5px;
 }
 
 

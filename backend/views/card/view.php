@@ -39,25 +39,14 @@ $leader = Yii::$app->user->can('leader');
     'config' => [
         // Enable infinite gallery navigation
         'loop'              => true,
-
-        // Space around image, ignored if zoomed-in or viewport smaller than 800px
-        'margin'            => [44,0],
-
-        // Horizontal space between slides
-        'gutter'            => 30,
-
         // Enable keyboard navigation
         'keyboard'          => true,
-
         // Should display navigation arrows at the screen edges
         'arrows'            => true,
-
         // Should display infobar (counter and arrows at the top)
         'infobar'           => true,
-
         // Should display toolbar (buttons at the top)
         'toolbar'           => true,
-
         // What buttons should appear in the top right corner.
         // Buttons will be created using templates from `btnTpl` option
         // and they will be placed into toolbar (class="fancybox-toolbar"` element)
@@ -66,27 +55,6 @@ $leader = Yii::$app->user->can('leader');
             'fullScreen',
             'thumbs',
             'close'
-        ],
-
-        // Detect "idle" time in seconds
-        'idleTime'          => 4,
-
-        // Should display buttons at top right corner of the content
-        // If 'auto' - they will be created for content having type 'html', 'inline' or 'ajax'
-        // Use template from `btnTpl.smallBtn` for customization
-        'smallBtn'          => 'auto',
-
-        // Disable right-click and use simple image protection for images
-        'protect'           => false,
-
-        // Shortcut to make content "modal" - disable keyboard navigtion, hide buttons, etc
-        'modal'             => false,
-
-        'image' => [
-            // Wait for images to load before displaying
-            // Requires predefined image dimensions
-            // If 'auto' - will zoom in thumbnail if 'width' and 'height' attributes are found
-            'preload' => "auto",
         ],
     ]
 ]); ?>
@@ -278,7 +246,6 @@ $leader = Yii::$app->user->can('leader');
                                             <?php //кнопка «Проблема решена» доступна админу или тому, кто создал посещение?>
                                             <?php if ($item->specialist->user_id == Yii::$app->user->id || $admin || $leader) { ?>
                                                 <?php if ($item->visit_date != null && $item->problem_id != 0 && $item->has_come != 2) { ?>
-                                                    <div>
                                                         <?php if ($item->resolve == 0) { ?>
                                                             <?= Html::a('Проблема решена!', ['visit/completed', 'id' => $item->id, 'card' => $model->number, 'resolve' => true], [
                                                                 'class' => 'btn btn-green',
@@ -294,47 +261,30 @@ $leader = Yii::$app->user->can('leader');
                                                                 ]) ?>
                                                             <?php } ?>
                                                         <?php } ?>
-                                                    </div>
+
                                                 <?php } ?>
                                             <?php } ?>
                                             <?php if (Visit::checkSuccessCopy($item)) { ?>
-                                                <div>
                                                     <?= Html::a('Создать копию', ['visit/copy', 'id' => $item->id, 'number' => $model->number], ['class' => 'btn btn-primary']) ?>
-                                                </div>
                                             <?php } ?>
                                             <?php if (Visit::checkSuccessChange($item)) { ?>
-                                                <div id="blockEdit_<?= $item->id ?>" data-id="<?= $item->id ?>">
-                                                    <?= Html::a('Изменить посещение', ['visit/update', 'id' => $item->id, 'number' => $model->number], ['class' => 'btn btn-info']) ?>
                                                     <?php //если указан интервал посещения, то таймер не выводим ?>
-                                                    <?php if ($item->next_visit_by <= time() || $item->timestamp >= time()) { ?>
-                                                        <?= Countdown::widget([
-                                                            'id' => 'timer_' . $item->id,
-                                                            'datetime' => date('Y-m-d H:i:s O', time() + ($item->timestamp - time())),
-                                                            'format' => '<span style=\"color: red\"\>%-D д. %-H:%-M:%-S</span> ',
-                                                            'tagName' => 'span',
-                                                            'events' => [
-                                                                'finish' => 'function(){
-                                                                $(\'#blockEdit_\' + $(this).parent().attr("data-id")).remove();
-                                                                }',
-                                                            ],
-                                                            'options' => [
-                                                                'class' => 'timerBox'
-                                                            ]
-                                                        ]) ?>
-                                                    <?php } ?>
-                                                </div>
+                                                    <?php if ($item->next_visit_by <= time() || $item->timestamp >= time()) {
+                                                        $timer = Visit::timer($item);
+                                                    } ?>
+
+                                                    <?= Html::a('Изменить посещение ' . $timer, ['visit/update', 'id' => $item->id, 'number' => $model->number], [
+                                                        'class' => 'btn btn-info',
+                                                        'id' => 'blockEdit_' . $item->id,
+                                                        'data-id' => $item->id
+                                                    ]) ?>
                                             <?php } elseif ($admin || $leader) { ?>
-                                                <div>
                                                     <?= Html::a('Изменить посещение', ['visit/update', 'id' => $item->id, 'number' => $model->number], ['class' => 'btn btn-info']) ?>
-                                                </div>
                                             <?php } ?>
                                             <?php if (($admin || $leader) && $item->timestamp < time()) { ?>
-                                                <div>
                                                     <?= Html::a('+24 часа', ['visit/edit24h', 'id' => $item->id, 'number' => $model->number], ['class' => 'btn btn-warning']) ?>
-                                                </div>
                                             <?php } ?>
                                             <?php if ($admin || $leader) { ?>
-                                                <div>
                                                     <?= Html::a('Удалить', ['visit/delete', 'id' => $item->id, 'card' => $model->number], [
                                                         'class' => 'btn btn-danger',
                                                         'data' => [
@@ -342,8 +292,8 @@ $leader = Yii::$app->user->can('leader');
                                                             'method' => 'post',
                                                         ],
                                                     ]) ?>
-                                                </div>
                                             <?php } ?>
+
                                         </div>
                                     </div>
                                 </div>
@@ -356,14 +306,13 @@ $leader = Yii::$app->user->can('leader');
                                         <div class="pull-right">
                                             <?php if ($administrator || $admin || $leader) { ?>
                                                 <?php if ($item->has_come == 0 || $admin || $leader) { ?>
-                                                    <div class="form-modal">
-                                                        <?php
-                                                        $form = ActiveForm::begin();
+                                                    <div style="float: left; margin-right: 3px">
+                                                        <?php $form = ActiveForm::begin();
                                                         Modal::begin([
                                                             'header' => 'Изменить специалиста',
                                                             'toggleButton' => [
                                                                 'label' => 'Изменить специалиста',
-                                                                'class' => 'btn btn-primary userStatus pull-right',
+                                                                'class' => 'btn btn-primary',
                                                             ],
                                                             'footer' => Html::a('Сохранить', ['visit/setspecialist', 'id' => $item->id, 'number' => $model->number], [
                                                                 'class' => 'btn btn-green',
@@ -377,12 +326,10 @@ $leader = Yii::$app->user->can('leader');
                                                             ->dropDownList($specialistList)
                                                             ->label('Подолог');
                                                         Modal::end();
-                                                        ActiveForm::end();
-                                                        ?>
+                                                        ActiveForm::end(); ?>
                                                     </div>
-                                                    <div class="form-modal">
-                                                        <?php
-                                                        $form = ActiveForm::begin([
+                                                    <div style="float: left; margin-right: 3px">
+                                                        <?php $form = ActiveForm::begin([
                                                             'method' => 'post',
                                                         ]);
                                                         Modal::begin([
@@ -418,24 +365,28 @@ $leader = Yii::$app->user->can('leader');
                                                             ],
                                                         ]);
                                                         Modal::end();
-                                                        ActiveForm::end();
-                                                        ?>
+                                                        ActiveForm::end(); ?>
                                                     </div>
-                                                    <?php if ($item->recorded == 1) { ?>
-                                                        <?= Html::a('Снять запись', ['visit/record-unmark', 'id' => $item->id, 'page' => 'view', 'number' => $model->number], [
-                                                            'class' => 'btn btn-default linkNewWindow',
-                                                        ]) ?>
-                                                    <?php } ?>
+                                                    <div style="float: left; margin-right: 3px">
+                                                        <?php if ($item->recorded == 1) { ?>
+                                                            <?= Html::a('Снять запись', ['visit/record-unmark', 'id' => $item->id, 'page' => 'view', 'number' => $model->number], [
+                                                                'class' => 'btn btn-default linkNewWindow',
+                                                            ]) ?>
+                                                        <?php } ?>
+                                                    </div>
                                                 <?php } ?>
                                             <?php } ?>
+
                                             <?php if ($item->has_come == 1) { ?>
+                                            <div style="float: left; margin-right: 3px">
                                                 <?= Html::a('Распечатать рекомендации', ['/visit/print-pdf', 'profession' => $item->specialist->profession, 'id' => $item->id, 'card_id' => $model->id], [
                                                     'class' => 'btn btn-warning',
                                                     'target' => '_blank',
                                                     'data-toggle' => 'tooltip',
                                                     'title' => 'Откроет сгенерированный PDF файл в новом окне'
                                                 ]); ?>
-                                            <?php } ?>
+                                                <?php } ?>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>

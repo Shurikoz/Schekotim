@@ -70,6 +70,7 @@ $dermatolog = Yii::$app->user->can('dermatolog');
                 ['label' => 'Акции и скидки', 'visible' => $admin || $leader, 'url' => '/stock/index'],
                 ['label' => 'Галерея', 'visible' => $admin, 'url' => '/gallery/index'],
                 ['label' => 'Отзывы', 'visible' => $admin || $leader, 'url' => '/review/index'],
+                ['label' => 'Реестр сертификатов', 'visible' => $admin || $leader, 'url' => '/registry/index'],
 
             ],
         ];

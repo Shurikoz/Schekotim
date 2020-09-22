@@ -134,8 +134,8 @@ $this->registerJs($script, yii\web\View::POS_READY);
                     <li>
                         <span class="opener">Дипломы и сертификаты</span>
                         <ul>
-                            <li><a href="/certificates">Наших специалистов</a></li>
-                            <li><a href="/registry">Наших студентов</a></li>
+                            <li><a href="/certificates">Специалисты Центра</a></li>
+                            <li><a href="/registry">Выпускники курсов</a></li>
                         </ul>
                     </li>
                     <li><a href="/work">Примеры работ</a></li>

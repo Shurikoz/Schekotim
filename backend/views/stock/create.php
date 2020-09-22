@@ -42,9 +42,6 @@ $this->title = 'Создать новую акцию';
                     ],
                 ],
             ]); ?>
-            <div class="form-group">
-                <?= Html::submitButton('Сохранить', ['class' => 'btn btn-success']) ?>
-            </div>
         </div>
         <div class="col-md-6">
             <?= $form->field($model, 'endtime')->widget(DatePicker::classname(), [
@@ -64,6 +61,12 @@ $this->title = 'Создать новую акцию';
             <br>
             <?= $form->field($model, 'file')->fileInput() ?>
             <br>
+
+        </div>
+        <div class="col-md-12 col-sm-12">
+            <div class="form-group pull-right">
+                <?= Html::submitButton('Сохранить', ['class' => 'btn btn-green']) ?>
+            </div>
         </div>
     </div>
     <?php ActiveForm::end(); ?>

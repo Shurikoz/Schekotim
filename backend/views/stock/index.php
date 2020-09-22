@@ -64,15 +64,3 @@ use yii\helpers\Html;
         </table>
     </div>
 </div>
-
-
-<!--<div class="stock-index">-->
-<!--    --><? //= GridView::widget(['dataProvider' => $dataProvider,
-//    'columns' => [['class' => 'yii\grid\SerialColumn'],
-//    'id',
-//    'title',
-//    'text:ntext',
-//    'image:ntext',
-//    'endtime',
-//    ['class' => 'yii\grid\ActionColumn'],],]); ?>
-<!--</div>-->

@@ -5,6 +5,7 @@ namespace frontend\controllers;
 use backend\models\Gallery;
 use backend\models\Price;
 use backend\models\Stock;
+use backend\models\Registry;
 use frontend\components\NumericCaptcha;
 use frontend\models\ContactForm;
 use frontend\models\ReviewForm;
@@ -233,17 +234,22 @@ class SiteController extends Controller
     }
 
     /**
-     * Displays tehnolog page.
-     *
      * @return mixed
      */
     public function actionCertificates()
     {
-        $this->view->registerMetaTag([
-            'name' => 'description',
-            'content' => '«Щекотливая тема» - Дипломы и сертификаты'
-        ]);
         return $this->render('certificates');
+    }
+
+    /**
+     * @return mixed
+     */
+    public function actionRegistry()
+    {
+        $model = Registry::find()->all();
+        return $this->render('registry', [
+            'model' => $model,
+        ]);
     }
 
     public function actionFranchise()

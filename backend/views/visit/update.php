@@ -246,7 +246,7 @@ JS;
             <div class="row">
                 <?php if ($model->specialist->profession == 'podolog') { ?>
                 <div class="col-md-12 col-sm-12">
-                    <div class="titleNormal">Фотографии работ (максимум по 5 фотографий)</div>
+                    <div class="titleNormal">Фотографии работ (максимум по 8 фотографий)</div>
                     <br>
                 </div>
                     <?php Pjax::begin(['timeout' => 5000, 'id' => 'photoEditBefore', 'enablePushState' => false]); ?>
@@ -280,7 +280,7 @@ JS;
                                     'overwriteInitial' => false,
                                     'previewFileType' => 'image',
                                     'allowedFileExtensions' => ['jpg', 'jpeg', 'JPG', 'JPEG', 'png', 'PNG'],
-                                    'maxFileCount' => 5 - count($photoBefore),
+                                    'maxFileCount' => 8 - count($photoBefore),
                                     'uploadUrl' => Url::to(['/visit/upload-photo', 'id' => $model->id, 'number' => $model->card_number, 'location' => 'before']),
                                     'fileActionSettings' => [
                                         'showUpload' => false,
@@ -290,8 +290,8 @@ JS;
                                     'showPreview' => true,
                                     'showRemove' => false,
                                     'showCaption' => false,
-                                    'showUpload' => count($photoBefore) < 5 ? true : false,
-                                    'showBrowse' => count($photoBefore) < 5 ? true : false,
+                                    'showUpload' => count($photoBefore) < 8 ? true : false,
+                                    'showBrowse' => count($photoBefore) < 8 ? true : false,
                                     'browseClass' => 'btn btn-default btn-block',
                                     'layoutTemplates' => [
                                             'footer' => '<div class="file-thumbnail-footer" style="height: 0">{indicator}{actions}</div>'
@@ -362,7 +362,7 @@ JS;
                                     'overwriteInitial' => false,
                                     'previewFileType' => 'image',
                                     'allowedFileExtensions' => ['jpg', 'jpeg', 'JPG', 'JPEG', 'png', 'PNG'],
-                                    'maxFileCount' => 5 - count($photoAfter),
+                                    'maxFileCount' => 8 - count($photoAfter),
                                     'uploadUrl' => Url::to(['/visit/upload-photo', 'id' => $model->id, 'number' => $model->card_number, 'location' => 'after']),
                                     'fileActionSettings' => [
                                         'showUpload' => false,
@@ -372,8 +372,8 @@ JS;
                                     'showPreview' => true,
                                     'showRemove' => false,
                                     'showCaption' => false,
-                                    'showUpload' => count($photoAfter) < 5 ? true : false,
-                                    'showBrowse' => count($photoAfter) < 5 ? true : false,
+                                    'showUpload' => count($photoAfter) < 8 ? true : false,
+                                    'showBrowse' => count($photoAfter) < 8 ? true : false,
                                     'browseClass' => 'btn btn-default btn-block',
                                     'layoutTemplates' => [
                                         'footer' => '<div class="file-thumbnail-footer" style="height: 0">{indicator}{actions}</div>'
@@ -414,7 +414,7 @@ JS;
                 <?php } ?>
                 <?php if ($model->specialist->profession == 'dermatolog') { ?>
                     <div class="col-md-12 col-sm-12">
-                        <p class="titleNormal text-center">Фотографии работ (максимум 5 фотографий)</p>
+                        <p class="titleNormal text-center">Фотографии работ (максимум 8 фотографий)</p>
                         <br>
                     </div>
                     <?php Pjax::begin(['timeout' => 5000, 'id' => 'photoEditDermatolog', 'enablePushState' => false]); ?>
@@ -445,7 +445,7 @@ JS;
                                         'overwriteInitial' => false,
                                         'previewFileType' => 'image',
                                         'allowedFileExtensions' => ['jpg', 'jpeg', 'JPG', 'JPEG', 'png', 'PNG'],
-                                        'maxFileCount' => 5 - count($photoDermatolog),
+                                        'maxFileCount' => 8 - count($photoDermatolog),
                                         'uploadUrl' => Url::to(['/visit/upload-photo', 'id' => $model->id, 'number' => $model->card_number, 'location' => 'dermatolog']),
                                         'fileActionSettings' => [
                                             'showUpload' => false,
@@ -456,8 +456,8 @@ JS;
                                         'showPreview' => true,
                                         'showRemove' => false,
                                         'showCaption' => false,
-                                        'showUpload' => count($photoDermatolog) < 5 ? true : false,
-                                        'showBrowse' => count($photoDermatolog) < 5 ? true : false,
+                                        'showUpload' => count($photoDermatolog) < 8 ? true : false,
+                                        'showBrowse' => count($photoDermatolog) < 8 ? true : false,
                                         'browseClass' => 'btn btn-default btn-block',
                                         'layoutTemplates' => [
                                             'footer' => '<div class="file-thumbnail-footer" style="height: 0">{indicator}{actions}</div>'

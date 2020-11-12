@@ -233,7 +233,7 @@ $dermatolog = Yii::$app->user->can('dermatolog');
         </div>
         <hr>
         <?php if ($podolog) { ?>
-            <p class="titleNormal">Фотографии работ (максимум по 5 фотографий)</p>
+            <p class="titleNormal">Фотографии работ (максимум по 8 фотографий)</p>
             <br>
             <div class="row">
                 <div class="col-md-6 col-sm-6">
@@ -248,7 +248,7 @@ $dermatolog = Yii::$app->user->can('dermatolog');
                                 'showUpload' => false,
                                 'previewFileType' => 'image',
                                 'allowedFileExtensions' => ['jpg', 'jpeg'],
-                                'maxFileCount' => 5,
+                                'maxFileCount' => 8,
                                 'uploadUrl' => Url::to(['']),
                                 'fileActionSettings' => [
                                     'showUpload' => false,
@@ -259,9 +259,6 @@ $dermatolog = Yii::$app->user->can('dermatolog');
                                 'showRemove' => false,
                                 'showCaption' => false,
                                 'browseClass' => 'btn btn-default btn-block',
-                                'layoutTemplates' => [
-                                    'footer' => '<div class="file-thumbnail-footer" style="height: 0">{indicator}{actions}</div>'
-                                ],
                             ]
                         ])?>
                 </div>
@@ -274,10 +271,10 @@ $dermatolog = Yii::$app->user->can('dermatolog');
                                 'accept' => 'image/*',
                             ],
                             'pluginOptions' => [
-                                'showUpload' => false,
                                 'previewFileType' => 'image',
                                 'allowedFileExtensions' => ['jpg', 'jpeg'],
-                                'maxFileCount' => 5,
+                                'showUpload' => false,
+                                'maxFileCount' => 8,
                                 'uploadUrl' => Url::to(['']),
                                 'fileActionSettings' => [
                                     'showUpload' => false,
@@ -297,7 +294,7 @@ $dermatolog = Yii::$app->user->can('dermatolog');
             </div>
         <?php } ?>
         <?php if ($dermatolog) { ?>
-            <p class="titleNormal text-center">Фотографии работ (максимум 5 фотографий)</p>
+            <p class="titleNormal text-center">Фотографии работ (максимум 8 фотографий)</p>
             <br>
             <div class="row">
                 <div class="col-md-offset-3 col-md-6 col-sm-offset-3 col-sm-6">
@@ -312,7 +309,7 @@ $dermatolog = Yii::$app->user->can('dermatolog');
                                     'showUpload' => false,
                                     'previewFileType' => 'image',
                                     'allowedFileExtensions' => ['jpg', 'jpeg'],
-                                    'maxFileCount' => 5,
+                                    'maxFileCount' => 8,
                                     'uploadUrl' => Url::to(['']),
                                     'fileActionSettings' => [
                                         'showUpload' => false,

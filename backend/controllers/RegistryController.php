@@ -4,10 +4,8 @@ namespace backend\controllers;
 
 use Yii;
 use backend\models\Registry;
-use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
 
 /**
  * RegistryController implements the CRUD actions for Registry model.

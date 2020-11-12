@@ -46,7 +46,7 @@ class Photo extends ActiveRecord
                 'extensions' => ['jpg', 'jpeg', 'JPG', 'JPEG', 'png', 'PNG'],
                 'checkExtensionByMimeType' => true,
                 'maxFiles' => 5,
-                'tooMany' => 'Вы можете загрузить не более 5 файлов'
+                'tooMany' => 'Вы можете загрузить не более 8 файлов'
             ],
         ];
     }
@@ -241,7 +241,7 @@ class Photo extends ActiveRecord
                 //сохраним в бд
                 $model = new Photo();
                 $model->visit_id = $visitId;
-                $model->url = '/' . $dir . '/drmatolog/' . $fileName;
+                $model->url = '/' . $dir . '/dermatolog/' . $fileName;
                 $model->thumbnail = '/' . $dir . '/thumbDermatolog/' . $fileName;
                 $model->original = '/' . $dir . '/originalDermatolog/' . $fileName;
                 $model->template = '/' . $dir . '/templateDermatolog/' . $fileName;

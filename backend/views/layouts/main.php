@@ -66,6 +66,7 @@ $dermatolog = Yii::$app->user->can('dermatolog');
             'label' => 'Сайт',
             'visible' => $admin || $leader,
             'items' => [
+                ['label' => 'Статьи', 'visible' => $admin, 'url' => '/article/index'],
                 ['label' => 'Прайс-лист', 'visible' => $admin || $leader, 'url' => '/pages/price'],
                 ['label' => 'Акции и скидки', 'visible' => $admin || $leader, 'url' => '/stock/index'],
                 ['label' => 'Галерея', 'visible' => $admin, 'url' => '/gallery/index'],

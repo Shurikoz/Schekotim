@@ -195,8 +195,8 @@ class VisitController extends Controller
             $model->next_visit_by = null;
 
             if ($model->save()) {
-                $model->has_second_visit = $secondVisit->id;
-                $model->save();
+//                $model->has_second_visit = $secondVisit->id;
+//                $model->save();
                 $card->load($post) ? $card->save() : false;
 //                if ($model->specialist->profession == 'podolog'){
 //
@@ -395,9 +395,9 @@ class VisitController extends Controller
 
     public function actionUploadPhoto($id, $location)
     {
-        $photoBefore = Photo::find()->where(['visit_id' => $id, 'made' => 'before'])->all();
-        $photoAfter = Photo::find()->where(['visit_id' => $id, 'made' => 'after'])->all();
-        $photoDermatolog = Photo::find()->where(['visit_id' => $id, 'made' => 'dermatolog'])->all();
+//        $photoBefore = Photo::find()->where(['visit_id' => $id, 'made' => 'before'])->all();
+//        $photoAfter = Photo::find()->where(['visit_id' => $id, 'made' => 'after'])->all();
+//        $photoDermatolog = Photo::find()->where(['visit_id' => $id, 'made' => 'dermatolog'])->all();
 
         $addPhotoBefore = new Photo();
         $addPhotoAfter = new Photo();
@@ -417,14 +417,14 @@ class VisitController extends Controller
 
         return true;
 
-        return $this->renderAjax('/photo/photo', [
-            'photoBefore' => $photoBefore,
-            'photoAfter' => $photoAfter,
-            'photoDermatolog' => $photoDermatolog,
-            'addPhotoBefore' => $addPhotoBefore,
-            'addPhotoAfter' => $addPhotoAfter,
-            'addPhotoDermatolog' => $addPhotoDermatolog,
-        ]);
+//        return $this->renderAjax('/photo/photo', [
+//            'photoBefore' => $photoBefore,
+//            'photoAfter' => $photoAfter,
+//            'photoDermatolog' => $photoDermatolog,
+//            'addPhotoBefore' => $addPhotoBefore,
+//            'addPhotoAfter' => $addPhotoAfter,
+//            'addPhotoDermatolog' => $addPhotoDermatolog,
+//        ]);
     }
 
     public function actionRenderPhoto($id)
@@ -606,7 +606,7 @@ class VisitController extends Controller
         ]);
 
         // setup kartik\mpdf\Pdf component
-        $pdf = new Pdf([
+        $pdfConfog = [
             // set to use core fonts only
             'mode' => Pdf::MODE_UTF8,
             // A4 paper format
@@ -630,12 +630,15 @@ class VisitController extends Controller
             ],
             // call mPDF methods on the fly
             'methods' => [
-//                'SetHeader'=>['Центр подологии «Щекотливая тема» / ' . date('d.m.Y')],
+                // 'SetHeader'=>['Центр подологии «Щекотливая тема» / ' . date('d.m.Y')],
                 'SetWatermarkImage' => ['./images/blank.png'],
-//                'SetFooter'=>['{PAGENO}'],
+                // 'SetFooter'=>['{PAGENO}'],
                 'SetFooter'=>['Центр подологии «Щекотливая тема» / ' . date('d.m.Y')],
             ]
-        ]);
+        ];
+
+        $pdf = new Pdf($pdfConfog);
+
         // return the pdf output as per the destination setting
         return $pdf->render();
     }

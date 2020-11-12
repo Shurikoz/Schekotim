@@ -2,10 +2,12 @@
 
 namespace frontend\controllers;
 
+use backend\models\Article;
+use backend\models\ArticleImage;
 use backend\models\Gallery;
 use backend\models\Price;
-use backend\models\Stock;
 use backend\models\Registry;
+use backend\models\Stock;
 use frontend\components\NumericCaptcha;
 use frontend\models\ContactForm;
 use frontend\models\ReviewForm;
@@ -252,6 +254,39 @@ class SiteController extends Controller
         ]);
     }
 
+    /**
+     * @return mixed
+     */
+    public function actionArticles()
+    {
+        $model = Article::find()->where(['status' => 1])->orderBy(['created_at' => SORT_DESC]);
+        $pages = new Pagination(['totalCount' => $model->count(), 'pageSize' => 6, 'forcePageParam' => false, 'pageSizeParam' => false]);
+        $articles = $model->offset($pages->offset)->limit($pages->limit)->all();
+
+        return $this->render('articles', [
+            'articles' => $articles,
+            'pages' => $pages,
+        ]);
+    }
+
+    /**
+     * @param $id
+     * @return mixed
+     */
+    public function actionArticle($id)
+    {
+        $model = Article::find()->where(['id' => $id])->with('articleImage')->one();
+        if ($model) {
+            Article::findOne($id)->countViewArticle();
+            return $this->render('article', [
+                'model' => $model,
+            ]);
+        } else {
+            return $this->goHome();
+        }
+
+    }
+
     public function actionFranchise()
     {
         $this->view->registerMetaTag([
@@ -363,6 +398,7 @@ class SiteController extends Controller
             ->offset($pages->offset)
             ->limit($pages->limit)
             ->all();
+        $pages->pageSizeParam = false;
         return $this->render('review', compact('newReview', 'reviews', 'pages', 'totalReviews'));
     }
 

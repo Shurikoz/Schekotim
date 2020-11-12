@@ -7,6 +7,7 @@ use common\widgets\Alert;
 use kartik\datetime\DateTimePicker;
 use newerton\fancybox3\FancyBox;
 use rmrevin\yii\fontawesome\FAS;
+use russ666\widgets\Countdown;
 use yii\bootstrap\Modal;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
@@ -260,13 +261,7 @@ $leader = Yii::$app->user->can('leader');
                                                                 ]) ?>
                                                             <?php } ?>
                                                         <?php } ?>
-                                                    <?= Html::a('Консультация', ['visit/consult', 'id' => $item->id, 'card' => $model->number, 'resolve' => true], [
-                                                        'class' => 'btn btn-warning',
-                                                        'data' => [
-                                                            'confirm' => 'Пометить посещение как Консультация?',
-                                                            'method' => 'post',
-                                                        ],
-                                                    ]) ?>
+
                                                 <?php } ?>
                                             <?php } ?>
                                             <?php if (Visit::checkSuccessCopy($item)) { ?>
@@ -277,6 +272,7 @@ $leader = Yii::$app->user->can('leader');
                                                     <?php if ($item->next_visit_by <= time() || $item->timestamp >= time()) {
                                                         $timer = Visit::timer($item);
                                                     } ?>
+
                                                     <?= Html::a('Изменить посещение ' . $timer, ['visit/update', 'id' => $item->id, 'number' => $model->number], [
                                                         'class' => 'btn btn-info',
                                                         'id' => 'blockEdit_' . $item->id,
@@ -309,70 +305,68 @@ $leader = Yii::$app->user->can('leader');
                                     <div class="col-md-12">
                                         <div class="pull-right">
                                             <?php if ($administrator || $admin || $leader) { ?>
-                                                <div style="float: left; margin-right: 3px">
-                                                    <?php $form = ActiveForm::begin();
-                                                    Modal::begin([
-                                                        'header' => 'Изменить специалиста',
-                                                        'toggleButton' => [
-                                                            'label' => 'Изменить специалиста',
-                                                            'class' => 'btn btn-primary',
-                                                        ],
-                                                        'footer' => Html::a('Сохранить', ['visit/setspecialist', 'id' => $item->id, 'number' => $model->number], [
-                                                            'class' => 'btn btn-green',
-                                                            'data' => [
-                                                                'method' => 'post',
+                                                <?php if ($item->has_come == 0 && $administrator || $admin || $leader){ ?>
+                                                    <div style="float: left; margin-right: 3px">
+                                                        <?php $form = ActiveForm::begin();
+                                                        Modal::begin([
+                                                            'header' => 'Изменить специалиста',
+                                                            'toggleButton' => [
+                                                                'label' => 'Изменить специалиста',
+                                                                'class' => 'btn btn-primary',
                                                             ],
-                                                        ]),
-                                                    ]);
-                                                    $specialistList = ArrayHelper::map($specialistModel, 'id', 'name');
-                                                    echo $form->field($item, 'specialist_id')
-                                                        ->dropDownList($specialistList)
-                                                        ->label('Подолог');
-                                                    Modal::end();
-                                                    ActiveForm::end(); ?>
-                                                </div>
-                                            <?php } ?>
-
-                                            <?php if ($item->has_come == 0 && $administrator || $admin || $leader) { ?>
-                                                <div style="float: left; margin-right: 3px">
-                                                    <?php $form = ActiveForm::begin([
-                                                        'method' => 'post',
-                                                    ]);
-                                                    Modal::begin([
-                                                        'header' => 'Указать время записи',
-                                                        'size' => 'modal-custom',
-                                                        'toggleButton' => [
-                                                            'label' => 'Назначить время посещения',
-                                                            'class' => 'btn btn-green',
-                                                        ],
-                                                        'footer' => Html::a('Сохранить', ['visit/record', 'id' => $item->id, 'page' => 'view', 'number' => $model->number], [
-                                                            'class' => 'btn btn-green',
-                                                            'data' => [
-                                                                'method' => 'post',
+                                                            'footer' => Html::a('Сохранить', ['visit/setspecialist', 'id' => $item->id, 'number' => $model->number], [
+                                                                'class' => 'btn btn-green',
+                                                                'data' => [
+                                                                    'method' => 'post',
+                                                                ],
+                                                            ]),
+                                                        ]);
+                                                        $specialistList = ArrayHelper::map($specialistModel, 'id', 'name');
+                                                        echo $form->field($item, 'specialist_id')
+                                                            ->dropDownList($specialistList)
+                                                            ->label('Подолог');
+                                                        Modal::end();
+                                                        ActiveForm::end(); ?>
+                                                    </div>
+                                                    <div style="float: left; margin-right: 3px">
+                                                        <?php $form = ActiveForm::begin([
+                                                            'method' => 'post',
+                                                        ]);
+                                                        Modal::begin([
+                                                            'header' => 'Указать время записи',
+                                                            'size' => 'modal-custom',
+                                                            'toggleButton' => [
+                                                                'label' => 'Назначить время посещения',
+                                                                'class' => 'btn btn-green',
                                                             ],
-                                                        ]),
-                                                    ]);
-                                                    echo DateTimePicker::widget([
-                                                        'model' => $item,
-                                                        'attribute' => 'visit_date',
-                                                        'type' => DateTimePicker::TYPE_INLINE,
-                                                        'options' => [
-                                                            'id' => 'visit_date_' . $item->id,
-                                                            'value' => $item->visit_date < 1 ? 'ДАТА И ВРЕМЯ ПОСЕЩЕНИЯ' : date('d.m.Y H:i', $item->visit_date)
-                                                        ],
-                                                        'pluginOptions' => [
-                                                            'startDate' => date('d.m.Y H:i'),
-                                                            'autoclose' => true,
-                                                            'todayHighlight' => true,
-                                                            'format' => 'dd.mm.yyyy H:i',
-                                                            'minuteStep' => 10,
-                                                            'hoursDisabled' => '0,1,2,3,4,5,6,7,8,9,21,22,23',
-                                                            'minTime' => 0
-                                                        ],
-                                                    ]);
-                                                    Modal::end();
-                                                    ActiveForm::end(); ?>
-                                                </div>
+                                                            'footer' => Html::a('Сохранить', ['visit/record', 'id' => $item->id, 'page' => 'view', 'number' => $model->number], [
+                                                                'class' => 'btn btn-green',
+                                                                'data' => [
+                                                                    'method' => 'post',
+                                                                ],
+                                                            ]),
+                                                        ]);
+                                                        echo DateTimePicker::widget([
+                                                            'model' => $item,
+                                                            'attribute' => 'visit_date',
+                                                            'type' => DateTimePicker::TYPE_INLINE,
+                                                            'options' => [
+                                                                'id' => 'visit_date_' . $item->id,
+                                                                'value' => $item->visit_date < 1 ? 'ДАТА И ВРЕМЯ ПОСЕЩЕНИЯ' : date('d.m.Y H:i', $item->visit_date)
+                                                            ],
+                                                            'pluginOptions' => [
+                                                                'startDate' => date('d.m.Y H:i'),
+                                                                'autoclose' => true,
+                                                                'todayHighlight' => true,
+                                                                'format' => 'dd.mm.yyyy H:i',
+                                                                'minuteStep' => 10,
+                                                                'hoursDisabled' => '0,1,2,3,4,5,6,7,8,9,21,22,23',
+                                                                'minTime' => 0
+                                                            ],
+                                                        ]);
+                                                        Modal::end();
+                                                        ActiveForm::end(); ?>
+                                                    </div>
                                                     <div style="float: left; margin-right: 3px">
                                                         <?php if ($item->recorded == 1) { ?>
                                                             <?= Html::a('Снять запись', ['visit/record-unmark', 'id' => $item->id, 'page' => 'view', 'number' => $model->number], [
@@ -380,6 +374,7 @@ $leader = Yii::$app->user->can('leader');
                                                             ]) ?>
                                                         <?php } ?>
                                                     </div>
+                                                <?php } ?>
                                             <?php } ?>
 
                                             <?php if ($item->has_come == 1) { ?>

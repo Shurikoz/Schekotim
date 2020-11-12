@@ -10,7 +10,7 @@ $CONFIG = array(
 	// -------------------------------------------------------------
 		
 	// Primary Instagram login
-	'LOGIN' => 'schekotim',
+	'LOGIN' => 'salon_berger',
 		
 	// Primary hashtags
 	// Separate hashtags by a comma. For example: girl, man

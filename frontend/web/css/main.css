@@ -194,7 +194,7 @@ em, i {
 }
 
 p {
-    margin: 0 0 2em 0;
+    margin: 0 0 1em 0;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -2497,6 +2497,29 @@ ul.pagination li:last-child {
 
 }
 
+.pagination > .active > a,
+.pagination > .active > span,
+.pagination > .active > a:hover,
+.pagination > .active > span:hover,
+.pagination > .active > a:focus,
+.pagination > .active > span:focus {
+    z-index: 3;
+    color: #fff;
+    cursor: default;
+    background-color: #0b9341;
+    border-color: #0b9341;
+}
+.pagination > li > a,
+.pagination > li > span {
+    color: #9fa3a6;
+}
+.pagination > li > a:hover,
+.pagination > li > span:hover,
+.pagination > li > a:focus,
+.pagination > li > span:focus {
+  color: #0b9341;
+}
+
 /* Table */
 
 .table-wrapper {
@@ -2613,7 +2636,7 @@ input[type="reset"]:active,
 input[type="button"]:active,
 button:active,
 .button:active {
-    background-color: rgba(245, 106, 106, 0.15);
+    background-color: rgba(106, 245, 160, 0.1);
 }
 
 input[type="submit"].icon:before,
@@ -3135,6 +3158,25 @@ button:disabled,
     display: block;
     width: 100%;
     cursor: pointer;
+}
+
+.posts .article-date {
+    padding-top: 11px;
+}
+.artical-info .glyphicon {
+    top: 2px;
+    color: #9fa3a6;
+}
+
+.artical-info .article-sep::before {
+    display: inline-block;
+    position: relative;
+    bottom: -2px;
+    width: 1px;
+    height: 14px;
+    margin: 0 15px;
+    background-color: #dfe3e9;
+    content: "";
 }
 
 @media screen and (min-width: 1681px) {
@@ -3973,6 +4015,8 @@ header.main .reviewTitleText{
     max-width: 100%;
 }
 .g-recaptcha iframe, body > div[style]:last-of-type
-{ transform: scale(0.75);
+{
+    /*transform: scale(0.75);*/
+    transform: scale(1);
     transform-origin: left top;
 }

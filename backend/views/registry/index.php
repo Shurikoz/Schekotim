@@ -34,7 +34,6 @@ $this->title = 'Реестр сертификатов об обучении';
             </thead>
             <tbody>
             <?= Alert::widget() ?>
-
             <?php if (count($model) != 0) { ?>
                 <?php foreach (array_reverse($model) as $item) { ?>
                     <tr class="c-table__row">

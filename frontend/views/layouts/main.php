@@ -119,7 +119,7 @@ $this->registerJs($script, yii\web\View::POS_READY);
 
             <!-- Logo -->
             <section id="logo">
-                <img src="images/logo.svg"  style="width: 100%; height: auto;" alt="Центр маникюра, педикюра и подологии">
+                <img src="<?= Url::base()?>/images/logo.svg"  style="width: 100%; height: auto;" alt="Центр маникюра, педикюра и подологии">
             </section>
 
             <!-- Menu -->
@@ -129,6 +129,7 @@ $this->registerJs($script, yii\web\View::POS_READY);
                 </header>
                 <ul>
                     <li><a href="/">Главная</a></li>
+                    <li><a href="/articles">Статьи</a></li>
                     <li><a href="/services">Услуги и цены</a></li>
                     <li><a href="/stock">Акции и скидки</a></li>
                     <li>

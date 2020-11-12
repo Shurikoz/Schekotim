@@ -26,7 +26,6 @@ $this->registerMetaTag([
     }
 
     @media screen and (max-width: 480px) {
-
         iframe .lightwidget__photo {
             width: 100px !important;
             height: 100px !important;

@@ -42,9 +42,11 @@ return [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
-                    '<action:(index|contacts|services|certificates|registry|work|training|review|vacancy|stock|franchise)>' => 'site/<action>',
-                    '<action:(treschini|onihomikoz|oniholizis|nogot|mozol|gematoma|borodavki)>' => 'pages/<action>'
-//                '<action:\w+>' => 'site/<action>',
+                'articles/page/<page:\d+>' => 'site/articles',
+                'article/<id:\d+>' => 'site/article',
+                'review/page/<page:\d+>' => 'site/review',
+                '<action:(index|articles|article|contacts|services|certificates|registry|work|training|review|vacancy|stock|franchise)>' => 'site/<action>',
+                '<action:(treschini|onihomikoz|oniholizis|nogot|mozol|gematoma|borodavki)>' => 'pages/<action>',
             ],
         ],
     ],

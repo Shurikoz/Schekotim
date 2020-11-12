@@ -16,12 +16,7 @@ $this->title = 'Отзывы';
 <div class="row">
     <div class="col-md-12">
         <div class="review-index">
-            <div class="box">
                 <table class="c-table">
-                    <caption class="c-table__title">
-                        Список отзывов
-                        <small>Всего отзывов: <?= count($model) ?></small>
-                    </caption>
                     <thead class="c-table__head c-table__head--slim">
                     <tr class="c-table__row">
                         <th class="c-table__cell c-table__cell--head">Имя</th>
@@ -64,21 +59,19 @@ $this->title = 'Отзывы';
                             <td class="c-table__cell cardBtn">
                                 <p><?= $item->active == 0 ? '<span style="color: #c55;">Не опубликован</span>' : '<span style="color: #7ba335;">Опубликован</span>' ?></p>
                             </td>
-                            <td class="c-table__cell">
+                            <td class="c-table__cell cardBtn">
                                 <?php
-                                $publish = Html::a('<span style="font-size: 18px" class="glyphicon glyphicon-remove">', ['review/hide', 'id' => $item->id], ['title' => 'Снять с публикации']);
-                                $unpublish = Html::a('<span style="font-size: 18px" class="glyphicon glyphicon-ok">', ['review/show', 'id' => $item->id], ['title' => 'Опубликовать']);
+                                $publish = Html::a('<span style="font-size: 18px" class="glyphicon glyphicon-remove">', ['review/hide', 'id' => $item->id], ['class' => 'btn', 'title' => 'Снять с публикации']);
+                                $unpublish = Html::a('<span style="font-size: 18px" class="glyphicon glyphicon-ok">', ['review/show', 'id' => $item->id], ['class' => 'btn', 'title' => 'Опубликовать']);
                                 ?>
                                 <?= $item->active == 0 ? $unpublish : $publish ?>
-                                <?= Html::a('<span style="font-size: 18px" class="glyphicon glyphicon-pencil">', ['review/update', 'id' => $item->id], ['title' => 'Редактировать']); ?>
-                                <?= Html::a('<span style="font-size: 18px" class="glyphicon glyphicon-trash">', ['review/delete', 'id' => $item->id], [
-                                    'title' => 'Удалить',
-                                    'data' => [
-                                        'confirm' => 'Вы уверены что хотите удалить этот отзыв?',
-                                        'method' => 'post',
-                                    ]
-                                ]); ?>
 
+                                <?= Html::a('<span class="glyphicon glyphicon-pencil" title="Редактировать"></span>', ['review/update', 'id' => $item->id], ['class' => 'btn', 'title' => 'Редактировать']); ?>
+                                <?= Html::a('<span class="glyphicon glyphicon-trash" title="Удалить"></span>', ['review/delete', 'id' => $item->id], [
+                                    'title' => 'Удалить',
+                                    'class' => 'btn',
+                                    'data-confirm' => 'Вы уверены что хотите удалить этот отзыв?'
+                                ]) ?>
                             </td>
                         </tr>
                         <tr class="c-table__row infoBlock hide hideBox">
@@ -145,7 +138,6 @@ $this->title = 'Отзывы';
                 //                    ],
                 //                ]);
                 ?>
-            </div>
         </div>
     </div>
 </div>

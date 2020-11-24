@@ -80,12 +80,12 @@ $leader = Yii::$app->user->can('leader');
         </div>
         <div class="row">
             <div class="col-md-6 col-sm-12">
-                <p class="borderBottom"><b>Дата рождения:</b> <em><?= Yii::$app->formatter->asDate($model->birthday) ?></em></p>
-                <p><b>Возраст:</b> <em><?= $age ?></em></p>
+                <p class="borderBottom"><b>Дата рождения:</b> <?= Yii::$app->formatter->asDate($model->birthday) ?></p>
+                <p><b>Возраст:</b> <?= $age ?></p>
             </div>
             <div class="col-md-6 col-sm-12">
-                <p class="borderBottom"><b>Профессия:</b> <em><?= $model->profession == null ? 'Не указана' : $model->profession ?></em></p>
-                <p><b>Ортопедические особенности:</b> <em><?= $model->orthopedic_features == null ? 'Отсутствуют' : '<br>' . $model->orthopedic_features ?></em>
+                <p class="borderBottom"><b>Профессия:</b> <?= $model->profession == null ? 'Не указана' : $model->profession ?></p>
+                <p><b>Ортопедические особенности:</b> <?= $model->orthopedic_features == null ? 'Отсутствуют' : '<br>' . $model->orthopedic_features ?>
                 </p>
             </div>
         </div>
@@ -180,13 +180,20 @@ $leader = Yii::$app->user->can('leader');
                 }
 
                 // проверим решена проблема или нет
-                if ($item->resolve != 0) {
+                // 0 - не решена
+                // 1 - решена
+                // 2 - консультация
+                if ($item->resolve == 1) {
                     $picResolve = '<span class="glyphicon glyphicon-ok-circle"></span>';
+                } elseif ($item->resolve == 2) {
+                    $picResolve = '<span class="glyphicon glyphicon-asterisk"></span>';
                 } else {
                     $picResolve = '';
                 }
 
-                if ($item->specialist->profession == 'podolog' && (Photo::countPhotoBefore($item->photo) == 0 || Photo::countPhotoAfter($item->photo) == 0)) {
+                if ($item->resolve != 2 && $item->specialist->profession == 'podolog' && (Photo::countPhotoBefore($item->photo) == 0 || Photo::countPhotoAfter($item->photo) == 0)) {
+                    $picCamera = '<span class="glyphicon glyphicon-camera"></span>';
+                } elseif ($item->resolve == 2 && $item->specialist->profession == 'podolog' && Photo::countPhotoBefore($item->photo) == 0) {
                     $picCamera = '<span class="glyphicon glyphicon-camera"></span>';
                 } elseif ($item->specialist->profession == 'dermatolog' && $item->photo == null) {
                     $picCamera = '<span class="glyphicon glyphicon-camera"></span>';
@@ -216,7 +223,12 @@ $leader = Yii::$app->user->can('leader');
                     </td>
                     <td class="c-table__cell">
                         <?php if (($item->next_visit_from != null && $item->next_visit_by != null && $item->has_come == 0 && $item->visit_date == null) || ($item->has_come == 2 && $item->next_visit_from != null && $item->next_visit_by != null)) { ?>
-                            <span class="font-warning">Время не назначено</span><br>
+                            <?php if ($item->visit_date == null) {?>
+                                <span class="font-warning">Время не назначено</span><br>
+                            <?php } else { ?>
+                                <span> <?= date('d.m.Y <b>H:i</b>', $item->visit_date)?></span>
+                                <br>
+                            <?php } ?>
                             <span class="em-font"><em>с <?= date('d.m.Y', $item->next_visit_from) ?> до <?= date('d.m.Y', $item->next_visit_by) ?></em></span>
                         <?php } else if ($item->visit_date != null) { ?>
                             <span> <?= date('d.m.Y <b>H:i</b>', $item->visit_date)?></span>
@@ -245,7 +257,7 @@ $leader = Yii::$app->user->can('leader');
                                             <?php //кнопка «Проблема решена» доступна админу или тому, кто создал посещение?>
                                             <?php if ($item->specialist->user_id == Yii::$app->user->id || $admin || $leader) { ?>
                                                 <?php if ($item->visit_date != null && $item->problem_id != 0 && $item->has_come != 2) { ?>
-                                                        <?php if ($item->resolve == 0) { ?>
+                                                        <?php if ($item->resolve == 0 && $item->resolve != 2) { ?>
                                                             <?= Html::a('Проблема решена!', ['visit/completed', 'id' => $item->id, 'card' => $model->number, 'resolve' => true], [
                                                                 'class' => 'btn btn-green',
                                                                 'data' => [
@@ -253,13 +265,14 @@ $leader = Yii::$app->user->can('leader');
                                                                     'method' => 'post',
                                                                 ],
                                                             ]) ?>
-                                                        <?php } else { ?>
+                                                        <?php } elseif ($item->resolve == 1){ ?>
                                                             <?php if ($admin || $leader) { ?>
                                                                 <?= Html::a('Снять отметку «Проблема решена»!', ['visit/completed', 'id' => $item->id, 'card' => $model->number, 'resolve' => false], [
                                                                     'class' => 'btn btn-default'
                                                                 ]) ?>
                                                             <?php } ?>
                                                         <?php } ?>
+                                                <?php if ($item->resolve == 0 && $item->resolve != 1) { ?>
                                                     <?= Html::a('Консультация', ['visit/consult', 'id' => $item->id, 'card' => $model->number, 'resolve' => true], [
                                                         'class' => 'btn btn-warning',
                                                         'data' => [
@@ -267,6 +280,17 @@ $leader = Yii::$app->user->can('leader');
                                                             'method' => 'post',
                                                         ],
                                                     ]) ?>
+                                                    <?php } elseif ($item->resolve == 2) { ?>
+                                                        <?php if ($admin || $leader) { ?>
+                                                            <?= Html::a('Снять отметку Консультация', ['visit/consult', 'id' => $item->id, 'card' => $model->number, 'resolve' => false], [
+                                                                'class' => 'btn btn-warning',
+                                                                'data' => [
+                                                                    'confirm' => 'Снять отметку Консультация?',
+                                                                    'method' => 'post',
+                                                                ],
+                                                            ]) ?>
+                                                        <?php } ?>
+                                                    <?php } ?>
                                                 <?php } ?>
                                             <?php } ?>
                                             <?php if (Visit::checkSuccessCopy($item)) { ?>
@@ -451,7 +475,12 @@ $leader = Yii::$app->user->can('leader');
                                     <?php if ($item->specialist->profession == 'podolog') { ?>
                                         <div class="box">
                                             <div class="col-md-12">
-                                                <p class="titleMin"><b>Фото до обработки:</b></p>
+                                                <?php if ($item->resolve == 2) { ?>
+                                                    <p class="titleMin"><b>Фото с консультации:</b></p>
+                                                <?php } else { ?>
+                                                    <p class="titleMin"><b>Фото до обработки:</b></p>
+                                                <?php } ?>
+                                                <br>
                                                 <?php if (Photo::countPhotoBefore($item->photo) != 0) { ?>
                                                     <?php foreach ($item->photo as $photo) { ?>
                                                         <?php if ($photo->made == 'before') { ?>
@@ -465,22 +494,25 @@ $leader = Yii::$app->user->can('leader');
                                                 <?php } ?>
                                             </div>
                                         </div>
-                                        <div class="box">
-                                            <div class="col-md-12">
-                                                <p class="titleMin"><b>Фото после обработки:</b></p>
-                                                <?php if (Photo::countPhotoAfter($item->photo) != 0) { ?>
-                                                    <?php foreach ($item->photo as $photo) { ?>
-                                                        <?php if ($photo->made == 'after') { ?>
-                                                            <div style="float: left; margin: 0 0 20px 20px;">
-                                                                <?= Html::a(Html::img($photo->thumbnail), $photo->url, ['data-fancybox' => 'after_' . $item->id]); ?>
-                                                            </div>
+                                        <?php if ($item->resolve != 2) { ?>
+                                            <div class="box">
+                                                <div class="col-md-12">
+                                                    <p class="titleMin"><b>Фото после обработки:</b></p>
+                                                    <br>
+                                                    <?php if (Photo::countPhotoAfter($item->photo) != 0) { ?>
+                                                        <?php foreach ($item->photo as $photo) { ?>
+                                                            <?php if ($photo->made == 'after') { ?>
+                                                                <div style="float: left; margin: 0 0 20px 20px;">
+                                                                    <?= Html::a(Html::img($photo->thumbnail), $photo->url, ['data-fancybox' => 'after_' . $item->id]); ?>
+                                                                </div>
+                                                            <?php } ?>
                                                         <?php } ?>
+                                                    <?php } else { ?>
+                                                        <p><span class="text-red">Не заполнено</span></p>
                                                     <?php } ?>
-                                                <?php } else { ?>
-                                                    <p><span class="text-red">Не заполнено</span></p>
-                                                <?php } ?>
+                                                </div>
                                             </div>
-                                        </div>
+                                        <?php } ?>
                                     <?php } ?>
                                     <?php if ($item->specialist->profession == 'dermatolog') { ?>
                                         <div class="box">
@@ -525,9 +557,10 @@ $leader = Yii::$app->user->can('leader');
     <div class="col-md-12">
         <div class="pull-right">
             <p><span class="glyphicon glyphicon-hourglass"></span> - ожидание посещения</p>
-            <p><span class="glyphicon glyphicon-ok-circle"></span> - проблема решена</p>
-            <p><span class="glyphicon glyphicon-floppy-saved"></span> - клиент записан на прием</p>
             <p><span class="glyphicon glyphicon-ok"></span> - клиент пришел</p>
+            <p><span class="glyphicon glyphicon-ok-circle"></span> - проблема решена</p>
+            <p><span class="glyphicon glyphicon-asterisk"></span> - консультация</p>
+            <p><span class="glyphicon glyphicon-floppy-saved"></span> - клиент записан на прием</p>
             <p><span class="glyphicon glyphicon-remove"></span> - клиент не пришел в указанное время</p>
             <p><span class="glyphicon glyphicon-camera"></span> - не добавлены фотографии</p>
             <?= $administrator || $admin || $leader ? '<p><span class="glyphicon glyphicon-alert"></span> - клиент не уложился в сроки</p>' : '' ?>

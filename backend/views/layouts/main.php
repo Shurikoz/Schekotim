@@ -130,6 +130,15 @@ $dermatolog = Yii::$app->user->can('dermatolog');
                 </div>
             </div>
             <hr>
+        <div class="row">
+            <div class="col-md-12">
+                    <p>По вопросам работы программы, ошибкам и прочим багам обращаться в <b><a
+                                    href="https://api.whatsapp.com/send?phone=+79262643854">WhatsApp</a></b> или по телефону <b><a
+                                    href="tel:+79262643854">+7(926)264-38-54</a></b> Александр
+                    </p>
+            </div>
+        </div>
+        <hr>
         <?php } ?>
         <div class="row">
             <div class="col-md-6 col-sm-6">

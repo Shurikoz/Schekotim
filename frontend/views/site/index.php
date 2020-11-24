@@ -49,6 +49,28 @@ $this->registerMetaTag([
 	</span>
 
 </section>
+
+<section style="padding:2em 0 0 0">
+    <div class="features">
+        <article style="width: calc(100% - 3em);">
+            <a href="https://persono.ru/blog/beauty/anastasiya-artanova-i-natalya-trofimova-centr-shekotlivaya-tema/"
+               target="_blank">
+                <img src="images/temp/persono.png" alt=""/>
+            </a>
+            <a href="https://persono.ru/blog/beauty/anastasiya-artanova-i-natalya-trofimova-centr-shekotlivaya-tema/"
+               target="_blank">
+                <div class="content">
+                    <h3>Читайте о нас в журнале «Persono» <i class="fa fa-external-link" aria-hidden="true"></i></h3>
+                    <p>
+                        Учредители Центра подологии «Щекотливая тема» Трофимова Наталья и Артанова Анастасия рассказали
+                        о своём детище и об услугах, предоставляемых специалистами Центра.
+                    </p>
+                </div>
+            </a>
+        </article>
+    </div>
+</section>
+
 <section>
     <br>
     <div class="row">

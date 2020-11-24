@@ -513,7 +513,8 @@ a.desc:after {
 .glyphicon-earphone,
 .glyphicon-floppy-saved,
 .glyphicon-floppy-remove,
-.glyphicon-alert
+.glyphicon-alert,
+.glyphicon-asterisk
 {
 font-size: 18px;
 }
@@ -541,7 +542,8 @@ font-size: 18px;
 
 .glyphicon-exclamation-sign,
 .glyphicon-floppy-remove,
-.glyphicon-alert{
+.glyphicon-alert,
+.glyphicon-asterisk{
     color: orange;
 }
 

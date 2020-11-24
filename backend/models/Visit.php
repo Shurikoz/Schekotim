@@ -279,6 +279,37 @@ class Visit extends ActiveRecord
     }
 
     /**
+     * отметка Консультация
+     * 0 - не решена
+     * 1 - решена
+     * 2 - консультация
+     */
+    public static function consult($id, $resolve)
+    {
+        $model = Visit::findOne($id);
+        //достанем то что записано в дате будущего визита и перезапишем
+        $next_visit_from = $model->next_visit_from;
+        $next_visit_by = $model->next_visit_by;
+
+        if ($resolve == true) {
+            $model->resolve = 2;
+            $model->next_visit_from = $next_visit_from;
+            $model->next_visit_by = $next_visit_by;
+            if ($model->save()) {
+                Yii::$app->session->setFlash('success', 'Проблема #' . $model->id . ' помечена как Консультация!');
+            }
+        } else if ($resolve == false) {
+            $model->resolve = 0;
+            if ($model->save()) {
+                Yii::$app->session->setFlash('warning', 'С проблемы #' . $model->id . ' снята отметка Консультация.');
+            }
+        } else {
+            Yii::$app->session->setFlash('danger', 'Ошибка отметки проблемы!');
+        }
+        return true;
+    }
+
+    /**
      * удаление посещения
      */
     public static function deleteVisit($id)

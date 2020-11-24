@@ -21,9 +21,6 @@ use yii\web\Response;
 use yii\web\UploadedFile;
 
 
-/**
- * VisitController implements the CRUD actions for Visit model.
- */
 class VisitController extends Controller
 {
     /**
@@ -275,14 +272,55 @@ class VisitController extends Controller
      * @return string
      */
     public function actionNophotos(){
-        $visit = Visit::find()->where(['has_come' => 1])->with('photo', 'card')->all();
-        $photo = Photo::find()->all();
+
+
+        $admin = Yii::$app->user->can('admin');
+        $administrator = Yii::$app->user->can('administrator');
+        $leader = Yii::$app->user->can('leader');
+
+        $user = Yii::$app->user->id;
+        $specialist = Specialist::find()->where(['user_id' => $user])->one();
+
+
+        if ($admin || $administrator || $leader) {
+            $query = Visit::find()
+                ->where(['has_come' => 1])
+                ->andWhere(['!=', 'resolve', 2])
+                ->leftJoin('photo', 'photo.visit_id = visit.id')
+                ->andWhere(['is', 'visit_id', null])
+                ->with('card');
+        } else {
+            $query = Visit::find()
+                ->where(['has_come' => 1, 'specialist_id' => $specialist->id])
+                ->andWhere(['!=', 'resolve', 2])
+                ->leftJoin('photo', 'photo.visit_id = visit.id')
+                ->andWhere(['is', 'visit_id', null])
+                ->with('card');
+        }
+
+        $pages = new Pagination(['totalCount' => $query->count(), 'pageSizeLimit' => [1, 60], 'defaultPageSize' => 20]);
+        $visit = $query->offset($pages->offset)->limit($pages->limit)->orderBy(['visit_date' => SORT_DESC])->all();
 
         return $this->render('nophotos', [
+            'pages' => $pages,
             'visit' => $visit,
-            'photo' => $photo,
+            'user' => $specialist
         ]);
 
+    }
+
+    /**
+     * @return string
+     */
+    public function actionVisitConsult(){
+        $query = Visit::find()->where(['has_come' => 1, 'resolve' => 2])->with('photo', 'card');
+        $pages = new Pagination(['totalCount' => $query->count(), 'pageSizeLimit' => [1, 60], 'defaultPageSize' => 20]);
+        $visit = $query->offset($pages->offset)->limit($pages->limit)->orderBy(['visit_date' => SORT_DESC])->all();
+
+        return $this->render('consult', [
+            'visit' => $visit,
+            'pages' => $pages,
+        ]);
     }
 
     /**
@@ -362,6 +400,20 @@ class VisitController extends Controller
     public function actionCompleted($id, $card, $resolve)
     {
         Visit::completed($id, $resolve);
+        return $this->redirect(['/card/view', 'number' => $card]);
+    }
+
+    /**
+     * Отметка Консультация
+     * @param integer $id
+     * @param $card
+     * @param $resolve
+     * @return mixed
+     * @throws NotFoundHttpException
+     */
+    public function actionConsult($id, $card, $resolve)
+    {
+        Visit::consult($id, $resolve);
         return $this->redirect(['/card/view', 'number' => $card]);
     }
 
@@ -485,8 +537,7 @@ class VisitController extends Controller
     }
 
     /**
-     * поставить отметку
-     * клиент оповещен о запланированном посещении
+     * поставить отметку клиент оповещен о запланированном посещении
      * @throws NotFoundHttpException
      */
     public function actionContacted($id)
@@ -504,8 +555,7 @@ class VisitController extends Controller
     }
 
     /**
-     * снять отметку
-     * клиент оповещен о запланированном посещении
+     * снять отметку клиент оповещен о запланированном посещении
      * @throws NotFoundHttpException
      */
     public function actionContactUnmark($id)
@@ -566,8 +616,7 @@ class VisitController extends Controller
     }
 
     /**
-     * снять отметку
-     * клиент отказался от записи
+     * снять отметку клиент отказался от записи
      * @throws NotFoundHttpException
      */
     public function actionCancelUnmark($id)

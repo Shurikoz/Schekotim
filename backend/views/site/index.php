@@ -1,15 +1,5 @@
 <?php
 
-/* @var $this yii\web\View */
-
-/*
- * 4 типа пользователей:
- *  admin
- *	user
- *	smm
- *	administrator
- */
-
 use yii\helpers\Html;
 
 $this->title = 'Учет пациентов';
@@ -22,18 +12,6 @@ $dermatolog = Yii::$app->user->can('dermatolog');
 $leader = Yii::$app->user->can('leader');
 
 ?>
-<div class="row">
-    <div class="col-md-12">
-        <div class="box">
-            <p>По вопросам работы программы, ошибкам и прочим багам обращаться в <b><a
-                            href="https://api.whatsapp.com/send?phone=+79262643854">WhatsApp</a></b> или по телефону <b><a
-                            href="tel:+79262643854">+7(926)264-38-54</a></b> Александр
-            </p>
-        </div>
-    </div>
-</div>
-<hr>
-<br>
 <div class="row">
     <?php if ($admin || $administrator || $leader) { ?>
         <div class="col-md-4 col-sm-6">
@@ -76,10 +54,24 @@ $leader = Yii::$app->user->can('leader');
                         ['/event'], ['class' => 'menuLink']) ?>
                 </div>
             </div>
+            <div class="col-md-4 col-sm-6">
+                <div class="box">
+                    <?= Html::a('
+                    <div class="btnMenu">
+                        <div class="menuIcon text-center">' . Html::img('/images/icons/nophoto.png') . '</div>
+                        <div class="menuText text-center">
+                            <h3>Посещения без фото</h3>
+                        </div>
+                    </div>',
+                        ['/visit/nophotos'], ['class' => 'menuLink']) ?>
+                </div>
+            </div>
         <?php } ?>
     <?php } ?>
-
+</div>
+<div class="row">
     <?php if ($admin || $smm || $leader) { ?>
+        <hr>
         <div class="col-md-4 col-sm-6">
             <div class="box">
                 <?= Html::a('
@@ -119,8 +111,6 @@ $leader = Yii::$app->user->can('leader');
                     ['/visit/missed'], ['class' => 'menuLink']) ?>
             </div>
         </div>
-    <?php } ?>
-    <?php if ($admin || $administrator || $leader) { ?>
         <div class="col-md-4 col-sm-6">
             <div class="box">
                 <?= Html::a('
@@ -131,6 +121,18 @@ $leader = Yii::$app->user->can('leader');
                         </div>
                     </div>',
                     ['/visit/nophotos'], ['class' => 'menuLink']) ?>
+            </div>
+        </div>
+        <div class="col-md-4 col-sm-6">
+            <div class="box">
+                <?= Html::a('
+                    <div class="btnMenu">
+                        <div class="menuIcon text-center">' . Html::img('/images/icons/consult.png') . '</div>
+                        <div class="menuText text-center">
+                            <h3>Консультации</h3>
+                        </div>
+                    </div>',
+                    ['/visit/visit-consult'], ['class' => 'menuLink']) ?>
             </div>
         </div>
     <?php } ?>
@@ -182,5 +184,4 @@ $leader = Yii::$app->user->can('leader');
             </div>
         </div>
     </div>
-    <hr>
 <?php } ?>

@@ -24,9 +24,9 @@ $num = 0;
         <thead class="c-table__head c-table__head--slim">
         <tr class="c-table__row">
             <th class="c-table__cell c-table__cell--head" width="10%">Номер</th>
-            <th class="c-table__cell c-table__cell--head" width="70%">Проблема</th>
+            <th class="c-table__cell c-table__cell--head" width="60%">Проблема</th>
             <th class="c-table__cell c-table__cell--head" width="10%">Порядок</th>
-            <th class="c-table__cell c-table__cell--head" width="10%">Действия</th>
+            <th class="c-table__cell c-table__cell--head" width="20%">Действия</th>
         </tr>
         </thead>
         <tbody>
@@ -43,16 +43,22 @@ $num = 0;
                     <td class="c-table__cell">
                         <?php
                         if ($item->number != ($model)[0]["number"]) {
-                            echo Html::a('<span style="font-size: 18px" class="glyphicon glyphicon-chevron-up">', ['problem/up', 'id' => $item->id], ['title' => 'Поднять']) . '<br>';
+                            echo Html::a('<span style="font-size: 18px" class="glyphicon glyphicon-chevron-up"></span>', ['problem/up', 'id' => $item->id], ['title' => 'Поднять']) . '<br>';
                         }
                         if ($item->number != end($model)["number"]) {
-                            echo Html::a('<span style="font-size: 18px" class="glyphicon glyphicon-chevron-down">', ['problem/down', 'id' => $item->id], ['title' => 'Опустить']);
+                            echo Html::a('<span style="font-size: 18px" class="glyphicon glyphicon-chevron-down"></span>', ['problem/down', 'id' => $item->id], ['title' => 'Опустить']);
                         }
                         ?>
                     </td>
-                    <td class="c-table__cell">
-                        <?= Html::a('<span style="font-size: 18px" class="glyphicon glyphicon-pencil">', ['problem/update', 'id' => $item->id], ['title' => 'Редактировать']); ?>
-                        <?= Html::a('<span style="font-size: 18px" class="glyphicon glyphicon-trash">', ['problem/delete', 'id' => $item->id], ['title' => 'Удалить', 'data' => ['confirm' => 'Вы уверены, что хотите удалить этот элемент?', 'method' => 'post',]]); ?>
+                    <td class="c-table__cell cardBtn">
+                        <?= Html::a('<span style="font-size: 18px" class="glyphicon glyphicon-pencil"></span>', ['problem/update', 'id' => $item->id], ['title' => 'Редактировать', 'class' => 'btn']); ?>
+                        <?= Html::a('<span style="font-size: 18px" class="glyphicon glyphicon-trash"></span>', ['problem/delete', 'id' => $item->id], [
+                                'title' => 'Удалить',
+                            'class' => 'btn',
+                            'data' => [
+                                    'confirm' => 'Вы уверены, что хотите удалить этот элемент?',
+                                    'method' => 'post'
+                            ]]); ?>
                     </td>
                 </tr>
                 <tr class="c-table__row infoBlock hide hideBox">

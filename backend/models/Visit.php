@@ -44,6 +44,8 @@ use yii\db\ActiveRecord;
 class Visit extends ActiveRecord
 {
 
+    public $cnt;
+
     /**
      * {@inheritdoc}
      */

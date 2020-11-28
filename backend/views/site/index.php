@@ -63,7 +63,7 @@ $leader = Yii::$app->user->can('leader');
                             <h3>Посещения без фото</h3>
                         </div>
                     </div>',
-                        ['/visit/nophotos'], ['class' => 'menuLink']) ?>
+                        ['/visit/nophotos?list=all'], ['class' => 'menuLink']) ?>
                 </div>
             </div>
         <?php } ?>
@@ -120,7 +120,7 @@ $leader = Yii::$app->user->can('leader');
                             <h3>Посещения без фото</h3>
                         </div>
                     </div>',
-                    ['/visit/nophotos'], ['class' => 'menuLink']) ?>
+                    ['/visit/nophotos?list=all'], ['class' => 'menuLink']) ?>
             </div>
         </div>
         <div class="col-md-4 col-sm-6">

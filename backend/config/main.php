@@ -44,7 +44,6 @@ return [
             'timeFormat' => 'H:i',
             'locale' => 'ru-RU',
             'timeZone' => 'UTC'
-
         ],
         'authManager' => [
             'class' => 'yii\rbac\DbManager', // or use 'yii\rbac\DbManager'
@@ -84,7 +83,7 @@ return [
                 '<action:(index|review|login|request-password-reset|reset-password|support|policy)>' => 'site/<action>',
                 '<action:(show|hide)>' => 'review/<action>',
                 '<action:(tutorial)>' => 'pages/<action>',
-                '<action:(notification)>' => 'notification/<action>',
+                '<action:(notification)>' => 'notification/<action>'
             ],
 
         ],

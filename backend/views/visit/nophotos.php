@@ -6,7 +6,6 @@ use yii\helpers\Url;
 use yii\widgets\LinkPager;
 
 $count_items = (isset($_GET['per-page'])) ? $_GET['per-page'] : 20;
-
 $this->title = 'Лист посещений без фотографий';
 
 ?>
@@ -14,6 +13,16 @@ $this->title = 'Лист посещений без фотографий';
     <div class="col-md-12">
         <div class="pull-left">
             <?= Html::a(FAS::icon('angle-left', ['class' => 'big', 'data-role' => 'arrow']) . '&nbsp В главное меню', ['/'], ['class' => 'btn btn-default']) ?>
+        </div>
+    </div>
+</div>
+<hr>
+<div class="row">
+    <div class="col-md-12">
+        <div class="pull-left">
+            <?= Html::a('Нет всех фото', ['/visit/nophotos?list=all'], ['class' => $_GET['list'] == 'all' ? 'btn btn-green' : 'btn btn-default']) ?>
+            <?= Html::a('Нет фото `До`', ['visit/nophotos?list=before'], ['class' =>  $_GET['list'] == 'before' ? 'btn btn-green' : 'btn btn-default']) ?>
+            <?= Html::a('Нет фото `После`', ['visit/nophotos?list=after'], ['class' => $_GET['list'] == 'after' ? 'btn btn-green' : 'btn btn-default']) ?>
         </div>
     </div>
 </div>
@@ -95,6 +104,9 @@ $this->title = 'Лист посещений без фотографий';
             </td>
             <td class="c-table__cell">
                 <span class="glyphicon glyphicon-camera"></span>
+<!--                --><?php //if ($item->resolve == 2) { ?>
+<!--                    <span class="glyphicon glyphicon-asterisk"></span>-->
+<!--                --><?php //}?>
             </td>
             <td class="c-table__cell cardBtn">
                 <?= Html::a('<span class="glyphicon glyphicon-new-window"></span>', ['card/view', 'number' => $item->card_number], [

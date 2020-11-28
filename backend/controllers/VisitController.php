@@ -271,8 +271,7 @@ class VisitController extends Controller
     /**
      * @return string
      */
-    public function actionNophotos(){
-
+    public function actionNophotos($list){
 
         $admin = Yii::$app->user->can('admin');
         $administrator = Yii::$app->user->can('administrator');
@@ -281,21 +280,52 @@ class VisitController extends Controller
         $user = Yii::$app->user->id;
         $specialist = Specialist::find()->where(['user_id' => $user])->one();
 
-
         if ($admin || $administrator || $leader) {
-            $query = Visit::find()
-                ->where(['has_come' => 1])
-                ->andWhere(['!=', 'resolve', 2])
-                ->leftJoin('photo', 'photo.visit_id = visit.id')
-                ->andWhere(['is', 'visit_id', null])
-                ->with('card');
+            if ($list == 'before') {
+                $query = Visit::find()
+                    ->where(['and', ['has_come' => 1]])
+                    ->leftJoin('photo', "photo.visit_id = visit.id AND photo.made = 'before'")
+                    ->andWhere(['!=', 'resolve', 2])
+                    ->andWhere(['is', 'visit_id', null])
+                    ->with('card');
+            } else if ($list == 'after') {
+                $query = Visit::find()
+                    ->where(['and', ['has_come' => 1]])
+                    ->leftJoin('photo', "photo.visit_id = visit.id AND photo.made = 'after'")
+                    ->andWhere(['!=', 'resolve', 2])
+                    ->andWhere(['is', 'visit_id', null])
+                    ->with('card');
+            } else {
+                $query = Visit::find()
+                    ->where(['and', ['has_come' => 1]])
+                    ->leftJoin('photo', 'photo.visit_id = visit.id')
+                    ->andWhere(['is', 'visit_id', null])
+                    ->andWhere(['!=', 'resolve', 2])
+                    ->with('card');
+            }
         } else {
-            $query = Visit::find()
-                ->where(['has_come' => 1, 'specialist_id' => $specialist->id])
-                ->andWhere(['!=', 'resolve', 2])
-                ->leftJoin('photo', 'photo.visit_id = visit.id')
-                ->andWhere(['is', 'visit_id', null])
-                ->with('card');
+            if ($list == 'before') {
+                $query = Visit::find()
+                    ->where(['and', ['has_come' => 1, 'specialist_id' => $specialist->id]])
+                    ->leftJoin('photo', "photo.visit_id = visit.id AND photo.made = 'before'")
+                    ->andWhere(['!=', 'resolve', 2])
+                    ->andWhere(['is', 'visit_id', null])
+                    ->with('card');
+            } else if ($list == 'after') {
+                $query = Visit::find()
+                    ->where(['and', ['has_come' => 1, 'specialist_id' => $specialist->id]])
+                    ->leftJoin('photo', "photo.visit_id = visit.id AND photo.made = 'after'")
+                    ->andWhere(['!=', 'resolve', 2])
+                    ->andWhere(['is', 'visit_id', null])
+                    ->with('card');
+            } else {
+                $query = Visit::find()
+                    ->where(['and', ['has_come' => 1, 'specialist_id' => $specialist->id]])
+                    ->leftJoin('photo', 'photo.visit_id = visit.id')
+                    ->andWhere(['is', 'visit_id', null])
+                    ->andWhere(['!=', 'resolve', 2])
+                    ->with('card');
+            }
         }
 
         $pages = new Pagination(['totalCount' => $query->count(), 'pageSizeLimit' => [1, 60], 'defaultPageSize' => 20]);

@@ -66,6 +66,18 @@ $leader = Yii::$app->user->can('leader');
                         ['/visit/nophotos?list=all'], ['class' => 'menuLink']) ?>
                 </div>
             </div>
+            <div class="col-md-4 col-sm-6">
+                <div class="box">
+                    <?= Html::a('
+                    <div class="btnMenu">
+                        <div class="menuIcon text-center">' . Html::img('/images/icons/special.png') . '</div>
+                        <div class="menuText text-center">
+                            <h3>Интересные случаи</h3>
+                        </div>
+                    </div>',
+                        ['/visit/special'], ['class' => 'menuLink']) ?>
+                </div>
+            </div>
         <?php } ?>
     <?php } ?>
 </div>

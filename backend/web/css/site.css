@@ -369,6 +369,10 @@ a.desc:after {
     background-color: #f3f3f3;
 }
 
+.c-table__row--special {
+    background-color: rgba(178, 179, 255, 0.17);
+}
+
 .c-table__row--success {
     border-left-color: #7ba335;
 }
@@ -514,11 +518,16 @@ a.desc:after {
 .glyphicon-floppy-saved,
 .glyphicon-floppy-remove,
 .glyphicon-alert,
-.glyphicon-asterisk
+.glyphicon-asterisk,
+.glyphicon-tag
 {
 font-size: 18px;
 }
 
+.glyphicon-tag
+{
+    color: #2829d8;
+}
 
 
 .glyphicon-remove,

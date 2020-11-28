@@ -39,13 +39,11 @@ use yii\db\ActiveRecord;
  * @property string $comment
  * @property string $has_second_visit
  * @property string $not_in_time
+ * @property string $special
  */
 
 class Visit extends ActiveRecord
 {
-
-    public $cnt;
-
     /**
      * {@inheritdoc}
      */
@@ -60,7 +58,7 @@ class Visit extends ActiveRecord
     public function rules()
     {
         return [
-            [['card_number', 'used_photo', 'edit', 'dermatolog', 'immunolog', 'ortoped', 'hirurg', 'planned', 'visit_date', 'number', 'has_second_visit', 'not_in_time'], 'integer'],
+            [['card_number', 'used_photo', 'edit', 'dermatolog', 'immunolog', 'ortoped', 'hirurg', 'planned', 'visit_date', 'number', 'has_second_visit', 'not_in_time', 'special'], 'integer'],
             [['anamnes', 'manipulation', 'recommendation', 'description', 'diagnosis'], 'string'],
             [['address_point_id', 'city_id', 'resolve', 'has_come', 'timestamp', 'next_visit_from', 'next_visit_by', 'call_time'], 'safe'],
             ['problem_id', 'integer', 'min' => '1', 'tooSmall' => 'Проблема не выбрана!'],
@@ -99,7 +97,8 @@ class Visit extends ActiveRecord
             'edit' => 'Редактирование',
             'planned' => 'Запланированное посещение',
             'comment' => 'Коментарий',
-            'diagnosis' => 'Диагноз'
+            'diagnosis' => 'Диагноз',
+            'special' => 'Интересный случай'
         ];
     }
 

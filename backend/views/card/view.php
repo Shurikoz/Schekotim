@@ -202,7 +202,7 @@ $leader = Yii::$app->user->can('leader');
                 }
 
                 ?>
-                <tr class="c-table__row <?= $hasCome ?> openBox">
+                <tr class="c-table__row <?= $hasCome ?> <?= $item->special == 1 ? 'c-table__row--special' : '' ?> openBox">
                     <td class="c-table__cell">
                         <span> <?= $item->id ?></span>
                     </td>
@@ -241,6 +241,7 @@ $leader = Yii::$app->user->can('leader');
                         <?php } ?>
                     </td>
                     <td class="c-table__cell" style="text-align: center">
+                        <?= $item->special == 1 ? '<span class="glyphicon glyphicon-tag"></span>' : '' ?>
                         <?= $picCome ?>
                         <?= $picResolve ?>
                         <?= $item->recorded == 1 ? '<span class="glyphicon glyphicon-floppy-saved"></span>' : '' ?>
@@ -563,6 +564,7 @@ $leader = Yii::$app->user->can('leader');
             <p><span class="glyphicon glyphicon-floppy-saved"></span> - клиент записан на прием</p>
             <p><span class="glyphicon glyphicon-remove"></span> - клиент не пришел в указанное время</p>
             <p><span class="glyphicon glyphicon-camera"></span> - не добавлены фотографии</p>
+            <p><span class="glyphicon glyphicon-tag"></span> - интересный случай</p>
             <?= $administrator || $admin || $leader ? '<p><span class="glyphicon glyphicon-alert"></span> - клиент не уложился в сроки</p>' : '' ?>
         </div>
     </div>

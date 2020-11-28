@@ -242,6 +242,16 @@ JS;
             </div>
         </div>
         <hr>
+        <p class="titleNormal">Отметить посещение:</p>
+        <br>
+        <div class="row">
+            <div class="col-md-3 col-sm-3 col-xs-6">
+                <div class="box">
+                    <?= $form->field($model, 'special', ['options' => ['class' => 'form-checkbox']])->checkbox(); ?>
+                </div>
+            </div>
+        </div>
+        <hr>
         <div id="photoForm">
             <div class="row">
                 <?php if ($model->specialist->profession == 'podolog') { ?>

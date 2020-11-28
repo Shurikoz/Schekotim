@@ -232,6 +232,16 @@ $dermatolog = Yii::$app->user->can('dermatolog');
             </div>
         </div>
         <hr>
+        <p class="titleNormal">Отметить посещение:</p>
+        <br>
+        <div class="row">
+            <div class="col-md-3 col-sm-3 col-xs-6">
+                <div class="box">
+                    <?= $form->field($model, 'special', ['options' => ['class' => 'form-checkbox']])->checkbox(); ?>
+                </div>
+            </div>
+        </div>
+        <hr>
         <?php if ($podolog) { ?>
             <p class="titleNormal">Фотографии работ (максимум по 8 фотографий)</p>
             <br>

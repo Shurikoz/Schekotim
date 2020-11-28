@@ -39,19 +39,6 @@ $admin = Yii::$app->user->can('admin');
     </div>
     <div class="card-form">
         <?php $form = ActiveForm::begin(); ?>
-        <?php //TODO убрать блок ?>
-        <div class="row">
-            <div class="col-md-4 col-sm-6">
-                <div class="box">
-                    <?= $form->field($cardModel, 'number')->textInput() ?>
-                </div>
-            </div>
-            <div class="col-md-4 col-sm-6">
-                <p>Номер последней введенной карты: <b><?= $card->number ?></b></p>
-            </div>
-        </div>
-        <?php //TODO убрать блок ?>
-
         <?= $form->field($cardModel, 'user_id')->hiddenInput(['value' => Yii::$app->user->id])->label(false); ?>
         <?php if (!$admin) { ?>
             <?= $form->field($cardModel, 'city_id')->hiddenInput(['value' => Yii::$app->user->identity->city_id])->label(false); ?>

@@ -117,21 +117,17 @@ class CardController extends Controller
 
         $cardModel = new Card();
 
-//        //TODO раскоментировать <<
-//        //найдем последнюю запись, возьмем из нее номер карты
-//        $card = Card::find()->orderBy(['id' => SORT_DESC])->one();
-//
-//        //добавим этот номер карты в нашу модель, прибавив 1
-//        //сделаем проверку на случай, если карт еще нет
-//        if ($card != null) {
-//            $cardModel->number = (int)$card->number + 1;
-//        } else {
-//            $cardModel->number = 1;
-//        }
-//        //TODO раскоментировать >>
-//        //TODO удалить <<
-        $card = Card::find()->orderBy(['number' => SORT_DESC])->one();
-//        //TODO удалить >>
+        //найдем последнюю запись, возьмем из нее номер карты
+        $card = Card::find()->orderBy(['id' => SORT_DESC])->one();
+
+        //добавим этот номер карты в нашу модель, прибавив 1
+        //сделаем проверку на случай, если карт еще нет
+        if ($card != null) {
+            $cardModel->number = (int)$card->number + 1;
+        } else {
+            $cardModel->number = 1;
+        }
+
 
         $cardModel->created_at = date('Y-m-d');
 
@@ -142,9 +138,6 @@ class CardController extends Controller
             }
         }
         return $this->render('create', [
-            //TODO удалить <<
-            'card' => $card,
-            //TODO удалить >>
             'user' => $user,
             'cardModel' => $cardModel,
             'specialistList' => $specialistList,
@@ -163,19 +156,12 @@ class CardController extends Controller
     {
         $user = User::find()->where(['id' => Yii::$app->user->identity->getId()])->with('city', 'address_point')->one();
 
-//        //TODO удалить <<
-        $card = Card::find()->orderBy(['number' => SORT_DESC])->one();
-//        //TODO удалить >>
-
         $cardModel = Card::find()->where(['number' => $number])->one();
         if ($cardModel->load(Yii::$app->request->post()) && $cardModel->save()) {
             Yii::$app->session->setFlash('success', 'Изменения сохранены!');
         }
         return $this->render('update', [
             'cardModel' => $cardModel,
-            //TODO удалить <<
-            'card' => $card,
-            //TODO удалить >>
             'user' => $user,
         ]);
     }

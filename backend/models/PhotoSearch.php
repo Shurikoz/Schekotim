@@ -46,17 +46,6 @@ class PhotoSearch extends Visit
 
         $query = Visit::find()->where(['has_come' => '1'])->joinWith('problem');
 
-//        $query = Visit::find()->select(['visit.*', 'COUNT(photo.id) AS visitsCount'])->joinWith('photo')->groupBy('visit.id')->joinWith('problem');
-
-//        $query = Visit::find()->select('visit.*')->join('INNER JOIN', 'photo','photo.visit_id = visit.id')->joinWith('problem');
-
-//        $query = Visit::find()->select('visit.*')->leftJoin('photo', '`photo`.`visit_id` = `visit`.`id`')->joinWith('problem');
-
-//        $query = Visit::find()->select(['{{visit}}.*', 'COUNT({{photo}}.id) AS visitCount'])->joinWith('photo')->groupBy('{{photo}}.id')->joinWith('problem');
-//        $customers = Customer::find()->select(['{{customer}}.*', 'COUNT({{order}}.id) AS ordersCount'])->joinWith('orders')->groupBy('{{customer}}.id')->all();
-
-//        $customers = Customer::find()->select('customer.*')->leftJoin('order', '`order`.`customer_id` = `customer`.`id`')->where(['order.status' => Order::STATUS_ACTIVE])->with('orders')->all();
-
         // add conditions that should always apply here
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
@@ -84,14 +73,14 @@ class PhotoSearch extends Visit
             'used_photo' => $this->used_photo
         ]);
 
-        $query->andFilterWhere(['like', 'city', $this->city])
-            ->andFilterWhere(['like', 'address_point', $this->address_point])
-            ->andFilterWhere(['like', 'specialist', $this->specialist_id])
-            ->andFilterWhere(['like', Visit::tableName() . '.number', $this->number])
-            ->andFilterWhere(['like', Problem::tableName() . '.id', $this->problem])
-            ->andFilterWhere(['like', 'has_come', $this->has_come])
-            ->andFilterWhere(['like', 'used_photo', $this->used_photo])
-            ->andFilterWhere(['like', 'description', $this->description]);
+        $query->andFilterWhere(['=', 'city', $this->city])
+            ->andFilterWhere(['=', 'address_point', $this->address_point])
+            ->andFilterWhere(['=', 'specialist', $this->specialist_id])
+            ->andFilterWhere(['=', Visit::tableName() . '.number', $this->number])
+            ->andFilterWhere(['=', Problem::tableName() . '.id', $this->problem])
+            ->andFilterWhere(['=', 'has_come', $this->has_come])
+            ->andFilterWhere(['=', 'used_photo', $this->used_photo])
+            ->andFilterWhere(['=', 'description', $this->description]);
         return $dataProvider;
     }
 }

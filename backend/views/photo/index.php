@@ -104,7 +104,7 @@ $count_visits = (isset($_GET['per-page'])) ? $_GET['per-page'] : 10;
                                     <p><b>Id посещения: </b><?= $item->id ?></p>
                                 </div>
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-md-4">
                                 <div class="box">
                                     <p><b>Проблема: </b><?= $item->problem_id == '0' ? '<span class="text-red">Не указана</span>' : $item->problem->name ?></p>
                                 </div>

@@ -21,8 +21,8 @@ $this->title = 'Лист посещений без фотографий';
     <div class="col-md-12">
         <div class="pull-left">
             <?= Html::a('Нет всех фото', ['/visit/nophotos?list=all'], ['class' => $_GET['list'] == 'all' ? 'btn btn-green' : 'btn btn-default']) ?>
-            <?= Html::a('Нет фото `До`', ['visit/nophotos?list=before'], ['class' =>  $_GET['list'] == 'before' ? 'btn btn-green' : 'btn btn-default']) ?>
-            <?= Html::a('Нет фото `После`', ['visit/nophotos?list=after'], ['class' => $_GET['list'] == 'after' ? 'btn btn-green' : 'btn btn-default']) ?>
+            <?= Html::a('Нет фото «До»', ['visit/nophotos?list=before'], ['class' =>  $_GET['list'] == 'before' ? 'btn btn-green' : 'btn btn-default']) ?>
+            <?= Html::a('Нет фото «После»', ['visit/nophotos?list=after'], ['class' => $_GET['list'] == 'after' ? 'btn btn-green' : 'btn btn-default']) ?>
         </div>
     </div>
 </div>

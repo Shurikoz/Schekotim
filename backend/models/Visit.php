@@ -1,9 +1,12 @@
 <?php
 
 namespace backend\models;
+use backend\components\EventHelper;
 use russ666\widgets\Countdown;
 use Yii;
 use yii\db\ActiveRecord;
+use DateTime;
+
 
 /**
  * This is the model class for table "visit".
@@ -370,6 +373,34 @@ class Visit extends ActiveRecord
         ];
     }
 
+    /**
+     * получение событий пользователя (записи пациентов)
+     * возвращает массив с данными событий
+     */
+    public function userEvents()
+    {
+        $events = [];
+        $specialist = Specialist::find()->where(['user_id' => Yii::$app->user->identity->getId()])->one();
+        $visit = $this->find()->where(['specialist_id' => $specialist->id])->andWhere(['>', 'problem_id', 0])->joinWith(['card'])->with(['problem'])->all();
+
+        foreach ($visit as $item) {
+            $event = new EventHelper();
+            $event->id = $item->id;
+            $event->title = $item->problem->name;
+            $event->start = date(DateTime::ISO8601, $item->visit_date);
+            $event->className = 'eveClass';
+            $event->link = '/card/view?number=' . $item->card_number;
+            $event->fio = 'Клиент: ' . $item->card['surname'] . ' ' . $item->card['name'] . ' ' . $item->card['middle_name'];
+            $event->time = 'Дата/время записи: ' . date('d.m.Y H:i', $item->visit_date);
+            $event->card = 'Карта №: ' . $item->card_number;
+//            $event->description = '123';
+            $event->color = $event->getColor($item);
+            $events[] = $event;
+        }
+
+        return $events;
+
+    }
     public function getCard()
     {
         return $this->hasOne(Card::className(), ['number' => 'card_number']);

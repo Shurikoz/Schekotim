@@ -96,6 +96,10 @@ class Card extends ActiveRecord
         ];
     }
 
+    public function getFullName() {
+        return $this->name . ' ' . $this->middle_name . ' ' . $this->surname;
+    }
+
     public function getVisit()
     {
         return $this->hasMany(Visit::className(), ['card_number' => 'number']);

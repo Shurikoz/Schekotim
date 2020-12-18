@@ -1061,3 +1061,11 @@ a.menuLink:hover .btnMenu{
 .font-success{
     color: #7ba335;
 }
+
+.main-bg {
+    background: url(../images/feather-bg.png) no-repeat 0 0;
+    background-position-x: 50%;
+    background-position-y: 50%;
+    background-size: 60%;
+    background-attachment: fixed;
+}

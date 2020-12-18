@@ -67,9 +67,9 @@ Modal::begin([
     'id'=>'modalWin',
     'footer' => Html::a('Открыть карту', [''], ['id' => 'linkCard', 'class' => 'btn btn-green']),
 ]);
+echo '<div id="modalCard"></div><br>';
 echo '<div id="modalTitle"></div><br>';
 echo '<div id="modalFio"></div><br>';
 echo '<div id="modalTime"></div><br>';
-echo '<div id="modalCard"></div><br>';
 Modal::end();
 ?>

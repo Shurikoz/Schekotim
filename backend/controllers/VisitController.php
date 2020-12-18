@@ -341,34 +341,20 @@ class VisitController extends Controller
 
     /**
      * @return string
+     * страница с Интересными случаями
      */
-    public function actionSpecial(){
-
-        $admin = Yii::$app->user->can('admin');
-        $administrator = Yii::$app->user->can('administrator');
-        $leader = Yii::$app->user->can('leader');
-
-        $user = Yii::$app->user->id;
-        $specialist = Specialist::find()->where(['user_id' => $user])->one();
-
-        if ($admin || $administrator || $leader) {
-                $query = Visit::find()
-                    ->where(['and', ['has_come' => 1, 'special' => 1]])
-                    ->with('card');
-
-        } else {
-                $query = Visit::find()
-                    ->where(['and', ['has_come' => 1, 'special' => 1, 'specialist_id' => $specialist->id]])
-                    ->with('card');
-        }
+    public function actionSpecial()
+    {
+        $query = Visit::find()
+            ->where(['and', ['has_come' => 1, 'special' => 1]])
+            ->with('card');
 
         $pages = new Pagination(['totalCount' => $query->count(), 'pageSizeLimit' => [1, 60], 'defaultPageSize' => 20]);
         $visit = $query->offset($pages->offset)->limit($pages->limit)->orderBy(['visit_date' => SORT_DESC])->all();
 
         return $this->render('special', [
             'pages' => $pages,
-            'visit' => $visit,
-            'user' => $specialist
+            'visit' => $visit
         ]);
 
     }

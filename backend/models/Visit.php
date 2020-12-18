@@ -401,6 +401,7 @@ class Visit extends ActiveRecord
         return $events;
 
     }
+
     public function getCard()
     {
         return $this->hasOne(Card::className(), ['number' => 'card_number']);

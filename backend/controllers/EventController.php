@@ -8,12 +8,7 @@
 
 namespace backend\controllers;
 
-use backend\components\EventHelper;
-use backend\models\Card;
-use backend\models\Specialist;
 use backend\models\Visit;
-use DateTime;
-use Yii;
 use yii\web\Controller;
 
 class EventController extends Controller

@@ -13,6 +13,12 @@ return [
     'bootstrap' => ['log'],
     'controllerNamespace' => 'frontend\controllers',
     'components' => [
+        'formatter' => [
+            'dateFormat' => 'dd.MM.yyyy',
+            'timeFormat' => 'H:i',
+            'locale' => 'ru-RU',
+            'timeZone' => 'UTC'
+        ],
         'request' => [
             'csrfParam' => '_csrf-frontend',
         ],

@@ -84,7 +84,7 @@ $this->registerMetaTag([
                     <?= $item->text ?>
                     <?php if ($item->endtime) {?>
                     <br>
-                    <p><b>Акция действует до <?= $item->endtime ?></b></p>
+                    <p><b>Акция действует до <?= Yii::$app->formatter->asDate($item->endtime) ?></b></p>
                     <?php } ?>
 
                 </div>

@@ -46,15 +46,17 @@ $this->title = 'Изменить акцию: ' . $model->title;
     <div class="col-md-6">
         <?= $form->field($model, 'endtime')->widget(DatePicker::classname(), [
             'options' => [
-                'placeholder' => 'дд.мм.гггг',
+                'placeholder' => 'гггг.мм.дд',
                 'class' => 'c-input'
             ],
             'removeButton' => false,
             'pluginOptions' => [
                 'autoclose' => true,
                 'startDate' => date('Ymd'),
-                'todayHighlight' => true
+                'todayHighlight' => true,
+                'format' => 'yyyy-mm-dd'
             ]
+
         ]) ?>
         <br>
         <?= $form->field($model, 'public')->checkbox(['value' => '1', 'checked ' => false])->label(false); ?>

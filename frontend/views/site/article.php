@@ -38,7 +38,7 @@ $this->registerMetaTag([
         ],
     ]
 ]); ?>
-
+<a href="test.php" onclick="return gtag_report_conversion('tel:');">test</a>
 <section>
     <header class="main">
         <div class="row">

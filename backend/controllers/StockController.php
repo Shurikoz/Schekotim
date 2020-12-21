@@ -93,6 +93,8 @@ class StockController extends Controller
      * @param integer $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
+     * @throws \Throwable
+     * @throws \yii\db\StaleObjectException
      */
     public function actionDelete($id)
     {
@@ -110,6 +112,10 @@ class StockController extends Controller
         ]);
     }
 
+    /**
+     * @param $id
+     * @throws NotFoundHttpException
+     */
     public function actionDeletePhoto($id) {
         $model = $this->findModel($id);
         $dir = Yii::getAlias('@frontend/web/');
@@ -118,6 +124,42 @@ class StockController extends Controller
         }
         $model->image = null;
         $model->save(false);
+    }
+
+    /**
+     * @param $id
+     * @return string
+     * @throws NotFoundHttpException
+     */
+    public function actionPublic($id)
+    {
+        $model = $this->findModel($id);
+        $model->public = '1';
+        if ($model->save()) {
+            Yii::$app->session->setFlash('success', 'Акция <b>' . $model->title . '</b> опубликована!');
+        } else {
+            Yii::$app->session->setFlash('danger', 'Произошла ошибка!');
+        }
+
+        return $this->redirect(['stock/index']);
+    }
+
+    /**
+     * @param $id
+     * @return string
+     * @throws NotFoundHttpException
+     */
+    public function actionUnpublic($id)
+    {
+        $model = $this->findModel($id);
+        $model->public = '0';
+        if ($model->save()) {
+            Yii::$app->session->setFlash('warning', 'Акция <b>' . $model->title . '</b> снята с публикации!');
+        } else {
+            Yii::$app->session->setFlash('danger', 'Произошла ошибка!');
+        }
+        return $this->redirect(['stock/index']);
+
     }
 
     /**

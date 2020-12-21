@@ -439,12 +439,12 @@ class SiteController extends Controller
      */
     public function actionStock()
     {
-        $model = Stock::find()->all();
+        (new Stock())->checkPublicStock();
+        $model = Stock::find()->where(['public' => 1])->all();
         $this->view->registerMetaTag([
             'name' => 'description',
             'content' => '«Щекотливая тема» - Акции и скидки'
         ]);
-
         return $this->render('stock' , [
                 'model' => $model
             ]);

@@ -155,7 +155,6 @@ class CardController extends Controller
     public function actionUpdate($number)
     {
         $user = User::find()->where(['id' => Yii::$app->user->identity->getId()])->with('city', 'address_point')->one();
-
         $cardModel = Card::find()->where(['number' => $number])->one();
         if ($cardModel->load(Yii::$app->request->post()) && $cardModel->save()) {
             Yii::$app->session->setFlash('success', 'Изменения сохранены!');

@@ -37,7 +37,7 @@ use yii\helpers\Html;
                         </td>
                         <td class="c-table__cell" width="25%">
                             <?php if ($item->endtime) { ?>
-                                <?= $item->endtime ?>
+                                <?= Yii::$app->formatter->asDate($item->endtime) ?>
                             <?php } else { ?>
                                 Не установлено
                             <?php } ?>
@@ -46,7 +46,20 @@ use yii\helpers\Html;
                             <?= $item->public == 1 ? '<span style="color: #7ba335;">Активный</span>' : '<span style="color: #c55;">Неактивный</span>' ?>
                         </td>
                         <td class="c-table__cell cardBtn" width="15%">
+                            <?php if ($item->public == 1) { ?>
+                                <?= Html::a('<span class="glyphicon glyphicon-ok" title="Снять с публикации"></span>', ['stock/unpublic', 'id' => $item->id], [
+                                    'class' => 'btn',
+                                    'data-confirm' => 'Снять акцию с публикации?'
 
+                                ]) ?>
+                            <?php } else { ?>
+                                <?= Html::a('<span class="glyphicon glyphicon-ban-circle" title="Опубликовать"></span>', ['stock/public', 'id' => $item->id], [
+                                    'class' => 'btn',
+                                    'data-confirm' => 'Опубликовать акцию?'
+
+
+                                ]) ?>
+                            <?php } ?>
                             <?= Html::a('<span class="glyphicon glyphicon-pencil" title="Редактировать"></span>', ['stock/update', 'id' => $item->id], ['class' => 'btn']) ?>
                             <?= Html::a('<span class="glyphicon glyphicon-trash" title="Удалить"></span>', ['stock/delete', 'id' => $item->id], [
                                 'class' => 'btn',

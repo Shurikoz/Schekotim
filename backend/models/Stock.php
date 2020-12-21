@@ -106,6 +106,17 @@ class Stock extends \yii\db\ActiveRecord
         }
     }
 
+    public function checkPublicStock()
+    {
+        $today = date('Y-m-d');
+        $model = Stock::find()->where(['<', 'endtime', $today])->all();
+        foreach ($model as $item){
+            $item->public = '0';
+            $item->save();
+        }
+
+    }
+
     /**
      * @param bool $extension
      * @return string

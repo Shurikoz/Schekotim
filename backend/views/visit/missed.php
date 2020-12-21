@@ -130,6 +130,18 @@ $this->title = 'Лист пропущенных посещений';
     <?php } ?>
     </tbody>
 </table>
+<div class="row">
+    <div class="col-md-12">
+        <div class="pull-right">
+            <?= LinkPager::widget([
+                'pagination' => $pages,
+                'maxButtonCount' => 5,
+                'firstPageLabel' => true,
+                'lastPageLabel' => true,
+            ]); ?>
+        </div>
+    </div>
+</div>
 <br>
 <div class="pull-right">
     <p><span class="glyphicon glyphicon-remove"></span> - пациент не пришел в указанное время</p>

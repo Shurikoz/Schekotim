@@ -46,7 +46,7 @@ $this->title = 'Создать новую акцию';
         <div class="col-md-6">
             <?= $form->field($model, 'endtime')->widget(DatePicker::classname(), [
                 'options' => [
-                    'placeholder' => 'дд.мм.гггг',
+                    'placeholder' => 'гггг.мм.дд',
                     'class' => 'c-input'
                 ],
                 'removeButton' => false,
@@ -54,6 +54,7 @@ $this->title = 'Создать новую акцию';
                     'autoclose' => true,
                     'startDate' => date('Ymd'),
                     'todayHighlight' => true,
+                    'format' => 'yyyy-mm-dd'
                 ]
             ]) ?>
             <br>

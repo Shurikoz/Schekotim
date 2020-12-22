@@ -19,6 +19,7 @@ class CardSearch extends Card
         return [
             [['id', 'user_id', 'number'], 'integer'],
             [['city_id', 'address_point_id', 'name', 'surname', 'middle_name', 'birthday', 'created_at'], 'safe'],
+            [['name', 'surname', 'middle_name', 'number'], 'filter', 'filter' => 'trim', 'skipOnArray' => true],
         ];
     }
 

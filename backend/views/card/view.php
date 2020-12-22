@@ -66,7 +66,6 @@ $leader = Yii::$app->user->can('leader');
             </div>
             <div class="pull-right">
                 <span style="display: block;margin-top: 5px;" class="titleCardName"><b><?= Html::encode($this->title) ?></b></span>
-
             </div>
         </div>
     </div>
@@ -81,11 +80,11 @@ $leader = Yii::$app->user->can('leader');
         <div class="row">
             <div class="col-md-6 col-sm-12">
                 <p class="borderBottom"><b>Дата рождения:</b> <?= Yii::$app->formatter->asDate($model->birthday) ?></p>
-                <p><b>Возраст:</b> <?= $age ?></p>
+                <p class="borderBottom"><b>Возраст:</b> <?= $age ?></p>
             </div>
             <div class="col-md-6 col-sm-12">
                 <p class="borderBottom"><b>Профессия:</b> <?= $model->profession == null ? 'Не указана' : $model->profession ?></p>
-                <p><b>Ортопедические особенности:</b> <?= $model->orthopedic_features == null ? 'Отсутствуют' : '<br>' . $model->orthopedic_features ?>
+                <p class="borderBottom"><b>Ортопедические особенности:</b> <?= $model->orthopedic_features == null ? 'Отсутствуют' : '<br>' . $model->orthopedic_features ?>
                 </p>
             </div>
         </div>
@@ -101,21 +100,26 @@ $leader = Yii::$app->user->can('leader');
     </div>
     <?php if ($admin || $administrator || $leader) { ?>
     <div class="row">
-        <div class="col-md-3 col-sm-6">
+        <div class="col-md-4 col-sm-6">
             <div class="box">
                 <b>Телефон: </b><em><?= $model->phone ?></em>
             </div>
         </div>
-        <div class="col-md-3 col-sm-6">
+        <div class="col-md-4 col-sm-6">
             <div class="box">
                 <b>Дата создания: </b><em><?= Yii::$app->formatter->asDate($model->created_at) ?></em>
             </div>
         </div>
+
+        <?php
+        //todo вывод места где создана карта
+        if (false) { ?>
         <div class="col-md-4 col-sm-6">
             <div class="box">
                 <em><?= $model->city->name ?>, <?= $model->address_point->address_point ?></em>
             </div>
         </div>
+        <?php } ?>
     </div>
     <?php } ?>
     <div class="row">

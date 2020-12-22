@@ -29,15 +29,13 @@ $leader = Yii::$app->user->can('leader');
             <div class="pull-left">
                 <?= Html::a(FAS::icon('angle-left', ['class' => 'big', 'data-role' => 'arrow']) . '&nbsp В главное меню', ['/'], ['class' => 'btn btn-default']) ?>
             </div>
+            <div class="pull-right">
+                <span style="display: block;margin-top: 5px;" class="titleCardName"><b>Карты пациентов</b></span>
+            </div>
         </div>
     </div>
-    <div class="row">
-        <div class="col-md-12">
-            <h3>Карты пациентов</h3>
-            <hr>
-        </div>
-    </div>
-    <br>
+    <hr>
+
     <div class="row">
         <div class="col-md-12">
             <?= $this->render('_search', [

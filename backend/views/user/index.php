@@ -71,13 +71,13 @@ $admin = Yii::$app->user->can('admin');
 
                         <?php if (!Yii::$app->authManager->getAssignment('leader', $item->id)) { ?>
                             <?php if ($item->status == 10) { ?>
-                                <?= Html::a('<span class="glyphicon glyphicon-ban-circle" title="Заблокировать"></span>', ['user/block', 'id' => $item->id], [
+                                <?= Html::a('<span class="glyphicon glyphicon-ok-circle" title="Заблокировать"></span>', ['user/block', 'id' => $item->id], [
                                     'class' => 'btn',
                                     'data-confirm' => 'Заблокировать пользователя?'
 
                                 ]) ?>
                             <?php } else { ?>
-                                <?= Html::a('<span class="glyphicon glyphicon-ok-circle" title="Разблокировать"></span>', ['user/unblock', 'id' => $item->id], [
+                                <?= Html::a('<span class="glyphicon glyphicon-ban-circle" title="Разблокировать"></span>', ['user/unblock', 'id' => $item->id], [
                                     'class' => 'btn',
                                     'data-confirm' => 'Активировать пользователя?'
 

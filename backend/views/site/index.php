@@ -149,7 +149,7 @@ $leader = Yii::$app->user->can('leader');
         </div>
     <?php } ?>
 </div>
-<?php if ($admin || $leader) { ?>
+<?php if ($admin) { ?>
     <hr>
     <div class="row">
         <div class="col-md-4 col-sm-6">
@@ -178,8 +178,8 @@ $leader = Yii::$app->user->can('leader');
         </div>
     </div>
 <?php } ?>
-<hr>
 <?php if ($admin) { ?>
+    <hr>
     <div class="row">
         <div class="col-md-4 col-sm-6">
             <div class="box">

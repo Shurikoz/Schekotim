@@ -79,7 +79,7 @@ $dermatolog = Yii::$app->user->can('dermatolog');
             'label' => 'Система учета',
             'items' => [
                 ['label' => 'Карты', 'url' => '/card/index', 'visible' => $admin || $leader || $administrator || $podolog || $dermatolog],
-                ['label' => 'Календарь', 'url' => '/event', 'visible' => $podolog || $dermatolog],
+                ['label' => 'Календарь', 'url' => '/calendar', 'visible' => $podolog || $dermatolog],
                 ['label' => 'Фото работ', 'url' => '/photo/index', 'visible' => $admin || $leader || $smm],
                 ['label' => 'Пропущенные посещения', 'url' => '/visit/missed', 'visible' => $admin || $leader || $administrator],
                 ['label' => 'Запланированные посещения', 'url' => '/visit/planned', 'visible' => $admin || $leader || $administrator],
@@ -120,12 +120,12 @@ $dermatolog = Yii::$app->user->can('dermatolog');
     <div class="container">
         <?php if (!Yii::$app->user->isGuest) { ?>
             <div class="row">
-                <div class="col-md-8 col-sm-8">
+                <div class="col-md-8 col-sm-8 col-xs-8"">
                     <?php if (!$admin) { ?>
                         <?= Html::a('<button type="button" class="btn btn-default">Служба поддержки</button>', ['/support']) ?>
                     <?php } ?>
                 </div>
-                <div class="col-md-4 col-sm-4">
+                <div class="col-md-4 col-sm-4 col-xs-4">
                     <?= Html::a('<button type="button" class="btn btn-default pull-right">Справка</button>', ['/tutorial']) ?>
                 </div>
             </div>
@@ -141,10 +141,10 @@ $dermatolog = Yii::$app->user->can('dermatolog');
         <hr>
         <?php } ?>
         <div class="row">
-            <div class="col-md-6 col-sm-6">
+            <div class="col-md-6 col-sm-6 col-xs-6">
                 <p class="pull-left">&copy; <?= Html::encode(Yii::$app->name) ?> <?= date('Y') ?></p>
             </div>
-            <div class="col-md-6 col-sm-6">
+            <div class="col-md-6 col-sm-6 col-xs-6">
                 <p class="pull-right"><?= Html::a('Политика конфиденциальности', ['/policy']) ?></p>
             </div>
         </div>

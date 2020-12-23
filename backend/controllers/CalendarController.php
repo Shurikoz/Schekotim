@@ -11,7 +11,7 @@ namespace backend\controllers;
 use backend\models\Visit;
 use yii\web\Controller;
 
-class EventController extends Controller
+class CalendarController extends Controller
 {
     /**
      * получим массив с данными для календаря событий
@@ -20,7 +20,7 @@ class EventController extends Controller
     {
 
         $e = new Visit();
-        $events = $e->userEvents();
+        $events = $e->getUserCalendar();
 
         return $this->render('index', [
             'events' => $events,

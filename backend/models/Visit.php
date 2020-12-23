@@ -377,7 +377,7 @@ class Visit extends ActiveRecord
      * получение событий пользователя (записи пациентов)
      * возвращает массив с данными событий
      */
-    public function userEvents()
+    public function getUserCalendar()
     {
         $events = [];
         $specialist = Specialist::find()->where(['user_id' => Yii::$app->user->identity->getId()])->one();

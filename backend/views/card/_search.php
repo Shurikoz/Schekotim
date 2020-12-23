@@ -90,4 +90,3 @@ use yii\widgets\ActiveForm;
 </div>
 <hr>
 <?php ActiveForm::end(); ?>
-</div>

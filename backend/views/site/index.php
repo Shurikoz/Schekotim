@@ -14,22 +14,21 @@ $leader = Yii::$app->user->can('leader');
 ?>
 <div class="row">
     <?php if ($admin || $administrator || $leader) { ?>
-        <div class="col-md-4 col-sm-6">
+        <div class="col-md-4 col-sm-6 col-xs-12">
             <div class="box">
                 <?= Html::a('
                     <div class="btnMenu">
                         <div class="menuIcon text-center">' . Html::img('/images/icons/compose.png') . '</div>
                         <div class="menuText text-center">
-                            <h3>Создать карту</h3>
+                            <h3>Создать карту
                         </div>
                     </div>',
                     ['/card/create'], ['class' => 'menuLink']) ?>
             </div>
         </div>
     <?php } ?>
-
     <?php if ($admin || $podolog || $dermatolog || $administrator || $leader) { ?>
-        <div class="col-md-4 col-sm-6">
+        <div class="col-md-4 col-sm-6 col-xs-12">
             <div class="box">
                 <?= Html::a('
                     <div class="btnMenu">
@@ -42,7 +41,7 @@ $leader = Yii::$app->user->can('leader');
             </div>
         </div>
         <?php if ($podolog || $dermatolog) { ?>
-            <div class="col-md-4 col-sm-6">
+            <div class="col-md-4 col-sm-6 col-xs-12">
                 <div class="box">
                     <?= Html::a('
                     <div class="btnMenu">
@@ -51,10 +50,10 @@ $leader = Yii::$app->user->can('leader');
                             <h3>Календарь</h3>
                         </div>
                     </div>',
-                        ['/event'], ['class' => 'menuLink']) ?>
+                        ['/calendar'], ['class' => 'menuLink']) ?>
                 </div>
             </div>
-            <div class="col-md-4 col-sm-6">
+            <div class="col-md-4 col-sm-6 col-xs-12">
                 <div class="box">
                     <?= Html::a('
                     <div class="btnMenu">
@@ -66,7 +65,7 @@ $leader = Yii::$app->user->can('leader');
                         ['/visit/nophotos?list=all'], ['class' => 'menuLink']) ?>
                 </div>
             </div>
-            <div class="col-md-4 col-sm-6">
+            <div class="col-md-4 col-sm-6 col-xs-12">
                 <div class="box">
                     <?= Html::a('
                     <div class="btnMenu">
@@ -84,7 +83,7 @@ $leader = Yii::$app->user->can('leader');
 <div class="row">
     <?php if ($admin || $smm || $leader) { ?>
         <hr>
-        <div class="col-md-4 col-sm-6">
+        <div class="col-md-4 col-sm-6 col-xs-12">
             <div class="box">
                 <?= Html::a('
                     <div class="btnMenu">
@@ -97,9 +96,8 @@ $leader = Yii::$app->user->can('leader');
             </div>
         </div>
     <?php } ?>
-
     <?php if ($admin || $administrator || $leader) { ?>
-        <div class="col-md-4 col-sm-6">
+        <div class="col-md-4 col-sm-6 col-xs-12">
             <div class="box">
                 <?= Html::a('
                     <div class="btnMenu">
@@ -111,7 +109,7 @@ $leader = Yii::$app->user->can('leader');
                     ['/visit/planned'], ['class' => 'menuLink']) ?>
             </div>
         </div>
-        <div class="col-md-4 col-sm-6">
+        <div class="col-md-4 col-sm-6 col-xs-12">
             <div class="box">
                 <?= Html::a('
                     <div class="btnMenu">
@@ -123,7 +121,7 @@ $leader = Yii::$app->user->can('leader');
                     ['/visit/missed'], ['class' => 'menuLink']) ?>
             </div>
         </div>
-        <div class="col-md-4 col-sm-6">
+        <div class="col-md-4 col-sm-6 col-xs-12">
             <div class="box">
                 <?= Html::a('
                     <div class="btnMenu">
@@ -135,7 +133,7 @@ $leader = Yii::$app->user->can('leader');
                     ['/visit/nophotos?list=all'], ['class' => 'menuLink']) ?>
             </div>
         </div>
-        <div class="col-md-4 col-sm-6">
+        <div class="col-md-4 col-sm-6 col-xs-12">
             <div class="box">
                 <?= Html::a('
                     <div class="btnMenu">
@@ -152,7 +150,7 @@ $leader = Yii::$app->user->can('leader');
 <?php if ($admin) { ?>
     <hr>
     <div class="row">
-        <div class="col-md-4 col-sm-6">
+        <div class="col-md-4 col-sm-6 col-xs-12">
             <div class="box">
                 <?= Html::a('
                     <div class="btnMenu">
@@ -164,7 +162,7 @@ $leader = Yii::$app->user->can('leader');
                     ['/log'], ['class' => 'menuLink']) ?>
             </div>
         </div>
-        <div class="col-md-4 col-sm-6">
+        <div class="col-md-4 col-sm-6 col-xs-12">
             <div class="box">
                 <?= Html::a('
                     <div class="btnMenu">
@@ -181,7 +179,7 @@ $leader = Yii::$app->user->can('leader');
 <?php if ($admin) { ?>
     <hr>
     <div class="row">
-        <div class="col-md-4 col-sm-6">
+        <div class="col-md-4 col-sm-6 col-xs-12">
             <div class="box">
                 <?= Html::a('
                     <div class="btnMenu">

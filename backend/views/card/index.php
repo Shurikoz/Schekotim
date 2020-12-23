@@ -42,7 +42,7 @@ $leader = Yii::$app->user->can('leader');
                 'model' => $searchModel,
                 'city' => $city,
                 'addressPoint' => $addressPoint,
-            ]) ?>
+            ])?>
         </div>
     </div>
     <div class="row">
@@ -56,7 +56,7 @@ $leader = Yii::$app->user->can('leader');
             <div class="pull-right perPage">
                 <?= LinkPager::widget([
                     'pagination' => $pages,
-                    'maxButtonCount' => 5,
+                    'maxButtonCount' => 3,
                     'firstPageLabel' => true,
                     'lastPageLabel' => true,
                 ]); ?>
@@ -133,7 +133,7 @@ $leader = Yii::$app->user->can('leader');
             <div class="pull-right">
                 <?= LinkPager::widget([
                     'pagination' => $pages,
-                    'maxButtonCount' => 5,
+                    'maxButtonCount' => 3,
                     'firstPageLabel' => true,
                     'lastPageLabel' => true,
                 ]); ?>

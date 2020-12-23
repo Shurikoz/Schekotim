@@ -24,6 +24,9 @@ $this->title = 'Лист запланированных посещений';
         <div class="pull-left">
             <?= Html::a(FAS::icon('angle-left', ['class' => 'big', 'data-role' => 'arrow']) . '&nbsp В главное меню', ['/'], ['class' => 'btn btn-default']) ?>
         </div>
+        <div class="pull-right">
+            <span style="display: block;margin-top: 5px;" class="titleCardName"><b>Запланированные посещения</b></span>
+        </div>
     </div>
 </div>
 <hr>

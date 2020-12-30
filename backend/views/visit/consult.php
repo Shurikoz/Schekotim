@@ -24,6 +24,12 @@ $this->title = 'Лист консультаций';
 <hr>
 <div class="row">
     <div class="col-md-12">
+        <?= $this->render('_search', [
+            'model' => $searchModel,
+        ]) ?>
+    </div>
+</div><div class="row">
+    <div class="col-md-12">
         <div class="pull-left cardsOnPage">
             <span>Записей на странице:</span>
             <?= Html::a(20, Url::current(['per-page' => 20]), ['class' => ($count_items == 20) ? 'active' : '']) ?>
@@ -58,7 +64,7 @@ $this->title = 'Лист консультаций';
     </tr>
     </thead>
     <tbody>
-    <?php foreach ($visit as $item) { ?>
+    <?php foreach ($dataProvider->getModels() as $item) { ?>
         <tr class="c-table__row">
                 <td class="c-table__cell">
                     <?= $item->card_number?>

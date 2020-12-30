@@ -3,13 +3,14 @@
 namespace backend\controllers;
 
 use backend\models\Card;
+use backend\models\ConsultVisitSearch;
 use backend\models\Photo;
 use backend\models\Problem;
 use backend\models\Specialist;
 use backend\models\Visit;
-use backend\models\VisitMissedSearch;
-use backend\models\VisitPlannedSearch;
+use backend\models\MissedVisitSearch;
 use backend\models\VisitSearch;
+use backend\models\VisitCardSearch;
 use common\models\User;
 use kartik\mpdf\Pdf;
 use Yii;
@@ -44,7 +45,7 @@ class VisitController extends Controller
      */
     public function actionIndex()
     {
-        $searchModel = new VisitSearch();
+        $searchModel = new VisitCardSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -236,7 +237,7 @@ class VisitController extends Controller
      */
     public function actionMissed()
     {
-        $searchModel = new VisitMissedSearch();
+        $searchModel = new VisitSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
         $pages = new Pagination(['totalCount' => $dataProvider->getTotalCount(), 'pageSizeLimit' => [1, 60], 'defaultPageSize' => 20]);
         return $this->render('missed', [
@@ -251,7 +252,7 @@ class VisitController extends Controller
      */
     public function actionPlanned()
     {
-        $searchModel = new VisitPlannedSearch();
+        $searchModel = new VisitSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
         $pages = new Pagination(['totalCount' => $dataProvider->getTotalCount(), 'pageSizeLimit' => [1, 60], 'defaultPageSize' => 20]);
 
@@ -265,6 +266,28 @@ class VisitController extends Controller
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
             'specialistModel' => $specialistModel
+        ]);
+    }
+
+    /**
+     * @return string
+     */
+    public function actionVisitConsult(){
+
+        $searchModel = new VisitSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $pages = new Pagination(['totalCount' => $dataProvider->getTotalCount(), 'pageSizeLimit' => [1, 60], 'defaultPageSize' => 20]);
+
+//        $query = Visit::find()->where(['has_come' => 1, 'resolve' => 2])->with('photo', 'card');
+//        $pages = new Pagination(['totalCount' => $query->count(), 'pageSizeLimit' => [1, 60], 'defaultPageSize' => 20]);
+//        $visit = $query->offset($pages->offset)->limit($pages->limit)->orderBy(['visit_date' => SORT_DESC])->all();
+
+        return $this->render('consult', [
+//            'visit' => $visit,
+            'pages' => $pages,
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+
         ]);
     }
 
@@ -357,20 +380,6 @@ class VisitController extends Controller
             'visit' => $visit
         ]);
 
-    }
-
-    /**
-     * @return string
-     */
-    public function actionVisitConsult(){
-        $query = Visit::find()->where(['has_come' => 1, 'resolve' => 2])->with('photo', 'card');
-        $pages = new Pagination(['totalCount' => $query->count(), 'pageSizeLimit' => [1, 60], 'defaultPageSize' => 20]);
-        $visit = $query->offset($pages->offset)->limit($pages->limit)->orderBy(['visit_date' => SORT_DESC])->all();
-
-        return $this->render('consult', [
-            'visit' => $visit,
-            'pages' => $pages,
-        ]);
     }
 
     /**

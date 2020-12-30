@@ -40,19 +40,19 @@ $leader = Yii::$app->user->can('leader');
                     ['/card'], ['class' => 'menuLink']) ?>
             </div>
         </div>
-        <?php if ($podolog || $dermatolog) { ?>
-            <div class="col-md-4 col-sm-6 col-xs-12">
-                <div class="box">
-                    <?= Html::a('
+        <div class="col-md-4 col-sm-6 col-xs-12">
+            <div class="box">
+                <?= Html::a('
                     <div class="btnMenu">
                         <div class="menuIcon text-center">' . Html::img('/images/icons/calendar.png') . '</div>
                         <div class="menuText text-center">
                             <h3>Календарь</h3>
                         </div>
                     </div>',
-                        ['/calendar'], ['class' => 'menuLink']) ?>
-                </div>
+                    ['/calendar'], ['class' => 'menuLink']) ?>
             </div>
+        </div>
+        <?php if ($podolog || $dermatolog) { ?>
             <div class="col-md-4 col-sm-6 col-xs-12">
                 <div class="box">
                     <?= Html::a('

@@ -1,5 +1,6 @@
 <?php
 
+use kartik\date\DatePicker;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
@@ -73,6 +74,23 @@ use yii\widgets\ActiveForm;
     <div class="col-md-2 col-sm-4">
         <div class="c-field">
             <?= $form->field($model, 'card_number')->textInput(['class' => 'autoSearchSubmit c-input', 'placeholder' => 'Номер карты'])->label(false) ?>
+        </div>
+    </div>
+    <div class="col-md-2 col-sm-4">
+        <div class="c-field has-addon-left">
+            <?php echo $form->field($model, 'birthday')->widget(DatePicker::classname(), [
+                'options' => [
+                    'placeholder' => 'Дата рождения',
+                    'class' => 'autoSearchSubmit c-input'
+                ],
+                'removeButton' => false,
+                'pluginOptions' => [
+                    'autoclose' => true,
+                    'endDate' => date('Ymd'),
+                    'todayHighlight' => true,
+                ]
+            ])->label(false)
+            ?>
         </div>
     </div>
     <?php ActiveForm::end(); ?>

@@ -8,7 +8,7 @@ use yii\data\ActiveDataProvider;
 /**
  * PlannedVisitSearch represents the model behind the search form of `backend\models\Visit`.
  */
-class PlannedVisitSearch extends Visit
+class VisitSearch extends Visit
 {
     public $surname;
     public $name;

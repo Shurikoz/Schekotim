@@ -8,7 +8,7 @@ use yii\data\ActiveDataProvider;
 /**
  * VisitSearch represents the model behind the search form of `backend\models\Visit`.
  */
-class VisitSearch extends Visit
+class VisitCardSearch extends Visit
 {
 
     public $problem;

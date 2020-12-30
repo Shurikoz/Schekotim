@@ -376,12 +376,18 @@ class Visit extends ActiveRecord
     /**
      * получение событий пользователя (записи пациентов)
      * возвращает массив с данными событий
+     * @param $user
+     * @return array
      */
-    public function getUserCalendar()
+    public function getUserCalendar($user)
     {
         $events = [];
-        $specialist = Specialist::find()->where(['user_id' => Yii::$app->user->identity->getId()])->one();
-        $visit = $this->find()->where(['specialist_id' => $specialist->id])->andWhere(['>', 'problem_id', 0])->joinWith(['card'])->with(['problem'])->all();
+        if (Yii::$app->user->can('leader')) {
+            $visit = $this->find()->where(['specialist_id' => $user])->andWhere(['>', 'problem_id', 0])->joinWith(['card'])->with(['problem'])->all();
+        } else {
+            $specialist = Specialist::find()->where(['user_id' => Yii::$app->user->identity->getId()])->one();
+            $visit = $this->find()->where(['specialist_id' => $specialist->id])->andWhere(['>', 'problem_id', 0])->joinWith(['card'])->with(['problem'])->all();
+        }
 
         foreach ($visit as $item) {
             $event = new EventHelper();

@@ -223,9 +223,10 @@ $this->title = 'Лист запланированных посещений';
                                         'class' => 'btn btn-default linkNewWindow',
                                     ]) ?>
                                 <?php } ?>
-                                <?= Html::a('<span class="glyphicon glyphicon-new-window"></span> Открыть карту пациента', ['card/view', 'number' => $item->card_number], [
+                                <?= Html::a('<span class="glyphicon glyphicon-new-window"></span>', ['card/view', 'number' => $item->card_number], [
                                     'target' => '_blank',
                                     'class' => 'btn btn-default linkNewWindow',
+                                    'title' => 'Открыть карту пациента'
                                 ]) ?>
                             </div>
                         </div>

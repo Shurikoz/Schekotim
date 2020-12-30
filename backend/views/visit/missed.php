@@ -42,7 +42,7 @@ $this->title = 'Лист пропущенных посещений';
         <div class="pull-right perPage">
             <?= LinkPager::widget([
                 'pagination' => $pages,
-                'maxButtonCount' => 5,
+                'maxButtonCount' => 3,
                 'firstPageLabel' => true,
                 'lastPageLabel' => true,
             ]); ?>
@@ -138,7 +138,7 @@ $this->title = 'Лист пропущенных посещений';
         <div class="pull-right">
             <?= LinkPager::widget([
                 'pagination' => $pages,
-                'maxButtonCount' => 5,
+                'maxButtonCount' => 3,
                 'firstPageLabel' => true,
                 'lastPageLabel' => true,
             ]); ?>

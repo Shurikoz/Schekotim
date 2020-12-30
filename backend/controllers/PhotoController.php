@@ -6,7 +6,7 @@ use backend\models\Photo;
 use backend\models\PhotoSearch;
 use backend\models\Problem;
 use backend\models\Visit;
-use backend\models\VisitSearch;
+use backend\models\VisitCardSearch;
 use Yii;
 use yii\data\Pagination;
 use yii\filters\VerbFilter;

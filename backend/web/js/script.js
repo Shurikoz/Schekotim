@@ -10,6 +10,16 @@ window.setTimeout(function () {
 $(".autoSearchSubmit").change(function () {
     this.form.submit();
 });
+//************************************************************************//функция для автопоиска после изменения инпута
+//функция для автопоиска после изменения инпута
+$(".showCalendarSelectedSpecialist").change(function () {
+    if (this.value != '') {
+        document.location.replace("/calendar?user=" + this.value);
+    } else {
+        document.location.replace("/calendar");
+
+    }
+});
 //************************************************************************
 //сброс формы поиска
 $(".resetFormButton").click(function () {

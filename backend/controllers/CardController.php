@@ -10,7 +10,7 @@ use backend\models\Photo;
 use backend\models\Specialist;
 use backend\models\Visit;
 use backend\models\VisitMark;
-use backend\models\VisitSearch;
+use backend\models\VisitCardSearch;
 use common\models\User;
 use Yii;
 use yii\data\Pagination;
@@ -69,7 +69,7 @@ class CardController extends Controller
      */
     public function actionView($number)
     {
-        $searchModel = new VisitSearch();
+        $searchModel = new VisitCardSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams, $number);
         $model = Card::find()->where(['number' => $number])->with('city', 'address_point')->one();
         $visits = Visit::find()->where(['card_number' => $number])->with(['photo', 'problem', 'city'])->all();

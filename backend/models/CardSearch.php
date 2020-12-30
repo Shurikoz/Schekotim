@@ -4,7 +4,6 @@ namespace backend\models;
 
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use backend\models\Card;
 
 /**
  * CardSearch represents the model behind the search form of `backend\models\Card`.
@@ -51,7 +50,7 @@ class CardSearch extends Card
             'pagination' => [
                 'pageSizeLimit' => [1, 60],
             ],
-            'sort'=> ['defaultOrder' => ['number' => SORT_DESC]]// Отсортируем по убыванию
+            'sort' => ['defaultOrder' => ['number' => SORT_DESC]]// Отсортируем по убыванию
         ]);
 
         $this->load($params);
@@ -67,7 +66,6 @@ class CardSearch extends Card
             'id' => $this->id,
             'user_id' => $this->user_id,
             'number' => $this->number,
-            'birthday' => $this->birthday,
             'created_at' => $this->created_at,
             'city_id' => $this->city_id,
             'address_point_id' => $this->address_point_id,
@@ -80,7 +78,8 @@ class CardSearch extends Card
 //            ->andFilterWhere(['like', 'address_point_id', $this->address_point_id])
             ->andFilterWhere(['like', 'name', $this->name])
             ->andFilterWhere(['like', 'surname', $this->surname])
-            ->andFilterWhere(['like', 'middle_name', $this->middle_name]);
+            ->andFilterWhere(['like', 'middle_name', $this->middle_name])
+            ->andFilterWhere(['like', Card::tableName() . '.birthday', $this->birthday]);
         return $dataProvider;
     }
 }

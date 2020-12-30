@@ -195,3 +195,5 @@ $leader = Yii::$app->user->can('leader');
         </div>
     </div>
 <?php } ?>
+
+<?= Yii::$app->request->userIP ?>

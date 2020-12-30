@@ -2,18 +2,15 @@
 namespace backend\controllers;
 
 use backend\models\AddressPoint;
-use backend\models\City;
 use backend\models\PasswordResetRequestForm;
 use backend\models\ResetPasswordForm;
 use backend\models\Support;
-use backend\models\Visit;
 use common\models\LoginForm;
 use Yii;
 use yii\base\InvalidArgumentException;
 use yii\web\BadRequestHttpException;
 use yii\web\Controller;
 use yii\web\UploadedFile;
-use yii\helpers\ArrayHelper;
 
 
 /**
@@ -21,8 +18,6 @@ use yii\helpers\ArrayHelper;
  */
 class SiteController extends Controller
 {
-
-    public $role;
 
     /**
      * {@inheritdoc}
@@ -75,10 +70,13 @@ class SiteController extends Controller
 
         $model = new LoginForm();
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
-            return $this->goBack();
+            if (Yii::$app->request->userIP == Yii::$app->params['ipAddress'] || Yii::$app->user->can('admin') || Yii::$app->user->can('leader')) {
+                return $this->goBack();
+            }
+            Yii::$app->user->logout();
+            return $this->render('accessError');
         } else {
             $model->password = '';
-
             return $this->render('login', [
                 'model' => $model,
             ]);

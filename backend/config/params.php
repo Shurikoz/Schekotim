@@ -8,4 +8,7 @@ return [
     'maxUsers' => 100,
 
 
+    'ipAddress' => '127.0.0.1',
+    'ipAccess' => true, // true - включить для пользователей доступ по ip, false - отключить доступ по ip
+
 ];

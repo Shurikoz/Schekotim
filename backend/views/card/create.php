@@ -98,7 +98,7 @@ $admin = Yii::$app->user->can('admin');
 
             <div class="col-md-4 col-sm-6 representative hide">
                 <div class="box">
-                    <?= $form->field($cardModel, 'representative', ['labelOptions' => ['class' => 'control-label']])->textarea()->label(''); ?>
+                    <?= $form->field($cardModel, 'representative', ['labelOptions' => ['class' => 'control-label']])->textarea()->label('Информация о представителе'); ?>
                 </div>
             </div>
         </div>

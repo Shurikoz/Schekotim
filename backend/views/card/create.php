@@ -60,6 +60,8 @@ $admin = Yii::$app->user->can('admin');
                     <?= $form->field($cardModel, 'middle_name')->textInput(['maxlength' => true, 'onchange' => 'checkCard()', 'id' => 'middle_name']) ?>
                 </div>
             </div>
+        </div>
+        <div class="row">
             <div class="col-md-4 col-sm-6">
                 <div class="box">
                     <?php echo $form->field($cardModel, 'birthday')->widget(DatePicker::classname(), [

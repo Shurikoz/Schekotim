@@ -51,11 +51,12 @@ label {
 .btn {
     box-shadow: 0.1em 0.1em 3px rgba(0, 0, 0, 0.5);
 }
-section:nth-last-child(1)::after{
-    content: url("../images/feather.png");
-    margin: 60px auto 0 auto;
-    display: table;
-}
+
+/*section:nth-last-child(1)::after{*/
+    /*content: url("../images/feather.png");*/
+    /*margin: 60px auto 0 auto;*/
+    /*display: table;*/
+/*}*/
 
 .jumbotron {
     text-align: center;

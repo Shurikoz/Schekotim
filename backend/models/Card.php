@@ -40,11 +40,12 @@ class Card extends ActiveRecord
     {
         return [
             ['phone', 'match', 'pattern' => '/^\+7\s\([0-9]{3}\)\s[0-9]{3}\s[0-9]{2}\s[0-9]{2}$/', 'message' => 'Неправильно указан номер'],
-            [['name', 'surname', 'middle_name'], 'match', 'pattern' => '/^([а-яА-ЯЁё\-\s]+)$/u', 'message' => 'Разрешено вводить только кириллические символы, пробелы и знак "-"'],
+            [['name', 'surname', 'middle_name'], 'match', 'pattern' => '/^([а-яА-ЯЁё\-\s]+)$/u', 'message' => 'Разрешено вводить только кириллические символы и знак "-"'],
             [['user_id', 'number'], 'integer'],
             [['city_id', 'address_point_id', 'name', 'surname', 'middle_name', 'number', 'phone', 'user_id', 'birthday'], 'required'],
             [['created_at', 'representative', 'profession', 'orthopedic_features'], 'safe'],
             [['name', 'surname', 'middle_name'], 'string', 'max' => 255],
+            [['name', 'surname', 'middle_name'], 'filter', 'filter' => 'trim', 'skipOnArray' => true],
             [['number'], 'unique'],
             [['birthday'], 'match', 'pattern' => '/^\d{2}[\,\.]\d{2}[\,\.]\d{4}$/', 'message' => 'Укажите дату в формате дд.мм.гггг'],
 

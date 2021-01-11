@@ -86,9 +86,9 @@ $this->title = 'Лист запланированных посещений';
                     <p><?= $item->card_number ?></p>
                 </td>
                 <td class="c-table__cell">
-                    <p><?= $item->card->surname ?></p>
-                    <p><?= $item->card->name ?></p>
-                    <p><?= $item->card->middle_name ?></p>
+                    <p><?= $item->card['surname'] ?></p>
+                    <p><?= $item->card['name'] ?></p>
+                    <p><?= $item->card['middle_name'] ?></p>
                 </td>
                 <td class="c-table__cell">
                     <p><?= $item->city->name ?></p>
@@ -218,6 +218,7 @@ $this->title = 'Лист запланированных посещений';
                                         'class' => 'btn btn-default linkNewWindow',
                                     ]) ?>
                                 <?php } ?>
+
                                 <?php if ($item->recorded == 1) { ?>
                                     <?= Html::a('Снять запись', ['visit/record-unmark', 'id' => $item->id, 'page' => 'planned', 'number' => $item->card_number], [
                                         'class' => 'btn btn-default linkNewWindow',

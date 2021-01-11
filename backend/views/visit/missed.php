@@ -89,9 +89,9 @@ $this->title = 'Лист пропущенных посещений';
                     <p><?= $item->card_number ?></p>
                 </td>
                 <td class="c-table__cell">
-                    <p><?= $item->card->surname?></p>
-                    <p><?= $item->card->name?></p>
-                    <p><?= $item->card->middle_name?></p>
+                    <p><?= $item->card['surname'] ?></p>
+                    <p><?= $item->card['name'] ?></p>
+                    <p><?= $item->card['middle_name'] ?></p>
                 </td>
                 <td class="c-table__cell">
                     <p><?= $item->city->name ?></p>

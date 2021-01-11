@@ -73,9 +73,9 @@ $this->title = 'Лист консультаций';
                     <?= $item->id?>
                 </td>
                 <td class="c-table__cell">
-                    <p><?= $item->card->surname?></p>
-                    <p><?= $item->card->name?></p>
-                    <p><?= $item->card->middle_name?></p>
+                    <p><?= $item->card['surname'] ?></p>
+                    <p><?= $item->card['name'] ?></p>
+                    <p><?= $item->card['middle_name'] ?></p>
                 </td>
                 <td class="c-table__cell">
                     <p><?= $item->city->name ?></p>

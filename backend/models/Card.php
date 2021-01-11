@@ -97,7 +97,7 @@ class Card extends ActiveRecord
     }
 
     public function getFullName() {
-        return $this->name . ' ' . $this->middle_name . ' ' . $this->surname;
+        return $this->surname . ' ' . $this->name . ' ' . $this->middle_name;
     }
 
     public function getVisit()

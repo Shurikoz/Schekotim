@@ -175,8 +175,6 @@ $leader = Yii::$app->user->can('leader');
             </div>
         </div>
     </div>
-<?php } ?>
-<?php if ($admin) { ?>
     <hr>
     <div class="row">
         <div class="col-md-4 col-sm-6 col-xs-12">
@@ -195,5 +193,3 @@ $leader = Yii::$app->user->can('leader');
         </div>
     </div>
 <?php } ?>
-
-<?= Yii::$app->request->userIP ?>

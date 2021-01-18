@@ -52,7 +52,8 @@ $leader = Yii::$app->user->can('leader');
         <p class="tutorialDesc">Информирует о том, что клиент не посетил центр в рекомендуемый интервал времени.</p>
     </div>
 </div>
-<hr>
+<?php if (false) { ?>
+
 <?php if ($podolog) { ?>
     <?= $this->render('tutorial/podolog') ?>
 <?php } ?>
@@ -74,4 +75,5 @@ $leader = Yii::$app->user->can('leader');
     <hr>
     <h4>SMM-специалист</h4>
     <?= $this->render('tutorial/smm') ?>
+<?php } ?>
 <?php } ?>

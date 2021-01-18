@@ -29,7 +29,6 @@ $admin = Yii::$app->user->can('admin');
                 <th class="c-table__cell c-table__cell--head">ID</th>
                 <th class="c-table__cell c-table__cell--head">Логин</th>
                 <th class="c-table__cell c-table__cell--head">Роль</th>
-                <th class="c-table__cell c-table__cell--head">Город / Точка</th>
                 <th class="c-table__cell c-table__cell--head">Статус</th>
                 <th class="c-table__cell c-table__cell--head">Дата создания</th>
                 <th class="c-table__cell c-table__cell--head">Дата изменения</th>
@@ -50,11 +49,6 @@ $admin = Yii::$app->user->can('admin');
                     <td class="c-table__cell">
                         <?php $role = array_keys(Yii::$app->authManager->getRolesByUser($item->id))?>
                         <?= $role ? Yii::$app->authManager->getRole($role)->description : '<span style="color: #ff0f00;"><b>НЕТ РОЛИ</b></span>';?>
-                    </td>
-                    <td class="c-table__cell">
-                        <?= $item->city->name ?>
-                        <br>
-                        <?= $item->address_point->address_point ?>
                     </td>
                     <td class="c-table__cell">
                         <b><?= $item->status == 10 ? '<span style="color: #7ba335;">Активный</span>' : '<span style="color: #c55;">Неактивный</span>' ?></b>

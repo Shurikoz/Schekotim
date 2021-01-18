@@ -158,7 +158,6 @@ $leader = Yii::$app->user->can('leader');
         <thead class="c-table__head c-table__head--slim">
         <tr class="c-table__row">
             <th class="c-table__cell c-table__cell--head" width="5%">ID</th>
-            <th class="c-table__cell c-table__cell--head" width="20%">Город / Адрес</th>
             <th class="c-table__cell c-table__cell--head" width="20%">Проблема</th>
             <th class="c-table__cell c-table__cell--head" width="20%">Специалист</th>
             <th class="c-table__cell c-table__cell--head" width="15%">Дата визита</th>
@@ -209,10 +208,6 @@ $leader = Yii::$app->user->can('leader');
                 <tr class="c-table__row <?= $hasCome ?> <?= $item->special == 1 ? 'c-table__row--special' : '' ?> openBox">
                     <td class="c-table__cell">
                         <span> <?= $item->id ?></span>
-                    </td>
-                    <td class="c-table__cell">
-                        <p><?= $item->city->name ?></p>
-                        <p><?= $item->address_point->address_point ?></p>
                     </td>
                     <td class="c-table__cell">
                         <?php if ($item->problem_id == 0) { ?>

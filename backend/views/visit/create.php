@@ -91,8 +91,6 @@ $dermatolog = Yii::$app->user->can('dermatolog');
         </div>
         <hr>
         <?= $form->field($model, 'card_number')->hiddenInput(['value' => (int)Yii::$app->request->get('number')])->label(false); ?>
-        <?= $form->field($model, 'city_id')->hiddenInput(['value' => Yii::$app->user->identity->city_id])->label(false); ?>
-        <?= $form->field($model, 'address_point_id')->hiddenInput(['value' => Yii::$app->user->identity->address_point_id])->label(false); ?>
         <?php if (!$leader && !$admin) { ?>
             <?= $form->field($model, 'specialist_id')->hiddenInput(['value' => $specialist->id])->label(false); ?>
         <?php } ?>

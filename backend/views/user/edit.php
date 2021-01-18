@@ -28,10 +28,6 @@ $this->title = 'Радактирование пользователя';
         <?= $form->field($user, 'email')->textInput(['class' => 'c-input'])->label('Email'); ?>
     </div>
     <div class="col-md-4">
-        <?= $form->field($user, 'city_id')->dropDownList($city, ['prompt' => 'Выберите город', 'class' => 'c-input', 'options' => [$user->city_id => ["Selected" => true]]])->label('Город') ?>
-        <?= $form->field($user, 'address_point_id')->dropDownList($addressPoint, ['prompt' => 'Выберите точку', 'class' => 'c-input'])->label('Точка'); ?>
-    </div>
-    <div class="col-md-4">
         <?//= $form->field($user, 'email')->dropDownList($allRoles, ['prompt' => '-', 'class' => 'c-input', 'options' => [$userRole => ["Selected" => true]]])->label('Роль'); ?>
         <?= Html::label('Роль пользователя', 'role') ?>
         <?= Html::dropDownList('role', 'null', $allRoles, ['prompt' => '-', 'class' => 'c-input', 'options' => [$userRole => ["Selected" => true]]]); ?>

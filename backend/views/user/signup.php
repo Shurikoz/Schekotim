@@ -40,18 +40,16 @@ array_unshift($addressPpointList, '');
             <div class="col-lg-4">
                 <?= Html::label('Роль пользователя', 'role') ?>
                 <?= Html::dropDownList('role', 'null', $roles, ['prompt' => '-', 'class' => 'c-input', 'id' => 'signRole', 'label' => 'Роль']); ?>
+<!--                <br>-->
+<!--                --><?//= $form->field($model, 'city')->dropDownList($city, ['prompt' => 'Выберите город'])->label('Город') ?>
+<!--                <!-- Получим список точек из AJAX запрса по выбранному городу -->
+<!--                --><?//= $form->field($model, 'address_point')
+//                    ->dropDownList(['prompt' => 'Сначала выберите город'])
+//                    ->label('Адрес <div id="errorData" class="" style="float: right"></div>') ?>
                 <br>
-                <?= $form->field($model, 'city')->dropDownList($city, ['prompt' => 'Выберите город'])->label('Город') ?>
-
-                <!-- Получим список точек из AJAX запрса по выбранному городу -->
-                <?= $form->field($model, 'address_point')
-                    ->dropDownList(['prompt' => 'Сначала выберите город'])
-                    ->label('Адрес <div id="errorData" class="" style="float: right"></div>') ?>
-            </div>
-            <div class="col-lg-4">
                 <?= $form->field($model, 'name') ?>
                 <p>Введите имя пользователя в формате - <br><b>Фамилия И.О.</b></p>
-                <p>Если пользователю будет присвоена роль "Подолог", это имя будет отображаться в списке подологов</p>
+                <p>Если пользователю будет присвоена роль "Подолог" или "Дерматолог", это имя будет отображаться в списке специалистов</p>
             </div>
         </div>
         <hr>

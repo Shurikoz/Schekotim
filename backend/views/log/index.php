@@ -43,11 +43,10 @@ $admin = Yii::$app->user->can('admin');
             <thead class="c-table__head c-table__head--slim">
             <tr class="c-table__row">
                 <th class="c-table__cell c-table__cell--head">ID операции</th>
-                <th class="c-table__cell c-table__cell--head">Город / Адрес</th>
                 <th class="c-table__cell c-table__cell--head">Дата</th>
                 <th class="c-table__cell c-table__cell--head">Время</th>
                 <th class="c-table__cell c-table__cell--head">Объект</th>
-                <th class="c-table__cell c-table__cell--head">Id объекта</th>
+                <th class="c-table__cell c-table__cell--head">ID объекта</th>
                 <th class="c-table__cell c-table__cell--head">Операция</th>
                 <th class="c-table__cell c-table__cell--head">Логин</th>
                 <th class="c-table__cell c-table__cell--head">Имя</th>
@@ -59,10 +58,6 @@ $admin = Yii::$app->user->can('admin');
                 <tr class="c-table__row openBox">
                     <td class="c-table__cell">
                         <?= $item->id ?>
-                    </td>
-                    <td class="c-table__cell">
-                        <p><?= $item->city->name ?></p>
-                        <p><?= $item->address_point->address_point ?></p>
                     </td>
                     <td class="c-table__cell">
                         <?= date('d.m.Y', $item->time)?>

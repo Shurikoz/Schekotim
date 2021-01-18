@@ -81,8 +81,8 @@ $leader = Yii::$app->user->can('leader');
                 <thead class="c-table__head c-table__head--slim">
                 <tr class="c-table__row">
                     <th class="c-table__cell c-table__cell--head">№</th>
-                    <th class="c-table__cell c-table__cell--head">Город / Адрес</th>
                     <th class="c-table__cell c-table__cell--head">Пациент</th>
+                    <th class="c-table__cell c-table__cell--head">Год рождения</th>
                     <th class="c-table__cell c-table__cell--head">Посещений</th>
                     <th class="c-table__cell c-table__cell--head"><span class="u-hidden-visually">Действия</span></th>
                 </tr>
@@ -96,13 +96,10 @@ $leader = Yii::$app->user->can('leader');
                         <tr class="c-table__row">
                             <td class="c-table__cell"><b><?= $item->number ?></b></td>
                             <td class="c-table__cell">
-                                <p><?= $item->city->name ?></p>
-                                <p><?= $item->address_point->address_point?></p>
-                            </td>
-                            <td class="c-table__cell">
                                 <p><b><?= $item->surname ?> <?= $item->name ?> <?= $item->middle_name ?></b></p>
-                                <p>Г.р.: <?= Yii::$app->formatter->asDate($item->birthday) ?></p>
                             </td>
+                            <td class="c-table__cell"><p><?= Yii::$app->formatter->asDate($item->birthday) ?></p></td>
+
                             <td class="c-table__cell"><span class="visitMarker"><?= count($item->visit) ?></span></td>
                             <td class="c-table__cell cardBtn">
                                 <?= Html::a('<span class="glyphicon glyphicon-eye-open"></span>', ['card/view', 'number' => $item->number], [

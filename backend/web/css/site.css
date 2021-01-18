@@ -1,7 +1,7 @@
 html,
 body {
     height: 100%;
-    background-color: #eef1f0;
+    background-color: #f0f0f0;
 }
 p {
     margin: 0;
@@ -20,8 +20,7 @@ label {
     src: url('../fonts/Phenomena-Regular.eot?#iefix') format('embedded-opentype'),
     url('../fonts/Phenomena-Regular.woff2') format('woff2'),
     url('../fonts/Phenomena-Regular.woff') format('woff'),
-    url('../fonts/Phenomena-Regular.ttf') format('truetype'),
-    url('../fonts/Phenomena-Regular.svg#Phenomena-Regular') format('svg');
+    url('../fonts/Phenomena-Regular.ttf') format('truetype');
     font-weight: normal;
     font-style: normal;
 }
@@ -1061,10 +1060,10 @@ a.menuLink:hover .btnMenu{
     color: #7ba335;
 }
 
-.main-bg {
-    background: url(../images/feather-bg.png) no-repeat 0 0;
-    background-position-x: 50%;
-    background-position-y: 50%;
-    background-size: 60%;
-    background-attachment: fixed;
-}
+/*.main-bg {*/
+    /*background: url(../images/feather-bg.png) no-repeat 0 0;*/
+    /*background-position-x: 50%;*/
+    /*background-position-y: 50%;*/
+    /*background-size: 60%;*/
+    /*background-attachment: fixed;*/
+/*}*/

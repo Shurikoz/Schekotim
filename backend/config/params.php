@@ -9,7 +9,7 @@ return [
     'editVisitTime' => 60 * 60 * 24 * 2,
 
     //максимальное количество пользователей
-    'maxUsers' => 100,
+    'maxUsers' => 10,
 
     // доступ по ip: true - включен, false - отключен
     'ipAccessСondition' => false,

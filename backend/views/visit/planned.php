@@ -67,7 +67,6 @@ $this->title = 'Лист запланированных посещений';
         <th class="c-table__cell c-table__cell--head">ID</th>
         <th class="c-table__cell c-table__cell--head">Карта</th>
         <th class="c-table__cell c-table__cell--head">ФИО</th>
-        <th class="c-table__cell c-table__cell--head">Город / Точка</th>
         <th class="c-table__cell c-table__cell--head">Проблема</th>
         <th class="c-table__cell c-table__cell--head">Подолог</th>
         <th class="c-table__cell c-table__cell--head">Дата визита</th>
@@ -86,15 +85,8 @@ $this->title = 'Лист запланированных посещений';
                     <p><?= $item->card_number ?></p>
                 </td>
                 <td class="c-table__cell">
-                    <p><?= $item->card['surname'] ?></p>
-                    <p><?= $item->card['name'] ?></p>
-                    <p><?= $item->card['middle_name'] ?></p>
+                    <p><b><?= $item->card['surname'] ?> <?= $item->card['name'] ?> <?= $item->card['middle_name'] ?></b></p>
                 </td>
-                <td class="c-table__cell">
-                    <p><?= $item->city->name ?></p>
-                    <p><?= $item->address_point->address_point ?></p>
-                </td>
-
                 <td class="c-table__cell">
                     <?php if ($item->problem_id == 0) { ?>
                         <span class="text-red">Не указана</span>

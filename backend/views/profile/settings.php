@@ -12,6 +12,16 @@ use yii\helpers\Html;
 </div>
 <div class="row">
     <div class="col-md-4">
+        <h4>Информация о пользователе</h4>
+        <hr>
+        <div class="box">
+            <?php $role = array_keys(Yii::$app->authManager->getRolesByUser(Yii::$app->user->id))?>
+            <p><b>Роль:</b> <?= Yii::$app->authManager->getRole($role)->description;?></p>
+            <br>
+            <p><b>Email:</b> <?= $user->email ?></p>
+        </div>
+    </div>
+    <div class="col-md-4">
         <h4>Сменить пароль</h4>
         <hr>
         <div class="box">
@@ -28,20 +38,6 @@ use yii\helpers\Html;
 
                 <?php ActiveForm::end(); ?>
             </div>
-        </div>
-    </div>
-    <div class="col-md-4">
-        <h4>Информация о пользователе</h4>
-        <hr>
-        <div class="box">
-            <?php $role = array_keys(Yii::$app->authManager->getRolesByUser(Yii::$app->user->id))?>
-            <p><b>Роль:</b> <?= Yii::$app->authManager->getRole($role)->description;?></p>
-            <br>
-            <p><b>Email:</b> <?= $user->email ?></p>
-            <br>
-            <p><b>Город:</b> <?= $user->city->name ?></p>
-            <br>
-            <p><b>Адрес:</b> <?= $user->address_point->address_point ?></p>
         </div>
     </div>
 </div>

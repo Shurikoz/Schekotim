@@ -55,7 +55,6 @@ $this->title = 'Лист консультаций';
         <th class="c-table__cell c-table__cell--head">Карта</th>
         <th class="c-table__cell c-table__cell--head">Id</th>
         <th class="c-table__cell c-table__cell--head">ФИО</th>
-        <th class="c-table__cell c-table__cell--head">Город / Точка</th>
         <th class="c-table__cell c-table__cell--head">Проблема</th>
         <th class="c-table__cell c-table__cell--head">Подолог</th>
         <th class="c-table__cell c-table__cell--head">Дата визита</th>
@@ -73,13 +72,7 @@ $this->title = 'Лист консультаций';
                     <?= $item->id?>
                 </td>
                 <td class="c-table__cell">
-                    <p><?= $item->card['surname'] ?></p>
-                    <p><?= $item->card['name'] ?></p>
-                    <p><?= $item->card['middle_name'] ?></p>
-                </td>
-                <td class="c-table__cell">
-                    <p><?= $item->city->name ?></p>
-                    <p><?= $item->address_point->address_point?></p>
+                    <p><b><?= $item->card['surname'] ?> <?= $item->card['name'] ?> <?= $item->card['middle_name'] ?></b></p>
                 </td>
                 <td class="c-table__cell">
                     <?php if ($item->problem_id == 0) { ?>

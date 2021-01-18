@@ -5,6 +5,7 @@ use backend\models\AddressPoint;
 use backend\models\PasswordResetRequestForm;
 use backend\models\ResetPasswordForm;
 use backend\models\Support;
+use backend\components\UserIpAccessHelper;
 use common\models\LoginForm;
 use Yii;
 use yii\base\InvalidArgumentException;
@@ -69,8 +70,10 @@ class SiteController extends Controller
         }
 
         $model = new LoginForm();
+        $access = new UserIpAccessHelper();
+
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
-            if (Yii::$app->request->userIP == Yii::$app->params['ipAddress'] || Yii::$app->user->can('admin') || Yii::$app->user->can('leader')) {
+            if ($access->ipAccess()) {
                 return $this->goBack();
             }
             Yii::$app->user->logout();
@@ -91,7 +94,6 @@ class SiteController extends Controller
     public function actionLogout()
     {
         Yii::$app->user->logout();
-
         return $this->goHome();
     }
 

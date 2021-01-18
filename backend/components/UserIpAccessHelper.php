@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: 4pok
- * Date: 30.12.2020
- * Time: 0:48
- */
 
 namespace backend\components;
 
@@ -17,20 +11,38 @@ class UserIpAccessHelper
      */
     public function ipAccess()
     {
-        if (Yii::$app->request->userIP == Yii::$app->params['ipAddress'] || $this->checkUser()) {
-            return false;
+        // проверка на ip с которого осуществляется доступ
+        // ipAccessСondition - проверка включен ли доступ по ip
+        if (!Yii::$app->params['ipAccessСondition']) {
+            return true;
         }
-
-        return true;
-
+        if ($this->checkIp() || $this->checkUser()) {
+            return true;
+        }
+        return false;
     }
 
-    public function checkUser()
+    /**
+     * проверка прав пользователя
+     * @return bool
+     */
+    private function checkUser()
     {
         if (Yii::$app->user->can('admin') || Yii::$app->user->can('leader')) {
             return true;
         }
+        return false;
+    }
 
+    /**
+     * проверка доступа по указанным ip адресам
+     * @return bool
+     */
+    private function checkIp()
+    {
+        if (in_array(Yii::$app->request->userIP, Yii::$app->params['ipAddress'])){
+            return true;
+        }
         return false;
     }
 }

@@ -86,7 +86,7 @@ class VisitController extends Controller
         //has_come: 0 - ожидание, 1 - пришел, 2 - не пришел
         $model->has_come = 1;
         $model->edit = 1; //возможность редактирования - 1 можно, 0 запрещено
-        $model->timestamp = time() + 60 * 60 * 24 * 2; // 2 суток на редактирование
+        $model->timestamp = time() + Yii::$app->params['editVisitTime']; // 2 суток на редактирование
         $model->visit_date = time();
 
         if ($visit != null) {
@@ -193,21 +193,7 @@ class VisitController extends Controller
             $model->next_visit_by = null;
 
             if ($model->save()) {
-//                $model->has_second_visit = $secondVisit->id;
-//                $model->save();
                 $card->load($post) ? $card->save() : false;
-//                if ($model->specialist->profession == 'podolog'){
-//
-//                    $addPhotoBefore->before = UploadedFile::getInstances($addPhotoBefore, 'before');
-//                    $addPhotoAfter->after = UploadedFile::getInstances($addPhotoAfter, 'after');
-//
-//                    $addPhotoBefore->uploadBefore($model->id, Yii::$app->request->get('number'), date('d.m.Y', $model->visit_date));
-//                    $addPhotoAfter->uploadAfter($model->id, Yii::$app->request->get('number'), date('d.m.Y', $model->visit_date));
-//
-//                } elseif ($model->specialist->profession == 'dermatolog') {
-//                    $addPhotoDermatolog->dermatolog = UploadedFile::getInstances($addPhotoDermatolog, 'dermatolog');
-//                    $addPhotoDermatolog->uploadDermatolog($model->id, Yii::$app->request->get('number'), date('d.m.Y', $model->visit_date));
-//                }
 
                 Yii::$app->session->setFlash('success', 'Данные визита <b>#' . $model->id . '</b> сохранены!');
                 return $this->redirect(['card/view', 'number' => $card->number]);
@@ -277,10 +263,6 @@ class VisitController extends Controller
         $searchModel = new VisitSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
         $pages = new Pagination(['totalCount' => $dataProvider->getTotalCount(), 'pageSizeLimit' => [1, 60], 'defaultPageSize' => 20]);
-
-//        $query = Visit::find()->where(['has_come' => 1, 'resolve' => 2])->with('photo', 'card');
-//        $pages = new Pagination(['totalCount' => $query->count(), 'pageSizeLimit' => [1, 60], 'defaultPageSize' => 20]);
-//        $visit = $query->offset($pages->offset)->limit($pages->limit)->orderBy(['visit_date' => SORT_DESC])->all();
 
         return $this->render('consult', [
 //            'visit' => $visit,
@@ -395,7 +377,6 @@ class VisitController extends Controller
 
         $model = Visit::find()->where(['id' => $id])->with('city', 'address_point')->one();
         $copyVisit = new Visit();
-//        $specialist = Specialist::find()->where(['id' => $model->specialist_id])->one();
         $specialist = Specialist::find()->where(['user_id' => Yii::$app->user->getId()])->one();
 
         $card = Card::find()->where(['number' => $model->card_number])->one();
@@ -403,8 +384,7 @@ class VisitController extends Controller
 
         if ($copyVisit->load($post)) {
             $copyVisit->number = (int)$lastVisit->number + 1;
-            $copyVisit->timestamp = time() + 60 * 60 * 24 * 2; // 2 суток на редактирование
-//            $copyVisit->visit_date = null;
+            $copyVisit->timestamp = time() + Yii::$app->params['editVisitTime']; // 2 суток на редактирование
             if ($copyVisit->has_come == 1 && $copyVisit->visit_date == null) {
                 $copyVisit->visit_date = time();
             }
@@ -506,10 +486,6 @@ class VisitController extends Controller
 
     public function actionUploadPhoto($id, $location)
     {
-//        $photoBefore = Photo::find()->where(['visit_id' => $id, 'made' => 'before'])->all();
-//        $photoAfter = Photo::find()->where(['visit_id' => $id, 'made' => 'after'])->all();
-//        $photoDermatolog = Photo::find()->where(['visit_id' => $id, 'made' => 'dermatolog'])->all();
-
         $addPhotoBefore = new Photo();
         $addPhotoAfter = new Photo();
         $addPhotoDermatolog = new Photo();

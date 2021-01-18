@@ -18,7 +18,6 @@ $this->registerMetaTag([
     <header class="main">
         <h1><?= Html::encode($this->title) ?></h1>
     </header>
-
     <div class="row">
             <div class="col-12 col-12-small">
                 <h3>Консультируем бесплатно!</h3>
@@ -35,7 +34,7 @@ $this->registerMetaTag([
                             ],
                             'tags' => [
                                 'source' => [
-                                    ['src' => 'upload/stock/She_present_720.mp4', 'type' => 'video/mp4']
+                                    ['src' => 'upload/stock/She_pn.mp4', 'type' => 'video/mp4']
                                 ]
                             ]
                         ]); ?>

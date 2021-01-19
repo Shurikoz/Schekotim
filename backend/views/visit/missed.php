@@ -56,7 +56,7 @@ $this->title = 'Лист пропущенных посещений';
     </caption>
     <thead class="c-table__head c-table__head--slim">
     <tr class="c-table__row">
-        <th class="c-table__cell c-table__cell--head">Id</th>
+        <th class="c-table__cell c-table__cell--head">ID</th>
         <th class="c-table__cell c-table__cell--head">Карта</th>
         <th class="c-table__cell c-table__cell--head">ФИО</th>
         <th class="c-table__cell c-table__cell--head">Проблема</th>

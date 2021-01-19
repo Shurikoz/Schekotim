@@ -3,12 +3,11 @@
 namespace backend\controllers;
 
 use backend\models\Card;
-use backend\models\ConsultVisitSearch;
 use backend\models\Photo;
 use backend\models\Problem;
 use backend\models\Specialist;
 use backend\models\Visit;
-use backend\models\MissedVisitSearch;
+use backend\models\VisitMissedSearch;
 use backend\models\VisitSearch;
 use backend\models\VisitCardSearch;
 use common\models\User;
@@ -223,7 +222,7 @@ class VisitController extends Controller
      */
     public function actionMissed()
     {
-        $searchModel = new VisitSearch();
+        $searchModel = new VisitMissedSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
         $pages = new Pagination(['totalCount' => $dataProvider->getTotalCount(), 'pageSizeLimit' => [1, 60], 'defaultPageSize' => 20]);
         return $this->render('missed', [

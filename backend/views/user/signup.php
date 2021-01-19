@@ -16,14 +16,12 @@ array_unshift($addressPpointList, '');
         <div class="pull-left">
             <?= Html::a(FAS::icon('angle-left', ['class' => 'big', 'data-role' => 'arrow']) . '&nbsp Вернуться к списку пользователей', ['/user/index'], ['class' => 'btn btn-default']) ?>
         </div>
+        <div class="pull-right">
+            <span style="display: block;margin-top: 5px;" class="titleNormal">Регистрация нового пользователя</span>
+        </div>
     </div>
 </div>
-<div class="row">
-    <div class="col-md-12">
-        <h3>Регистрация нового пользователя</h3>
-        <hr>
-    </div>
-</div>
+<hr>
 <div class="row">
     <div class="col-md-12">
         <?= Alert::widget() ?>

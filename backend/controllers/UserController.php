@@ -52,6 +52,56 @@ class UserController extends Controller
      * @return string
      * @throws \Exception
      */
+    public function actionSignup()
+    {
+
+        $roles = ArrayHelper::map(Yii::$app->authManager->getRoles(), 'name', 'description');
+        //исключим из списка административную роль
+        unset($roles['admin']);
+
+        $model = new SignupUser();
+        $city = City::find()->all();
+        $cityList = ArrayHelper::map($city, 'id', 'name');
+        $specialist = new Specialist();
+        if ($model->load(Yii::$app->getRequest()->post())) {
+
+            if ($user = $model->signup()) {
+                if (Yii::$app->getRequest()->post()["role"]) {
+                    $specialist->user_id = $user->getId();
+                    $specialist->address_point_id = $model->address_point;
+                    $specialist->name = $model->name;
+                    if (Yii::$app->getRequest()->post()["role"] == 'podolog') {
+                        $specialist->profession = 'podolog';
+                        $specialist->save();
+
+                    } elseif (Yii::$app->getRequest()->post()["role"] == 'dermatolog') {
+                        $specialist->profession = 'dermatolog';
+                        $specialist->save();
+                    }
+
+                    $auth = Yii::$app->authManager;
+                    $authorRole = $auth->getRole(Yii::$app->getRequest()->post()["role"]);
+                    $auth->assign($authorRole, $user->getId());
+                    Yii::$app->session->setFlash('success', 'Пользователь <b>' . $user->username . '</b> создан!');
+                } else {
+                    Yii::$app->session->setFlash('success', 'Пользователь <b>' . $user->username . '</b> создан! Назначьте ему права доступа!');
+                }
+
+            }
+        }
+
+        return $this->render('signup', [
+            'model' => $model,
+            'city' => $cityList,
+            'roles' => $roles,
+            'specialist' => $specialist,
+        ]);
+    }
+
+    /**
+     * @return string
+     * @throws \Exception
+     */
     public function actionEdit($id)
     {
         $post = Yii::$app->request->post();
@@ -117,55 +167,7 @@ class UserController extends Controller
         ]);
     }
 
-    /**
-     * @return string
-     * @throws \Exception
-     */
-    public function actionSignup()
-    {
 
-        $roles = ArrayHelper::map(Yii::$app->authManager->getRoles(), 'name', 'description');
-        //исключим из списка административную роль
-        unset($roles['admin']);
-
-        $model = new SignupUser();
-        $city = City::find()->all();
-        $cityList = ArrayHelper::map($city, 'id', 'name');
-        $specialist = new Specialist();
-        if ($model->load(Yii::$app->getRequest()->post())) {
-
-            if ($user = $model->signup()) {
-                if (Yii::$app->getRequest()->post()["role"]) {
-                    $specialist->user_id = $user->getId();
-                    $specialist->address_point_id = $model->address_point;
-                    $specialist->name = $model->name;
-                    if (Yii::$app->getRequest()->post()["role"] == 'podolog') {
-                        $specialist->profession = 'podolog';
-                        $specialist->save();
-
-                    } elseif (Yii::$app->getRequest()->post()["role"] == 'dermatolog') {
-                        $specialist->profession = 'dermatolog';
-                        $specialist->save();
-                    }
-
-                    $auth = Yii::$app->authManager;
-                    $authorRole = $auth->getRole(Yii::$app->getRequest()->post()["role"]);
-                    $auth->assign($authorRole, $user->getId());
-                    Yii::$app->session->setFlash('success', 'Пользователь <b>' . $user->username . '</b> создан!');
-                } else {
-                    Yii::$app->session->setFlash('success', 'Пользователь <b>' . $user->username . '</b> создан! Назначьте ему права доступа!');
-                }
-
-            }
-        }
-
-        return $this->render('signup', [
-            'model' => $model,
-            'city' => $cityList,
-            'roles' => $roles,
-            'specialist' => $specialist,
-        ]);
-    }
 
     /**
      * @param $id

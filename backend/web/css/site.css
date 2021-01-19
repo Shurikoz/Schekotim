@@ -218,7 +218,7 @@ a.desc:after {
 
 .titleNormal {
     margin: 0;
-    font-size: 24px;
+    font-size: 20px;
 }
 
 .titleMin {
@@ -848,6 +848,7 @@ div.datetimepicker-minutes table{
     border: 1px solid #7ba335;
     border-radius: 5px;
     padding: 20px;
+    background-color: #fff;
 }
 .usingCard{
     opacity: 0.3;

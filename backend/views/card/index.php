@@ -30,7 +30,7 @@ $leader = Yii::$app->user->can('leader');
                 <?= Html::a(FAS::icon('angle-left', ['class' => 'big', 'data-role' => 'arrow']) . '&nbsp В главное меню', ['/'], ['class' => 'btn btn-default']) ?>
             </div>
             <div class="pull-right">
-                <span style="display: block;margin-top: 5px;" class="titleCardName"><b>Карты пациентов</b></span>
+                <span style="display: block;margin-top: 5px;" class="titleNormal">Карты пациентов</span>
             </div>
         </div>
     </div>
@@ -94,7 +94,7 @@ $leader = Yii::$app->user->can('leader');
                 <?php if ($dataProvider->getModels()) { ?>
                     <?php foreach ($dataProvider->getModels() as $item) { ?>
                         <tr class="c-table__row">
-                            <td class="c-table__cell"><b><?= $item->number ?></b></td>
+                            <td class="c-table__cell"><?= $item->number ?></td>
                             <td class="c-table__cell">
                                 <p><b><?= $item->surname ?> <?= $item->name ?> <?= $item->middle_name ?></b></p>
                             </td>

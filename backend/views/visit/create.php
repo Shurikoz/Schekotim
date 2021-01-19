@@ -7,10 +7,11 @@ use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\ActiveForm;
+use rmrevin\yii\fontawesome\FAS;
 
 ShowLoadingAsset::register($this);
 
-$this->title = 'Новое посещение, карта №: ' . $card->number;
+$this->title = 'Создание нового посещения. Карта № ' . $card->number;
 
 //посчитаем возраст пациента по дате рождения
 $born = new DateTime($card->birthday); // дата рождения
@@ -27,13 +28,17 @@ $dermatolog = Yii::$app->user->can('dermatolog');
 <div id="visit-create">
     <div class="row">
         <div class="col-md-12">
-            <?= Html::button('<span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span> Отмена', [
-                'class' => 'btn btn-default',
-                'onclick' => 'history.back();'
-            ]) ?>        </div>
+            <div class="pull-left">
+                <?= Html::button('<span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span> Отмена', [
+                    'class' => 'btn btn-default',
+                    'onclick' => 'history.back();'
+                ]) ?>
+            </div>
+            <div class="pull-right">
+                <span style="display: block;margin-top: 5px;" class="titleNormal"><?= Html::encode($this->title) ?></span>
+            </div>
+        </div>
     </div>
-    <br>
-    <p class="titleNormal"><?= Html::encode($this->title) ?></p>
     <hr>
     <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]); ?>
     <div class="visit-form"><div class="row">
@@ -166,7 +171,7 @@ $dermatolog = Yii::$app->user->can('dermatolog');
         <div class="row">
             <div class="col-md-6 col-sm-6">
                 <div class="box">
-                    <?= $form->field($model, 'anamnes')->textarea(['value' => '', 'rows' => 6]) ?>
+                    <?= $form->field($model, Html::encode('anamnes'))->textarea(['value' => '', 'rows' => 6]) ?>
                 </div>
             </div>
             <?php if ($podolog) { ?>

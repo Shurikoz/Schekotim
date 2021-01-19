@@ -13,14 +13,14 @@ $this->title = 'Изменение шаблона: ' . $model->name;
         <div class="pull-left">
             <?= Html::a('Отмена', ['problem/index'], ['class' => 'btn btn-default']) ?>
         </div>
+        <div class="pull-right">
+            <span style="display: block;margin-top: 5px;" class="titleNormal"><?= Html::encode($this->title) ?></span>
+        </div>
     </div>
 </div>
+<hr>
 <div class="problem-update">
-
-    <h1><?= Html::encode($this->title) ?></h1>
-
     <?= $this->render('_form', [
         'model' => $model,
     ]) ?>
-
 </div>

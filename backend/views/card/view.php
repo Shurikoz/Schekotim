@@ -65,7 +65,7 @@ $leader = Yii::$app->user->can('leader');
                 <?= Html::a(FAS::icon('angle-left', ['class' => 'big', 'data-role' => 'arrow']) . '&nbsp Вернуться к списку карт', ['/card'], ['class' => 'btn btn-default']) ?>
             </div>
             <div class="pull-right">
-                <span style="display: block;margin-top: 5px;" class="titleCardName"><b><?= Html::encode($this->title) ?></b></span>
+                <span style="display: block;margin-top: 5px;" class="titleNormal"><?= Html::encode($this->title) ?></span>
             </div>
         </div>
     </div>

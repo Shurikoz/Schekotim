@@ -13,14 +13,12 @@ $this->title = 'Радактирование пользователя';
         <div class="pull-left">
             <?= Html::a(FAS::icon('angle-left', ['class' => 'big', 'data-role' => 'arrow']) . '&nbsp Вернуться к списку пользователей', ['/user/index'], ['class' => 'btn btn-default']) ?>
         </div>
+        <div class="pull-right">
+            <span style="display: block;margin-top: 5px;" class="titleNormal">Радактирование ползователя: <?= $user->username ?></span>
+        </div>
     </div>
 </div>
-<div class="row">
-    <div class="col-md-12">
-        <h3>Радактирование ползователя: <?= $user->username ?></h3>
-        <hr>
-    </div>
-</div>
+<hr>
 <?php $form = ActiveForm::begin(); ?>
 <div class="row">
     <div class="col-md-4">

@@ -11,7 +11,7 @@ use nirvana\showloading\ShowLoadingAsset;
 
 ShowLoadingAsset::register($this);
 
-$this->title = 'Создание копии посещения, карта №: ' . $model->card_number;
+$this->title = 'Создание копии посещения #' . $model->id . '. Карта № ' . $model->card_number;
 
 $card_id = (int)Yii::$app->request->get('number');
 
@@ -22,11 +22,17 @@ $age = $born->diff(new DateTime)->format('%y');
 <div id="visit-copy">
     <div class="row">
         <div class="col-md-12">
-            <?= Html::a('<span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span> Отмена', ['/card/view', 'number' => $model->card_number], ['class' => 'btn btn-default']) ?>
+            <div class="pull-left">
+                <?= Html::button('<span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span> Отмена', [
+                    'class' => 'btn btn-default',
+                    'onclick' => 'history.back();'
+                ]) ?>
+            </div>
+            <div class="pull-right">
+                <span style="display: block;margin-top: 5px;" class="titleNormal"><?= Html::encode($this->title) ?></span>
+            </div>
         </div>
     </div>
-    <br>
-    <p class="titleNormal"><?= Html::encode($this->title) ?></p>
     <hr>
     <div class="visit-form">
         <div class="row">

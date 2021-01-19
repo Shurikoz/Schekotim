@@ -18,7 +18,7 @@ $this->title = 'Лист пропущенных посещений';
             <?= Html::a(FAS::icon('angle-left', ['class' => 'big', 'data-role' => 'arrow']) . '&nbsp В главное меню', ['/'], ['class' => 'btn btn-default']) ?>
         </div>
         <div class="pull-right">
-            <span style="display: block;margin-top: 5px;" class="titleCardName"><b>Пропущенные посещения</b></span>
+            <span style="display: block;margin-top: 5px;" class="titleNormal">Пропущенные посещения</span>
         </div>
     </div>
 </div>

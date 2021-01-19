@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\LinkPager;
+use rmrevin\yii\fontawesome\FAS;
 
 $this->title = 'Логи действий';
 
@@ -12,13 +13,17 @@ $admin = Yii::$app->user->can('admin');
 \yii\web\YiiAsset::register($this);
 
 ?>
-
 <div class="row">
     <div class="col-md-12">
-        <h3>Логи (История действий)</h3>
-        <hr>
+        <div class="pull-left">
+            <?= Html::a(FAS::icon('angle-left', ['class' => 'big', 'data-role' => 'arrow']) . '&nbsp В главное меню', ['/'], ['class' => 'btn btn-default']) ?>
+        </div>
+        <div class="pull-right">
+            <span style="display: block;margin-top: 5px;" class="titleNormal">Логи (История действий)</span>
+        </div>
     </div>
 </div>
+<hr>
 <div class="row">
     <div class="col-md-12">
         <div class="pull-left cardsOnPage">

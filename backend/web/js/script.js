@@ -1,5 +1,5 @@
 "use strict";
-//фенкция для скрытия оповещений через 10 сек
+//функция для скрытия оповещений через 10 сек
 window.setTimeout(function () {
     $(".alert-success, .alert-warning, .alert-danger, .alert-error ").fadeTo(500, 0).slideUp(500, function () {
         $(this).remove();
@@ -17,7 +17,6 @@ $(".showCalendarSelectedSpecialist").change(function () {
         document.location.replace("/calendar?user=" + this.value);
     } else {
         document.location.replace("/calendar");
-
     }
 });
 //************************************************************************

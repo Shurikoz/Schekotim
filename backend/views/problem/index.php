@@ -2,17 +2,23 @@
 
 use yii\helpers\Html;
 use yii\widgets\Pjax;
+use rmrevin\yii\fontawesome\FAS;
 
 $this->title = 'Шаблоны для специалистов';
 $num = 0;
 ?>
-<?php Pjax::begin(['enablePushState' => false]); ?>
 <div class="row">
     <div class="col-md-12">
-        <h3><?= Html::encode($this->title) ?></h3>
-        <hr>
+        <div class="pull-left">
+            <?= Html::a(FAS::icon('angle-left', ['class' => 'big', 'data-role' => 'arrow']) . '&nbsp В главное меню', ['/'], ['class' => 'btn btn-default']) ?>
+        </div>
+        <div class="pull-right">
+            <span style="display: block;margin-top: 5px;" class="titleNormal"><?= Html::encode($this->title) ?></span>
+        </div>
     </div>
 </div>
+<hr>
+<?php Pjax::begin(['enablePushState' => false]); ?>
 <div class="row">
     <div class="col-md-12">
         <?= Html::a('Создать шаблон', ['create'], ['class' => 'btn btn-green pull-right']) ?>

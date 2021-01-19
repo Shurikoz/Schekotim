@@ -7,6 +7,7 @@ use backend\models\Photo;
 use backend\models\Problem;
 use backend\models\Specialist;
 use backend\models\Visit;
+use backend\models\VisitConsultSearch;
 use backend\models\VisitMissedSearch;
 use backend\models\VisitSearch;
 use backend\models\VisitCardSearch;
@@ -259,7 +260,7 @@ class VisitController extends Controller
      */
     public function actionVisitConsult(){
 
-        $searchModel = new VisitSearch();
+        $searchModel = new VisitConsultSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
         $pages = new Pagination(['totalCount' => $dataProvider->getTotalCount(), 'pageSizeLimit' => [1, 60], 'defaultPageSize' => 20]);
 

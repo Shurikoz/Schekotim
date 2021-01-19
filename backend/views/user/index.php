@@ -1,6 +1,7 @@
 <?php
 
 use yii\helpers\Html;
+use rmrevin\yii\fontawesome\FAS;
 
 \yii\web\YiiAsset::register($this);
 
@@ -9,10 +10,15 @@ $admin = Yii::$app->user->can('admin');
 ?>
 <div class="row">
     <div class="col-md-12">
-        <h3>Пользователи</h3>
-        <hr>
+        <div class="pull-left">
+            <?= Html::a(FAS::icon('angle-left', ['class' => 'big', 'data-role' => 'arrow']) . '&nbsp В главное меню', ['/'], ['class' => 'btn btn-default']) ?>
+        </div>
+        <div class="pull-right">
+            <span style="display: block;margin-top: 5px;" class="titleNormal">Пользователи</span>
+        </div>
     </div>
 </div>
+<hr>
 <?php if ($countUser) {?>
 <div class="row">
     <div class="col-md-12">

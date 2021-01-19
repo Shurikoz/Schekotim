@@ -6,27 +6,21 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use yii\widgets\MaskedInput;
 
-$this->title = 'Редактирование карты №: ' . $cardModel->number;
+$this->title = 'Редактирование карты № ' . $cardModel->number;
 
 ?>
 <div class="card-update">
-    <?= Html::a(FAS::icon('angle-left', ['class' => 'big', 'data-role' => 'arrow']) . '&nbsp Отмена', ['card/index'], ['class' => 'btn btn-default']) ?>
-    <br>
-    <br>
     <div class="row">
         <div class="col-md-12">
-            <p class="titleNormal"><?= Html::encode($this->title) ?></p>
-        </div>
-    </div>
-    <hr>
-    <div class="row">
-        <div class="col-md-4 col-sm-6">
-            <b>Город:</b> <?= $user->city->name;?>
-
-        </div>
-        <div class="col-md-4 col-sm-6">
-            <b>Точка:</b> <?= $user->address_point->address_point; ?>
-
+            <div class="pull-left">
+                <?= Html::button('<span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span> Отмена', [
+                    'class' => 'btn btn-default',
+                    'onclick' => 'history.back();'
+                ]) ?>
+            </div>
+            <div class="pull-right">
+                <span style="display: block;margin-top: 5px;" class="titleNormal"><?= Html::encode($this->title) ?></span>
+            </div>
         </div>
     </div>
     <hr>

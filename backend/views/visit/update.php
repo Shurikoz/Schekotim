@@ -12,7 +12,7 @@ use yii\widgets\Pjax;
 
 ShowLoadingAsset::register($this);
 
-$this->title = 'Редактирование посещения, карта №: ' . $model->card_number;
+$this->title = 'Редактирование посещения #' . $model->id . '. Карта № ' . $model->card_number;
 
 $card_id = (int)Yii::$app->request->get('number');
 
@@ -37,13 +37,19 @@ JS;
 ?>
 
 <div id="visit-update">
-<div class="row">
-    <div class="col-md-12">
-        <?= Html::a('<span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span> Отмена', ['/card/view', 'number' => $model->card_number], ['class' => 'btn btn-default']) ?>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="pull-left">
+                <?= Html::button('<span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span> Отмена', [
+                    'class' => 'btn btn-default',
+                    'onclick' => 'history.back();'
+                ]) ?>
+            </div>
+            <div class="pull-right">
+                <span style="display: block;margin-top: 5px;" class="titleNormal"><?= Html::encode($this->title) ?></span>
+            </div>
+        </div>
     </div>
-</div>
-    <br>
-    <p class="titleNormal"><?= Html::encode($this->title) ?></p>
     <hr>
     <div class="visit-form">
         <div class="row">
@@ -59,12 +65,6 @@ JS;
         </div>
         <hr>
         <div class="row">
-            <div class="col-md-4">
-                <b>Город:</b> <?= $model->city->name ?>
-            </div>
-            <div class="col-md-4">
-                <b>Точка:</b> <?= $model->address_point->address_point ?>
-            </div>
             <div class="col-md-4">
                 <b>Специалист:</b> <?= $specialist->name ?>
             </div>

@@ -14,9 +14,13 @@ $this->title = 'Лист интересных случаев';
         <div class="pull-left">
             <?= Html::a(FAS::icon('angle-left', ['class' => 'big', 'data-role' => 'arrow']) . '&nbsp В главное меню', ['/'], ['class' => 'btn btn-default']) ?>
         </div>
+        <div class="pull-right">
+            <span style="display: block;margin-top: 5px;" class="titleNormal"><?= Html::encode($this->title) ?></span>
+        </div>
     </div>
 </div>
 <hr>
+
 <div class="row">
     <div class="col-md-12">
         <div class="pull-left cardsOnPage">
@@ -37,7 +41,8 @@ $this->title = 'Лист интересных случаев';
 </div>
 <table class="c-table">
     <caption class="c-table__title">
-        Лист интересных случаев
+        <?= Html::encode($this->title) ?>
+        <small>Найдено интересных случаев: <?= count($visit) ?></small>
     </caption>
     <thead class="c-table__head c-table__head--slim">
     <tr class="c-table__row">

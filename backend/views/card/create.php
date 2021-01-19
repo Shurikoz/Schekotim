@@ -6,29 +6,20 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use yii\widgets\MaskedInput;
 
-$this->title = 'Создание новой карты пациента';
+$this->title = 'Создание карты пациента';
 
 $admin = Yii::$app->user->can('admin');
 
 ?>
 <div class="card-create">
-    <?= Html::a(FAS::icon('angle-left', ['class' => 'big', 'data-role' => 'arrow']) . '&nbsp Отмена', ['card/index'], ['class' => 'btn btn-default']) ?>
-    <br>
-    <br>
     <div class="row">
         <div class="col-md-12">
-            <p class="titleNormal"><?= Html::encode($this->title) ?></p>
-        </div>
-    </div>
-    <hr>
-    <div class="row">
-        <div class="col-md-4 col-sm-6">
-            <b>Город:</b> <?= $user->city->name;?>
-
-        </div>
-        <div class="col-md-4 col-sm-6">
-            <b>Точка:</b> <?= $user->address_point->address_point; ?>
-
+            <div class="pull-left">
+                <?= Html::a(FAS::icon('angle-left', ['class' => 'big', 'data-role' => 'arrow']) . '&nbsp Отмена', ['/'], ['class' => 'btn btn-default']) ?>
+            </div>
+            <div class="pull-right">
+                <span style="display: block;margin-top: 5px;" class="titleNormal"><?= Html::encode($this->title) ?></span>
+            </div>
         </div>
     </div>
     <hr>
@@ -40,10 +31,10 @@ $admin = Yii::$app->user->can('admin');
     <div class="card-form">
         <?php $form = ActiveForm::begin(); ?>
         <?= $form->field($cardModel, 'user_id')->hiddenInput(['value' => Yii::$app->user->id])->label(false); ?>
-        <?php if (!$admin) { ?>
-            <?= $form->field($cardModel, 'city_id')->hiddenInput(['value' => Yii::$app->user->identity->city_id])->label(false); ?>
-            <?= $form->field($cardModel, 'address_point_id')->hiddenInput(['value' => Yii::$app->user->identity->address_point_id])->label(false); ?>
-        <?php } ?>
+<!--        --><?php //if (!$admin) { ?>
+<!--            --><?//= $form->field($cardModel, 'city_id')->hiddenInput(['value' => Yii::$app->user->identity->city_id])->label(false); ?>
+<!--            --><?//= $form->field($cardModel, 'address_point_id')->hiddenInput(['value' => Yii::$app->user->identity->address_point_id])->label(false); ?>
+<!--        --><?php //} ?>
         <div class="row">
             <div class="col-md-4 col-sm-6">
                 <div class="box">

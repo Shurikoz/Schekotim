@@ -22,7 +22,7 @@ $count_visits = (isset($_GET['per-page'])) ? $_GET['per-page'] : 10;
                 <?= Html::a(FAS::icon('angle-left', ['class' => 'big', 'data-role' => 'arrow']) . '&nbsp В главное меню', ['/'], ['class' => 'btn btn-default']) ?>
             </div>
             <div class="pull-right">
-                <span style="display: block;margin-top: 5px;" class="titleCardName"><b>Фотографии работ</b></span>
+                <span style="display: block;margin-top: 5px;" class="titleNormal">Фотографии работ</span>
             </div>
         </div>
     </div>
@@ -59,47 +59,42 @@ $count_visits = (isset($_GET['per-page'])) ? $_GET['per-page'] : 10;
             <?php if ($dataProvider->models) { ?>
                 <?php foreach ($dataProvider->models as $item) { ?>
                     <div class="blockCard <?= $item->used_photo == 1 ? 'usingCard' : '' ?>">
-                        <?php if ($item->used_photo == 0) { ?>
-                            <div class="pull-right">
-                                <?= Html::a('<span class="glyphicon glyphicon-check"></span> Использовано', ['photo/used', 'id' => $item->id], [
-                                    'class' => 'btn btn-green',
-                                    'data' => [
-                                        'confirm' => 'Отметить посещение использованными?',
-                                    ],
-                                ]) ?>
-                            </div>
-                        <?php } else { ?>
-                            <p class="pull-right" style="color: #000; font-weight: 700">Карточка помечена
-                                использованной</p>
-                        <?php } ?>
                         <div class="row">
-                            <div class="col-md-2">
-                                <div class="box">
-                                    <p><b>№ карты: </b><?= $item->card_number ?></p>
+                            <div class="col-md-7 col-sm-5">
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <p><b>Карта: </b><?= $item->card_number ?></p>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <p><b>ID: </b><?= $item->id ?></p>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <p><b>Проблема: </b><?= $item->problem_id == '0' ? '<span class="text-red">Не указана</span>' : $item->problem->name ?></p>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="col-md-3">
-                                <div class="box">
-                                    <p><b>Id посещения: </b><?= $item->id ?></p>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="box">
-                                    <p>
-                                        <b>Проблема: </b><?= $item->problem_id == '0' ? '<span class="text-red">Не указана</span>' : $item->problem->name ?>
-                                    </p>
-                                </div>
+                            <div class="col-md-5 col-sm-7">
+                                <?php if ($item->used_photo == 0) { ?>
+                                    <div class="pull-right">
+                                        <?= Html::button('Показать информацию <span class="glyphicon glyphicon-arrow-down"></span>', [
+                                            'class' => 'btn btn-default infoHiddenBlockBtn',
+                                            'style' => 'margin: 3px;',
+                                            'data' => ['id' => $item->id]
+                                        ]) ?>
+                                        <?= Html::a('<span class="glyphicon glyphicon-check"></span> Использовано', ['photo/used', 'id' => $item->id], [
+                                            'class' => 'btn btn-green',
+                                            'data' => [
+                                                'confirm' => 'Отметить посещение использованными?',
+                                            ],
+                                        ]) ?>
+                                    </div>
+                                <?php } else { ?>
+                                    <p class="pull-right" style="color: #000; font-weight: 700">Карточка помечена
+                                        использованной</p>
+                                <?php } ?>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <?= Html::button('Показать информацию <span class="glyphicon glyphicon-arrow-down"></span>', [
-                                    'class' => 'btn btn-default infoHiddenBlockBtn',
-                                    'style' => 'margin: 3px;',
-                                    'data' => ['id' => $item->id]
-                                ]) ?>
-                            </div>
-                        </div>
+
                         <div class="infoHiddenBlock<?= $item->id ?>" hidden>
                             <br>
                             <div class="row">
@@ -146,10 +141,9 @@ $count_visits = (isset($_GET['per-page'])) ? $_GET['per-page'] : 10;
                                 </div>
                             </div>
                         </div>
-                        <br>
+                        <hr>
                         <div class="row">
-                            <div class="col-md-6">
-                                <div class="box">
+                            <div class="col-md-6 col-sm-6">
                                     <h4>Фото ДО</h4>
                                     <?php foreach ($item->photo as $photo) { ?>
                                         <?php if ($photo->made == 'before') { ?>
@@ -167,10 +161,8 @@ $count_visits = (isset($_GET['per-page'])) ? $_GET['per-page'] : 10;
                                             </div>
                                         <?php } ?>
                                     <?php } ?>
-                                </div>
                             </div>
-                            <div class="col-md-6">
-                                <div class="box">
+                            <div class="col-md-6 col-sm-6">
                                     <h4>Фото ПОСЛЕ</h4>
                                     <?php foreach ($item->photo as $photo) { ?>
                                         <?php if ($photo->made == 'after') { ?>
@@ -189,11 +181,10 @@ $count_visits = (isset($_GET['per-page'])) ? $_GET['per-page'] : 10;
                                             </div>
                                         <?php } ?>
                                     <?php } ?>
-                                </div>
                             </div>
                         </div>
                     </div>
-                    <hr>
+                    <br>
                 <?php } ?>
 
             <?php } else { ?>

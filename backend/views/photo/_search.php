@@ -30,23 +30,21 @@ use yii\widgets\ActiveForm;
     </div>
     <br>
     <div class="row">
-        <div class="col-md-2 col-sm-12">
+        <div class="col-md-2 col-sm-4">
             <div class="c-field">
                 <?= $form->field($searchModel, 'card_number')->textInput(['placeholder' => 'Номер карты', 'class' => 'autoSearchSubmit c-input'])->label(false) ?>
             </div>
         </div>
-        <div class="col-md-3 col-sm-12">
+        <div class="col-md-3 col-sm-4">
             <div class="c-field">
                 <?= $form->field($searchModel, 'problem')->dropDownList($problem, ['prompt' => 'Проблема', 'class' => 'autoSearchSubmit c-input'])->label(false) ?>
             </div>
         </div>
-        <div class="col-md-4 col-sm-12">
+        <div class="col-md-4 col-sm-4">
             <div class="c-field">
                 <?= $form->field($searchModel, 'used_photo')->dropDownList($filter, ['prompt' => 'Фильтр фотографий', 'class' => 'autoSearchSubmit c-input'])->label(false) ?>
             </div>
         </div>
     </div>
-    <hr>
-
     <?php ActiveForm::end(); ?>
 

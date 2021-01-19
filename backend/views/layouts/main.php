@@ -83,6 +83,7 @@ $dermatolog = Yii::$app->user->can('dermatolog');
                 ['label' => 'Фото работ', 'url' => '/photo/index', 'visible' => $admin || $leader || $smm],
                 ['label' => 'Пропущенные посещения', 'url' => '/visit/missed', 'visible' => $admin || $leader || $administrator],
                 ['label' => 'Запланированные посещения', 'url' => '/visit/planned', 'visible' => $admin || $leader || $administrator],
+                ['label' => 'Консультации', 'url' => '/visit/visit-consult', 'visible' => $admin || $leader || $administrator],
                 ['label' => 'Шаблоны для специалистов', 'url' => '/problem/index', 'visible' => $admin || $leader],
                 ['label' => 'Пользователи', 'url' => '/user/index', 'visible' => $admin || $leader],
                 ['label' => 'Настройки', 'url' => '/settings', 'visible' => $admin || $leader],

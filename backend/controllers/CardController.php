@@ -29,9 +29,7 @@ class CardController extends Controller
      */
     public function behaviors()
     {
-        parent::behaviors();
         return [
-
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [

@@ -21,6 +21,18 @@ class PhotoController extends Controller
 {
 
     /**
+     * {@inheritdoc}
+     */
+    public function behaviors()
+    {
+        return [
+            'rateLimiter' => [
+                'class' => RateLimiter::className(),
+                'errorMessage' => 'Превышен интервал запросов к системе. Повторите запрос или <a href="">обновите</a> страницу через несколько секунд.'
+            ],
+        ];
+    }
+    /**
      * Lists all PhotoVisit models.
      * @return mixed
      */

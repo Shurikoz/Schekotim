@@ -6,7 +6,7 @@ use rmrevin\yii\fontawesome\FAS;
 \yii\web\YiiAsset::register($this);
 
 $admin = Yii::$app->user->can('admin');
-
+$countUser = count($model);
 ?>
 <div class="row">
     <div class="col-md-12">
@@ -32,7 +32,7 @@ $admin = Yii::$app->user->can('admin');
         <table class="c-table">
             <thead class="c-table__head c-table__head--slim">
             <tr class="c-table__row">
-                <th class="c-table__cell c-table__cell--head">ID</th>
+                <th class="c-table__cell c-table__cell--head">#</th>
                 <th class="c-table__cell c-table__cell--head">Логин</th>
                 <th class="c-table__cell c-table__cell--head">Роль</th>
                 <th class="c-table__cell c-table__cell--head">Статус</th>
@@ -45,7 +45,8 @@ $admin = Yii::$app->user->can('admin');
             <?php foreach (array_reverse($model) as $item) { ?>
                 <tr class="c-table__row">
                     <td class="c-table__cell">
-                        <?= $item->id ?>
+                        <?= $countUser ?>
+                        <?php $countUser-- ?>
                     </td>
                     <td class="c-table__cell">
                         <h4><?= $item->username ?></h4>

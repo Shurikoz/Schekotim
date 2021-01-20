@@ -104,19 +104,9 @@ class CardController extends Controller
 
         $user = User::find()->where(['id' => Yii::$app->user->identity->getId()])->with('city', 'address_point')->one();
 
-        if (Yii::$app->user->can('admin')){
-            $specialistModel = Specialist::find()->all();
-            $specialistList = ArrayHelper::map($specialistModel, 'id', 'name');
-        } else {
-            $specialistModel = Specialist::find()->where(['address_point_id' => $user->address_point_id])->all();
-            $specialistList = ArrayHelper::map($specialistModel, 'id', 'name');
-        }
-
-        $cityModel = City::find()->all();
-        $cityList = ArrayHelper::map($cityModel, 'id', 'name');
-
+        $specialistModel = Specialist::find()->all();
+        $specialistList = ArrayHelper::map($specialistModel, 'id', 'name');
         $cardModel = new Card();
-
         //найдем последнюю запись, возьмем из нее номер карты
         $card = Card::find()->orderBy(['id' => SORT_DESC])->one();
 
@@ -127,10 +117,7 @@ class CardController extends Controller
         } else {
             $cardModel->number = 1;
         }
-
-
-        $cardModel->created_at = date('Y-m-d');
-
+        $cardModel->created_at = time();
         if ($cardModel->load($post)) {
             if ($cardModel->save()) {
                 Yii::$app->session->setFlash('success', 'Карта создана!');
@@ -140,8 +127,7 @@ class CardController extends Controller
         return $this->render('create', [
             'user' => $user,
             'cardModel' => $cardModel,
-            'specialistList' => $specialistList,
-            'cityList' => $cityList
+            'specialistList' => $specialistList
         ]);
     }
 

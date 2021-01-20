@@ -31,10 +31,6 @@ $admin = Yii::$app->user->can('admin');
     <div class="card-form">
         <?php $form = ActiveForm::begin(); ?>
         <?= $form->field($cardModel, 'user_id')->hiddenInput(['value' => Yii::$app->user->id])->label(false); ?>
-<!--        --><?php //if (!$admin) { ?>
-<!--            --><?//= $form->field($cardModel, 'city_id')->hiddenInput(['value' => Yii::$app->user->identity->city_id])->label(false); ?>
-<!--            --><?//= $form->field($cardModel, 'address_point_id')->hiddenInput(['value' => Yii::$app->user->identity->address_point_id])->label(false); ?>
-<!--        --><?php //} ?>
         <div class="row">
             <div class="col-md-4 col-sm-6">
                 <div class="box">

@@ -236,7 +236,7 @@ class UserController extends Controller
                 $specialist->delete();
             }
             Yii::$app->authManager->revokeAll($id);
-            Yii::$app->session->setFlash('success', 'Пользователь #' . $model->username . ' удален!');
+            Yii::$app->session->setFlash('success', 'Пользователь <b>' . $model->username . '</b> удален!');
         }
         return $this->redirect(['index']);
     }

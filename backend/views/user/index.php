@@ -72,13 +72,13 @@ $countUser = count($model);
 
                         <?php if (!Yii::$app->authManager->getAssignment('leader', $item->id)) { ?>
                             <?php if ($item->status == 10) { ?>
-                                <?= Html::a('<span class="glyphicon glyphicon-ok-circle" title="Заблокировать"></span>', ['user/block', 'id' => $item->id], [
+                                <?= Html::a('<span class="glyphicon glyphicon-ban-circle" title="Заблокировать"></span>', ['user/block', 'id' => $item->id], [
                                     'class' => 'btn',
                                     'data-confirm' => 'Заблокировать пользователя?'
 
                                 ]) ?>
                             <?php } else { ?>
-                                <?= Html::a('<span class="glyphicon glyphicon-ban-circle" title="Разблокировать"></span>', ['user/unblock', 'id' => $item->id], [
+                                <?= Html::a('<span class="glyphicon glyphicon-ok-circle" title="Разблокировать"></span>', ['user/unblock', 'id' => $item->id], [
                                     'class' => 'btn',
                                     'data-confirm' => 'Активировать пользователя?'
 
@@ -86,7 +86,7 @@ $countUser = count($model);
                             <?php } ?>
                         <?php } ?>
                         <?php if ($admin) { ?>
-                        <?= Html::a('<span class="glyphicon glyphicon-trash" title="Разблокировать"></span>', ['user/delete', 'id' => $item->id], [
+                        <?= Html::a('<span class="glyphicon glyphicon-trash" title="Удалить"></span>', ['user/delete', 'id' => $item->id], [
                             'class' => 'btn',
                             'data-confirm' => 'Удалить пользователя?'
                         ]) ?>

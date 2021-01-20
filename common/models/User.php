@@ -8,11 +8,12 @@ use Yii;
 use yii\base\NotSupportedException;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
+use yii\filters\RateLimiter;
+use yii\filters\RateLimitInterface;
 use yii\web\IdentityInterface;
 
 /**
  * User model
- *
  * @property integer $id
  * @property string $username
  * @property string $name
@@ -27,12 +28,14 @@ use yii\web\IdentityInterface;
  * @property integer $address_point_id
  * @property string $password write-only password
  */
-class User extends ActiveRecord implements IdentityInterface
+class User extends ActiveRecord implements IdentityInterface, RateLimitInterface
 {
+
+    public $rateLimit;
+    public $rateTimeLimit;
 
     const STATUS_DELETED = 0;
     const STATUS_ACTIVE = 10;
-
 
     /**
      * {@inheritdoc}
@@ -49,7 +52,17 @@ class User extends ActiveRecord implements IdentityInterface
     {
         return [
             TimestampBehavior::className(),
+            'rateLimiter' => [
+                'class' => RateLimiter::className(),
+            ],
         ];
+    }
+
+    public function __construct(array $config = [])
+    {
+        parent::__construct($config);
+        $this->rateLimit = Yii::$app->params['rateLimit'];
+        $this->rateTimeLimit = Yii::$app->params['rateTimeLimit'];
     }
 
     /**
@@ -61,9 +74,30 @@ class User extends ActiveRecord implements IdentityInterface
             ['status', 'default', 'value' => self::STATUS_ACTIVE],
             ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_DELETED]],
             ['email', 'email'],
-
+            [['allowance', 'allowance_updated_at'], 'safe'],
         ];
     }
+
+    //    =========================================================
+    //    ограничение количества запросов
+    //    =========================================================
+    public function getRateLimit($request, $action)
+    {
+        return [$this->rateLimit, $this->rateTimeLimit];
+    }
+
+    public function loadAllowance($request, $action)
+    {
+        return [$this->allowance, $this->allowance_updated_at];
+    }
+
+    public function saveAllowance($request, $action, $allowance, $timestamp)
+    {
+        $this->allowance = $allowance;
+        $this->allowance_updated_at = $timestamp;
+        $this->save();
+    }
+    //    =========================================================
 
     /**
      * {@inheritdoc}
@@ -208,7 +242,6 @@ class User extends ActiveRecord implements IdentityInterface
             return true;
         }
     }
-
 
     public function getCity()
     {

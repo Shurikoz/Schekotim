@@ -15,6 +15,7 @@ use common\models\User;
 use kartik\mpdf\Pdf;
 use Yii;
 use yii\data\Pagination;
+use yii\filters\RateLimiter;
 use yii\filters\VerbFilter;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -35,6 +36,10 @@ class VisitController extends Controller
                 'actions' => [
                     'delete' => ['POST'],
                 ],
+            ],
+            'rateLimiter' => [
+                'class' => RateLimiter::className(),
+                'errorMessage' => 'Превышен интервал запросов к системе. Повторите запрос или <a href="javascript:void(0)" onclick="window.location.reload();">обновите</a> страницу через несколько секунд.'
             ],
         ];
     }

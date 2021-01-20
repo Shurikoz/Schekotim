@@ -52,7 +52,8 @@ return [
             'csrfParam' => '_csrf-backend',
         ],
         'user' => [
-            'identityClass' => 'mdm\admin\models\User',
+//            'identityClass' => 'mdm\admin\models\User',
+            'identityClass' => 'common\models\User',
             'loginUrl' => 'site/login',
             //'loginUrl' => 'admin/user/login',
             'enableAutoLogin' => false,

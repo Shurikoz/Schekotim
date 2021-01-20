@@ -9,11 +9,11 @@ use backend\models\City;
 use backend\models\Photo;
 use backend\models\Specialist;
 use backend\models\Visit;
-use backend\models\VisitMark;
 use backend\models\VisitCardSearch;
 use common\models\User;
 use Yii;
 use yii\data\Pagination;
+use yii\filters\RateLimiter;
 use yii\filters\VerbFilter;
 use yii\helpers\ArrayHelper;
 use yii\web\Controller;
@@ -29,12 +29,18 @@ class CardController extends Controller
      */
     public function behaviors()
     {
+        parent::behaviors();
         return [
+
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
                     'delete' => ['POST'],
                 ],
+            ],
+            'rateLimiter' => [
+                'class' => RateLimiter::className(),
+                'errorMessage' => 'Превышен интервал запросов к системе. Повторите запрос или <a href="">обновите</a> страницу через несколько секунд.'
             ],
         ];
     }

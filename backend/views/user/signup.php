@@ -7,8 +7,6 @@ use yii\widgets\ActiveForm;
 use rmrevin\yii\fontawesome\FAS;
 
 $this->title = 'Регистрация нового пользователя';
-$addressPpointList = [];
-array_unshift($addressPpointList, '');
 
 ?>
 <div class="row">

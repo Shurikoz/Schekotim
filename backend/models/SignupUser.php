@@ -48,11 +48,11 @@ class SignupUser extends Signup
             ['retypePassword', 'required'],
             ['retypePassword', 'compare', 'compareAttribute' => 'password', 'message' => 'Пароли не совпадают'],
 
-            [['city', 'address_point'], 'required'],
-            ['city', 'integer', 'min' => '1', 'tooSmall' => 'Город не выбран!'],
-
-            [['city', 'address_point'], 'required'],
-            ['address_point', 'integer', 'min' => '1', 'tooSmall' => 'Адрес не выбран!', 'message' => 'Выберите город'],
+//            [['city', 'address_point'], 'required'],
+//            ['city', 'integer', 'min' => '1', 'tooSmall' => 'Город не выбран!'],
+//
+//            [['city', 'address_point'], 'required'],
+//            ['address_point', 'integer', 'min' => '1', 'tooSmall' => 'Адрес не выбран!', 'message' => 'Выберите город'],
 
         ];
     }
@@ -80,7 +80,8 @@ class SignupUser extends Signup
     public function signup()
     {
         if ($this->validate()) {
-            $class = Yii::$app->getUser()->identityClass ? : 'mdm\admin\models\User';
+//            $class = Yii::$app->getUser()->identityClass ? : 'mdm\admin\models\User';
+            $class = Yii::$app->getUser()->identityClass ? : 'common\models\User';
             $user = new $class();
             $user->name = $this->name;
             $user->username = $this->username;

@@ -28,7 +28,7 @@ class UserController extends Controller
     public function actionIndex()
     {
         //получим всех пользователей кроме администратора
-        $model = User::find()->where(['not in', 'username', 'admin'])->with('city', 'address_point')->all();
+        $model = $this->getUsers();
         $countUser = User::userCount();
 
         return $this->render('index', [
@@ -82,9 +82,21 @@ class UserController extends Controller
                     $auth = Yii::$app->authManager;
                     $authorRole = $auth->getRole(Yii::$app->getRequest()->post()["role"]);
                     $auth->assign($authorRole, $user->getId());
+                    $allUsers = $this->getUsers();
+                    $countUser = User::userCount();
                     Yii::$app->session->setFlash('success', 'Пользователь <b>' . $user->username . '</b> создан!');
+                    return $this->render('index', [
+                        'model' => $allUsers,
+                        'countUser' => $countUser
+                    ]);
                 } else {
+                    $allUsers = $this->getUsers();
+                    $countUser = User::userCount();
                     Yii::$app->session->setFlash('success', 'Пользователь <b>' . $user->username . '</b> создан! Назначьте ему права доступа!');
+                    return $this->render('index', [
+                        'model' => $allUsers,
+                        'countUser' => $countUser
+                    ]);
                 }
 
             }
@@ -167,8 +179,6 @@ class UserController extends Controller
         ]);
     }
 
-
-
     /**
      * @param $id
      * @return string
@@ -249,6 +259,7 @@ class UserController extends Controller
 
     /**
      * @return array|\yii\db\ActiveRecord[]
+     * получим всех пользователей кроме администратора
      */
     private function getUsers()
     {

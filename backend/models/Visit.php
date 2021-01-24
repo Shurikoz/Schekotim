@@ -4,6 +4,7 @@ namespace backend\models;
 use backend\components\EventHelper;
 use russ666\widgets\Countdown;
 use Yii;
+use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
 use DateTime;
 
@@ -53,6 +54,16 @@ class Visit extends ActiveRecord
     public static function tableName()
     {
         return 'visit';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function behaviors()
+    {
+        return [
+            TimestampBehavior::className(),
+        ];
     }
 
     /**

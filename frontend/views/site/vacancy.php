@@ -19,7 +19,6 @@ $this->registerMetaTag([
     <header class="main">
         <h1><?= Html::encode($this->title) ?></h1>
     </header>
-
     <h3>Мастер</h3>
     <ul>
         <li>Опыт работы от 1 года</li>
@@ -42,6 +41,9 @@ $this->registerMetaTag([
         А в теме письма укажите - <b>вакансия Мастер</b>.
     </p>
     <hr>
+
+<?php if (false) {?>
+    <hr>
     <h3>Мастер-стажёр</h3>
     <ul>
         <li>Без опыта работы</li>
@@ -58,9 +60,6 @@ $this->registerMetaTag([
     <p>Напишите о Вашем желании работать у нас на <a href="mailto:info@schekotim.ru">info@schekotim.ru</a>.<br>
         Обязательно напишите пару слов о себе, а в теме письма укажите - <b>вакансия Мастер-стажёр</b>.
     </p>
-    <hr>
-
-<?php if (false) {?>
     <h3>Администратор</h3>
     <ul>
         <li>Грамотная письменная и устная речь</li>

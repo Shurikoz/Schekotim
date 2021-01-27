@@ -10,6 +10,7 @@ $this->registerMetaTag([
     'name' => 'description',
     'content' => 'Центр маникюра, педикюра и подологии «Щекотливая тема» - Акции и скидки'
 ]);
+
 ?>
 <!-- Header -->
 <?= $this->render('/partials/_header', compact('header')); ?>
@@ -18,11 +19,16 @@ $this->registerMetaTag([
     <header class="main">
         <h1><?= Html::encode($this->title) ?></h1>
     </header>
+
+
     <div class="row">
             <div class="col-12 col-12-small">
                 <h3>Консультируем бесплатно!</h3>
                 <div class="row">
                     <div class="col-5 col-12-small">
+
+                        <?php time() < 1614589200 ? $video = 'upload/stock/She_pn.mp4' : $video = 'upload/stock/She_pn_cht.mp4'?>
+
                         <?= VideoJsWidget::widget([
                             'options' => [
                                 'class' => 'vjs-default-skin vjs-big-play-centered',
@@ -34,7 +40,7 @@ $this->registerMetaTag([
                             ],
                             'tags' => [
                                 'source' => [
-                                    ['src' => 'upload/stock/She_pn.mp4', 'type' => 'video/mp4']
+                                    ['src' => $video, 'type' => 'video/mp4']
                                 ]
                             ]
                         ]); ?>
